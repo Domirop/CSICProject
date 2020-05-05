@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Level;
@@ -27,16 +28,27 @@ public class CSIC {
      */
     public static void main(String[] args) {
         try {
-            /*String string = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
+            String string = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
                     .filter(s -> s.contains("Isotropic"))
                     .findFirst()
-                    .get();*/
-            List string = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
+                    .get();
+            /*List string = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
                     .filter(s -> s.contains("Isotropic"))
                     .collect(Collectors.toList());
             string.forEach((t) -> {
                 System.out.println(t);
-            });
+            
+            });*/
+            char[] prueba = string.toCharArray();
+            for (int i = 0; i < prueba.length; i++) {
+                if(Character.isWhitespace(prueba[i])){
+                    System.out.println("hola");
+                    System.out.println(prueba[i]);
+                    System.out.println(string.charAt(prueba[i]));
+                    string.replace(prueba[i], 'x'); 
+               }
+            }
+            System.out.println(string);
             /*Hashtable<Integer, List> table = new Hashtable<Integer, List>();
             List l1 = new ArrayList<>();
             List l2 = new ArrayList<>();
