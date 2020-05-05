@@ -8,15 +8,8 @@ package csic;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-
 /**
  *
  * @author domit
@@ -36,18 +29,27 @@ public class CSIC {
                     .filter(s -> s.contains("Isotropic"))
                     .collect(Collectors.toList());
             x.forEach((string) -> {
-                string = string.replaceAll("\\s","");
+                string = string.replaceAll("\\s", "");
                 String[] prueba = string.split("=");
                 StringBuilder builder = new StringBuilder();
                 builder.append(prueba[0].replaceAll("Isotropic", ""));
                 builder.append(prueba[1].replaceAll("Anisotropy", ""));
                 System.out.println(builder.toString());
             });
-            } catch (IOException ex) {
-                System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
         }
     }
-}
+     /*formula = formula.replaceAll("(?<=[A-Z])(?=[A-Z])|(?<=[a-z])(?=[A-Z])|(?<=\D)$", "100");
+
+            //split at letter-digit or digit-letter boundry
+            String regex = "(?<=\D)(?=\d)|(?<=\d)(?=\D)";
+            String[] atoms = formula.split(regex);
+            for (String atom : atoms) {
+                System.out.println(atom);
+            }*/
+
+
 /*Hashtable<Integer, List> table = new Hashtable<Integer, List>();
             List l1 = new ArrayList<>();
             List l2 = new ArrayList<>();
@@ -83,4 +85,4 @@ public class CSIC {
             nueva.add(value);
             table.put(key, nueva);
             return table;*/
-
+}
