@@ -30,13 +30,16 @@ public class CSIC {
             int lineNumber1 = 0;
             int lineNumber2 = 0;
             while (iterator.hasNext()) {
-                if (iterator.next().contains("End of") && lineNumber2 != 0) {
-                    System.out.println(lineNumber1);
-                    System.out.println(lineNumber2);
-                    break;
-                } else if (iterator.next().contains("Fermi Contact (FC) contribution to K (Hz):")) {
-                    lineNumber2 = lineNumber1;
-                } else {
+                if(lineNumber2 > 0){
+                    if(iterator.next().contains("End of Minotr F.D. properties file   721 does not exist.")){
+                        lineNumber2--;
+                        break;
+                    }
+                    lineNumber2++;
+                }else{
+                    if (iterator.next().contains("Fermi Contact (FC) contribution to K (Hz):")){
+                        lineNumber2++;
+                    }
                     lineNumber1++;
                 }
             }
@@ -45,7 +48,7 @@ public class CSIC {
                     .filter(s -> s.contains("Fermi Contact (FC) contribution to K (Hz):"))
                     .collect(Collectors.toList());*/
             try (Stream<String> lines = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))) {
-                x = lines.skip(lineNumber2).limit(lineNumber1).collect(Collectors.toList());
+                x = lines.skip(lineNumber1).limit(lineNumber2).collect(Collectors.toList());
             }
             for (String string : x) {
                 System.out.println(string);
