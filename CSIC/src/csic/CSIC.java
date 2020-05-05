@@ -8,24 +8,49 @@ package csic;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class CSIC{
-/**
- *
- * @author domit
- */
-public static void main(String[] args) {
+public class CSIC {
+
+    /**
+     *
+     * @author domit
+     */
+    public static void main(String[] args) {
         try {
             /*String string = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
                     .filter(s -> s.contains("Isotropic"))
                     .findFirst()
                     .get();*/
-            List<String> x = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
-                    .filter(s -> s.contains("Isotropic"))
-                    .collect(Collectors.toList());
-            x.forEach((string) -> {
+            Iterator<String> iterator = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log")).iterator();
+            int lineNumber1 = 0;
+            int lineNumber2 = 0;
+            while (iterator.hasNext()) {
+                if (iterator.next().contains("End of") && lineNumber2 != 0) {
+                    System.out.println(lineNumber1);
+                    System.out.println(lineNumber2);
+                    break;
+                } else if (iterator.next().contains("Fermi Contact (FC) contribution to K (Hz):")) {
+                    lineNumber2 = lineNumber1;
+                } else {
+                    lineNumber1++;
+                }
+            }
+            List<String> x = new ArrayList<>();
+            /*x = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
+                    .filter(s -> s.contains("Fermi Contact (FC) contribution to K (Hz):"))
+                    .collect(Collectors.toList());*/
+            try (Stream<String> lines = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))) {
+                x = lines.skip(lineNumber2).limit(lineNumber1).collect(Collectors.toList());
+            }
+            for (String string : x) {
+                System.out.println(string);
+            }
+            /*x.forEach((string) -> {
                 string = string.replaceAll("\\s","");
                 string = string.replaceAll("\\s", "");
                 String[] prueba = string.split("=");
@@ -33,7 +58,7 @@ public static void main(String[] args) {
                 builder.append(prueba[0].replaceAll("Isotropic", ""));
                 builder.append(prueba[1].replaceAll("Anisotropy", ""));
                 System.out.println(builder.toString());
-            });
+            });*/
         } catch (IOException ex) {
             System.out.println(ex);
         }
@@ -83,6 +108,6 @@ public static void main(String[] args) {
             nueva.add(value);
             table.put(key, nueva);
             return table;
-        */
+         */
     }
 }

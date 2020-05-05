@@ -7,8 +7,8 @@ package Model;
 
 /**
  *
- * @author daviddiaz
+ * @author domit
  */
-public class Model {
+public interface Model {
     
 }
