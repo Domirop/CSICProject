@@ -28,34 +28,36 @@ public class CSIC {
      */
     public static void main(String[] args) {
         try {
-            String string = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
+            /*String string = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
                     .filter(s -> s.contains("Isotropic"))
                     .findFirst()
-                    .get();
-            /*List string = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
+                    .get();*/
+            List<String> x = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
                     .filter(s -> s.contains("Isotropic"))
                     .collect(Collectors.toList());
-            string.forEach((t) -> {
-                System.out.println(t);
-            
-            });*/
-            char[] prueba = string.toCharArray();
-            for (int i = 0; i < prueba.length; i++) {
-                if(Character.isWhitespace(prueba[i])){
-                    System.out.println("hola");
-                    System.out.println(prueba[i]);
-                    System.out.println(string.charAt(prueba[i]));
-                    string.replace(prueba[i], 'x'); 
-               }
-            }
-            System.out.println(string);
-            /*Hashtable<Integer, List> table = new Hashtable<Integer, List>();
+            x.forEach((string) -> {
+                string = string.replaceAll("\\s","");
+                String[] prueba = string.split("=");
+                StringBuilder builder = new StringBuilder();
+                builder.append(prueba[0].replaceAll("Isotropic", ""));
+                builder.append(prueba[1].replaceAll("Anisotropy", ""));
+                System.out.println(builder.toString());
+            });
+            } catch (IOException ex) {
+                System.out.println(ex);
+        }
+    }
+}
+/*Hashtable<Integer, List> table = new Hashtable<Integer, List>();
             List l1 = new ArrayList<>();
             List l2 = new ArrayList<>();
             List l3 = new ArrayList<>();
             List l4 = new ArrayList<>();
             List l5 = new ArrayList<>();
-            l1.add("1");
+            l1.add("1");/*Hashtable<Integer, List> table = new Hashtable<Integer, List>();
+            List l1 = new ArrayList<>();
+            List l2 = new ArrayList<>();
+            List l3 = new ArrayList<>();
             l2.add("2");
             l3.add("3");
             l4.add("4");
@@ -81,8 +83,4 @@ public class CSIC {
             nueva.add(value);
             table.put(key, nueva);
             return table;*/
-        } catch (IOException ex) {
-            Logger.getLogger(CSIC.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-}
+
