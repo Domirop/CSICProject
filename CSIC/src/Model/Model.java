@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  *
- * @author daviddiaz
+ * @author domit
  */
 public class Model implements ModelInt{
     ReadIsotropic readIso = new ReadIsotropic();
@@ -38,6 +38,5 @@ public class Model implements ModelInt{
     @Override
     public String SCFDone(String keyword, String path) {
         return readEnergy.SCFDone(keyword, path);
-    }
-    
+    }  
 }
