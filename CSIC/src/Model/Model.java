@@ -6,7 +6,7 @@
 package Model;
 
 import Model.Files.ReadEnergyValue;
-import Model.Files.ReadIsotropic;
+import Model.Files.ReadLines;
 import Model.Files.ReadTable;
 import java.util.List;
 
@@ -16,18 +16,24 @@ import java.util.List;
  */
 public class Model implements ModelInt {
 
-    ReadIsotropic readIso = new ReadIsotropic();
+    ReadLines readIso = new ReadLines();
     ReadTable readTable = new ReadTable();
     ReadEnergyValue readEnergy = new ReadEnergyValue();
 
     @Override
-    public List<String> getIsotropic(String path) {
-        return readIso.getIsotropic(path);
+    public List<String> getLines(String path, String filter) {
+        return readIso.getIsotropic(path, filter);
     }
 
     @Override
-    public List<String> formatLine(List<String> lines) {
-        return readIso.formatLine(lines);
+    public List<String> formatLine(List<String> lines, String type) {
+        if (type.equalsIgnoreCase("Isotropic")) {
+            return readIso.formatLineIsotropic(lines);
+        } 
+        if(type.equalsIgnoreCase("Anisotropy")){
+            return readIso.formatLineAnisotropy(lines);
+        }
+        return null;
     }
 
     @Override
@@ -39,7 +45,6 @@ public class Model implements ModelInt {
     public String SCFDone(String keyword, String path) {
         return readEnergy.SCFDone(keyword, path);
     }
-
     @Override
     public String getValue(String path, int column, int row) {
         return readTable.getValue(path, column, row);
