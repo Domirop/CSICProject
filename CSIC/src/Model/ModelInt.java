@@ -18,6 +18,8 @@ public interface ModelInt {
     public List<String> formatLine(List<String> lines);
 
     public List<String> getTable(String path);
-    
+
+    public String getValue();
+
     public String SCFDone(String keyword, String path);
 }
