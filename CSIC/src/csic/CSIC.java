@@ -6,6 +6,7 @@
 package csic;
 
 import Model.Files.ReadTable;
+import View.Frame;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public class CSIC {
      */
     public static void main(String[] args) {
         ReadTable re = new ReadTable();
+        Frame f = new Frame();
+        f.setVisible(true);
         List<String> lista = re.getTable("/Users/daviddiaz/Downloads/out/01_lsw3_2R3S5R12R_1_DP4J.log");
         String[] sep = lista.get(lista.size() - 1).split("\\s");
         ArrayList<String> valor = new ArrayList<>();
@@ -35,6 +38,7 @@ public class CSIC {
 
             }
         }
+        
         int numeroLineas = Integer.parseInt(valor.get(0));
 
         if (val == 0) {

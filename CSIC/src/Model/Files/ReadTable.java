@@ -20,7 +20,9 @@ import java.util.stream.Stream;
  */
 public class ReadTable {
 
+    //private final String start = "Fermi Contact (FC) contribution to K (Hz):";
     private final String start = "Fermi Contact (FC) contribution to K (Hz):";
+
     private final String end = "End of Minotr";
     private List<String> table = new ArrayList<>();
     private List<String> data = new ArrayList<>();

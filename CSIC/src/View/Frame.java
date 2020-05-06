@@ -5,9 +5,13 @@
  */
 package View;
 
-import View.FileDropper.FileDropListener;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,20 +27,42 @@ public class Frame extends javax.swing.JFrame {
      * Creates new form Frame
      */
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log", "txt"));
+
     public Frame() {
         initComponents();
-        dropTextArea.append("Accept drop file by FileDropper\n");
-        new DropTarget(dropTextArea, DnDConstants.ACTION_COPY, new FileDropper(new FileDropListener() {
-        List<String> files = new ArrayList<>();
-            @Override
-            public void onDropFile(File file) {
-                if(filesTypes.contains(file.getName().split("\\.")[1])){
-                    dropTextArea.append(file.getName() + "\n");
-                    files.add(file.getAbsolutePath());
+        enableDragAndDrop();
+    }
+
+    private void enableDragAndDrop() {
+        DropTarget target = new DropTarget(dropTextArea, new DropTargetListener() {
+
+            public void dragEnter(DropTargetDragEvent e) {
+            }
+
+            public void dragExit(DropTargetEvent e) {
+                System.out.println("2");
+            }
+
+            public void dragOver(DropTargetDragEvent e) {
+            }
+
+            public void dropActionChanged(DropTargetDragEvent e) {
+            }
+
+            public void drop(DropTargetDropEvent e) {
+                try {
+                    e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+                    List list = (java.util.List) e.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    list.forEach(v -> {
+                        File file = (File) v;
+                        if(filesTypes.contains(file.getName().split("\\.")[1])) dropTextArea.append(file.getName() + "\n");
+                    });
+                } catch (Exception ex) {
                 }
             }
-        }));
+        });
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -21,6 +21,7 @@ public class ReadEnergyValue {
      * @param path path of the file
      * @return value
      */
+    
     public String SCFDone(String keyword, String path) {
         String line = "";
         String value = "";
