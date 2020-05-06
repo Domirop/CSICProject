@@ -5,10 +5,19 @@
  */
 package Model;
 
+import java.util.List;
+
 /**
  *
  * @author daviddiaz
  */
-public class ModelInt {
+public interface ModelInt {
+
+    public List<String> getIsotropic(String path);
+
+    public List<String> formatLine(List<String> lines);
+
+    public List<String> getTable(String path);
     
+    public String SCFDone(String keyword, String path);
 }

@@ -9,6 +9,5 @@ package Controller;
  *
  * @author domit
  */
-public interface Controller {
-    
+public class Controller implements ControllerInt{
 }
