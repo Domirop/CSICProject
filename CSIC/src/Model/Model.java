@@ -14,11 +14,11 @@ import java.util.List;
  *
  * @author domit
  */
-public class Model implements ModelInt{
+public class Model implements ModelInt {
+
     ReadIsotropic readIso = new ReadIsotropic();
     ReadTable readTable = new ReadTable();
     ReadEnergyValue readEnergy = new ReadEnergyValue();
-    
 
     @Override
     public List<String> getIsotropic(String path) {
@@ -38,5 +38,10 @@ public class Model implements ModelInt{
     @Override
     public String SCFDone(String keyword, String path) {
         return readEnergy.SCFDone(keyword, path);
-    }  
+    }
+
+    @Override
+    public String getValue(String path, int column, int row) {
+        return readTable.getValue(path, column, row);
+    }
 }
