@@ -16,20 +16,17 @@ import java.util.stream.Collectors;
  *
  * @author daviddiaz
  */
-public class ReadIsotropic {
-
-    private final String iso = "Isotropic";
-
+public class ReadLines {
     /**
      *
      * @param path the path of the file
      * @return a list of the data
      */
-    public List<String> getIsotropic(String path) {
+    public List<String> getIsotropic(String path, String filter) {
         List<String> lines = new ArrayList<>();
         try {
             lines = Files.lines(Paths.get(path))
-                    .filter(s -> s.contains(iso))
+                    .filter(s -> s.contains(filter))
                     .collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,10 +39,26 @@ public class ReadIsotropic {
      * @param lines lines without format
      * @return formatted output
      */
-    public List<String> formatLine(List<String> lines) {
+    public List<String> formatLineAnisotropy(List<String> lines) {
         List<String> formattedOutput = new ArrayList<>();
         lines.forEach((string) -> {
             string = string.replaceAll("\\s", "");
+            String[] prueba = string.split("=");
+            StringBuilder builder = new StringBuilder();
+            builder.append(prueba[0].replaceAll("Isotropic", ""));
+            builder.append(prueba[2]);
+            formattedOutput.add(builder.toString());
+        });
+        return formattedOutput;
+    }
+    /**
+     * 
+     * @param lines format line
+     * @return formatted output
+     */
+    public List<String> formatLineIsotropic(List<String> lines) {
+        List<String> formattedOutput = new ArrayList<>();
+        lines.forEach((string) -> {
             string = string.replaceAll("\\s", "");
             String[] prueba = string.split("=");
             StringBuilder builder = new StringBuilder();

@@ -13,9 +13,9 @@ import java.util.List;
  */
 public interface ModelInt {
 
-    public List<String> getIsotropic(String path);
+    public List<String> getLines(String path, String filter);
 
-    public List<String> formatLine(List<String> lines);
+    public List<String> formatLine(List<String> lines, String type);
 
     public List<String> getTable(String path);
     
