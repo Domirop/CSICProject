@@ -5,7 +5,9 @@
  */
 package csic;
 
-import Model.Files.ReadEnergyValue;
+import Model.Files.ReadTable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CSIC {
 
@@ -14,8 +16,55 @@ public class CSIC {
      * @author domit
      */
     public static void main(String[] args) {
-        ReadEnergyValue re = new ReadEnergyValue();
-        re.SCFDone("SCF Done", "/Users/daviddiaz/Downloads/out/08_lsw3_2R3R5S12S_38_DP4J.log");
+        ReadTable re = new ReadTable();
+        List<String> lista = re.getTable("/Users/daviddiaz/Downloads/out/01_lsw3_2R3S5R12R_1_DP4J.log");
+        String[] sep = lista.get(lista.size() - 1).split("\\s");
+        ArrayList<String> valor = new ArrayList<>();
+        ArrayList<String> valores = new ArrayList<>();
+
+        int columna = 13;
+        int fila = 24;
+        int auxiliar = 0;
+        int val = (int) Math.floor(columna / 5.0);
+        int resta = 0;
+        int a = 0;
+        int indice = 0;
+        for (int i = 0; i < sep.length; i++) {
+            if (!sep[i].isEmpty()) {
+                valor.add(sep[i]);
+
+            }
+        }
+        int numeroLineas = Integer.parseInt(valor.get(0));
+
+        if (val == 0) {
+            indice = fila;
+            for (int i = 0; i < numeroLineas; i++) {
+                valores.add(lista.get(i));
+            }
+        } else {
+            for (int i = 0; i < val; i++) {
+                resta = numeroLineas - (i * 5);
+                auxiliar = auxiliar + resta;
+                a++;
+            }
+            auxiliar = auxiliar + val;
+            for (int i = auxiliar; i < resta + auxiliar - 4; i++) {
+                valores.add(lista.get(i));
+            }
+            indice = fila - (a * 5);
+        }
+
+        String[] asd = valores.get(indice).split("\\s+");
+
+        valor.clear();
+        for (String string : asd) {
+            if (!string.isEmpty()) {
+                valor.add(string);
+            }
+        }
+        System.out.println(valor.get(columna - (val * 5)));
+
         /*
 
 <----------------------------MAPA-------------------------------->
