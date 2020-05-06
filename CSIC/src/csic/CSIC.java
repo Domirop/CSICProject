@@ -12,8 +12,7 @@ public class CSIC {
      * @author domit
      */
     public static void main(String[] args) {
-       /*
-
+/*
 <----------------------------MAPA-------------------------------->
         Hashtable<Integer, List> table = new Hashtable<Integer, List>();
             List l1 = new ArrayList<>();

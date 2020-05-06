@@ -45,4 +45,8 @@ public class Model implements ModelInt {
     public String SCFDone(String keyword, String path) {
         return readEnergy.SCFDone(keyword, path);
     }
+    @Override
+    public String getValue(String path, int column, int row) {
+        return readTable.getValue(path, column, row);
+    }
 }
