@@ -9,6 +9,6 @@ package View;
  *
  * @author daviddiaz
  */
-public class View implements ViewInt{
+public interface ViewInt {
     
 }
