@@ -9,6 +9,6 @@ package Controller;
  *
  * @author daviddiaz
  */
-public class Controller {
+public class Controller implements ControllerInt{
     
 }

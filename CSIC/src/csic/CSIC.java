@@ -5,14 +5,7 @@
  */
 package csic;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import Model.Files.ReadEnergyValue;
 
 public class CSIC {
 
@@ -21,63 +14,10 @@ public class CSIC {
      * @author domit
      */
     public static void main(String[] args) {
-        try {
-            /*String string = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
-                    .filter(s -> s.contains("Isotropic"))
-                    .findFirst()
-                    .get();*/
-            Iterator<String> iterator = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log")).iterator();
-            int lineNumber1 = 0;
-            int lineNumber2 = 0;
-            while (iterator.hasNext()) {
-                if(lineNumber2 > 0){
-                    if(iterator.next().contains("End of Minotr F.D. properties file   721 does not exist.")){
-                        lineNumber2--;
-                        break;
-                    }
-                    lineNumber2++;
-                }else{
-                    if (iterator.next().contains("Fermi Contact (FC) contribution to K (Hz):")){
-                        lineNumber2++;
-                    }
-                    lineNumber1++;
-                }
-            }
-            List<String> x = new ArrayList<>();
-            /*x = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))
-                    .filter(s -> s.contains("Fermi Contact (FC) contribution to K (Hz):"))
-                    .collect(Collectors.toList());*/
-            try (Stream<String> lines = Files.lines(Paths.get("C:\\Users\\domit\\Desktop\\01_lsw3_2R3S5R12R_1_DP4J.log"))) {
-                x = lines.skip(lineNumber1).limit(lineNumber2).collect(Collectors.toList());
-            }
-            for (String string : x) {
-                System.out.println(string);
-            }
-            /*x.forEach((string) -> {
-                string = string.replaceAll("\\s","");
-                string = string.replaceAll("\\s", "");
-                String[] prueba = string.split("=");
-                StringBuilder builder = new StringBuilder();
-                builder.append(prueba[0].replaceAll("Isotropic", ""));
-                builder.append(prueba[1].replaceAll("Anisotropy", ""));
-                System.out.println(builder.toString());
-            });*/
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
+        ReadEnergyValue re = new ReadEnergyValue();
+        re.SCFDone("SCF Done", "/Users/daviddiaz/Downloads/out/08_lsw3_2R3R5S12S_38_DP4J.log");
         /*
-<-------------------------------SEPARAR NUMEROS Y LETRAS----------------------------------->        
-        String formula = string;
 
-            insert "1" in atom-atom boundry 
-            formula = formula.replaceAll("(?<=[A-Z])(?=[A-Z])|(?<=[a-z])(?=[A-Z])|(?<=\D)$", "100");
-
-            //split at letter-digit or digit-letter boundry
-            String regex = "(?<=\D)(?=\d)|(?<=\d)(?=\D)";
-            String[] atoms = formula.split(regex);
-            for (String atom : atoms) {
-                System.out.println(atom);
-            }
 <----------------------------MAPA-------------------------------->
         Hashtable<Integer, List> table = new Hashtable<Integer, List>();
             List l1 = new ArrayList<>();
