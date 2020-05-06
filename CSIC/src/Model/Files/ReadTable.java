@@ -20,7 +20,6 @@ import java.util.stream.Stream;
  */
 public class ReadTable {
 
-    //private final String start = "Fermi Contact (FC) contribution to K (Hz):";
     private final String start = "Fermi Contact (FC) contribution to K (Hz):";
 
     private final String end = "End of Minotr";
@@ -67,56 +66,62 @@ public class ReadTable {
         }
         return data;
     }
+    
+    /**
+     * 
+     * @param path the path of the file
+     * @param column integer that represents the column
+     * @param row integer that represents the row
+     * @return value specified
+     */
 
-    public String getValue() {
-        List<String> lista = getTable("/Users/daviddiaz/Downloads/out/01_lsw3_2R3S5R12R_1_DP4J.log");
-        String[] sep = lista.get(lista.size() - 1).split("\\s");
-        ArrayList<String> valor = new ArrayList<>();
-        ArrayList<String> valores = new ArrayList<>();
+    public String getValue(String path, int column, int row) {
+        List<String> valueList = getTable(path);
+        String[] sep = valueList.get(valueList.size() - 1).split("\\s");
+        ArrayList<String> lineValues = new ArrayList<>();
+        ArrayList<String> singleValues = new ArrayList<>();
 
-        int columna = 13;
-        int fila = 24;
-        int auxiliar = 0;
-        int val = (int) Math.floor(columna / 5.0);
-        int resta = 0;
-        int a = 0;
-        int indice = 0;
+        int aux = 0;
+        int val = (int) Math.floor(column / 5.0);
+        int subs = 0;
+        int count = 0;
+        int index = 0;
         for (int i = 0; i < sep.length; i++) {
             if (!sep[i].isEmpty()) {
-                valor.add(sep[i]);
+                lineValues.add(sep[i]);
 
             }
         }
 
-        int numeroLineas = Integer.parseInt(valor.get(0));
+        int numeroLineas = Integer.parseInt(lineValues.get(0));
 
         if (val == 0) {
-            indice = fila;
+            index = row;
             for (int i = 0; i < numeroLineas; i++) {
-                valores.add(lista.get(i));
+                singleValues.add(valueList.get(i));
             }
         } else {
             for (int i = 0; i < val; i++) {
-                resta = numeroLineas - (i * 5);
-                auxiliar = auxiliar + resta;
-                a++;
+                subs = numeroLineas - (i * 5);
+                aux = aux + subs;
+                count++;
             }
-            auxiliar = auxiliar + val;
-            for (int i = auxiliar; i < resta + auxiliar - 4; i++) {
-                valores.add(lista.get(i));
+            aux = aux + val;
+            for (int i = aux; i < subs + aux - 4; i++) {
+                singleValues.add(valueList.get(i));
             }
-            indice = fila - (a * 5);
+            index = row - (count * 5);
         }
 
-        String[] asd = valores.get(indice).split("\\s+");
+        String[] splitVal = singleValues.get(index).split("\\s+");
 
-        valor.clear();
-        for (String string : asd) {
+        lineValues.clear();
+        for (String string : splitVal) {
             if (!string.isEmpty()) {
-                valor.add(string);
+                lineValues.add(string);
             }
         }
-        return valor.get(columna - (val * 5));
+        return lineValues.get(column - (val * 5));
     }
 
 }

@@ -41,7 +41,7 @@ public class Model implements ModelInt {
     }
 
     @Override
-    public String getValue() {
-        return readTable.getValue();
+    public String getValue(String path, int column, int row) {
+        return readTable.getValue(path, column, row);
     }
 }

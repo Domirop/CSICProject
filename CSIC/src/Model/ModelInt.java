@@ -19,7 +19,7 @@ public interface ModelInt {
 
     public List<String> getTable(String path);
 
-    public String getValue();
+    public String getValue(String path, int column, int row);
 
     public String SCFDone(String keyword, String path);
 }
