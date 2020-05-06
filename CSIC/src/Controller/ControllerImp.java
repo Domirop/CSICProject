@@ -7,7 +7,8 @@ package Controller;
 
 /**
  *
- * @author domit
+ * @author daviddiaz
  */
-public class Controller implements ControllerInt{
+public class ControllerImp implements Controller{
+    
 }
