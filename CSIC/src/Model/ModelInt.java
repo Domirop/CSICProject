@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package View;
+package Model;
 
 /**
  *
  * @author daviddiaz
  */
-public class ViewImp implements ViewInt{
+public class ModelInt {
     
 }
