@@ -21,9 +21,18 @@ public class ExportCSV {
 
     List<String[]> dataLines = new ArrayList<>();
 
-    public void hola() throws IOException {
+    public List<String[]> getDataLines() {
+        return dataLines;
+    }
+
+    public void setDataLines(List<String[]> dataLines) {
+        this.dataLines = dataLines;
+    }
+    
+
+    public void add() throws IOException {
         dataLines.add(new String[]{"File Name", "Atom 1", "Atom 2", "exp(-DG/RT)", "s exp(-DG/RT)", "Contribution", "Atom 1", "Atom 2"});
-        givenDataArray_whenConvertToCSV_thenOutputCreated();
+        //givenDataArray_whenConvertToCSV_thenOutputCreated();
     }
 
     public String convertToCSV(String[] data) {
