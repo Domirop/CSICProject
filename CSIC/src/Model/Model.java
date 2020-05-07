@@ -22,7 +22,7 @@ public class Model implements ModelInt {
 
     @Override
     public List<String> getLines(String path, String filter) {
-        return readIso.getIsotropic(path, filter);
+        return readIso.getLines(path, filter);
     }
 
     @Override
