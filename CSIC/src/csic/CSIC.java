@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 package csic;
-
-import java.io.IOException;
+import View.Frame;
+import View.Frame2;
 
 public class CSIC {
 
@@ -13,11 +13,10 @@ public class CSIC {
      *
      * @author domit
      */
-    public static void main(String[] args) throws IOException {
-        //Frame frame = new Frame();
-        //frame.setVisible(true);
-
-        /*
+    public static void main(String[] args) {
+        Frame2 frame = new Frame2();
+        frame.setVisible(true);
+      /*
 <----------------------------MAPA-------------------------------->
         Hashtable<Integer, List> table = new Hashtable<Integer, List>();
             List l1 = new ArrayList<>();
