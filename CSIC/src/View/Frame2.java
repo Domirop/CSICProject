@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -27,16 +29,20 @@ public class Frame2 extends javax.swing.JFrame {
         initComponents();
         TableCellRenderer tcrOs = jTable1.getTableHeader().getDefaultRenderer();
         //jScrollPane1.setBorder((TitledBorder) BorderFactory.createTitledBorder("Valores extraidos de ficheros .log"));
-        Dimension d = jTable1.getPreferredSize();
-        jTable1.setRowHeight(16);
-        jTable1.setSize(resizeTable());
-        jScrollPane1.setPreferredSize(resizeScroll());
-        jScrollPane1.setMaximumSize(new Dimension(jTable1.getWidth(), jTable1.getHeight()));
+        //Dimension d = jTable1.getPreferredSize();
+        //jTable1.setPreferredScrollableViewportSize(jTable1.getPreferredSize());
+
+        jScrollPane1.setPreferredSize(resizeTable());
+        //jTable1.setPreferredSize(new Dimension(jScrollPane1.getPreferredSize()));
+        //jTable1.setRowHeight(16);
+        //jTable1.setSize(resizeTable());
+        //jScrollPane1.setPreferredSize(new Dimension(0, 40));
+        //jScrollPane1.setMaximumSize(new Dimension(jTable1.getWidth(), jTable1.getHeight()));
         jTable1.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                lbl.setHorizontalAlignment(SwingConstants.LEFT);
+                lbl.setHorizontalAlignment(SwingConstants.CENTER);
                 if (column == 8 || column == 7) {
                     lbl.setForeground(Color.BLACK);
                     lbl.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -47,25 +53,36 @@ public class Frame2 extends javax.swing.JFrame {
                 return lbl;
             }
         });
+        jTable1.setSize(resizeTable());
+        TableColumnModel jTableColumnModel = jTable1.getColumnModel();
+        TableColumn columnSCF = jTableColumnModel.getColumn(1);
+        columnSCF.setPreferredWidth(100);
+        TableColumn columnName = jTableColumnModel.getColumn(0);
+        columnName.setPreferredWidth(150);
+        for (int x = 0; x < jTableColumnModel.getColumnCount(); x++) {
+            jTable1.getColumnModel().getColumn(x).setCellRenderer(new TableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
+                    JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);
+                    lbl.setHorizontalAlignment(SwingConstants.CENTER);
+                    lbl.setBackground(new Color(0,0,0,0));
+                    return lbl;
+                }
+            });
+        }
         pack();
         revalidate();
     }
     
-    Dimension resizeScroll(){
-        if(jTable1.getRowCount() < 10){
-            return new Dimension(getSize().width, (jTable1.getRowHeight() * jTable1.getRowCount() + jTable1.getTableHeader().getHeight() + 2));
+    Dimension resizeTable(){
+        if(jTable1.getRowCount() > 10){
+            return new Dimension(new Dimension(jTable1.getWidth(), 9 * jTable1.getRowHeight() + (jTable1.getRowMargin() * jTable1.getRowCount()) + jTable1.getRowHeight()));
         }else{
-            return new Dimension(getSize().width, (jTable1.getRowHeight() * 10 + jTable1.getTableHeader().getHeight() + 2));
+            return new Dimension(new Dimension(jTable1.getWidth(), jTable1.getRowCount() * jTable1.getRowHeight() + (jTable1.getRowMargin() * jTable1.getRowCount()) + jTable1.getRowHeight() + jTable1.getRowCount()));
         }
     }
     
-    Dimension resizeTable(){
-        if(jTable1.getRowCount() < 10){
-            return new Dimension(getSize().width, (jTable1.getRowHeight() * jTable1.getRowCount() + 2));
-        }else{
-            return new Dimension(getSize().width, (jTable1.getRowHeight() * 10 + 2));
-        }
-    }
+    
     
 
     /**
@@ -108,15 +125,15 @@ public class Frame2 extends javax.swing.JFrame {
 
         buttonAccept.setText("Accept");
 
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(20, 20));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(19, 19));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(20, 20));
+
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"01_2R3S5R12S_19_DPJ", "-1008,27110774", "10,1175", "7,047", "1,00", "1,13", "0,88", "8,94", "6,22"},
-                {"01_2R3S5R12S_20_DPJ", "-1008,26898004", "11,4627", "6,98232", "0,11", null, "0,09", "1,06", "0,65"},
-                {"01_2R3S5R12S_21_DPJ", "-1008,26749174", "10,4313", "6,63886", "0,02", null, "0,02", "0,20", "0,13"},
-                {"01_2R3S5R12S_20_DPJ", "-1008,26898004", "11,4627", "6,98232", "0,11", null, "0,09", "1,06", "0,65"},
-                {"01_2R3S5R12S_21_DPJ", "-1008,26749174", "10,4313", "6,63886", "0,02", null, "0,02", "0,20", "0,13"},
-
-                {"01_2R3S5R12S_22_DPJ", "-1008,26210813", "11,06", "6,8798", "0,00", null, "0,00", "0,00", "0,00"},
+                {"01_2R3S5R12S_19_DPJ", "-1008,27110774", "10,1175", "7,047", "1,00", "1,13", "0,88", "8,94", "6,22"},
+                {"01_2R3S5R12S_19_DPJ", "-1008,27110774", "10,1175", "7,047", "1,00", "1,13", "0,88", "8,94", "6,22"},
             },
             new String [] {
                 "File Name", "SCF", "Atom 1", "Atom 2", "exp(-DG/RT)", "S exp(-DG/RT) ", "Contribution", "Atom 1", "Atom 2"
@@ -193,7 +210,7 @@ public class Frame2 extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel7)))
                                 .addGap(61, 61, 61))
-                            .addComponent(jScrollPane1))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -210,7 +227,7 @@ public class Frame2 extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonAccept)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(buttonExport)
@@ -226,7 +243,7 @@ public class Frame2 extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(jLabel7))))
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(194, Short.MAX_VALUE))
         );
 
         pack();
