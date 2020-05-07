@@ -5,6 +5,15 @@
  */
 package View;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.TableCellRenderer;
+
 /**
  *
  * @author domit
@@ -16,7 +25,48 @@ public class Frame2 extends javax.swing.JFrame {
      */
     public Frame2() {
         initComponents();
+        TableCellRenderer tcrOs = jTable1.getTableHeader().getDefaultRenderer();
+        //jScrollPane1.setBorder((TitledBorder) BorderFactory.createTitledBorder("Valores extraidos de ficheros .log"));
+        Dimension d = jTable1.getPreferredSize();
+        jTable1.setRowHeight(16);
+        jTable1.setSize(resizeTable());
+        jScrollPane1.setPreferredSize(resizeScroll());
+        jScrollPane1.setMaximumSize(new Dimension(jTable1.getWidth(), jTable1.getHeight()));
+        jTable1.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                lbl.setHorizontalAlignment(SwingConstants.LEFT);
+                if (column == 8 || column == 7) {
+                    lbl.setForeground(Color.BLACK);
+                    lbl.setFont(new Font("Arial", Font.PLAIN, 12));
+                } else {
+                    lbl.setForeground(Color.BLACK);
+                    lbl.setFont(new Font("Arial", Font.BOLD, 12));
+                }
+                return lbl;
+            }
+        });
+        pack();
+        revalidate();
     }
+    
+    Dimension resizeScroll(){
+        if(jTable1.getRowCount() < 10){
+            return new Dimension(getSize().width, (jTable1.getRowHeight() * jTable1.getRowCount() + jTable1.getTableHeader().getHeight() + 2));
+        }else{
+            return new Dimension(getSize().width, (jTable1.getRowHeight() * 10 + jTable1.getTableHeader().getHeight() + 2));
+        }
+    }
+    
+    Dimension resizeTable(){
+        if(jTable1.getRowCount() < 10){
+            return new Dimension(getSize().width, (jTable1.getRowHeight() * jTable1.getRowCount() + 2));
+        }else{
+            return new Dimension(getSize().width, (jTable1.getRowHeight() * 10 + 2));
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,17 +110,20 @@ public class Frame2 extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+                {"01_2R3S5R12S_19_DPJ", "-1008,27110774", "10,1175", "7,047", "1,00", "1,13", "0,88", "8,94", "6,22"},
+                {"01_2R3S5R12S_20_DPJ", "-1008,26898004", "11,4627", "6,98232", "0,11", null, "0,09", "1,06", "0,65"},
+                {"01_2R3S5R12S_21_DPJ", "-1008,26749174", "10,4313", "6,63886", "0,02", null, "0,02", "0,20", "0,13"},
+                {"01_2R3S5R12S_20_DPJ", "-1008,26898004", "11,4627", "6,98232", "0,11", null, "0,09", "1,06", "0,65"},
+                {"01_2R3S5R12S_21_DPJ", "-1008,26749174", "10,4313", "6,63886", "0,02", null, "0,02", "0,20", "0,13"},
+
+                {"01_2R3S5R12S_22_DPJ", "-1008,26210813", "11,06", "6,8798", "0,00", null, "0,00", "0,00", "0,00"},
             },
             new String [] {
-                "File Name", "Atom 1", "Atom 2", "exp(-DG/RT)", "S exp(-DG/RT) ", "Contribution", "Atom 1", "Atom 2"
+                "File Name", "SCF", "Atom 1", "Atom 2", "exp(-DG/RT)", "S exp(-DG/RT) ", "Contribution", "Atom 1", "Atom 2"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -104,11 +157,13 @@ public class Frame2 extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonAccept))
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(comboContribution, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -117,19 +172,13 @@ public class Frame2 extends javax.swing.JFrame {
                                 .addComponent(jButton1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jToggleButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 144, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(fieldText, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(buttonAccept)))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(buttonExport)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(buttonExport)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel3)
@@ -138,13 +187,14 @@ public class Frame2 extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jLabel4)))
-                                .addGap(172, 172, 172))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel7)
-                                .addContainerGap())))))
+                                        .addComponent(jLabel4))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel7)))
+                                .addGap(61, 61, 61))
+                            .addComponent(jScrollPane1))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,11 +209,12 @@ public class Frame2 extends javax.swing.JFrame {
                     .addComponent(jToggleButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonAccept)
-                .addGap(54, 54, 54)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonExport)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(jLabel4))
@@ -174,12 +225,8 @@ public class Frame2 extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel7))
-                        .addContainerGap(27, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonExport)
-                        .addContainerGap())))
+                            .addComponent(jLabel7))))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
 
         pack();

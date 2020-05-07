@@ -6,6 +6,7 @@
 package csic;
 
 import View.Frame;
+import View.Frame2;
 
 public class CSIC {
 
@@ -14,7 +15,7 @@ public class CSIC {
      * @author domit
      */
     public static void main(String[] args) {
-        Frame frame = new Frame();
+        Frame2 frame = new Frame2();
         frame.setVisible(true);
 /*
 <----------------------------MAPA-------------------------------->
