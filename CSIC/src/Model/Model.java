@@ -37,8 +37,8 @@ public class Model implements ModelInt {
     }
 
     @Override
-    public List<String> getTable(String path) {
-        return readTable.getTable(path);
+    public List<String> getTable(String path, String start) {
+        return readTable.getTable(path, start);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class Model implements ModelInt {
         return readEnergy.SCFDone(keyword, path);
     }
     @Override
-    public String getValue(String path, int column, int row) {
-        return readTable.getValue(path, column, row);
+    public String getValue(String path, int column, int row, String start) {
+        return readTable.getValue(path, column, row, start);
     }
 }

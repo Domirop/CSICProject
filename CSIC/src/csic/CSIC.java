@@ -5,6 +5,8 @@
  */
 package csic;
 
+import View.Frame;
+
 public class CSIC {
 
     /**
@@ -12,6 +14,8 @@ public class CSIC {
      * @author domit
      */
     public static void main(String[] args) {
+        Frame frame = new Frame();
+        frame.setVisible(true);
 /*
 <----------------------------MAPA-------------------------------->
         Hashtable<Integer, List> table = new Hashtable<Integer, List>();
