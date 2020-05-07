@@ -22,7 +22,7 @@ public class ReadLines {
      * @param path the path of the file
      * @return a list of the data
      */
-    public List<String> getIsotropic(String path, String filter) {
+    public List<String> getLines(String path, String filter) {
         List<String> lines = new ArrayList<>();
         try {
             lines = Files.lines(Paths.get(path))

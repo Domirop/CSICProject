@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package csic;
-
 import View.Frame;
 import View.Frame2;
 
@@ -17,7 +16,7 @@ public class CSIC {
     public static void main(String[] args) {
         Frame2 frame = new Frame2();
         frame.setVisible(true);
-/*
+      /*
 <----------------------------MAPA-------------------------------->
         Hashtable<Integer, List> table = new Hashtable<Integer, List>();
             List l1 = new ArrayList<>();
@@ -53,4 +52,5 @@ public class CSIC {
             return table;
          */
     }
+
 }
