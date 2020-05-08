@@ -5,9 +5,16 @@
  */
 package Model;
 
+import Model.Atomo.Atom;
+import Model.Atomo.Calculations;
+import Model.Atomo.Materia;
+import Model.Atomo.FileData;
+import Model.Atomo.TotalDifferentiator;
 import Model.Files.ReadEnergyValue;
 import Model.Files.ReadLines;
 import Model.Files.ReadTable;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +26,7 @@ public class Model implements ModelInt {
     ReadLines readIso = new ReadLines();
     ReadTable readTable = new ReadTable();
     ReadEnergyValue readEnergy = new ReadEnergyValue();
+    Calculations calculations = new Calculations();
 
     @Override
     public List<String> getLines(String path, String filter) {
@@ -26,14 +34,8 @@ public class Model implements ModelInt {
     }
 
     @Override
-    public List<String> formatLine(List<String> lines, String type) {
-        if (type.equalsIgnoreCase("Isotropic")) {
-            return readIso.formatLineIsotropic(lines);
-        } 
-        if(type.equalsIgnoreCase("Anisotropy")){
-            return readIso.formatLineAnisotropy(lines);
-        }
-        return null;
+    public List<String> formatLine(List<String> lines) {
+        return readIso.formatLineIsotropic(lines);
     }
 
     @Override
@@ -42,11 +44,53 @@ public class Model implements ModelInt {
     }
 
     @Override
-    public String SCFDone(String keyword, String path) {
-        return readEnergy.SCFDone(keyword, path);
+    public String SCFDone(String path) {
+        return readEnergy.SCFDone(path);
     }
+
     @Override
     public String getValue(String path, int column, int row, String start) {
         return readTable.getValue(path, column, row, start);
+    }
+
+    public Materia getMateriElement(List<File> files, String key) {
+        Materia materia = new Materia(getFileData(files, key), key);
+        List<String> atomsType = getAtomsType(materia.getFiles());
+        List<TotalDifferentiator> total = new ArrayList<>();
+        for (String string : atomsType) {
+            TotalDifferentiator totalDifferentiator = new TotalDifferentiator();
+            totalDifferentiator.setAtomo(string);
+            double totalValue = 0;
+            for (int i = 0; i < materia.getFiles().size(); i++) {
+                totalValue += calculations.getContributionValue(materia.getFiles(), i, string);
+            }
+            totalDifferentiator.setValue(totalValue);
+            total.add(totalDifferentiator);
+        }
+        materia.setResult(total);
+        return materia;
+    }
+    
+    public List<String> getAtomsType(List<FileData> files){
+        List<String> atomsTypes = new ArrayList<>();
+        for (FileData file : files) {
+            for (Atom atom : file.getAtoms()) {
+                if (!atomsTypes.contains(atom.getAtom())) {
+                    atomsTypes.add(atom.getAtom());
+                }
+            }
+        }
+        return atomsTypes;
+    }
+    
+    public List<FileData> getFileData(List<File> files, String key){
+        List<FileData> fileData = new ArrayList<>();
+        for (File file : files) {
+            List<String> atomsData = formatLine(getLines(file.getAbsolutePath(), "Isotropic"));
+            String energyValue = SCFDone(file.getAbsolutePath());
+            String fileName = file.getName().split("\\.")[0];
+            fileData.add(calculations.getFileData(atomsData, energyValue, fileName));
+        }
+        return fileData;
     }
 }

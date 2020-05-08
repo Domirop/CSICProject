@@ -62,7 +62,7 @@ public class ReadLines {
             string = string.replaceAll("\\s", "");
             String[] prueba = string.split("=");
             StringBuilder builder = new StringBuilder();
-            builder.append(prueba[0].replaceAll("Isotropic", ""));
+            builder.append(prueba[0].replaceAll("Isotropic", "/"));
             builder.append(prueba[1].replaceAll("Anisotropy", ""));
             formattedOutput.add(builder.toString());
         });
