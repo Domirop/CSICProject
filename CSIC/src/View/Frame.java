@@ -30,6 +30,7 @@ public class Frame extends javax.swing.JFrame {
      */
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log", "txt"));
     List<File> listFiles = new ArrayList<>();
+
     public Frame() {
         initComponents();
         enableDragAndDrop();
@@ -91,6 +92,11 @@ public class Frame extends javax.swing.JFrame {
         jLabel1.setText("Introduce los fichero:");
 
         buttonNext.setText("Avanzar");
+        buttonNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonNextActionPerformed(evt);
+            }
+        });
 
         buttonChooseFiles.setText("Elegir ficheros");
         buttonChooseFiles.addActionListener(new java.awt.event.ActionListener() {
@@ -137,7 +143,7 @@ public class Frame extends javax.swing.JFrame {
     private void buttonChooseFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseFilesActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("All files", "log","txt"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("All files", "log", "txt"));
         fileChooser.setMultiSelectionEnabled(true);
         int returnVal = fileChooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -149,6 +155,16 @@ public class Frame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_buttonChooseFilesActionPerformed
+
+    private void buttonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNextActionPerformed
+        List<String> fileNames = new ArrayList<>();
+        for (File listFile : listFiles) {
+            fileNames.add(listFile.getName());
+        }
+        FrameDifferentiator frameDiff = new FrameDifferentiator(fileNames);
+        this.dispose();
+        frameDiff.setVisible(true);
+    }//GEN-LAST:event_buttonNextActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

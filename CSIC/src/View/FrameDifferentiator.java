@@ -5,6 +5,14 @@
  */
 package View;
 
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author daviddiaz
@@ -14,8 +22,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     /**
      * Creates new form FrameDifferentiator
      */
+    private List<String> files = new ArrayList<>();
+
     public FrameDifferentiator() {
         initComponents();
+    }
+
+    public FrameDifferentiator(List<String> files) {
+        initComponents();
+        this.files = files;
     }
 
     /**
@@ -27,21 +42,126 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        comboOptions = new javax.swing.JComboBox<>();
+        fieldKeyword = new javax.swing.JTextField();
+        buttonAdd = new javax.swing.JButton();
+        tabbedPane = new javax.swing.JTabbedPane();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Search by keyword:");
+
+        comboOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Starts with", "Ends with", "Contains", "Range" }));
+
+        buttonAdd.setText("Add");
+        buttonAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAddActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tabbedPane)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonAdd)
+                        .addGap(0, 345, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonAdd))
+                .addGap(18, 18, 18)
+                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
+        JPanel panel = new JPanel();
+        JTable table = new JTable();
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "Order", "File name", "Atom", "Gaussian", "Isotropic Value"
+                }
+        ) {
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        });
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        //Add new values
+        System.out.println(String.valueOf(comboOptions.getSelectedItem()));
+        int i = 0;
+        List<String> fileName = new ArrayList<>();
+        if (String.valueOf(comboOptions.getSelectedItem()).equals("Starts with")) {
+            for (String file : files) {
+                file = file.contains(".log") ? file.replace(".log", "") : file.replace(".txt", "");
+                if (file.startsWith(fieldKeyword.getText())) {
+                    i++;
+                    model.addRow(new Object[]{i, file, "", "", ""});
+                    repaint();
+                    revalidate();
+                }
+            }
+        } else if (String.valueOf(comboOptions.getSelectedItem()).equals("Ends with")) {
+            for (String file : files) {
+                file = file.contains(".log") ? file.replace(".log", "") : file.replace(".txt", "");
+                if (file.endsWith(fieldKeyword.getText())) {
+                    i++;
+                    fileName.add(file);
+                    model.addRow(new Object[]{i, file, "", "", ""});
+                    repaint();
+                    revalidate();
+                }
+            }
+
+        } else if (String.valueOf(comboOptions.getSelectedItem()).equals("Contains")) {
+            for (String file : files) {
+                file = file.contains(".log") ? file.replace(".log", "") : file.replace(".txt", "");
+                if (file.contains(fieldKeyword.getText())) {
+                    i++;
+                    fileName.add(file);
+                    model.addRow(new Object[]{i, file, "", "", ""});
+                    repaint();
+                    revalidate();
+                }
+            }
+        } else {
+
+        }
+
+        panel.setLayout(new GridLayout(0, 1));
+        JScrollPane scrollpane = new JScrollPane(table);
+        panel.add(scrollpane);
+        tabbedPane.addTab(fieldKeyword.getText(), panel);
+    }//GEN-LAST:event_buttonAddActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +199,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonAdd;
+    private javax.swing.JComboBox<String> comboOptions;
+    private javax.swing.JTextField fieldKeyword;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
 }
