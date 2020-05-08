@@ -5,7 +5,6 @@
  */
 package csic;
 import View.Frame;
-import View.Frame2;
 
 public class CSIC {
 

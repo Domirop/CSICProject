@@ -5,6 +5,8 @@
  */
 package View;
 
+import Model.Atomo.Materia;
+import Model.Model;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
