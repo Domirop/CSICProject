@@ -15,11 +15,12 @@ public interface ModelInt {
 
     public List<String> getLines(String path, String filter);
 
-    public List<String> formatLine(List<String> lines, String type);
+    public List<String> formatLine(List<String> lines);
 
     public List<String> getTable(String path, String start);
 
     public String getValue(String path, int column, int row, String start);
 
-    public String SCFDone(String keyword, String path);
+    public String SCFDone(String path);
+    
 }

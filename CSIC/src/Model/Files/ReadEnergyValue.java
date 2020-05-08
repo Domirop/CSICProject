@@ -22,13 +22,13 @@ public class ReadEnergyValue {
      * @return value
      */
     
-    public String SCFDone(String keyword, String path) {
+    public String SCFDone(String path) {
         String line = "";
         String value = "";
         String[] separatedLine;
         try {
             line = Files.lines(Paths.get(path))
-                    .filter(s -> s.contains(keyword)).findFirst().get();
+                    .filter(s -> s.contains("SCF Done")).findFirst().get();
             separatedLine = line.split("=");
 
             String formula = separatedLine[1];
@@ -36,7 +36,6 @@ public class ReadEnergyValue {
             String regex = "(?!(\\d+\\.?\\d*)|(\\.\\d+))(([Ee][+-]?)?\\d+)?";
             String[] values = formula.split(regex);
             value = values[0];
-
         } catch (IOException e) {
             e.printStackTrace();
         }
