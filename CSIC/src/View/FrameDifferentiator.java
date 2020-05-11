@@ -6,7 +6,7 @@
 package View;
 
 import Model.Atomo.FileData;
-import Model.Atomo.Materia;
+import Model.Atomo.Matter;
 import Model.Model;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -245,7 +245,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_deleteButttonActionPerformed
 
     private void genericTable(List<File> usedFiles) {
-        Materia materia = modelo.getMateriElement(usedFiles, fieldKeyword.getText());
+        Matter materia = modelo.getMateriElement(usedFiles, fieldKeyword.getText());
 
         String[] values = new String[materia.getResult().size() + 1];
         values[0] = "Keyword";
@@ -300,7 +300,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         tableGeneric.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
     }
 
-    private void addElementsToGeneric(Materia materia) {
+    private void addElementsToGeneric(Matter materia) {
         DefaultTableModel model = (DefaultTableModel) tableGeneric.getModel();
         Object[] value = new String[materia.getResult().size() + 1];
         value[0] = materia.getDifferentiator();

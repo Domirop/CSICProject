@@ -16,15 +16,15 @@ public class Calculations {
 
     public double getContributionValue(List<FileData> files, int index, String typeAtom) {
         double contribution = 0.0;
-        double minValue = files.get(0).energyValue;
+        double minValue = files.get(0).getEnergyValue();
         for (FileData file : files) {
-            if (file.energyValue < minValue) {
-                minValue = file.energyValue;
+            if (file.getEnergyValue() < minValue) {
+                minValue = file.getEnergyValue();
             }
         }
         double expS = 0.0;
         for (FileData file : files) {
-            double initialValue = (file.energyValue - minValue) * 2625500 / (8.315 * 298.15);
+            double initialValue = (file.getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
             if (initialValue == 0.0) {
                 expS = expS;
             } else {
@@ -32,17 +32,17 @@ public class Calculations {
                 expS = expS + i;
             }
         }
-        if (files.get(index).energyValue == minValue) {
+        if (files.get(index).getEnergyValue() == minValue) {
             contribution = 0;
         } else {
-            double initialValue = (files.get(index).energyValue - minValue) * 2625500 / (8.315 * 298.15);
+            double initialValue = (files.get(index).getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
             double mediumValue = Math.pow(initialValue, -1);
             contribution = mediumValue / expS;
         }
         double result = 0.0;
-        for (int i = 0; i < files.get(index).atoms.size(); i++) {
-            if (files.get(index).atoms.get(i).atom.equals(typeAtom)) {
-                result += contribution * files.get(index).atoms.get(i).isotropic;
+        for (int i = 0; i < files.get(index).getAtoms().size(); i++) {
+            if (files.get(index).getAtoms().get(i).getAtom().equals(typeAtom)) {
+                result += contribution * files.get(index).getAtoms().get(i).getIsotropic();
             }
         }
         return result;

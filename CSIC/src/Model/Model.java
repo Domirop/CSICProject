@@ -7,7 +7,7 @@ package Model;
 
 import Model.Atomo.Atom;
 import Model.Atomo.Calculations;
-import Model.Atomo.Materia;
+import Model.Atomo.Matter;
 import Model.Atomo.FileData;
 import Model.Atomo.TotalDifferentiator;
 import Model.Files.ReadEnergyValue;
@@ -23,10 +23,10 @@ import java.util.List;
  */
 public class Model implements ModelInt {
 
-    ReadLines readIso = new ReadLines();
-    ReadTable readTable = new ReadTable();
-    ReadEnergyValue readEnergy = new ReadEnergyValue();
-    Calculations calculations = new Calculations();
+    private ReadLines readIso = new ReadLines();
+    private ReadTable readTable = new ReadTable();
+    private ReadEnergyValue readEnergy = new ReadEnergyValue();
+    private Calculations calculations = new Calculations();
 
     @Override
     public List<String> getLines(String path, String filter) {
@@ -53,8 +53,8 @@ public class Model implements ModelInt {
         return readTable.getValue(path, column, row, start);
     }
 
-    public Materia getMateriElement(List<File> files, String key) {
-        Materia materia = new Materia(getFileData(files), key);
+    public Matter getMateriElement(List<File> files, String key) {
+        Matter materia = new Matter(getFileData(files), key);
         List<String> atomsType = getAtomsType(materia.getFiles());
         List<TotalDifferentiator> total = new ArrayList<>();
         for (String string : atomsType) {
@@ -71,7 +71,7 @@ public class Model implements ModelInt {
         return materia;
     }
     
-    public List<String> getAtomsType(List<FileData> files){
+    private List<String> getAtomsType(List<FileData> files){
         List<String> atomsTypes = new ArrayList<>();
         for (FileData file : files) {
             for (Atom atom : file.getAtoms()) {

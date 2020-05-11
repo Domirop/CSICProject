@@ -10,10 +10,10 @@ package Model.Atomo;
  * @author domit
  */
 public class Atom {
-    String atom;
-    String GausianData;
-    double isotropic;
-    double contribution;
+    private String atom;
+    private String GausianData;
+    private double isotropic;
+    private double contribution;
 
     public String getAtom() {
         return atom;
