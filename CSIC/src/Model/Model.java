@@ -54,7 +54,7 @@ public class Model implements ModelInt {
     }
 
     public Materia getMateriElement(List<File> files, String key) {
-        Materia materia = new Materia(getFileData(files, key), key);
+        Materia materia = new Materia(getFileData(files), key);
         List<String> atomsType = getAtomsType(materia.getFiles());
         List<TotalDifferentiator> total = new ArrayList<>();
         for (String string : atomsType) {
@@ -83,7 +83,7 @@ public class Model implements ModelInt {
         return atomsTypes;
     }
     
-    public List<FileData> getFileData(List<File> files, String key){
+    public List<FileData> getFileData(List<File> files){
         List<FileData> fileData = new ArrayList<>();
         for (File file : files) {
             List<String> atomsData = formatLine(getLines(file.getAbsolutePath(), "Isotropic"));

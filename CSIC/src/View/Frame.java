@@ -149,7 +149,6 @@ public class Frame extends javax.swing.JFrame {
         fileChooser.setMultiSelectionEnabled(true);
         int returnVal = fileChooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            System.out.println("hola");
             File[] files = fileChooser.getSelectedFiles();
             for (File file : files) {
                 dropTextArea.append(file.getName() + "\n");
@@ -163,7 +162,7 @@ public class Frame extends javax.swing.JFrame {
         for (File listFile : listFiles) {
             fileNames.add(listFile.getName());
         }
-        FrameDifferentiator frameDiff = new FrameDifferentiator(fileNames);
+        FrameDifferentiator frameDiff = new FrameDifferentiator(fileNames, listFiles);
         this.dispose();
         frameDiff.setVisible(true);
     }//GEN-LAST:event_buttonNextActionPerformed
