@@ -35,7 +35,9 @@
                       <Component id="fieldKeyword" min="-2" pref="156" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="buttonAdd" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="282" max="32767" attributes="0"/>
+                      <EmptySpace pref="148" max="32767" attributes="0"/>
+                      <Component id="buttonExportCSV" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="deleteButtton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -53,6 +55,7 @@
                   <Component id="fieldKeyword" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="buttonAdd" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="deleteButtton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="buttonExportCSV" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="tabbedPane" pref="435" max="32767" attributes="0"/>
@@ -102,6 +105,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteButttonActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="buttonExportCSV">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Export to CSV"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonExportCSVActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

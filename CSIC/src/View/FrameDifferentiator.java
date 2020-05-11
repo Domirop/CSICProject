@@ -34,6 +34,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private JPanel panelGeneric = new JPanel();
     private List<String> names = new ArrayList<>();
     private List<File> usedFiles = new ArrayList<>();
+    private List<JTable> usedTables = new ArrayList<>();
+
     Model modelo = new Model();
     JTable tableGeneric;
 
@@ -65,6 +67,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonAdd = new javax.swing.JButton();
         tabbedPane = new javax.swing.JTabbedPane();
         deleteButtton = new javax.swing.JButton();
+        buttonExportCSV = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,6 +89,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
+        buttonExportCSV.setText("Export to CSV");
+        buttonExportCSV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonExportCSVActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -102,7 +112,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(buttonAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 282, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                        .addComponent(buttonExportCSV)
+                        .addGap(18, 18, 18)
                         .addComponent(deleteButtton)))
                 .addContainerGap())
         );
@@ -115,7 +127,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonAdd)
-                    .addComponent(deleteButtton))
+                    .addComponent(deleteButtton)
+                    .addComponent(buttonExportCSV))
                 .addGap(18, 18, 18)
                 .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
                 .addContainerGap())
@@ -133,16 +146,18 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         getUsedFiles();
 
         panel.setLayout(new GridLayout(0, 1));
-        JScrollPane scrollpane = new JScrollPane(addRowsToTable(initTablesDifferentiators()));
+        JTable table = addRowsToTable(initTablesDifferentiators());
+        JScrollPane scrollpane = new JScrollPane(table);
         panel.add(scrollpane);
         tabbedPane.addTab(fieldKeyword.getText(), panel);
-        
+
         tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-        
+
         genericTable(usedFiles);
         usedFiles.clear();
         names.clear();
-        
+
+        usedTables.add(table);
         revalidate();
         pack();
     }//GEN-LAST:event_buttonAddActionPerformed
@@ -186,8 +201,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
         return table;
     }
-    
-    private JTable addRowsToTable(JTable table){
+
+    private JTable addRowsToTable(JTable table) {
         JTable tableWithElements = table;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         int count = 0;
@@ -243,6 +258,30 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         panelGeneric.removeAll();
         tableGeneric = null;
     }//GEN-LAST:event_deleteButttonActionPerformed
+
+    private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
+        usedTables.add(tableGeneric);
+        for (JTable usedTable : usedTables) {
+            String[] data = new String[usedTable.getRowCount() + 1];
+            
+            System.out.println(usedTable.getColumnCount());
+            for (int i = 0; i < usedTable.getColumnCount(); i++) {
+                data[0] = (String) usedTable.getColumnModel().getColumn(i).getHeaderValue() + ",";
+
+            }
+            System.out.println(data[0]);
+            for (int count = 1; count <= usedTable.getRowCount(); count++) {
+                for (int i = 1; i <= usedTable.getColumnCount(); i++) {
+                    data[i] = usedTable.getValueAt(count - 1, i - 1).toString();
+
+                }
+                //numdata.add(model.getValueAt(count, 0).toString());
+            }
+
+        }
+
+
+    }//GEN-LAST:event_buttonExportCSVActionPerformed
 
     private void genericTable(List<File> usedFiles) {
         Materia materia = modelo.getMateriElement(usedFiles, fieldKeyword.getText());
@@ -309,9 +348,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
         model.addRow(value);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAdd;
+    private javax.swing.JButton buttonExportCSV;
     private javax.swing.JComboBox<String> comboOptions;
     private javax.swing.JButton deleteButtton;
     private javax.swing.JTextField fieldKeyword;
