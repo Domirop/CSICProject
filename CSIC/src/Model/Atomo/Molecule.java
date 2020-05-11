@@ -12,15 +12,15 @@ import java.util.List;
  *
  * @author domit
  */
-public class Matter {
+public class Molecule {
     private List<FileData> files;
     private String differentiator;
     private List<TotalDifferentiator> result = new ArrayList<>();
 
-    public Matter() {
+    public Molecule() {
     }
 
-    public Matter(List<FileData> files, String differentiator) {
+    public Molecule(List<FileData> files, String differentiator) {
         this.files = files;
         this.differentiator = differentiator;
     }

@@ -7,7 +7,7 @@ package Model;
 
 import Model.Atomo.Atom;
 import Model.Atomo.Calculations;
-import Model.Atomo.Matter;
+import Model.Atomo.Molecule;
 import Model.Atomo.FileData;
 import Model.Atomo.TotalDifferentiator;
 import Model.Files.ReadEnergyValue;
@@ -53,34 +53,30 @@ public class Model implements ModelInt {
         return readTable.getValue(path, column, row, start);
     }
 
-    public Matter getMateriElement(List<File> files, String key) {
-        Matter materia = new Matter(getFileData(files), key);
-        List<String> atomsType = getAtomsType(materia.getFiles());
+    public Molecule getMolecule(List<File> files, String key) {
+        Molecule materia = new Molecule(getFileData(files), key);
+        List<String> gausianAtom = getAtomsGausian(materia.getFiles());
         List<TotalDifferentiator> total = new ArrayList<>();
-        for (String string : atomsType) {
+        
+        for (String string : gausianAtom) {
             TotalDifferentiator totalDifferentiator = new TotalDifferentiator();
-            totalDifferentiator.setAtomo(string);
-            double totalValue = 0;
-            for (int i = 0; i < materia.getFiles().size(); i++) {
-                totalValue += calculations.getContributionValue(materia.getFiles(), i, string);
-            }
-            totalDifferentiator.setValue(totalValue);
+            totalDifferentiator = calculations.getContributionValue(materia.getFiles(), string);
             total.add(totalDifferentiator);
         }
         materia.setResult(total);
         return materia;
     }
     
-    private List<String> getAtomsType(List<FileData> files){
-        List<String> atomsTypes = new ArrayList<>();
+    private List<String> getAtomsGausian(List<FileData> files){
+        List<String> gaussianTypes = new ArrayList<>();
         for (FileData file : files) {
             for (Atom atom : file.getAtoms()) {
-                if (!atomsTypes.contains(atom.getAtom())) {
-                    atomsTypes.add(atom.getAtom());
+                if (!gaussianTypes.contains(atom.getGausianData())) {
+                    gaussianTypes.add(atom.getGausianData());
                 }
             }
         }
-        return atomsTypes;
+        return gaussianTypes;
     }
     
     public List<FileData> getFileData(List<File> files){

@@ -14,8 +14,9 @@ import java.util.List;
  */
 public class Calculations {
 
-    public double getContributionValue(List<FileData> files, int index, String typeAtom) {
-        double contribution = 0.0;
+    public TotalDifferentiator getContributionValue(List<FileData> files, String gausianData) {
+        TotalDifferentiator totalDifferentiator = new TotalDifferentiator();
+        totalDifferentiator.setGausian(gausianData);
         double minValue = files.get(0).getEnergyValue();
         for (FileData file : files) {
             if (file.getEnergyValue() < minValue) {
@@ -32,20 +33,27 @@ public class Calculations {
                 expS = expS + i;
             }
         }
-        if (files.get(index).getEnergyValue() == minValue) {
-            contribution = 0;
-        } else {
-            double initialValue = (files.get(index).getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
-            double mediumValue = Math.pow(initialValue, -1);
-            contribution = mediumValue / expS;
-        }
         double result = 0.0;
-        for (int i = 0; i < files.get(index).getAtoms().size(); i++) {
-            if (files.get(index).getAtoms().get(i).getAtom().equals(typeAtom)) {
-                result += contribution * files.get(index).getAtoms().get(i).getIsotropic();
+        for (int i = 0; i < files.size(); i++) {
+            double contribution = 0.0;
+            if (files.get(i).getEnergyValue() == minValue) {
+                contribution = 0;
+            } else {
+                double initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
+                double mediumValue = Math.pow(initialValue, -1);
+                contribution = mediumValue / expS;
+            }
+            for (int j = 0; j < files.get(i).getAtoms().size(); j++) {
+                if (files.get(i).getAtoms().get(j).getGausianData().equals(gausianData)) {
+                    if (i == 0) {
+                        totalDifferentiator.setAtomo(files.get(i).getAtoms().get(j).getAtom());
+                    }
+                    result += contribution * files.get(i).getAtoms().get(j).getIsotropic();
+                }
             }
         }
-        return result;
+        totalDifferentiator.setValue(result);
+        return totalDifferentiator;
     }
 
     public FileData getFileData(List<String> atomsData, String energyValue, String fileName) {
