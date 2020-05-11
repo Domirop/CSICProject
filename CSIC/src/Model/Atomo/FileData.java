@@ -12,9 +12,9 @@ import java.util.List;
  * @author domit
  */
 public class FileData {
-    String fileName;
-    List<Atom> atoms;
-    double energyValue;
+    private String fileName;
+    private List<Atom> atoms;
+    private double energyValue;
     
     public FileData() {
     }

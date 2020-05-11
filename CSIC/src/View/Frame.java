@@ -5,7 +5,7 @@
  */
 package View;
 
-import Model.Atomo.Materia;
+import Model.Atomo.Matter;
 import Model.Model;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;

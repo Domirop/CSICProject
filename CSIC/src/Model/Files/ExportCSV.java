@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  */
 public class ExportCSV {
 
-    List<String[]> dataLines = new ArrayList<>();
+    private List<String[]> dataLines = new ArrayList<>();
 
     public List<String[]> getDataLines() {
         return dataLines;
