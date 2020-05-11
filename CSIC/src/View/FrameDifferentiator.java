@@ -5,7 +5,11 @@
  */
 package View;
 
+import Model.Atomo.Atom;
+import Model.Atomo.FileData;
+import Model.Model;
 import java.awt.GridLayout;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -23,14 +27,16 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * Creates new form FrameDifferentiator
      */
     private List<String> files = new ArrayList<>();
+    private List<File> filesData = new ArrayList<>();
 
     public FrameDifferentiator() {
         initComponents();
     }
 
-    public FrameDifferentiator(List<String> files) {
+    public FrameDifferentiator(List<String> files, List<File> filesData) {
         initComponents();
         this.files = files;
+        this.filesData = filesData;
     }
 
     /**
@@ -98,9 +104,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
+
         JPanel panel = new JPanel();
         JTable table = new JTable();
-
         table.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
@@ -108,7 +114,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 }
         ) {
             boolean[] canEdit = new boolean[]{
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -116,46 +122,57 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        //Add new values
-        System.out.println(String.valueOf(comboOptions.getSelectedItem()));
-        int i = 0;
-        List<String> fileName = new ArrayList<>();
+        List<String> names = new ArrayList<>();
+        List<File> usedFiles = new ArrayList<>();
+        int j = 0;
         if (String.valueOf(comboOptions.getSelectedItem()).equals("Starts with")) {
-            for (String file : files) {
-                file = file.contains(".log") ? file.replace(".log", "") : file.replace(".txt", "");
-                if (file.startsWith(fieldKeyword.getText())) {
-                    i++;
-                    model.addRow(new Object[]{i, file, "", "", ""});
-                    repaint();
-                    revalidate();
+            for (int i = 0; i < files.size(); i++) {
+                String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
+                if (filename.startsWith(fieldKeyword.getText())) {
+                    usedFiles.add(filesData.get(i));
+                    if (!names.contains(filename)) {
+                        names.add(filename);
+
+                    }
+
                 }
             }
         } else if (String.valueOf(comboOptions.getSelectedItem()).equals("Ends with")) {
-            for (String file : files) {
-                file = file.contains(".log") ? file.replace(".log", "") : file.replace(".txt", "");
-                if (file.endsWith(fieldKeyword.getText())) {
-                    i++;
-                    fileName.add(file);
-                    model.addRow(new Object[]{i, file, "", "", ""});
-                    repaint();
-                    revalidate();
+            for (int i = 0; i < files.size(); i++) {
+                String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
+                if (filename.endsWith(fieldKeyword.getText())) {
+                    usedFiles.add(filesData.get(i));
+                    names.add(filename);
                 }
             }
 
         } else if (String.valueOf(comboOptions.getSelectedItem()).equals("Contains")) {
-            for (String file : files) {
-                file = file.contains(".log") ? file.replace(".log", "") : file.replace(".txt", "");
-                if (file.contains(fieldKeyword.getText())) {
-                    i++;
-                    fileName.add(file);
-                    model.addRow(new Object[]{i, file, "", "", ""});
-                    repaint();
-                    revalidate();
+            for (int i = 0; i < files.size(); i++) {
+                String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
+                if (filename.contains(fieldKeyword.getText())) {
+                    usedFiles.add(filesData.get(i));
+                    names.add(filename);
                 }
             }
         } else {
 
         }
+
+        Model modelo = new Model();
+        int count = 0;
+        List<FileData> fileData = modelo.getFileData(usedFiles);
+        for (int h = 0; h < fileData.size(); h++) {
+            for (int i = 0; i < fileData.get(h).getAtoms().size(); i++) {
+                count++;
+                model.addRow(new Object[]{count, names.get(0), fileData.get(h).getAtoms().get(i).getAtom(),
+                    fileData.get(h).getAtoms().get(i).getGausianData(), fileData.get(h).getAtoms().get(i).getIsotropic()});
+            }
+        }
+        revalidate();
+        pack();
+        names.clear();
+        fileData.clear();
+        usedFiles.clear();
 
         panel.setLayout(new GridLayout(0, 1));
         JScrollPane scrollpane = new JScrollPane(table);
