@@ -5,6 +5,7 @@
  */
 package Model.Atomo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
 public class Materia {
     List<FileData> files;
     String differentiator;
-    List<TotalDifferentiator> result;
+    List<TotalDifferentiator> result = new ArrayList<>();
 
     public Materia() {
     }

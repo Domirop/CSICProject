@@ -5,16 +5,20 @@
  */
 package View;
 
-import Model.Atomo.Atom;
 import Model.Atomo.FileData;
+import Model.Atomo.Materia;
+import Model.Atomo.TotalDifferentiator;
 import Model.Model;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,6 +32,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private List<String> files = new ArrayList<>();
     private List<File> filesData = new ArrayList<>();
+    private JPanel panelGeneric = new JPanel();
 
     public FrameDifferentiator() {
         initComponents();
@@ -35,6 +40,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData) {
         initComponents();
+        tabbedPane.addTab("Generic", panelGeneric);
+        tabbedPane.setVisible(false);
         this.files = files;
         this.filesData = filesData;
     }
@@ -107,12 +114,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         JPanel panel = new JPanel();
         JTable table = new JTable();
-        table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{},
-                new String[]{
-                    "Order", "File name", "Atom", "Gaussian", "Isotropic Value"
-                }
-        ) {
+        tabbedPane.setVisible(true);
+        table.setAutoCreateRowSorter(true);
+
+        DefaultTableModel model = new DefaultTableModel(new String[]{
+            "Order", "File name", "Atom", "Gaussian", "Isotropic Value"
+        }, 0) {
             boolean[] canEdit = new boolean[]{
                 false, false, false, false, false
             };
@@ -120,11 +127,26 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
-        });
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
+
+            @Override
+            public Class<?> getColumnClass(int column) {
+                Class<?> returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                } else {
+                    returnValue = Object.class;
+                }
+
+                return returnValue;
+
+            }
+        ;
+        };
+        table.setModel(model);
+
         List<String> names = new ArrayList<>();
         List<File> usedFiles = new ArrayList<>();
-        int j = 0;
+        //Get selected files
         if (String.valueOf(comboOptions.getSelectedItem()).equals("Starts with")) {
             for (int i = 0; i < files.size(); i++) {
                 String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
@@ -158,27 +180,97 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         }
 
+        //Add rows to table
+        revalidate();
+        pack();
+        names.clear();
         Model modelo = new Model();
         int count = 0;
         List<FileData> fileData = modelo.getFileData(usedFiles);
         for (int h = 0; h < fileData.size(); h++) {
             for (int i = 0; i < fileData.get(h).getAtoms().size(); i++) {
                 count++;
-                model.addRow(new Object[]{count, names.get(0), fileData.get(h).getAtoms().get(i).getAtom(),
-                    fileData.get(h).getAtoms().get(i).getGausianData(), fileData.get(h).getAtoms().get(i).getIsotropic()});
+                model.addRow(new Object[]{count, names.get(h), fileData.get(h).getAtoms().get(i).getAtom(),
+                    Integer.parseInt(fileData.get(h).getAtoms().get(i).getGausianData()), fileData.get(h).getAtoms().get(i).getIsotropic()});
             }
         }
-        revalidate();
-        pack();
-        names.clear();
         fileData.clear();
-        usedFiles.clear();
 
         panel.setLayout(new GridLayout(0, 1));
         JScrollPane scrollpane = new JScrollPane(table);
         panel.add(scrollpane);
         tabbedPane.addTab(fieldKeyword.getText(), panel);
+        tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+
+        genericTable(usedFiles);
+
     }//GEN-LAST:event_buttonAddActionPerformed
+
+    public void genericTable(List<File> usedFiles) {
+        Model model1 = new Model();
+        Materia materia = model1.getMateriElement(usedFiles, fieldKeyword.getText());
+
+        String[] values = new String[materia.getResult().size() + 1];
+        values[0] = "Keyword";
+        for (int i = 1; i <= materia.getResult().size(); i++) {
+            values[i] = materia.getResult().get(i - 1).getAtomo();
+        }
+
+        JTable tableGeneric = tableGenerator(values);
+
+        JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric);
+        panelGeneric.add(scrollpaneGeneric);
+        usedFiles.clear();
+
+    }
+
+    public JTable tableGenerator(String[] values, List<TotalDifferentiator> data) {
+        JTable tableGeneric = new JTable();
+        DefaultTableModel modelGeneric = new DefaultTableModel(values, 0) {
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+
+            @Override
+            public Class<?> getColumnClass(int column) {
+                Class<?> returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                } else {
+                    returnValue = Object.class;
+                }
+
+                return returnValue;
+
+            }
+        ;
+        }
+
+    ;
+        //Center columns
+        for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            tableGeneric.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableGeneric.getTableHeader().getDefaultRenderer();
+        renderer.setHorizontalAlignment(0);
+        tableGeneric.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        tableGeneric.setModel(modelGeneric);
+
+        Model modelo = new Model();
+        int count = 0;
+        for (TotalDifferentiator fileData1 : data) {
+            model.addRow(new Object[]{count, names.get(h), fileData.get(h).getAtoms().get(i).getAtom(),
+                    Integer.parseInt(fileData.get(h).getAtoms().get(i).getGausianData()), fileData.get(h).getAtoms().get(i).getIsotropic()});
+        }
+
+        return tableGeneric;
+    }
 
     /**
      * @param args the command line arguments

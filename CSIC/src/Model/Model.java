@@ -67,6 +67,7 @@ public class Model implements ModelInt {
             totalDifferentiator.setValue(totalValue);
             total.add(totalDifferentiator);
         }
+        System.out.println(total.size());
         materia.setResult(total);
         return materia;
     }
