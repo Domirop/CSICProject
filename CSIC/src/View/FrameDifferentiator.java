@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -147,7 +148,18 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         panel.setLayout(new GridLayout(0, 1));
         JTable table = addRowsToTable(initTablesDifferentiators());
-        JScrollPane scrollpane = new JScrollPane(table);
+        JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        TableColumn column = null;
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            if (i == 0 || i == 1) {
+                column = table.getColumnModel().getColumn(i);
+                column.setMinWidth(100);
+            } else {
+                column = table.getColumnModel().getColumn(i);
+                column.setMinWidth(300);
+            }
+        }
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         panel.add(scrollpane);
         tabbedPane.addTab(fieldKeyword.getText(), panel);
 
@@ -165,11 +177,20 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private JTable initTablesDifferentiators() {
         JTable table = new JTable();
         table.setAutoCreateRowSorter(true);
-        DefaultTableModel model = new DefaultTableModel(new String[]{
-            "Order", "File name", "Atom", "Gaussian", "Isotropic Value"
-        }, 0) {
+        List<String> singleNames = new ArrayList<>();
+        singleNames.add("Gaussian");
+        singleNames.add("Atom");
+
+        for (String file : names) {
+            if (!singleNames.contains(file)) {
+                singleNames.add(file);
+            }
+        }
+        DefaultTableModel model = new DefaultTableModel(
+                singleNames.toArray(new String[0]),
+                0) {
             boolean[] canEdit = new boolean[]{
-                false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -203,17 +224,29 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     private JTable addRowsToTable(JTable table) {
+
         JTable tableWithElements = table;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        int count = 0;
         List<FileData> fileData = modelo.getFileData(usedFiles);
-        for (int h = 0; h < fileData.size(); h++) {
-            for (int i = 0; i < fileData.get(h).getAtoms().size(); i++) {
-                count++;
-                model.addRow(new Object[]{count, names.get(h), fileData.get(h).getAtoms().get(i).getAtom(),
-                    Integer.parseInt(fileData.get(h).getAtoms().get(i).getGausianData()), fileData.get(h).getAtoms().get(i).getIsotropic()});
+
+        List<Object> data = new ArrayList<>();
+
+        for (int i = 0; i < fileData.get(0).getAtoms().size(); i++) {
+            data.clear();
+
+            for (int j = 1; j < fileData.size() + 1; j++) {
+                if (j == 1) {
+                    data.add(fileData.get(j - 1).getAtoms().get(i).getGausianData());
+                    data.add(fileData.get(j - 1).getAtoms().get(i).getAtom());
+
+                }
+                data.add(fileData.get(j - 1).getAtoms().get(i).getIsotropic());
+
             }
+            model.addRow(data.toArray(new Object[0]));
+
         }
+
         return tableWithElements;
     }
 
@@ -263,7 +296,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         usedTables.add(tableGeneric);
         for (JTable usedTable : usedTables) {
             String[] data = new String[usedTable.getRowCount() + 1];
-            
+
             System.out.println(usedTable.getColumnCount());
             for (int i = 0; i < usedTable.getColumnCount(); i++) {
                 data[0] = (String) usedTable.getColumnModel().getColumn(i).getHeaderValue() + ",";
