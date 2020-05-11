@@ -35,7 +35,8 @@
                       <Component id="fieldKeyword" min="-2" pref="156" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="buttonAdd" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="345" max="32767" attributes="0"/>
+                      <EmptySpace pref="282" max="32767" attributes="0"/>
+                      <Component id="deleteButtton" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -51,6 +52,7 @@
                   <Component id="comboOptions" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="fieldKeyword" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="buttonAdd" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="deleteButtton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="tabbedPane" pref="435" max="32767" attributes="0"/>
@@ -94,5 +96,13 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
     </Container>
+    <Component class="javax.swing.JButton" name="deleteButtton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Reset"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteButttonActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

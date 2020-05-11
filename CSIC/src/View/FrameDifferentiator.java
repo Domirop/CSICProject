@@ -5,16 +5,19 @@
  */
 package View;
 
-import Model.Atomo.Atom;
 import Model.Atomo.FileData;
+import Model.Atomo.Materia;
 import Model.Model;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -28,6 +31,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private List<String> files = new ArrayList<>();
     private List<File> filesData = new ArrayList<>();
+    private JPanel panelGeneric = new JPanel();
+    private List<String> names = new ArrayList<>();
+    private List<File> usedFiles = new ArrayList<>();
+    Model modelo = new Model();
+    JTable tableGeneric;
 
     public FrameDifferentiator() {
         initComponents();
@@ -35,6 +43,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData) {
         initComponents();
+        panelGeneric.setLayout(new GridLayout(0, 1));
+        tabbedPane.addTab("Generic", panelGeneric);
+        tabbedPane.setVisible(false);
         this.files = files;
         this.filesData = filesData;
     }
@@ -53,6 +64,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         fieldKeyword = new javax.swing.JTextField();
         buttonAdd = new javax.swing.JButton();
         tabbedPane = new javax.swing.JTabbedPane();
+        deleteButtton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,6 +76,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAddActionPerformed(evt);
+            }
+        });
+
+        deleteButtton.setText("Reset");
+        deleteButtton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButttonActionPerformed(evt);
             }
         });
 
@@ -83,7 +102,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(buttonAdd)
-                        .addGap(0, 345, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 282, Short.MAX_VALUE)
+                        .addComponent(deleteButtton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -94,7 +114,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonAdd))
+                    .addComponent(buttonAdd)
+                    .addComponent(deleteButtton))
                 .addGap(18, 18, 18)
                 .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
                 .addContainerGap())
@@ -104,15 +125,34 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
-
+        names.clear();
+        usedFiles.clear();
         JPanel panel = new JPanel();
+        tabbedPane.setVisible(true);
+
+        getUsedFiles();
+
+        panel.setLayout(new GridLayout(0, 1));
+        JScrollPane scrollpane = new JScrollPane(addRowsToTable(initTablesDifferentiators()));
+        panel.add(scrollpane);
+        tabbedPane.addTab(fieldKeyword.getText(), panel);
+        
+        tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+        
+        genericTable(usedFiles);
+        usedFiles.clear();
+        names.clear();
+        
+        revalidate();
+        pack();
+    }//GEN-LAST:event_buttonAddActionPerformed
+
+    private JTable initTablesDifferentiators() {
         JTable table = new JTable();
-        table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{},
-                new String[]{
-                    "Order", "File name", "Atom", "Gaussian", "Isotropic Value"
-                }
-        ) {
+        table.setAutoCreateRowSorter(true);
+        DefaultTableModel model = new DefaultTableModel(new String[]{
+            "Order", "File name", "Atom", "Gaussian", "Isotropic Value"
+        }, 0) {
             boolean[] canEdit = new boolean[]{
                 false, false, false, false, false
             };
@@ -120,11 +160,49 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
-        });
+
+            @Override
+            public Class<?> getColumnClass(int column) {
+                Class<?> returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                } else {
+                    returnValue = Object.class;
+                }
+
+                return returnValue;
+
+            }
+        ;
+        };
+        table.setModel(model);
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer();
+        renderer.setHorizontalAlignment(0);
+        table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        return table;
+    }
+    
+    private JTable addRowsToTable(JTable table){
+        JTable tableWithElements = table;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        List<String> names = new ArrayList<>();
-        List<File> usedFiles = new ArrayList<>();
-        int j = 0;
+        int count = 0;
+        List<FileData> fileData = modelo.getFileData(usedFiles);
+        for (int h = 0; h < fileData.size(); h++) {
+            for (int i = 0; i < fileData.get(h).getAtoms().size(); i++) {
+                count++;
+                model.addRow(new Object[]{count, names.get(h), fileData.get(h).getAtoms().get(i).getAtom(),
+                    Integer.parseInt(fileData.get(h).getAtoms().get(i).getGausianData()), fileData.get(h).getAtoms().get(i).getIsotropic()});
+            }
+        }
+        return tableWithElements;
+    }
+
+    private void getUsedFiles() {
         if (String.valueOf(comboOptions.getSelectedItem()).equals("Starts with")) {
             for (int i = 0; i < files.size(); i++) {
                 String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
@@ -132,7 +210,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     usedFiles.add(filesData.get(i));
                     if (!names.contains(filename)) {
                         names.add(filename);
-
                     }
 
                 }
@@ -157,33 +234,86 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         } else {
 
         }
+    }
 
-        Model modelo = new Model();
-        int count = 0;
-        List<FileData> fileData = modelo.getFileData(usedFiles);
-        for (int h = 0; h < fileData.size(); h++) {
-            for (int i = 0; i < fileData.get(h).getAtoms().size(); i++) {
-                count++;
-                model.addRow(new Object[]{count, names.get(0), fileData.get(h).getAtoms().get(i).getAtom(),
-                    fileData.get(h).getAtoms().get(i).getGausianData(), fileData.get(h).getAtoms().get(i).getIsotropic()});
-            }
+    private void deleteButttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButttonActionPerformed
+        tabbedPane.removeAll();
+        tabbedPane.addTab("Generic", panelGeneric);
+        tabbedPane.setVisible(false);
+        panelGeneric.removeAll();
+        tableGeneric = null;
+    }//GEN-LAST:event_deleteButttonActionPerformed
+
+    private void genericTable(List<File> usedFiles) {
+        Materia materia = modelo.getMateriElement(usedFiles, fieldKeyword.getText());
+
+        String[] values = new String[materia.getResult().size() + 1];
+        values[0] = "Keyword";
+        for (int i = 1; i <= materia.getResult().size(); i++) {
+            values[i] = materia.getResult().get(i - 1).getAtomo();
         }
-        revalidate();
-        pack();
-        names.clear();
-        fileData.clear();
-        usedFiles.clear();
+        if (tableGeneric == null) {
+            initGenericTable(values);
+            addElementsToGeneric(materia);
+            JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric);
+            panelGeneric.add(scrollpaneGeneric);
+        } else {
+            addElementsToGeneric(materia);
+        }
+    }
 
-        panel.setLayout(new GridLayout(0, 1));
-        JScrollPane scrollpane = new JScrollPane(table);
-        panel.add(scrollpane);
-        tabbedPane.addTab(fieldKeyword.getText(), panel);
-    }//GEN-LAST:event_buttonAddActionPerformed
+    private void initGenericTable(String[] values) {
+        tableGeneric = new JTable();
+        DefaultTableModel modelGeneric = new DefaultTableModel(values, 0) {
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+
+            @Override
+            public Class<?> getColumnClass(int column) {
+                Class<?> returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                } else {
+                    returnValue = Object.class;
+                }
+
+                return returnValue;
+
+            }
+        ;
+        };
+        tableGeneric.setAutoCreateRowSorter(true);
+        tableGeneric.setModel(modelGeneric);
+        //Center columns
+        for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            tableGeneric.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableGeneric.getTableHeader().getDefaultRenderer();
+        renderer.setHorizontalAlignment(0);
+        tableGeneric.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+    }
+
+    private void addElementsToGeneric(Materia materia) {
+        DefaultTableModel model = (DefaultTableModel) tableGeneric.getModel();
+        Object[] value = new String[materia.getResult().size() + 1];
+        value[0] = materia.getDifferentiator();
+        for (int i = 1; i <= materia.getResult().size(); i++) {
+            value[i] = String.valueOf(materia.getResult().get(i - 1).getValue());
+        }
+        model.addRow(value);
+    }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    private static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -218,6 +348,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAdd;
     private javax.swing.JComboBox<String> comboOptions;
+    private javax.swing.JButton deleteButtton;
     private javax.swing.JTextField fieldKeyword;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTabbedPane tabbedPane;
