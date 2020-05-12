@@ -23,20 +23,19 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author domit
  */
-public class Frame extends javax.swing.JFrame {
+public class ChooseFilesFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form Frame
+     * Creates new form ChooseFilesFrame
      */
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log", "txt"));
     List<File> listFiles = new ArrayList<>();
 
-    public Frame() {
+    public ChooseFilesFrame() {
         initComponents();
-        textError.setVisible(false);
         enableDragAndDrop();
     }
-
+    
     private void enableDragAndDrop() {
         DropTarget target = new DropTarget(dropTextArea, new DropTargetListener() {
             public void dragEnter(DropTargetDragEvent e) {
@@ -62,9 +61,6 @@ public class Frame extends javax.swing.JFrame {
                             listFiles.add(file);
                         }
                     });
-                    if(listFiles.size() > 0){
-                        InfoLabel.setVisible(false);
-                    }
                 } catch (Exception ex) {
                 }
             }
@@ -81,24 +77,14 @@ public class Frame extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        buttonNext = new javax.swing.JButton();
         buttonChooseFiles = new javax.swing.JButton();
-        textError = new javax.swing.JLabel();
-        InfoLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         dropTextArea = new javax.swing.JTextArea();
+        buttonNext = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(430, 375));
 
-        jLabel1.setText("Introduce los fichero:");
-
-        buttonNext.setText("Avanzar");
-        buttonNext.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonNextActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("Introduce los ficheros:");
 
         buttonChooseFiles.setText("Elegir ficheros");
         buttonChooseFiles.addActionListener(new java.awt.event.ActionListener() {
@@ -107,64 +93,47 @@ public class Frame extends javax.swing.JFrame {
             }
         });
 
-        textError.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        textError.setForeground(new java.awt.Color(255, 0, 0));
-        textError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        textError.setText("Por favor introduca algún fichero.");
-
-        InfoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        InfoLabel.setText("Arrastre un fichero aqui :D");
-
-        dropTextArea.setEditable(false);
         dropTextArea.setColumns(20);
         dropTextArea.setRows(5);
         jScrollPane1.setViewportView(dropTextArea);
+
+        buttonNext.setText("Avanzar");
+        buttonNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonNextActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel1)
-                .addGap(8, 8, 8)
-                .addComponent(buttonChooseFiles))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(114, 114, 114)
-                        .addComponent(InfoLabel))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(294, 294, 294)
-                        .addComponent(buttonNext))
-                    .addComponent(textError, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonChooseFiles)
+                        .addGap(0, 137, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(buttonNext)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel1))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
                     .addComponent(buttonChooseFiles))
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(100, 100, 100)
-                        .addComponent(InfoLabel))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(11, 11, 11)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonNext)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addComponent(textError))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(buttonNext)
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         pack();
@@ -194,19 +163,14 @@ public class Frame extends javax.swing.JFrame {
             FrameDifferentiator frameDiff = new FrameDifferentiator(fileNames, listFiles);
             this.dispose();
             frameDiff.setVisible(true);
-        }else{
-            textError.setVisible(true);
         }
     }//GEN-LAST:event_buttonNextActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel InfoLabel;
     private javax.swing.JButton buttonChooseFiles;
     private javax.swing.JButton buttonNext;
     private javax.swing.JTextArea dropTextArea;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel textError;
     // End of variables declaration//GEN-END:variables
 }

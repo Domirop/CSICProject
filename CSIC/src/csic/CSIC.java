@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package csic;
-import View.Frame;
+import View.ChooseFilesFrame;
 
 public class CSIC {
 
@@ -13,8 +13,8 @@ public class CSIC {
      * @author domit
      */
     public static void main(String[] args) {
-        Frame frame = new Frame();
-        frame.setVisible(true);
+        ChooseFilesFrame chooseFilesFrame = new ChooseFilesFrame();
+        chooseFilesFrame.setVisible(true);
       /*
 <----------------------------MAPA-------------------------------->
         Hashtable<Integer, List> table = new Hashtable<Integer, List>();
