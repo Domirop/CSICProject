@@ -18,9 +18,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author domit
@@ -95,11 +92,9 @@ public class Model implements ModelInt {
         return fileData;
     }
 
-    public void writeCSV(String[] columnNames, String[] data) {
+    public void writeCSV(List<String[]> datas) {
         List<String[]> lines = csv.getDataLines();
-        lines.add(columnNames);
-        lines.add(data);
-        csv.setDataLines(lines);
+        csv.setDataLines(datas);
         try {
             csv.createCSV();
         } catch (IOException ex) {
