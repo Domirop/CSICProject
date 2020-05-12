@@ -194,12 +194,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 singleNames.add(file);
             }
         }
+        boolean[] canEditTry = new boolean[singleNames.size()];
+        for (int i = 0; i < canEditTry.length; i++) {
+            canEditTry[i] = false;
+        }
         DefaultTableModel model = new DefaultTableModel(
                 singleNames.toArray(new String[0]),
                 0) {
-            boolean[] canEdit = new boolean[]{
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false
-            };
+            boolean[] canEdit = canEditTry;
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
@@ -367,7 +369,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void initGenericTable(String[] values) {
         tableGeneric = new JTable();
 
-        boolean[] canEditTry = new boolean[keywordsUsed.size() + 1];
+        boolean[] canEditTry = new boolean[keywordsUsed.size() + 2];
         for (int i = 0; i < canEditTry.length; i++) {
             canEditTry[i] = false;
         }
