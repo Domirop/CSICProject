@@ -10,12 +10,16 @@ import Model.Atomo.Calculations;
 import Model.Atomo.Molecule;
 import Model.Atomo.FileData;
 import Model.Atomo.TotalDifferentiator;
+import Model.Files.ExportCSV;
 import Model.Files.ReadEnergyValue;
 import Model.Files.ReadLines;
 import Model.Files.ReadTable;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,6 +31,7 @@ public class Model implements ModelInt {
     private ReadTable readTable = new ReadTable();
     private ReadEnergyValue readEnergy = new ReadEnergyValue();
     private Calculations calculations = new Calculations();
+    private ExportCSV csv = new ExportCSV();
 
     @Override
     public List<String> getLines(String path, String filter) {
@@ -57,7 +62,7 @@ public class Model implements ModelInt {
         Molecule materia = new Molecule(getFileData(files), key);
         List<String> gausianAtom = getAtomsGausian(materia.getFiles());
         List<TotalDifferentiator> total = new ArrayList<>();
-        
+
         for (String string : gausianAtom) {
             TotalDifferentiator totalDifferentiator = new TotalDifferentiator();
             totalDifferentiator = calculations.getContributionValue(materia.getFiles(), string);
@@ -66,8 +71,8 @@ public class Model implements ModelInt {
         materia.setResult(total);
         return materia;
     }
-    
-    private List<String> getAtomsGausian(List<FileData> files){
+
+    private List<String> getAtomsGausian(List<FileData> files) {
         List<String> gaussianTypes = new ArrayList<>();
         for (FileData file : files) {
             for (Atom atom : file.getAtoms()) {
@@ -78,8 +83,8 @@ public class Model implements ModelInt {
         }
         return gaussianTypes;
     }
-    
-    public List<FileData> getFileData(List<File> files){
+
+    public List<FileData> getFileData(List<File> files) {
         List<FileData> fileData = new ArrayList<>();
         for (File file : files) {
             List<String> atomsData = formatLine(getLines(file.getAbsolutePath(), "Isotropic"));
@@ -88,5 +93,17 @@ public class Model implements ModelInt {
             fileData.add(calculations.getFileData(atomsData, energyValue, fileName));
         }
         return fileData;
+    }
+
+    public void writeCSV(String[] columnNames, String[] data) {
+        List<String[]> lines = csv.getDataLines();
+        lines.add(columnNames);
+        lines.add(data);
+        csv.setDataLines(lines);
+        try {
+            csv.createCSV();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }

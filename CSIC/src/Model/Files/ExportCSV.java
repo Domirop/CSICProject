@@ -30,18 +30,13 @@ public class ExportCSV {
     }
     
 
-    public void add() throws IOException {
-        dataLines.add(new String[]{"File Name", "Atom 1", "Atom 2", "exp(-DG/RT)", "s exp(-DG/RT)", "Contribution", "Atom 1", "Atom 2"});
-        //givenDataArray_whenConvertToCSV_thenOutputCreated();
-    }
-
     public String convertToCSV(String[] data) {
         return Stream.of(data)
                 .map(this::escapeSpecialCharacters)
                 .collect(Collectors.joining(","));
     }
 
-    public void givenDataArray_whenConvertToCSV_thenOutputCreated() throws IOException {
+    public void createCSV() throws IOException {
         File csvOutputFile = new File("hey.csv");
         try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
             dataLines.stream()

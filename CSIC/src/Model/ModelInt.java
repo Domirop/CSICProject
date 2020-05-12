@@ -22,5 +22,5 @@ public interface ModelInt {
     public String getValue(String path, int column, int row, String start);
 
     public String SCFDone(String path);
-    
+        
 }

@@ -20,6 +20,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -36,6 +37,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<String> names = new ArrayList<>();
     private List<File> usedFiles = new ArrayList<>();
     private List<JTable> usedTables = new ArrayList<>();
+    private List<String> keywordsUsed = new ArrayList<>();
 
     Model modelo = new Model();
     JTable tableGeneric;
@@ -139,6 +141,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
+        if (fieldKeyword.getText().length() > 0 && !keywordsUsed.contains(fieldKeyword.getText())) {
+            keywordsUsed.add(fieldKeyword.getText());
+        }
         names.clear();
         usedFiles.clear();
         JPanel panel = new JPanel();
@@ -295,22 +300,23 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
         usedTables.add(tableGeneric);
         for (JTable usedTable : usedTables) {
-            String[] data = new String[usedTable.getRowCount() + 1];
+            TableModel model = usedTable.getModel();
 
-            System.out.println(usedTable.getColumnCount());
-            for (int i = 0; i < usedTable.getColumnCount(); i++) {
-                data[0] = (String) usedTable.getColumnModel().getColumn(i).getHeaderValue() + ",";
+            String[] data = new String[model.getRowCount()];
+            String[] columnNames = new String[model.getColumnCount()];
 
+            for (int i = 0; i < model.getColumnCount(); i++) {
+                columnNames[i] = model.getColumnName(i);
             }
-            System.out.println(data[0]);
-            for (int count = 1; count <= usedTable.getRowCount(); count++) {
-                for (int i = 1; i <= usedTable.getColumnCount(); i++) {
-                    data[i] = usedTable.getValueAt(count - 1, i - 1).toString();
 
+            for (int i = 0; i < model.getRowCount(); i++) {
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    if (model.getValueAt(i, j) != null && model.getValueAt(i, j).toString().trim().length() != 0) {
+                        data[i] = model.getValueAt(i, j).toString();
+                    }
                 }
-                //numdata.add(model.getValueAt(count, 0).toString());
             }
-
+            modelo.writeCSV(columnNames, data);
         }
 
 
@@ -320,26 +326,38 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         Molecule materia = modelo.getMolecule(usedFiles, fieldKeyword.getText());
 
         String[] values = new String[materia.getResult().size() + 1];
-        values[0] = "Keyword";
-        for (int i = 1; i <= materia.getResult().size(); i++) {
-            values[i] = materia.getResult().get(i - 1).getGausian();
+        values[0] = "Gaussian";
+        for (int i = 1; i <= keywordsUsed.size(); i++) {
+            values[i] = keywordsUsed.get(i - 1);
         }
         if (tableGeneric == null) {
             initGenericTable(values);
             addElementsToGeneric(materia);
-            JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric);
+            JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             panelGeneric.add(scrollpaneGeneric);
         } else {
             addElementsToGeneric(materia);
         }
+        TableColumn column = null;
+        for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
+            column = tableGeneric.getColumnModel().getColumn(i);
+            column.setMinWidth(300);
+
+        }
+        tableGeneric.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
     }
 
     private void initGenericTable(String[] values) {
         tableGeneric = new JTable();
+
+        boolean[] canEditTry = new boolean[keywordsUsed.size() + 1];
+        for (int i = 0; i < canEditTry.length; i++) {
+            canEditTry[i] = false;
+        }
+
         DefaultTableModel modelGeneric = new DefaultTableModel(values, 0) {
-            boolean[] canEdit = new boolean[]{
-                false, false, false, false, false
-            };
+            boolean[] canEdit = canEditTry;
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
@@ -378,8 +396,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         value[0] = materia.getDifferentiator();
         for (int i = 1; i <= materia.getResult().size(); i++) {
             value[i] = String.valueOf(materia.getResult().get(i - 1).getValue());
+            model.addRow(value);
         }
-        model.addRow(value);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
