@@ -141,42 +141,44 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
-        if (fieldKeyword.getText().length() > 0 && !keywordsUsed.contains(fieldKeyword.getText())) {
-            keywordsUsed.add(fieldKeyword.getText());
-        }
-        names.clear();
-        usedFiles.clear();
-        JPanel panel = new JPanel();
-        tabbedPane.setVisible(true);
-
-        getUsedFiles();
-
-        panel.setLayout(new GridLayout(0, 1));
-        JTable table = addRowsToTable(initTablesDifferentiators());
-        JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        TableColumn column = null;
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            if (i == 0 || i == 1) {
-                column = table.getColumnModel().getColumn(i);
-                column.setMinWidth(100);
-            } else {
-                column = table.getColumnModel().getColumn(i);
-                column.setMinWidth(300);
+        if (fieldKeyword.getText().length() > 0) {
+            if (!keywordsUsed.contains(fieldKeyword.getText())) {
+                keywordsUsed.add(fieldKeyword.getText());
             }
+            names.clear();
+            usedFiles.clear();
+            JPanel panel = new JPanel();
+            tabbedPane.setVisible(true);
+            
+            getUsedFiles();
+            
+            panel.setLayout(new GridLayout(0, 1));
+            JTable table = addRowsToTable(initTablesDifferentiators());
+            JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            TableColumn column = null;
+            for (int i = 0; i < table.getColumnCount(); i++) {
+                if (i == 0 || i == 1) {
+                    column = table.getColumnModel().getColumn(i);
+                    column.setMinWidth(100);
+                } else {
+                    column = table.getColumnModel().getColumn(i);
+                    column.setMinWidth(300);
+                }
+            }
+            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            panel.add(scrollpane);
+            tabbedPane.addTab(fieldKeyword.getText(), panel);
+            
+            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+            
+            genericTable(usedFiles);
+            usedFiles.clear();
+            names.clear();
+            
+            usedTables.add(table);
+            revalidate();
+            pack();
         }
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        panel.add(scrollpane);
-        tabbedPane.addTab(fieldKeyword.getText(), panel);
-
-        tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-
-        genericTable(usedFiles);
-        usedFiles.clear();
-        names.clear();
-
-        usedTables.add(table);
-        revalidate();
-        pack();
     }//GEN-LAST:event_buttonAddActionPerformed
 
     private JTable initTablesDifferentiators() {
@@ -300,25 +302,27 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
         //usedTables.add(tableGeneric);
-        for (JTable usedTable : usedTables) {
-            List<String[]> datas = new ArrayList<>();
-            TableModel model = usedTable.getModel();
-            String[] columnNames = new String[model.getColumnCount()];
-
-            for (int i = 0; i < model.getColumnCount(); i++) {
-                columnNames[i] = model.getColumnName(i);
-            }
-            datas.add(columnNames);
-            for (int i = 0; i < model.getRowCount(); i++) {
-                String[] data = new String[model.getColumnCount()];
-                for (int j = 0; j < model.getColumnCount(); j++) {
-                    if (model.getValueAt(i, j) != null && model.getValueAt(i, j).toString().trim().length() != 0) {
-                        data[j] = String.valueOf(model.getValueAt(i, j)).replace(".", ",");
-                    }
+        if (usedTables.size() > 0) {
+            for (JTable usedTable : usedTables) {
+                List<String[]> datas = new ArrayList<>();
+                TableModel model = usedTable.getModel();
+                String[] columnNames = new String[model.getColumnCount()];
+                
+                for (int i = 0; i < model.getColumnCount(); i++) {
+                    columnNames[i] = model.getColumnName(i);
                 }
-                datas.add(data);
+                datas.add(columnNames);
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    String[] data = new String[model.getColumnCount()];
+                    for (int j = 0; j < model.getColumnCount(); j++) {
+                        if (model.getValueAt(i, j) != null && model.getValueAt(i, j).toString().trim().length() != 0) {
+                            data[j] = String.valueOf(model.getValueAt(i, j)).replace(".", ",");
+                        }
+                    }
+                    datas.add(data);
+                }
+                modelo.writeCSV(datas);
             }
-            modelo.writeCSV(datas);
         }
     }//GEN-LAST:event_buttonExportCSVActionPerformed
 
