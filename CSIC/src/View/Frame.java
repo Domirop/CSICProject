@@ -90,10 +90,8 @@ public class Frame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(430, 375));
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Introduce los fichero:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
         buttonNext.setText("Avanzar");
         buttonNext.addActionListener(new java.awt.event.ActionListener() {
@@ -101,7 +99,6 @@ public class Frame extends javax.swing.JFrame {
                 buttonNextActionPerformed(evt);
             }
         });
-        getContentPane().add(buttonNext, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 280, -1, -1));
 
         buttonChooseFiles.setText("Elegir ficheros");
         buttonChooseFiles.addActionListener(new java.awt.event.ActionListener() {
@@ -109,24 +106,66 @@ public class Frame extends javax.swing.JFrame {
                 buttonChooseFilesActionPerformed(evt);
             }
         });
-        getContentPane().add(buttonChooseFiles, new org.netbeans.lib.awtextra.AbsoluteConstraints(138, 6, -1, -1));
 
         textError.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         textError.setForeground(new java.awt.Color(255, 0, 0));
         textError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         textError.setText("Por favor introduca algún fichero.");
-        getContentPane().add(textError, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 287, 306, -1));
 
         InfoLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         InfoLabel.setText("Arrastre un fichero aqui :D");
-        getContentPane().add(InfoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, -1, -1));
 
         dropTextArea.setEditable(false);
         dropTextArea.setColumns(20);
         dropTextArea.setRows(5);
         jScrollPane1.setViewportView(dropTextArea);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 50, 388, 219));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jLabel1)
+                .addGap(8, 8, 8)
+                .addComponent(buttonChooseFiles))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(114, 114, 114)
+                        .addComponent(InfoLabel))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(294, 294, 294)
+                        .addComponent(buttonNext))
+                    .addComponent(textError, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel1))
+                    .addComponent(buttonChooseFiles))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addComponent(InfoLabel))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonNext)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(textError))))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
