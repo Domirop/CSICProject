@@ -38,6 +38,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<File> usedFiles = new ArrayList<>();
     private List<JTable> usedTables = new ArrayList<>();
     private List<String> keywordsUsed = new ArrayList<>();
+    private List<List<String>> rows = new ArrayList<>();
 
     Model modelo = new Model();
     JTable tableGeneric;
@@ -149,9 +150,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             usedFiles.clear();
             JPanel panel = new JPanel();
             tabbedPane.setVisible(true);
-            
+
             getUsedFiles();
-            
+
             panel.setLayout(new GridLayout(0, 1));
             JTable table = addRowsToTable(initTablesDifferentiators());
             JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -168,13 +169,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
             panel.add(scrollpane);
             tabbedPane.addTab(fieldKeyword.getText(), panel);
-            
+
             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-            
+
             genericTable(usedFiles);
             usedFiles.clear();
             names.clear();
-            
+
             usedTables.add(table);
             revalidate();
             pack();
@@ -307,7 +308,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 List<String[]> datas = new ArrayList<>();
                 TableModel model = usedTable.getModel();
                 String[] columnNames = new String[model.getColumnCount()];
-                
+
                 for (int i = 0; i < model.getColumnCount(); i++) {
                     columnNames[i] = model.getColumnName(i);
                 }
@@ -329,24 +330,35 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void genericTable(List<File> usedFiles) {
         Molecule materia = modelo.getMolecule(usedFiles, fieldKeyword.getText());
 
-        String[] values = new String[materia.getResult().size() + 1];
+        String[] values = new String[keywordsUsed.size() + 2];
         values[0] = "Gaussian";
-        for (int i = 1; i <= keywordsUsed.size(); i++) {
-            values[i] = keywordsUsed.get(i - 1);
+        values[1] = "Atom";
+        for (int i = 2; i <= keywordsUsed.size() + 1; i++) {
+            values[i] = keywordsUsed.get(i - 2);
         }
+
         if (tableGeneric == null) {
             initGenericTable(values);
             addElementsToGeneric(materia);
             JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             panelGeneric.add(scrollpaneGeneric);
         } else {
+            panelGeneric.removeAll();
+            initGenericTable(values);
             addElementsToGeneric(materia);
+            JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            panelGeneric.add(scrollpaneGeneric);
+
         }
         TableColumn column = null;
         for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
-            column = tableGeneric.getColumnModel().getColumn(i);
-            column.setMinWidth(300);
-
+            if (i == 0 || i == 1) {
+                column = tableGeneric.getColumnModel().getColumn(i);
+                column.setMinWidth(100);
+            } else {
+                column = tableGeneric.getColumnModel().getColumn(i);
+                column.setMinWidth(200);
+            }
         }
         tableGeneric.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
@@ -395,13 +407,29 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     private void addElementsToGeneric(Molecule materia) {
+
         DefaultTableModel model = (DefaultTableModel) tableGeneric.getModel();
-        Object[] value = new String[materia.getResult().size() + 1];
-        value[0] = materia.getDifferentiator();
-        for (int i = 1; i <= materia.getResult().size(); i++) {
-            value[i] = String.valueOf(materia.getResult().get(i - 1).getValue());
-            model.addRow(value);
+        List<List<String>> auxList = new ArrayList<>(rows);
+        rows.clear();
+
+        for (int i = 0; i < materia.getResult().size(); i++) {
+            if (keywordsUsed.size() == 1) {
+                List<String> values = new ArrayList<>();
+                values.add(materia.getResult().get(i).getGausian());
+                values.add(materia.getResult().get(i).getAtomo());
+                values.add(String.valueOf(materia.getResult().get(i).getValue()));
+                rows.add(values);
+            } else {
+                List<String> values = new ArrayList<>(auxList.get(i));
+                values.add(String.valueOf(materia.getResult().get(i).getValue()));
+                rows.add(values);
+            }
         }
+
+        for (List<String> row : rows) {
+            model.addRow(row.toArray());
+        }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

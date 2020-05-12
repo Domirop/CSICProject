@@ -46,6 +46,7 @@ public class ExportCSV {
     }
 
     public String escapeSpecialCharacters(String data) {
+        System.out.println(data);
         String escapedData = data.replaceAll("\\R", " ");
         if (data.contains(",") || data.contains("\"") || data.contains("'")) {
             data = data.replace("\"", "\"\"");
