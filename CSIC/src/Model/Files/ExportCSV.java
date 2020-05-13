@@ -6,7 +6,6 @@
 package Model.Files;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,24 +28,42 @@ public class ExportCSV {
         this.dataLines = dataLines;
     }
     
-
+    /**
+     * This method is responsible for converting an array of data in CSV format.
+     * @param data Array to be converted.
+     * @return String converted to CSV type.
+     */
     public String convertToCSV(String[] data) {
         return Stream.of(data)
                 .map(this::escapeSpecialCharacters)
                 .collect(Collectors.joining(","));
     }
-
-    public void createCSV() throws IOException {
-        File csvOutputFile = new File("hey.csv");
+    
+    /**
+     * This method is responsible for creating the CSV file.
+     * @param path Path where the file will be created.
+     * @param fileName Name that will receive the file.
+     * @return True or false whether or not an error occurs.
+     */
+    public boolean createCSV(String path, String fileName) {
+        File csvOutputFile = new File(path  + "\\" + fileName + ".csv");
         try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
             dataLines.stream()
                     .map(this::convertToCSV)
                     .forEach(pw::println);
+            return true;
+        }catch(Exception e){
+            return false;
         }
     }
 
+    /**
+     * This method is in charge of controlling if the lines 
+     * that arrive have some kind of special character so that it is not erased.
+     * @param data Phrase to be controlled.
+     * @return Returns a new string with the characters that we do not want deleted.
+     */
     public String escapeSpecialCharacters(String data) {
-        System.out.println(data);
         String escapedData = data.replaceAll("\\R", " ");
         if (data.contains(",") || data.contains("\"") || data.contains("'")) {
             data = data.replace("\"", "\"\"");

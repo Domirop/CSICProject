@@ -13,7 +13,7 @@ import java.util.List;
  * @author domit
  */
 public class Molecule {
-    private List<FileData> files;
+    private List<FileData> filesData;
     private String differentiator;
     private List<TotalDifferentiator> result = new ArrayList<>();
 
@@ -21,16 +21,16 @@ public class Molecule {
     }
 
     public Molecule(List<FileData> files, String differentiator) {
-        this.files = files;
+        this.filesData = files;
         this.differentiator = differentiator;
     }
 
-    public List<FileData> getFiles() {
-        return files;
+    public List<FileData> getFilesData() {
+        return filesData;
     }
 
-    public void setFiles(List<FileData> files) {
-        this.files = files;
+    public void setFilesData(List<FileData> filesData) {
+        this.filesData = filesData;
     }
 
     public String getDifferentiator() {
