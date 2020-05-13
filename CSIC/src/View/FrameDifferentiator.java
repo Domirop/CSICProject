@@ -341,34 +341,35 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         int option = fileChooser.showOpenDialog(this);
         if (option == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            folder = file.getName();
+            folder = file.getAbsolutePath();
         }
-        System.out.println(folder);
+
         usedTables.add(tableGeneric);
+        keywordsUsed.add("Generic");
+
         if (usedTables.size() > 0) {
-            usedTables.stream().map((usedTable) -> {
+            for (int i = 0; i < keywordsUsed.size(); i++) {
                 List<String[]> datas = new ArrayList<>();
-                TableModel model = usedTable.getModel();
+                TableModel model = usedTables.get(i).getModel();
                 String[] columnNames = new String[model.getColumnCount()];
-                for (int i = 0; i < model.getColumnCount(); i++) {
-                    columnNames[i] = model.getColumnName(i);
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    columnNames[j] = model.getColumnName(j);
                 }
                 datas.add(columnNames);
-                for (int i = 0; i < model.getRowCount(); i++) {
+                for (int k = 0; k < model.getRowCount(); k++) {
                     String[] data = new String[model.getColumnCount()];
                     for (int j = 0; j < model.getColumnCount(); j++) {
-                        if (model.getValueAt(i, j) != null && model.getValueAt(i, j).toString().trim().length() != 0) {
-                            data[j] = String.valueOf(model.getValueAt(i, j));
+                        if (model.getValueAt(k, j) != null && model.getValueAt(k, j).toString().trim().length() != 0) {
+                            data[j] = String.valueOf(model.getValueAt(k, j));
                         }
                     }
                     datas.add(data);
                 }
-                return datas;
-            }).forEachOrdered((datas) -> {
-                model.writeCSV(datas);
-            });
-        }
+                System.out.println(this.model.writeCSV(datas, folder, keywordsUsed.get(i)));
+                System.out.println(folder);
+            }
     }//GEN-LAST:event_buttonExportCSVActionPerformed
+    }
 
     /**
      * Creates the "generic" table with all the info from the other tables.
@@ -473,8 +474,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         for (int i = 0; i < molecule.getResult().size(); i++) {
             if (keywordsUsed.size() == 1) {
                 List<String> values = new ArrayList<>();
-                values.add(molecule.getResult().get(i).getGausian());
-                values.add(molecule.getResult().get(i).getAtomo());
+                values.add(molecule.getResult().get(i).getGaussian());
+                values.add(molecule.getResult().get(i).getAtom());
                 values.add(String.valueOf(molecule.getResult().get(i).getValue()));
                 rows.add(values);
             } else {

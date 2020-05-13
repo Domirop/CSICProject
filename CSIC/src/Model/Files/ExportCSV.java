@@ -46,7 +46,13 @@ public class ExportCSV {
      * @return True or false whether or not an error occurs.
      */
     public boolean createCSV(String path, String fileName) {
-        File csvOutputFile = new File(path  + "\\" + fileName + ".csv");
+        String separator = "";
+        if(path.contains("/")){
+            separator = "/";
+        }else{
+            separator = "\\";
+        }
+        File csvOutputFile = new File(path  + separator + fileName + ".csv");
         try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
             dataLines.stream()
                     .map(this::convertToCSV)
