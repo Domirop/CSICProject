@@ -10,32 +10,27 @@ package Model.Atomo;
  * @author domit
  */
 public class TotalDifferentiator {
-    private String gausian;
-    private String atomo;
+    private String gaussian;
+    private String atom;
     private double value;
 
-    public String getAtomo() {
-        return atomo;
+    public String getAtom() {
+        return atom;
     }
 
-    public void setAtomo(String atomo) {
-        this.atomo = atomo;
-    }
-
-    public TotalDifferentiator(String atomo, double value) {
-        this.gausian = atomo;
-        this.value = value;
+    public void setAtom(String atom) {
+        this.atom = atom;
     }
 
     public TotalDifferentiator() {
     }
 
-    public String getGausian() {
-        return gausian;
+    public String getGaussian() {
+        return gaussian;
     }
 
-    public void setGausian(String atomo) {
-        this.gausian = atomo;
+    public void setGaussian(String atomo) {
+        this.gaussian = atomo;
     }
 
     public double getValue() {
@@ -44,10 +39,5 @@ public class TotalDifferentiator {
 
     public void setValue(double value) {
         this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return "TotalDifferentiator{" + "atomo=" + gausian + ", value=" + value + '}';
     }
 }

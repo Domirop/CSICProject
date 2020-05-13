@@ -261,7 +261,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
             for (int j = 1; j < fileData.size() + 1; j++) {
                 if (j == 1) {
-                    data.add(fileData.get(j - 1).getAtoms().get(i).getGausianData());
+                    data.add(fileData.get(j - 1).getAtoms().get(i).getGaussianData());
                     data.add(fileData.get(j - 1).getAtoms().get(i).getAtom());
 
                 }
