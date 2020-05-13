@@ -31,7 +31,7 @@
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="buttonChooseFiles" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="137" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="254" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -62,12 +62,12 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Introduce los ficheros:"/>
+        <Property name="text" type="java.lang.String" value="Choose files:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="buttonChooseFiles">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Elegir ficheros"/>
+        <Property name="text" type="java.lang.String" value="Open"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonChooseFilesActionPerformed"/>
@@ -90,7 +90,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="buttonNext">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Avanzar"/>
+        <Property name="text" type="java.lang.String" value="Next"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonNextActionPerformed"/>

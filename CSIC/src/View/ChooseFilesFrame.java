@@ -5,6 +5,9 @@
  */
 package View;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -12,11 +15,15 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -26,7 +33,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class ChooseFilesFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form ChooseFilesFrame
+     * Creates new form ChooseFilesFrame so the user can either choose files
+     * from a directory or drop them into the frame.
      */
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log", "txt"));
     List<File> listFiles = new ArrayList<>();
@@ -34,8 +42,18 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
     public ChooseFilesFrame() {
         initComponents();
         enableDragAndDrop();
+        BufferedImage bi = null;
+        try {
+            bi = ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/add-file.png"));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        decorate(dropTextArea, bi);
     }
-    
+
+    /**
+     * Method used to get the files dropped.
+     */
     private void enableDragAndDrop() {
         DropTarget target = new DropTarget(dropTextArea, new DropTargetListener() {
             public void dragEnter(DropTargetDragEvent e) {
@@ -51,6 +69,8 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
             }
 
             public void drop(DropTargetDropEvent e) {
+                BufferedImage bi = null;
+                decorate(dropTextArea, bi);
                 try {
                     e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
                     List list = (java.util.List) e.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
@@ -84,9 +104,9 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Introduce los ficheros:");
+        jLabel1.setText("Choose files:");
 
-        buttonChooseFiles.setText("Elegir ficheros");
+        buttonChooseFiles.setText("Open");
         buttonChooseFiles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonChooseFilesActionPerformed(evt);
@@ -97,7 +117,7 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
         dropTextArea.setRows(5);
         jScrollPane1.setViewportView(dropTextArea);
 
-        buttonNext.setText("Avanzar");
+        buttonNext.setText("Next");
         buttonNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonNextActionPerformed(evt);
@@ -116,7 +136,7 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(buttonChooseFiles)
-                        .addGap(0, 137, Short.MAX_VALUE))
+                        .addGap(0, 254, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(buttonNext)))
@@ -139,6 +159,12 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * When the button is clicked, opens a new window so the user can select
+     * files from a directory.
+     *
+     * @param evt
+     */
     private void buttonChooseFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseFilesActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setAcceptAllFileFilterUsed(false);
@@ -154,6 +180,11 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buttonChooseFilesActionPerformed
 
+    /**
+     * When the files are selected, closes this frame and opens the next one.
+     *
+     * @param evt
+     */
     private void buttonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNextActionPerformed
         if (dropTextArea.getText().length() > 0) {
             List<String> fileNames = new ArrayList<>();
@@ -165,7 +196,40 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
             frameDiff.setVisible(true);
         }
     }//GEN-LAST:event_buttonNextActionPerformed
+    /**
+     * Method used to put the icon as a background.
+     *
+     * @param a the TextArea used to drop files.
+     * @param img icon shown.
+     */
+    public void decorate(JTextArea a, final BufferedImage img) {
+        if (img != null) {
+            int x = (this.getWidth() - img.getWidth(null) - 20) / 2;
+            int y = (this.getHeight() - img.getHeight(null)) / 4;
 
+            a.setUI(new javax.swing.plaf.basic.BasicTextAreaUI() {
+                @Override
+                protected void paintBackground(Graphics g) {
+                    g.drawImage(img, x, y, null);
+                }
+
+            });
+            a.setPreferredSize(new Dimension(img.getWidth(), img.getHeight()));
+
+        } else {
+            a.setUI(new javax.swing.plaf.basic.BasicTextAreaUI() {
+                @Override
+                protected void paintBackground(Graphics g) {
+                    g.drawString("", 0, 0);
+
+                }
+            });
+        }
+        a.setForeground(Color.black);
+        a.setCaretColor(Color.lightGray);
+        a.setEditable(false);
+        this.setResizable(false);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonChooseFiles;
     private javax.swing.JButton buttonNext;
