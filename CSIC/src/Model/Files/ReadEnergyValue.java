@@ -16,12 +16,10 @@ import java.nio.file.Paths;
 public class ReadEnergyValue {
 
     /**
-     * 
-     * @param keyword to find the value
-     * @param path path of the file
-     * @return value
-     */
-    
+     * This method obtains the energy value.
+     * @param path path of the file.
+     * @return Energy value.
+     */   
     public String SCFDone(String path) {
         String line = "";
         String value = "";
@@ -36,10 +34,9 @@ public class ReadEnergyValue {
             String regex = "(?!(\\d+\\.?\\d*)|(\\.\\d+))(([Ee][+-]?)?\\d+)?";
             String[] values = formula.split(regex);
             value = values[0];
+            return value;
         } catch (IOException e) {
-            e.printStackTrace();
+            return value;
         }
-        return value;
-
     }
 }

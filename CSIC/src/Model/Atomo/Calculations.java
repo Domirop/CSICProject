@@ -14,9 +14,16 @@ import java.util.List;
  */
 public class Calculations {
 
-    public TotalDifferentiator getContributionValue(List<FileData> files, String gausianData) {
+    /**
+     * This method is responsible for obtaining a list with all the total.
+     * values ​​That the file list has for each gaussian.
+     * @param files List of files in which we are going to compare the value.
+     * @param gaussianData Reference to the gaussian for which the value is being searched.
+     * @return A differentiator object with all the necessary data.
+     */
+    public TotalDifferentiator getTotalMoleculeValue(List<FileData> files, String gaussianData) {
         TotalDifferentiator totalDifferentiator = new TotalDifferentiator();
-        totalDifferentiator.setGausian(gausianData);
+        totalDifferentiator.setGaussian(gaussianData);
         double minValue = files.get(0).getEnergyValue();
         for (FileData file : files) {
             if (file.getEnergyValue() < minValue) {
@@ -44,9 +51,9 @@ public class Calculations {
                 contribution = mediumValue / expS;
             }
             for (int j = 0; j < files.get(i).getAtoms().size(); j++) {
-                if (files.get(i).getAtoms().get(j).getGausianData().equals(gausianData)) {
+                if (files.get(i).getAtoms().get(j).getGaussianData().equals(gaussianData)) {
                     if (i == 0) {
-                        totalDifferentiator.setAtomo(files.get(i).getAtoms().get(j).getAtom());
+                        totalDifferentiator.setAtom(files.get(i).getAtoms().get(j).getAtom());
                     }
                     result += contribution * files.get(i).getAtoms().get(j).getIsotropic();
                 }
@@ -56,6 +63,13 @@ public class Calculations {
         return totalDifferentiator;
     }
 
+    /**
+     * This method gets all the data from a fileData object.
+     * @param atomsData List with all the data of the atoms that we are going to need for this file.
+     * @param energyValue Energy values ​​for said file.
+     * @param fileName File name.
+     * @return Returns a FileData object with all its values.
+     */
     public FileData getFileData(List<String> atomsData, String energyValue, String fileName) {
         List<Atom> atoms = new ArrayList<>();
         String regex = "(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)";
@@ -68,5 +82,4 @@ public class Calculations {
         FileData fileData = new FileData(fileName, atoms, Double.parseDouble(energyValue));
         return fileData;
     }
-
 }

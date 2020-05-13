@@ -11,7 +11,7 @@ package Model.Atomo;
  */
 public class Atom {
     private String atom;
-    private String GausianData;
+    private String gaussianData;
     private double isotropic;
     private double contribution;
 
@@ -19,9 +19,9 @@ public class Atom {
         return atom;
     }
 
-    public Atom(String atom, String GausianData, double isotropic) {
+    public Atom(String atom, String gaussianData, double isotropic) {
         this.atom = atom;
-        this.GausianData = GausianData;
+        this.gaussianData = gaussianData;
         this.isotropic = isotropic;
     }
     
@@ -30,12 +30,12 @@ public class Atom {
         this.atom = atom;
     }
 
-    public String getGausianData() {
-        return GausianData;
+    public String getGaussianData() {
+        return gaussianData;
     }
 
-    public void setGausianData(String GausianData) {
-        this.GausianData = GausianData;
+    public void setGaussianData(String gaussianData) {
+        this.gaussianData = gaussianData;
     }
 
     public double getIsotropic() {
@@ -52,11 +52,5 @@ public class Atom {
 
     public void setContribution(double contribution) {
         this.contribution = contribution;
-    }
-
-    @Override
-    public String toString() {
-        return "Atom{" + "atom=" + atom + ", GausianData=" + GausianData + ", isotropic=" + isotropic + ", contribution=" + contribution + '}';
-    }
-    
+    }  
 }

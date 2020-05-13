@@ -246,7 +246,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
             for (int j = 1; j < fileData.size() + 1; j++) {
                 if (j == 1) {
-                    data.add(fileData.get(j - 1).getAtoms().get(i).getGausianData());
+                    data.add(fileData.get(j - 1).getAtoms().get(i).getGaussianData());
                     data.add(fileData.get(j - 1).getAtoms().get(i).getAtom());
 
                 }
@@ -417,8 +417,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         for (int i = 0; i < materia.getResult().size(); i++) {
             if (keywordsUsed.size() == 1) {
                 List<String> values = new ArrayList<>();
-                values.add(materia.getResult().get(i).getGausian());
-                values.add(materia.getResult().get(i).getAtomo());
+                values.add(materia.getResult().get(i).getGaussian());
+                values.add(materia.getResult().get(i).getAtom());
                 values.add(String.valueOf(materia.getResult().get(i).getValue()));
                 rows.add(values);
             } else {

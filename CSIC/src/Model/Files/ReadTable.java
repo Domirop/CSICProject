@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model.Files;
 
 import java.io.IOException;
@@ -19,10 +14,11 @@ import java.util.stream.Stream;
  * @author daviddiaz
  */
 public class ReadTable {
+    
     /**
-     *
-     * @param path the path of the file
-     * @return list of the data
+     * Get the data of the files that come in table format.
+     * @param path the path of the file.
+     * @return list of the data.
      */
     public List<String> getTable(String path, String start) {
         List<String> table = new ArrayList<>();
@@ -64,7 +60,7 @@ public class ReadTable {
     }
 
     /**
-     *
+     * Gets the specific data in row and column when they come in table format.
      * @param path the path of the file
      * @param column integer that represents the column
      * @param row integer that represents the row
