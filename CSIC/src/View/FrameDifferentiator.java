@@ -13,6 +13,7 @@ import java.awt.GridLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,7 +30,7 @@ import javax.swing.table.TableModel;
 public class FrameDifferentiator extends javax.swing.JFrame {
 
     /**
-     * Creates new form FrameDifferentiator
+     * Creates new form FrameDifferentiator to show the tables.
      */
     private List<String> files = new ArrayList<>();
     private List<File> filesData = new ArrayList<>();
@@ -40,7 +41,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<String> keywordsUsed = new ArrayList<>();
     private List<List<String>> rows = new ArrayList<>();
 
-    Model modelo = new Model();
+    Model model = new Model();
     JTable tableGeneric;
 
     public FrameDifferentiator() {
@@ -141,6 +142,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Method used to get the click event.
+     *
+     * @param evt
+     */
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
         if (fieldKeyword.getText().length() > 0) {
             if (!keywordsUsed.contains(fieldKeyword.getText())) {
@@ -182,6 +188,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buttonAddActionPerformed
 
+    /**
+     * Creates a table with every single keyword.
+     *
+     * @return the table.
+     */
     private JTable initTablesDifferentiators() {
         JTable table = new JTable();
         table.setAutoCreateRowSorter(true);
@@ -189,11 +200,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         singleNames.add("Gaussian");
         singleNames.add("Atom");
 
-        for (String file : names) {
-            if (!singleNames.contains(file)) {
-                singleNames.add(file);
-            }
-        }
+        names.stream().filter((file) -> (!singleNames.contains(file))).forEachOrdered((file) -> {
+            singleNames.add(file);
+        });
         boolean[] canEditTry = new boolean[singleNames.size()];
         for (int i = 0; i < canEditTry.length; i++) {
             canEditTry[i] = false;
@@ -233,11 +242,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         return table;
     }
 
+    /**
+     * Method used to add rows to the table.
+     *
+     * @param table the table that we want to add rows to.
+     * @return table with rows added.
+     */
     private JTable addRowsToTable(JTable table) {
 
         JTable tableWithElements = table;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        List<FileData> fileData = modelo.getFileData(usedFiles);
+        List<FileData> fileData = this.model.getFileData(usedFiles);
 
         List<Object> data = new ArrayList<>();
 
@@ -260,40 +275,51 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         return tableWithElements;
     }
 
+    /**
+     * Add the used files to a List.F
+     */
     private void getUsedFiles() {
-        if (String.valueOf(comboOptions.getSelectedItem()).equals("Starts with")) {
-            for (int i = 0; i < files.size(); i++) {
-                String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                if (filename.startsWith(fieldKeyword.getText())) {
-                    usedFiles.add(filesData.get(i));
-                    if (!names.contains(filename)) {
+        switch (String.valueOf(comboOptions.getSelectedItem())) {
+            case "Starts with":
+                for (int i = 0; i < files.size(); i++) {
+                    String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
+                    if (filename.startsWith(fieldKeyword.getText())) {
+                        usedFiles.add(filesData.get(i));
+                        if (!names.contains(filename)) {
+                            names.add(filename);
+                        }
+
+                    }
+                }
+                break;
+            case "Ends with":
+                for (int i = 0; i < files.size(); i++) {
+                    String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
+                    if (filename.endsWith(fieldKeyword.getText())) {
+                        usedFiles.add(filesData.get(i));
                         names.add(filename);
                     }
-
                 }
-            }
-        } else if (String.valueOf(comboOptions.getSelectedItem()).equals("Ends with")) {
-            for (int i = 0; i < files.size(); i++) {
-                String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                if (filename.endsWith(fieldKeyword.getText())) {
-                    usedFiles.add(filesData.get(i));
-                    names.add(filename);
+                break;
+            case "Contains":
+                for (int i = 0; i < files.size(); i++) {
+                    String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
+                    if (filename.contains(fieldKeyword.getText())) {
+                        usedFiles.add(filesData.get(i));
+                        names.add(filename);
+                    }
                 }
-            }
-
-        } else if (String.valueOf(comboOptions.getSelectedItem()).equals("Contains")) {
-            for (int i = 0; i < files.size(); i++) {
-                String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                if (filename.contains(fieldKeyword.getText())) {
-                    usedFiles.add(filesData.get(i));
-                    names.add(filename);
-                }
-            }
-        } else {
-
+                break;
+            default:
+                break;
         }
     }
 
+    /**
+     * Clears all the tables.
+     *
+     * @param evt
+     */
     private void deleteButttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButttonActionPerformed
         keywordsUsed.clear();
         tabbedPane.removeAll();
@@ -303,14 +329,27 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         tableGeneric = null;
     }//GEN-LAST:event_deleteButttonActionPerformed
 
+    /**
+     * Method used to export the tables to a CSV file
+     *
+     * @param evt
+     */
     private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
-        //usedTables.add(tableGeneric);
+        String folder = "";
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int option = fileChooser.showOpenDialog(this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            folder = file.getName();
+        }
+        System.out.println(folder);
+        usedTables.add(tableGeneric);
         if (usedTables.size() > 0) {
-            for (JTable usedTable : usedTables) {
+            usedTables.stream().map((usedTable) -> {
                 List<String[]> datas = new ArrayList<>();
                 TableModel model = usedTable.getModel();
                 String[] columnNames = new String[model.getColumnCount()];
-
                 for (int i = 0; i < model.getColumnCount(); i++) {
                     columnNames[i] = model.getColumnName(i);
                 }
@@ -319,18 +358,25 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     String[] data = new String[model.getColumnCount()];
                     for (int j = 0; j < model.getColumnCount(); j++) {
                         if (model.getValueAt(i, j) != null && model.getValueAt(i, j).toString().trim().length() != 0) {
-                            data[j] = String.valueOf(model.getValueAt(i, j)).replace(".", ",");
+                            data[j] = String.valueOf(model.getValueAt(i, j));
                         }
                     }
                     datas.add(data);
                 }
-                modelo.writeCSV(datas);
-            }
+                return datas;
+            }).forEachOrdered((datas) -> {
+                model.writeCSV(datas);
+            });
         }
     }//GEN-LAST:event_buttonExportCSVActionPerformed
 
+    /**
+     * Creates the "generic" table with all the info from the other tables.
+     *
+     * @param usedFiles
+     */
     private void genericTable(List<File> usedFiles) {
-        Molecule materia = modelo.getMolecule(usedFiles, fieldKeyword.getText());
+        Molecule molecule = model.getMolecule(usedFiles, fieldKeyword.getText());
 
         String[] values = new String[keywordsUsed.size() + 2];
         values[0] = "Gaussian";
@@ -341,13 +387,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         if (tableGeneric == null) {
             initGenericTable(values);
-            addElementsToGeneric(materia);
+            addElementsToGeneric(molecule);
             JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             panelGeneric.add(scrollpaneGeneric);
         } else {
             panelGeneric.removeAll();
             initGenericTable(values);
-            addElementsToGeneric(materia);
+            addElementsToGeneric(molecule);
             JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             panelGeneric.add(scrollpaneGeneric);
 
@@ -366,6 +412,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Initializes the generic table.
+     *
+     * @param values are the "keywords" used.
+     */
     private void initGenericTable(String[] values) {
         tableGeneric = new JTable();
 
@@ -408,29 +459,34 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         tableGeneric.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
     }
 
-    private void addElementsToGeneric(Molecule materia) {
+    /**
+     * Add all the elements to the generic table.
+     *
+     * @param molecule contains all the necessary info about the molecules.
+     */
+    private void addElementsToGeneric(Molecule molecule) {
 
         DefaultTableModel model = (DefaultTableModel) tableGeneric.getModel();
         List<List<String>> auxList = new ArrayList<>(rows);
         rows.clear();
 
-        for (int i = 0; i < materia.getResult().size(); i++) {
+        for (int i = 0; i < molecule.getResult().size(); i++) {
             if (keywordsUsed.size() == 1) {
                 List<String> values = new ArrayList<>();
-                values.add(materia.getResult().get(i).getGaussian());
-                values.add(materia.getResult().get(i).getAtom());
-                values.add(String.valueOf(materia.getResult().get(i).getValue()));
+                values.add(molecule.getResult().get(i).getGausian());
+                values.add(molecule.getResult().get(i).getAtomo());
+                values.add(String.valueOf(molecule.getResult().get(i).getValue()));
                 rows.add(values);
             } else {
                 List<String> values = new ArrayList<>(auxList.get(i));
-                values.add(String.valueOf(materia.getResult().get(i).getValue()));
+                values.add(String.valueOf(molecule.getResult().get(i).getValue()));
                 rows.add(values);
             }
         }
 
-        for (List<String> row : rows) {
+        rows.forEach((row) -> {
             model.addRow(row.toArray());
-        }
+        });
 
     }
 

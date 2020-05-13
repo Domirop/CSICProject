@@ -15,6 +15,7 @@ import java.util.List;
 public class FileDropper extends DropTargetAdapter {
 
     public interface FileDropListener {
+
         public void onDropFile(File file);
     }
 
@@ -25,6 +26,10 @@ public class FileDropper extends DropTargetAdapter {
         this.listener = listener;
     }
 
+    /**
+     * This method gets the files dropped into the frame.
+     * @param event 
+     */
     public void drop(DropTargetDropEvent event) {
         event.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
         Transferable transferable = event.getTransferable();
@@ -45,5 +50,3 @@ public class FileDropper extends DropTargetAdapter {
         }
     }
 }
-
-
