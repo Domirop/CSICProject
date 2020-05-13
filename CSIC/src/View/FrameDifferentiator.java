@@ -5,9 +5,10 @@
  */
 package View;
 
+import Controller.ControllerInt;
 import Model.Atomo.FileData;
 import Model.Atomo.Molecule;
-import Model.Model;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
@@ -41,19 +42,22 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<String> keywordsUsed = new ArrayList<>();
     private List<List<String>> rows = new ArrayList<>();
 
-    Model model = new Model();
+    ControllerInt controller;
     JTable tableGeneric;
 
-    public FrameDifferentiator() {
+    public FrameDifferentiator(ControllerInt controller) {
         initComponents();
+        this.controller = controller;
     }
 
-    public FrameDifferentiator(List<String> files, List<File> filesData) {
+    public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
+        this.controller = controller;
         panelGeneric.setLayout(new GridLayout(0, 1));
         tabbedPane.addTab("Generic", panelGeneric);
         tabbedPane.setVisible(false);
         this.files = files;
+        this.errorText.setVisible(true);
         this.filesData = filesData;
     }
 
@@ -73,12 +77,19 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         tabbedPane = new javax.swing.JTabbedPane();
         deleteButtton = new javax.swing.JButton();
         buttonExportCSV = new javax.swing.JButton();
+        errorText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Search by keyword:");
 
         comboOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Starts with", "Ends with", "Contains", "Range" }));
+
+        fieldKeyword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldKeywordActionPerformed(evt);
+            }
+        });
 
         buttonAdd.setText("Add");
         buttonAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -101,6 +112,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
+        errorText.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        errorText.setForeground(new java.awt.Color(255, 0, 0));
+        errorText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -108,7 +123,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tabbedPane)
+                    .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -117,10 +132,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(buttonAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
                         .addComponent(buttonExportCSV)
                         .addGap(18, 18, 18)
-                        .addComponent(deleteButtton)))
+                        .addComponent(deleteButtton))
+                    .addComponent(tabbedPane))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -134,9 +150,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addComponent(buttonAdd)
                     .addComponent(deleteButtton)
                     .addComponent(buttonExportCSV))
-                .addGap(18, 18, 18)
-                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
 
         pack();
@@ -148,44 +166,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
-        if (fieldKeyword.getText().length() > 0) {
-            if (!keywordsUsed.contains(fieldKeyword.getText())) {
-                keywordsUsed.add(fieldKeyword.getText());
-            }
-            names.clear();
-            usedFiles.clear();
-            JPanel panel = new JPanel();
-            tabbedPane.setVisible(true);
-
-            getUsedFiles();
-
-            panel.setLayout(new GridLayout(0, 1));
-            JTable table = addRowsToTable(initTablesDifferentiators());
-            JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            TableColumn column = null;
-            for (int i = 0; i < table.getColumnCount(); i++) {
-                if (i == 0 || i == 1) {
-                    column = table.getColumnModel().getColumn(i);
-                    column.setMinWidth(100);
-                } else {
-                    column = table.getColumnModel().getColumn(i);
-                    column.setMinWidth(300);
-                }
-            }
-            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-            panel.add(scrollpane);
-            tabbedPane.addTab(fieldKeyword.getText(), panel);
-
-            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-
-            genericTable(usedFiles);
-            usedFiles.clear();
-            names.clear();
-
-            usedTables.add(table);
-            revalidate();
-            pack();
-        }
+        actionButtonAdd();
     }//GEN-LAST:event_buttonAddActionPerformed
 
     /**
@@ -252,27 +233,43 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         JTable tableWithElements = table;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        List<FileData> fileData = this.model.getFileData(usedFiles);
-
-        List<Object> data = new ArrayList<>();
-
-        for (int i = 0; i < fileData.get(0).getAtoms().size(); i++) {
-            data.clear();
-
-            for (int j = 1; j < fileData.size() + 1; j++) {
-                if (j == 1) {
-                    data.add(fileData.get(j - 1).getAtoms().get(i).getGaussianData());
-                    data.add(fileData.get(j - 1).getAtoms().get(i).getAtom());
-
+        List<FileData> fileData = this.controller.getFileData(usedFiles);
+        String fileNameError = "";
+        boolean correcto = false;
+        for (String name : names) {
+            salir:
+            if (!correcto) {
+                for (FileData fileData1 : fileData) {
+                    if (fileData1.getFileName().equals(name)) {
+                        fileNameError = "";
+                        break salir;
+                    } else {
+                        correcto = true;
+                        fileNameError = name;
+                    }
                 }
-                data.add(fileData.get(j - 1).getAtoms().get(i).getIsotropic());
-
             }
-            model.addRow(data.toArray(new Object[0]));
-
         }
-
-        return tableWithElements;
+        if (fileData.size() == usedFiles.size()) {
+            errorText.setText("");
+            List<Object> data = new ArrayList<>();
+            for (int i = 0; i < fileData.get(0).getAtoms().size(); i++) {
+                data.clear();
+                for (int j = 1; j < fileData.size() + 1; j++) {
+                    if (j == 1) {
+                        data.add(fileData.get(j - 1).getAtoms().get(i).getGaussianData());
+                        data.add(fileData.get(j - 1).getAtoms().get(i).getAtom());
+                    }
+                    data.add(fileData.get(j - 1).getAtoms().get(i).getIsotropic());
+                }
+                model.addRow(data.toArray(new Object[0]));
+            }
+            return tableWithElements;
+        } else {
+            keywordsUsed.remove(fieldKeyword.getText());
+            errorText.setText("Syntax error. Please, check the file " + fileNameError + ".");
+            return table;
+        }
     }
 
     /**
@@ -288,7 +285,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         if (!names.contains(filename)) {
                             names.add(filename);
                         }
-
                     }
                 }
                 break;
@@ -321,6 +317,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void deleteButttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButttonActionPerformed
+        errorText.setText("");
+        errorText.setForeground(Color.red);
         keywordsUsed.clear();
         tabbedPane.removeAll();
         tabbedPane.addTab("Generic", panelGeneric);
@@ -335,12 +333,16 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
+        errorText.setForeground(Color.red);
         String folder = "";
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int option = fileChooser.showOpenDialog(this);
         if (option == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
+            if (!file.exists()) {
+                new File(file.getAbsolutePath()).mkdir();
+            }
             folder = file.getAbsolutePath();
         }
 
@@ -365,11 +367,22 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     }
                     datas.add(data);
                 }
-                System.out.println(this.model.writeCSV(datas, folder, keywordsUsed.get(i)));
-                System.out.println(folder);
+                if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
+                    errorText.setForeground(Color.green);
+                    errorText.setText("All files has been created.");
+                }
             }
+        }
     }//GEN-LAST:event_buttonExportCSVActionPerformed
-    }
+
+    /**
+     * The same function that button add.
+     *
+     * @param evt
+     */
+    private void fieldKeywordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldKeywordActionPerformed
+        actionButtonAdd();
+    }//GEN-LAST:event_fieldKeywordActionPerformed
 
     /**
      * Creates the "generic" table with all the info from the other tables.
@@ -377,8 +390,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param usedFiles
      */
     private void genericTable(List<File> usedFiles) {
-        Molecule molecule = model.getMolecule(usedFiles, fieldKeyword.getText());
-
+        Molecule molecule = this.controller.getMolecule(usedFiles, fieldKeyword.getText());
         String[] values = new String[keywordsUsed.size() + 2];
         values[0] = "Gaussian";
         values[1] = "Atom";
@@ -491,11 +503,57 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     }
 
+    /**
+     * This methos is used by buttonAdd and textField.s
+     */
+    private void actionButtonAdd() {
+        errorText.setForeground(Color.red);
+        if (fieldKeyword.getText().length() > 0) {
+            if (!keywordsUsed.contains(fieldKeyword.getText())) {
+                keywordsUsed.add(fieldKeyword.getText());
+            }
+            names.clear();
+            usedFiles.clear();
+            getUsedFiles();
+            if (!usedFiles.isEmpty()) {
+                errorText.setText("");
+                JTable table = addRowsToTable(initTablesDifferentiators());
+                if (table.getRowCount() != 0) {
+                    JPanel panel = new JPanel();
+                    tabbedPane.setVisible(true);
+                    panel.setLayout(new GridLayout(0, 1));
+                    JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                    TableColumn column = null;
+                    for (int i = 0; i < table.getColumnCount(); i++) {
+                        if (i == 0 || i == 1) {
+                            column = table.getColumnModel().getColumn(i);
+                            column.setMinWidth(100);
+                        } else {
+                            column = table.getColumnModel().getColumn(i);
+                            column.setMinWidth(300);
+                        }
+                    }
+                    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                    panel.add(scrollpane);
+                    tabbedPane.addTab(fieldKeyword.getText(), panel);
+                    tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+                    genericTable(usedFiles);
+                    usedTables.add(table);
+                    revalidate();
+                    pack();
+                }else{
+                    errorText.setText("Couldn't find any file with the provided keyword.");
+                }
+            }
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonExportCSV;
     private javax.swing.JComboBox<String> comboOptions;
     private javax.swing.JButton deleteButtton;
+    private javax.swing.JLabel errorText;
     private javax.swing.JTextField fieldKeyword;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTabbedPane tabbedPane;

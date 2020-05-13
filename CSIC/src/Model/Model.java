@@ -136,9 +136,11 @@ public class Model implements ModelInt {
         List<FileData> fileData = new ArrayList<>();
         for (File file : files) {
             List<String> atomsData = formatLine(getLines(file.getAbsolutePath(), "Isotropic"));
-            String energyValue = SCFDone(file.getAbsolutePath());
-            String fileName = file.getName().split("\\.")[0];
-            fileData.add(calculations.getFileData(atomsData, energyValue, fileName));
+            if (!atomsData.isEmpty()) {
+                String energyValue = SCFDone(file.getAbsolutePath());
+                String fileName = file.getName().split("\\.")[0];
+                fileData.add(calculations.getFileData(atomsData, energyValue, fileName));
+            }
         }
         return fileData;
     }

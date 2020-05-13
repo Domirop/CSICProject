@@ -10,6 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -17,9 +19,10 @@ import java.util.stream.Collectors;
  * @author daviddiaz
  */
 public class ReadLines {
-    
+
     /**
      * Gets the lines that that filter contains.
+     *
      * @param path the path of the file
      * @return a list of the data
      */
@@ -29,26 +32,34 @@ public class ReadLines {
             lines = Files.lines(Paths.get(path))
                     .filter(s -> s.contains(filter))
                     .collect(Collectors.toList());
-        } catch (IOException e) {
+            return lines;
+        } catch (IOException ex) {
+            return lines;
         }
-        return lines;
     }
-    
+
     /**
-     * It is in responsible of formatting the lines that arrive to obtain the important values.
+     * It is in responsible of formatting the lines that arrive to obtain the
+     * important values.
+     *
      * @param lines format line
      * @return formatted output
      */
     public List<String> formatLineIsotropic(List<String> lines) {
         List<String> formattedOutput = new ArrayList<>();
-        lines.forEach((string) -> {
-            string = string.replaceAll("\\s", "");
-            String[] prueba = string.split("=");
-            StringBuilder builder = new StringBuilder();
-            builder.append(prueba[0].replaceAll("Isotropic", "/"));
-            builder.append(prueba[1].replaceAll("Anisotropy", ""));
-            formattedOutput.add(builder.toString());
-        });
-        return formattedOutput;
+        if (!lines.isEmpty()) {
+            lines.forEach((string) -> {
+                string = string.replaceAll("\\s", "");
+                String[] prueba = string.split("=");
+                StringBuilder builder = new StringBuilder();
+                builder.append(prueba[0].replaceAll("Isotropic", "/"));
+                builder.append(prueba[1].replaceAll("Anisotropy", ""));
+                formattedOutput.add(builder.toString());
+            });
+            return formattedOutput;
+
+        } else {
+            return formattedOutput;
+        }
     }
 }

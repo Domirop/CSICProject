@@ -23,7 +23,6 @@ public class ReadTable {
     public List<String> getTable(String path, String start) {
         List<String> table = new ArrayList<>();
         List<String> data = new ArrayList<>();
-
         try {
             Iterator<String> iterator = Files.lines(Paths.get(path)).iterator();
             int lineStart = 0;

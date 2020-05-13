@@ -5,6 +5,7 @@
  */
 package View;
 
+import Controller.Controller;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -36,13 +37,15 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
      * Creates new form ChooseFilesFrame so the user can either choose files
      * from a directory or drop them into the frame.
      */
-    List<String> filesTypes = new ArrayList<>(Arrays.asList("log", "txt"));
+    List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     List<File> listFiles = new ArrayList<>();
+    Controller controller;
 
-    public ChooseFilesFrame() {
+    public ChooseFilesFrame(Controller controller) {
         initComponents();
         enableDragAndDrop();
         BufferedImage bi = null;
+        this.controller = controller;
         try {
             bi = ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/add-file.png"));
         } catch (IOException ex) {
@@ -113,6 +116,8 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+
         dropTextArea.setColumns(20);
         dropTextArea.setRows(5);
         jScrollPane1.setViewportView(dropTextArea);
@@ -168,7 +173,7 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
     private void buttonChooseFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseFilesActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("All files", "log", "txt"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("log"));
         fileChooser.setMultiSelectionEnabled(true);
         int returnVal = fileChooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -191,7 +196,7 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
             for (File listFile : listFiles) {
                 fileNames.add(listFile.getName());
             }
-            FrameDifferentiator frameDiff = new FrameDifferentiator(fileNames, listFiles);
+            FrameDifferentiator frameDiff = new FrameDifferentiator(fileNames, listFiles, controller);
             this.dispose();
             frameDiff.setVisible(true);
         }
