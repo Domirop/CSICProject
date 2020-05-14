@@ -8,6 +8,7 @@ package View;
 import Controller.ControllerInt;
 import Model.Atomo.FileData;
 import Model.Atomo.Molecule;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -41,6 +42,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<JTable> usedTables = new ArrayList<>();
     private List<String> keywordsUsed = new ArrayList<>();
     private List<List<String>> rows = new ArrayList<>();
+    List<String> colAndRows = new ArrayList<>();
 
     ControllerInt controller;
     JTable tableGeneric;
@@ -56,6 +58,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         panelGeneric.setLayout(new GridLayout(0, 1));
         tabbedPane.addTab("Generic", panelGeneric);
         tabbedPane.setVisible(false);
+
         this.files = files;
         this.errorText.setVisible(true);
         this.filesData = filesData;
@@ -70,6 +73,19 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        jLabel2 = new javax.swing.JLabel();
+        fieldRow = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        fieldColumn = new javax.swing.JTextField();
+        buttonAddValue = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        areaValues = new javax.swing.JTextArea();
+        finishButton = new javax.swing.JButton();
+        jDialog2 = new javax.swing.JDialog();
+        jLabel4 = new javax.swing.JLabel();
+        fieldNameValues = new javax.swing.JTextField();
+        buttonValues = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         comboOptions = new javax.swing.JComboBox<>();
         fieldKeyword = new javax.swing.JTextField();
@@ -78,6 +94,105 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         deleteButtton = new javax.swing.JButton();
         buttonExportCSV = new javax.swing.JButton();
         errorText = new javax.swing.JLabel();
+        buttonValue = new javax.swing.JButton();
+
+        jLabel2.setText("Row:");
+
+        jLabel3.setText("Column:");
+
+        buttonAddValue.setText("Add");
+        buttonAddValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAddValueActionPerformed(evt);
+            }
+        });
+
+        areaValues.setEditable(false);
+        areaValues.setColumns(3);
+        areaValues.setRows(5);
+        jScrollPane1.setViewportView(areaValues);
+
+        finishButton.setText("Finish");
+        finishButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                finishButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addComponent(fieldColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(buttonAddValue)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addComponent(finishButton)
+                .addContainerGap())
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(fieldColumn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonAddValue))
+                .addGap(18, 18, 18)
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(finishButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jLabel4.setText("Choose a name for the values");
+
+        buttonValues.setText("Ok");
+        buttonValues.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonValuesActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jDialog2Layout = new javax.swing.GroupLayout(jDialog2.getContentPane());
+        jDialog2.getContentPane().setLayout(jDialog2Layout);
+        jDialog2Layout.setHorizontalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog2Layout.createSequentialGroup()
+                .addContainerGap(58, Short.MAX_VALUE)
+                .addGroup(jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jDialog2Layout.createSequentialGroup()
+                        .addGap(180, 180, 180)
+                        .addComponent(buttonValues))
+                    .addGroup(jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(fieldNameValues, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)))
+                .addContainerGap())
+        );
+        jDialog2Layout.setVerticalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fieldNameValues, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonValues))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,6 +231,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         errorText.setForeground(new java.awt.Color(255, 0, 0));
         errorText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        buttonValue.setText("Search value");
+        buttonValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonValueActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -123,7 +245,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonValue))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -150,11 +275,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addComponent(buttonAdd)
                     .addComponent(deleteButtton)
                     .addComponent(buttonExportCSV))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonValue))
                 .addGap(12, 12, 12)
                 .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         pack();
@@ -384,6 +511,46 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         actionButtonAdd();
     }//GEN-LAST:event_fieldKeywordActionPerformed
 
+    private void buttonValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValueActionPerformed
+        jDialog1.pack();
+        jDialog1.setVisible(true);
+    }//GEN-LAST:event_buttonValueActionPerformed
+
+    private void buttonAddValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddValueActionPerformed
+        String regex = "\\d+";
+        colAndRows.clear();
+        if (fieldRow.getText().matches(regex) && fieldColumn.getText().matches(regex)) {
+            colAndRows.add(fieldRow.getText() + "," + fieldColumn.getText());
+        }
+
+        for (String value : colAndRows) {
+            areaValues.append(value + "\n");
+        }
+
+        fieldRow.setText("");
+        fieldColumn.setText("");
+
+
+    }//GEN-LAST:event_buttonAddValueActionPerformed
+
+    private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
+        JTable holaquetal = new JTable();
+        JScrollPane scrollpaneHola = new JScrollPane(holaquetal, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        areaValues.setText("");
+        jDialog1.dispose();
+        jDialog2.pack();
+        jDialog2.setVisible(true);
+    }//GEN-LAST:event_finishButtonActionPerformed
+
+    private void buttonValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValuesActionPerformed
+        JPanel newPane = new JPanel();
+        newPane.setLayout(new GridLayout(0, 1));
+        
+        tabbedPane.add(fieldNameValues.getText(), newPane);
+        jDialog2.dispose();
+        fieldNameValues.setText("");
+    }//GEN-LAST:event_buttonValuesActionPerformed
+
     /**
      * Creates the "generic" table with all the info from the other tables.
      *
@@ -541,7 +708,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     usedTables.add(table);
                     revalidate();
                     pack();
-                }else{
+                } else {
                     errorText.setText("Couldn't find any file with the provided keyword.");
                 }
             }
@@ -549,13 +716,27 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea areaValues;
     private javax.swing.JButton buttonAdd;
+    private javax.swing.JButton buttonAddValue;
     private javax.swing.JButton buttonExportCSV;
+    private javax.swing.JButton buttonValue;
+    private javax.swing.JButton buttonValues;
     private javax.swing.JComboBox<String> comboOptions;
     private javax.swing.JButton deleteButtton;
     private javax.swing.JLabel errorText;
+    private javax.swing.JTextField fieldColumn;
     private javax.swing.JTextField fieldKeyword;
+    private javax.swing.JTextField fieldNameValues;
+    private javax.swing.JTextField fieldRow;
+    private javax.swing.JButton finishButton;
+    private javax.swing.JDialog jDialog1;
+    private javax.swing.JDialog jDialog2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
 }
