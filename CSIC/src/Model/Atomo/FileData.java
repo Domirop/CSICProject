@@ -14,16 +14,21 @@ import java.util.List;
 public class FileData {
     private String fileName;
     private List<Atom> atoms;
+    private List<AtomTable> atomsTable;
     private double energyValue;
     
     public FileData() {
     }
 
-    public FileData(String fileName, List<Atom> atoms, double energyValue) {
-        this.fileName = fileName;
-        this.atoms = atoms;
-        this.energyValue = energyValue;
+    public List<AtomTable> getAtomsTable() {
+        return atomsTable;
     }
+
+    public void setAtomsTable(List<AtomTable> atomsTable) {
+        this.atomsTable = atomsTable;
+    }
+    
+    
 
     public String getFileName() {
         return fileName;
