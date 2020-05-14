@@ -653,48 +653,52 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonValuesActionPerformed
 
     private void itemSearchValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSearchValueActionPerformed
-        dialogCoordinates.pack();
-        dialogCoordinates.setVisible(true);
-        colAndRows.clear();
+        if (tabbedPane.isVisible()) {
+            dialogCoordinates.pack();
+            dialogCoordinates.setVisible(true);
+            colAndRows.clear();
+        }
     }//GEN-LAST:event_itemSearchValueActionPerformed
 
     private void itemExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemExportActionPerformed
-        errorText.setForeground(Color.red);
-        String folder = "";
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int option = fileChooser.showOpenDialog(this);
-        if (option == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            if (!file.exists()) {
-                new File(file.getAbsolutePath()).mkdir();
+        if (tabbedPane.isVisible()) {
+            errorText.setForeground(Color.red);
+            String folder = "";
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int option = fileChooser.showOpenDialog(this);
+            if (option == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                if (!file.exists()) {
+                    new File(file.getAbsolutePath()).mkdir();
+                }
+                folder = file.getAbsolutePath();
             }
-            folder = file.getAbsolutePath();
-        }
 
-        keywordsUsed.add("Generic");
+            keywordsUsed.add("Generic");
 
-        if (usedTables.size() > 0) {
-            for (int i = 0; i < keywordsUsed.size(); i++) {
-                List<String[]> datas = new ArrayList<>();
-                TableModel model = usedTables.get(i).getModel();
-                String[] columnNames = new String[model.getColumnCount()];
-                for (int j = 0; j < model.getColumnCount(); j++) {
-                    columnNames[j] = model.getColumnName(j);
-                }
-                datas.add(columnNames);
-                for (int k = 0; k < model.getRowCount(); k++) {
-                    String[] data = new String[model.getColumnCount()];
+            if (usedTables.size() > 0) {
+                for (int i = 0; i < keywordsUsed.size(); i++) {
+                    List<String[]> datas = new ArrayList<>();
+                    TableModel model = usedTables.get(i).getModel();
+                    String[] columnNames = new String[model.getColumnCount()];
                     for (int j = 0; j < model.getColumnCount(); j++) {
-                        if (model.getValueAt(k, j) != null && model.getValueAt(k, j).toString().trim().length() != 0) {
-                            data[j] = String.valueOf(model.getValueAt(k, j));
-                        }
+                        columnNames[j] = model.getColumnName(j);
                     }
-                    datas.add(data);
-                }
-                if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
-                    errorText.setForeground(Color.green);
-                    errorText.setText("All files has been created.");
+                    datas.add(columnNames);
+                    for (int k = 0; k < model.getRowCount(); k++) {
+                        String[] data = new String[model.getColumnCount()];
+                        for (int j = 0; j < model.getColumnCount(); j++) {
+                            if (model.getValueAt(k, j) != null && model.getValueAt(k, j).toString().trim().length() != 0) {
+                                data[j] = String.valueOf(model.getValueAt(k, j));
+                            }
+                        }
+                        datas.add(data);
+                    }
+                    if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
+                        errorText.setForeground(Color.green);
+                        errorText.setText("All files has been created.");
+                    }
                 }
             }
         }
