@@ -73,7 +73,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDialog1 = new javax.swing.JDialog();
+        dialogCoordinates = new javax.swing.JDialog();
         jLabel2 = new javax.swing.JLabel();
         fieldRow = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -82,10 +82,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         areaValues = new javax.swing.JTextArea();
         finishButton = new javax.swing.JButton();
-        jDialog2 = new javax.swing.JDialog();
+        errorDialogCoor = new javax.swing.JLabel();
+        dialogNombre = new javax.swing.JDialog();
         jLabel4 = new javax.swing.JLabel();
         fieldNameValues = new javax.swing.JTextField();
         buttonValues = new javax.swing.JButton();
+        jMenu2 = new javax.swing.JMenu();
         jLabel1 = new javax.swing.JLabel();
         comboOptions = new javax.swing.JComboBox<>();
         fieldKeyword = new javax.swing.JTextField();
@@ -95,12 +97,19 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonExportCSV = new javax.swing.JButton();
         errorText = new javax.swing.JLabel();
         buttonValue = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        itemSearchValue = new javax.swing.JMenuItem();
+        itemExport = new javax.swing.JMenuItem();
+        itemReset = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        itemExit = new javax.swing.JMenuItem();
 
         jLabel2.setText("Row:");
 
         jLabel3.setText("Column:");
 
-        buttonAddValue.setText("Add");
+        buttonAddValue.setText(">");
         buttonAddValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAddValueActionPerformed(evt);
@@ -119,44 +128,64 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
-        jDialog1.getContentPane().setLayout(jDialog1Layout);
-        jDialog1Layout.setHorizontalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialog1Layout.createSequentialGroup()
+        errorDialogCoor.setForeground(new java.awt.Color(255, 0, 0));
+
+        javax.swing.GroupLayout dialogCoordinatesLayout = new javax.swing.GroupLayout(dialogCoordinates.getContentPane());
+        dialogCoordinates.getContentPane().setLayout(dialogCoordinatesLayout);
+        dialogCoordinatesLayout.setHorizontalGroup(
+            dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogCoordinatesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(fieldColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(buttonAddValue)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(finishButton)
+                .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                        .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(fieldColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogCoordinatesLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonAddValue)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
+                    .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                        .addComponent(errorDialogCoor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(finishButton)))
                 .addContainerGap())
         );
-        jDialog1Layout.setVerticalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialog1Layout.createSequentialGroup()
+        dialogCoordinatesLayout.setVerticalGroup(
+            dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogCoordinatesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(fieldColumn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonAddValue))
-                .addGap(18, 18, 18)
-                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(finishButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                        .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(buttonAddValue))
+                            .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                                .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(fieldColumn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(29, 29, 29))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogCoordinatesLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                        .addComponent(finishButton)
+                        .addGap(0, 16, Short.MAX_VALUE))
+                    .addComponent(errorDialogCoor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jLabel4.setText("Choose a name for the values");
@@ -168,31 +197,34 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jDialog2Layout = new javax.swing.GroupLayout(jDialog2.getContentPane());
-        jDialog2.getContentPane().setLayout(jDialog2Layout);
-        jDialog2Layout.setHorizontalGroup(
-            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog2Layout.createSequentialGroup()
-                .addContainerGap(58, Short.MAX_VALUE)
-                .addGroup(jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jDialog2Layout.createSequentialGroup()
-                        .addGap(180, 180, 180)
-                        .addComponent(buttonValues))
-                    .addGroup(jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(fieldNameValues, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4)))
-                .addContainerGap())
+        javax.swing.GroupLayout dialogNombreLayout = new javax.swing.GroupLayout(dialogNombre.getContentPane());
+        dialogNombre.getContentPane().setLayout(dialogNombreLayout);
+        dialogNombreLayout.setHorizontalGroup(
+            dialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogNombreLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(dialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(buttonValues)
+                    .addComponent(fieldNameValues, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(dialogNombreLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jDialog2Layout.setVerticalGroup(
-            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialog2Layout.createSequentialGroup()
+        dialogNombreLayout.setVerticalGroup(
+            dialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogNombreLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fieldNameValues, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonValues))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(buttonValues)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jMenu2.setText("jMenu2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -238,6 +270,52 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
+        jMenu1.setText("Options");
+
+        itemSearchValue.setText("Search values");
+        itemSearchValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSearchValueActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemSearchValue);
+
+        itemExport.setText("Export to CSV");
+        itemExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemExportActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemExport);
+
+        itemReset.setText("Reset");
+        itemReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemResetActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemReset);
+
+        jMenuItem1.setText("Choose files");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        itemExit.setText("Exit");
+        itemExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemExitActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemExit);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -247,8 +325,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonValue))
+                        .addGap(266, 266, 266))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -257,9 +334,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(buttonAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+                        .addGap(77, 77, 77)
+                        .addComponent(buttonValue)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buttonExportCSV)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteButtton))
                     .addComponent(tabbedPane))
                 .addContainerGap())
@@ -274,14 +353,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonAdd)
                     .addComponent(deleteButtton)
+                    .addComponent(buttonValue)
                     .addComponent(buttonExportCSV))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonValue))
+                .addGap(15, 15, 15)
+                .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
                 .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -439,69 +517,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     /**
-     * Clears all the tables.
-     *
-     * @param evt
-     */
-    private void deleteButttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButttonActionPerformed
-        errorText.setText("");
-        errorText.setForeground(Color.red);
-        keywordsUsed.clear();
-        tabbedPane.removeAll();
-        tabbedPane.addTab("Generic", panelGeneric);
-        tabbedPane.setVisible(false);
-        panelGeneric.removeAll();
-        tableGeneric = null;
-    }//GEN-LAST:event_deleteButttonActionPerformed
-
-    /**
-     * Method used to export the tables to a CSV file
-     *
-     * @param evt
-     */
-    private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
-        errorText.setForeground(Color.red);
-        String folder = "";
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int option = fileChooser.showOpenDialog(this);
-        if (option == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            if (!file.exists()) {
-                new File(file.getAbsolutePath()).mkdir();
-            }
-            folder = file.getAbsolutePath();
-        }
-
-        keywordsUsed.add("Generic");
-
-        if (usedTables.size() > 0) {
-            for (int i = 0; i < keywordsUsed.size(); i++) {
-                List<String[]> datas = new ArrayList<>();
-                TableModel model = usedTables.get(i).getModel();
-                String[] columnNames = new String[model.getColumnCount()];
-                for (int j = 0; j < model.getColumnCount(); j++) {
-                    columnNames[j] = model.getColumnName(j);
-                }
-                datas.add(columnNames);
-                for (int k = 0; k < model.getRowCount(); k++) {
-                    String[] data = new String[model.getColumnCount()];
-                    for (int j = 0; j < model.getColumnCount(); j++) {
-                        if (model.getValueAt(k, j) != null && model.getValueAt(k, j).toString().trim().length() != 0) {
-                            data[j] = String.valueOf(model.getValueAt(k, j));
-                        }
-                    }
-                    datas.add(data);
-                }
-                if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
-                    errorText.setForeground(Color.green);
-                    errorText.setText("All files has been created.");
-                }
-            }
-        }
-    }//GEN-LAST:event_buttonExportCSVActionPerformed
-
-    /**
      * The same function that button add.
      *
      * @param evt
@@ -511,31 +526,25 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_fieldKeywordActionPerformed
 
     /**
-     * Shows the dialog that gets the column and rows.
-     *
-     * @param evt
-     */
-    private void buttonValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValueActionPerformed
-        jDialog1.pack();
-        jDialog1.setVisible(true);
-        colAndRows.clear();
-
-    }//GEN-LAST:event_buttonValueActionPerformed
-
-    /**
      * Gets column and rows.
      *
      * @param evt
      */
     private void buttonAddValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddValueActionPerformed
         String regex = "\\d+";
-
         if (fieldRow.getText().matches(regex) && fieldColumn.getText().matches(regex)) {
-            colAndRows.add(fieldRow.getText() + "," + fieldColumn.getText());
-            areaValues.append(fieldRow.getText() + "," + fieldColumn.getText() + "\n");
-
+            int row = Integer.parseInt(fieldRow.getText());
+            int column = Integer.parseInt(fieldColumn.getText());
+            if (row >= column) {
+                colAndRows.add(row + "," + column);
+                areaValues.append(row + "," + column + "\n");
+                errorDialogCoor.setText("");
+            } else {
+                errorDialogCoor.setText("<html><body>The value of the row must be greater<br>than or equal to the column value.</body></html>");
+            }
+        } else {
+            errorDialogCoor.setText("The values need to be integer.");
         }
-
         fieldRow.setText("");
         fieldColumn.setText("");
 
@@ -547,10 +556,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
+        errorDialogCoor.setText("");
         areaValues.setText("");
-        jDialog1.dispose();
-        jDialog2.pack();
-        jDialog2.setVisible(true);
+        dialogCoordinates.dispose();
+        dialogNombre.pack();
+        dialogNombre.setVisible(true);
     }//GEN-LAST:event_finishButtonActionPerformed
 
     /**
@@ -560,7 +570,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValuesActionPerformed
-
         JPanel newPane = new JPanel();
         newPane.setLayout(new GridLayout(0, 1));
         String[] values = new String[keywordsUsed.size() + 2];
@@ -639,9 +648,152 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         newPane.add(scrollpaneHola);
         tabbedPane.insertTab(fieldNameValues.getText(), new ImageIcon(""), newPane, null, 1);
-        jDialog2.dispose();
+        dialogNombre.dispose();
         fieldNameValues.setText("");
     }//GEN-LAST:event_buttonValuesActionPerformed
+
+    private void itemSearchValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSearchValueActionPerformed
+        dialogCoordinates.pack();
+        dialogCoordinates.setVisible(true);
+        colAndRows.clear();
+    }//GEN-LAST:event_itemSearchValueActionPerformed
+
+    private void itemExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemExportActionPerformed
+        errorText.setForeground(Color.red);
+        String folder = "";
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int option = fileChooser.showOpenDialog(this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (!file.exists()) {
+                new File(file.getAbsolutePath()).mkdir();
+            }
+            folder = file.getAbsolutePath();
+        }
+
+        keywordsUsed.add("Generic");
+
+        if (usedTables.size() > 0) {
+            for (int i = 0; i < keywordsUsed.size(); i++) {
+                List<String[]> datas = new ArrayList<>();
+                TableModel model = usedTables.get(i).getModel();
+                String[] columnNames = new String[model.getColumnCount()];
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    columnNames[j] = model.getColumnName(j);
+                }
+                datas.add(columnNames);
+                for (int k = 0; k < model.getRowCount(); k++) {
+                    String[] data = new String[model.getColumnCount()];
+                    for (int j = 0; j < model.getColumnCount(); j++) {
+                        if (model.getValueAt(k, j) != null && model.getValueAt(k, j).toString().trim().length() != 0) {
+                            data[j] = String.valueOf(model.getValueAt(k, j));
+                        }
+                    }
+                    datas.add(data);
+                }
+                if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
+                    errorText.setForeground(Color.green);
+                    errorText.setText("All files has been created.");
+                }
+            }
+        }
+    }//GEN-LAST:event_itemExportActionPerformed
+
+    private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
+        errorText.setText("");
+        errorText.setForeground(Color.red);
+        keywordsUsed.clear();
+        tabbedPane.removeAll();
+        tabbedPane.addTab("Generic", panelGeneric);
+        tabbedPane.setVisible(false);
+        panelGeneric.removeAll();
+        tableGeneric = null;
+    }//GEN-LAST:event_itemResetActionPerformed
+
+    /**
+     * Clears all the tables.
+     *
+     * @param evt
+     */
+    private void deleteButttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButttonActionPerformed
+        errorText.setText("");
+        errorText.setForeground(Color.red);
+        keywordsUsed.clear();
+        tabbedPane.removeAll();
+        tabbedPane.addTab("Generic", panelGeneric);
+        tabbedPane.setVisible(false);
+        panelGeneric.removeAll();
+        tableGeneric = null;
+    }//GEN-LAST:event_deleteButttonActionPerformed
+
+    /**
+     * Method used to export the tables to a CSV file
+     *
+     * @param evt
+     */
+    private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
+        errorText.setForeground(Color.red);
+        String folder = "";
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int option = fileChooser.showOpenDialog(this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (!file.exists()) {
+                new File(file.getAbsolutePath()).mkdir();
+            }
+            folder = file.getAbsolutePath();
+        }
+
+        keywordsUsed.add("Generic");
+
+        if (usedTables.size() > 0) {
+            for (int i = 0; i < keywordsUsed.size(); i++) {
+                List<String[]> datas = new ArrayList<>();
+                TableModel model = usedTables.get(i).getModel();
+                String[] columnNames = new String[model.getColumnCount()];
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    columnNames[j] = model.getColumnName(j);
+                }
+                datas.add(columnNames);
+                for (int k = 0; k < model.getRowCount(); k++) {
+                    String[] data = new String[model.getColumnCount()];
+                    for (int j = 0; j < model.getColumnCount(); j++) {
+                        if (model.getValueAt(k, j) != null && model.getValueAt(k, j).toString().trim().length() != 0) {
+                            data[j] = String.valueOf(model.getValueAt(k, j));
+                        }
+                    }
+                    datas.add(data);
+                }
+                if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
+                    errorText.setForeground(Color.green);
+                    errorText.setText("All files has been created.");
+                }
+            }
+        }
+    }//GEN-LAST:event_buttonExportCSVActionPerformed
+
+    /**
+     * Shows the dialog that gets the column and rows.
+     *
+     * @param evt
+     */
+    private void buttonValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValueActionPerformed
+        dialogCoordinates.pack();
+        dialogCoordinates.setVisible(true);
+        colAndRows.clear();
+    }//GEN-LAST:event_buttonValueActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        ChooseFilesFrame chooseFilesFrame = new ChooseFilesFrame(controller);
+        chooseFilesFrame.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void itemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemExitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_itemExitActionPerformed
 
     /**
      * Creates the "generic" table with all the info from the other tables.
@@ -819,18 +971,27 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JButton buttonValues;
     private javax.swing.JComboBox<String> comboOptions;
     private javax.swing.JButton deleteButtton;
+    private javax.swing.JDialog dialogCoordinates;
+    private javax.swing.JDialog dialogNombre;
+    private javax.swing.JLabel errorDialogCoor;
     private javax.swing.JLabel errorText;
     private javax.swing.JTextField fieldColumn;
     private javax.swing.JTextField fieldKeyword;
     private javax.swing.JTextField fieldNameValues;
     private javax.swing.JTextField fieldRow;
     private javax.swing.JButton finishButton;
-    private javax.swing.JDialog jDialog1;
-    private javax.swing.JDialog jDialog2;
+    private javax.swing.JMenuItem itemExit;
+    private javax.swing.JMenuItem itemExport;
+    private javax.swing.JMenuItem itemReset;
+    private javax.swing.JMenuItem itemSearchValue;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables

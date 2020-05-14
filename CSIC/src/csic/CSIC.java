@@ -8,6 +8,7 @@ import Controller.Controller;
 import Controller.ControllerInt;
 import Model.Model;
 import Model.ModelInt;
+import View.ChooseFilesFrame;
 
 public class CSIC {
 
@@ -18,6 +19,7 @@ public class CSIC {
     public static void main(String[] args) {
         ModelInt model = new Model();
         ControllerInt controller = new Controller(model);
-        controller.startApp();
+        ChooseFilesFrame frame = new ChooseFilesFrame(controller);
+        frame.setVisible(true);
     }
 }

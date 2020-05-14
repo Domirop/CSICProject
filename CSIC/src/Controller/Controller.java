@@ -38,12 +38,6 @@ public class Controller implements ControllerInt{
     public Molecule getMolecule(List<File> files, String key) {
         return model.getMolecule(files, key);
     }
-
-    @Override
-    public void startApp() {
-        ChooseFilesFrame frame = new ChooseFilesFrame(this);
-        frame.setVisible(true);
-    }
     
     @Override
     public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key) {

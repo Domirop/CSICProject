@@ -5,7 +5,7 @@
  */
 package View;
 
-import Controller.Controller;
+import Controller.ControllerInt;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -39,9 +39,9 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
      */
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     List<File> listFiles = new ArrayList<>();
-    Controller controller;
+    ControllerInt controller;
 
-    public ChooseFilesFrame(Controller controller) {
+    public ChooseFilesFrame(ControllerInt controller) {
         initComponents();
         enableDragAndDrop();
         BufferedImage bi = null;
