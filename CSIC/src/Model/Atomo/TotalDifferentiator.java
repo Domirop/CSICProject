@@ -5,6 +5,8 @@
  */
 package Model.Atomo;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author domit
@@ -12,7 +14,7 @@ package Model.Atomo;
 public class TotalDifferentiator {
     private String gaussian;
     private String atom;
-    private double value;
+    private BigDecimal value;
 
     public String getAtom() {
         return atom;
@@ -33,11 +35,11 @@ public class TotalDifferentiator {
         this.gaussian = atomo;
     }
 
-    public double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 }

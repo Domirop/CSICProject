@@ -16,6 +16,7 @@ import Model.Files.ReadEnergyValue;
 import Model.Files.ReadLines;
 import Model.Files.ReadTable;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -203,8 +204,8 @@ public class Model implements ModelInt {
             String[] position = coordinate.split(",");
             atomTable.setColumn(Integer.parseInt(position[1]));
             atomTable.setRow(Integer.parseInt(position[0]));
-            atomTable.setValue(Double.parseDouble(this.getValue(path, atomTable.getColumn(),
-                    atomTable.getRow(), "contribution to J")));
+            atomTable.setValue(new BigDecimal(this.getValue(path, atomTable.getColumn(),
+                    atomTable.getRow(), "contribution to J").replace("D", "e")));
             atomsTable.add(atomTable);
         }
         return atomsTable;
@@ -220,13 +221,13 @@ public class Model implements ModelInt {
      */
     @Override
     public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key) {
+
         Molecule molecule = new Molecule();
         molecule.setFilesData(getFileDataTable(files, coordinates));
         molecule.setDifferentiator(key);
         List<TotalDifferentiator> total = new ArrayList<>();
         for (String coordinate : coordinates) {
-            TotalDifferentiator totalDifferentiator = new TotalDifferentiator();
-            totalDifferentiator = calculations.getValueToAtomTable(molecule.getFilesData(), coordinate);
+            TotalDifferentiator totalDifferentiator = calculations.getValueToAtomTable(molecule.getFilesData(), coordinate);
             total.add(totalDifferentiator);
         }
         molecule.setResult(total);

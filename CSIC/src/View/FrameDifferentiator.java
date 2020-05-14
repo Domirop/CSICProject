@@ -8,13 +8,13 @@ package View;
 import Controller.ControllerInt;
 import Model.Atomo.FileData;
 import Model.Atomo.Molecule;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -357,7 +357,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @return table with rows added.
      */
     private JTable addRowsToTable(JTable table) {
-
         JTable tableWithElements = table;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         List<FileData> fileData = this.controller.getFileData(usedFiles);
@@ -402,12 +401,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     /**
      * Add the used files to a List.F
      */
-    private void getUsedFiles() {
+    private void getUsedFiles(String value) {
+        //String.valueOf(comboOptions.getSelectedItem())
         switch (String.valueOf(comboOptions.getSelectedItem())) {
             case "Starts with":
                 for (int i = 0; i < files.size(); i++) {
                     String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                    if (filename.startsWith(fieldKeyword.getText())) {
+                    if (filename.startsWith(value)) {
                         usedFiles.add(filesData.get(i));
                         if (!names.contains(filename)) {
                             names.add(filename);
@@ -418,7 +418,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             case "Ends with":
                 for (int i = 0; i < files.size(); i++) {
                     String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                    if (filename.endsWith(fieldKeyword.getText())) {
+                    if (filename.endsWith(value)) {
                         usedFiles.add(filesData.get(i));
                         names.add(filename);
                     }
@@ -427,7 +427,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             case "Contains":
                 for (int i = 0; i < files.size(); i++) {
                     String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                    if (filename.contains(fieldKeyword.getText())) {
+                    if (filename.contains(value)) {
                         usedFiles.add(filesData.get(i));
                         names.add(filename);
                     }
@@ -473,7 +473,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             folder = file.getAbsolutePath();
         }
 
-        usedTables.add(tableGeneric);
         keywordsUsed.add("Generic");
 
         if (usedTables.size() > 0) {
@@ -511,42 +510,135 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         actionButtonAdd();
     }//GEN-LAST:event_fieldKeywordActionPerformed
 
+    /**
+     * Shows the dialog that gets the column and rows.
+     *
+     * @param evt
+     */
     private void buttonValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValueActionPerformed
         jDialog1.pack();
         jDialog1.setVisible(true);
+        colAndRows.clear();
+
     }//GEN-LAST:event_buttonValueActionPerformed
 
+    /**
+     * Gets column and rows.
+     *
+     * @param evt
+     */
     private void buttonAddValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddValueActionPerformed
         String regex = "\\d+";
-        colAndRows.clear();
+
         if (fieldRow.getText().matches(regex) && fieldColumn.getText().matches(regex)) {
             colAndRows.add(fieldRow.getText() + "," + fieldColumn.getText());
-        }
+            areaValues.append(fieldRow.getText() + "," + fieldColumn.getText() + "\n");
 
-        for (String value : colAndRows) {
-            areaValues.append(value + "\n");
         }
 
         fieldRow.setText("");
         fieldColumn.setText("");
 
-
     }//GEN-LAST:event_buttonAddValueActionPerformed
 
+    /**
+     * Closes the dialog and opens the dialog that asks for a name.
+     *
+     * @param evt
+     */
     private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
-        JTable holaquetal = new JTable();
-        JScrollPane scrollpaneHola = new JScrollPane(holaquetal, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         areaValues.setText("");
         jDialog1.dispose();
         jDialog2.pack();
         jDialog2.setVisible(true);
     }//GEN-LAST:event_finishButtonActionPerformed
 
+    /**
+     * Gets the name of the table and creates it with all the data from the
+     * coordinates.
+     *
+     * @param evt
+     */
     private void buttonValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValuesActionPerformed
+
         JPanel newPane = new JPanel();
         newPane.setLayout(new GridLayout(0, 1));
-        
-        tabbedPane.add(fieldNameValues.getText(), newPane);
+        String[] values = new String[keywordsUsed.size() + 2];
+        values[0] = "Row";
+        values[1] = "Column";
+        for (int i = 2; i < keywordsUsed.size() + 2; i++) {
+            values[i] = keywordsUsed.get(i - 2);
+        }
+
+        JTable tableCoord = new JTable();
+        boolean[] canEditTry = new boolean[2 + keywordsUsed.size()];
+        for (int i = 0; i < canEditTry.length; i++) {
+            canEditTry[i] = false;
+        }
+
+        DefaultTableModel modelTable = new DefaultTableModel(values, 0) {
+            boolean[] canEdit = canEditTry;
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+
+            @Override
+            public Class<?> getColumnClass(int column) {
+                Class<?> returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                } else {
+                    returnValue = Object.class;
+                }
+
+                return returnValue;
+
+            }
+        ;
+        };
+        tableCoord.setModel(modelTable);
+        //Center columns
+        for (int i = 0; i < tableCoord.getColumnCount(); i++) {
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            tableCoord.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableCoord.getTableHeader().getDefaultRenderer();
+        renderer.setHorizontalAlignment(0);
+        tableCoord.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+
+        DefaultTableModel model = (DefaultTableModel) tableCoord.getModel();
+
+        List<Molecule> molList = new ArrayList<>();
+
+        for (int i = 2; i < tableCoord.getColumnCount(); i++) {
+            usedFiles.clear();
+            getUsedFiles(tableCoord.getColumnName(i));
+            Molecule mole = controller.getTableMolecule(usedFiles, colAndRows, tableCoord.getColumnName(i));
+            molList.add(mole);
+        }
+
+        List<List<String>> rows = new ArrayList<>();
+        for (int i = 0; i < colAndRows.size(); i++) {
+            List<String> val = new ArrayList<>();
+            String[] coord = colAndRows.get(i).split(",");
+            val.add(coord[0]);
+            val.add(coord[1]);
+            for (int j = 0; j < molList.size(); j++) {
+                val.add(String.valueOf(molList.get(j).getResult().get(i).getValue()));
+            }
+            rows.add(val);
+        }
+
+        rows.forEach((row) -> {
+            model.addRow(row.toArray());
+        });
+
+        usedTables.add(tableCoord);
+        JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        newPane.add(scrollpaneHola);
+        tabbedPane.insertTab(fieldNameValues.getText(), new ImageIcon(""), newPane, null, 1);
         jDialog2.dispose();
         fieldNameValues.setText("");
     }//GEN-LAST:event_buttonValuesActionPerformed
@@ -655,11 +747,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 List<String> values = new ArrayList<>();
                 values.add(molecule.getResult().get(i).getGaussian());
                 values.add(molecule.getResult().get(i).getAtom());
-                values.add(String.valueOf(molecule.getResult().get(i).getValue()));
+                values.add(molecule.getResult().get(i).getValue().toString());
                 rows.add(values);
             } else {
                 List<String> values = new ArrayList<>(auxList.get(i));
-                values.add(String.valueOf(molecule.getResult().get(i).getValue()));
+                values.add(molecule.getResult().get(i).getValue().toString());
                 rows.add(values);
             }
         }
@@ -681,7 +773,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
             names.clear();
             usedFiles.clear();
-            getUsedFiles();
+            getUsedFiles(fieldKeyword.getText());
             if (!usedFiles.isEmpty()) {
                 errorText.setText("");
                 JTable table = addRowsToTable(initTablesDifferentiators());
@@ -705,6 +797,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     tabbedPane.addTab(fieldKeyword.getText(), panel);
                     tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
                     genericTable(usedFiles);
+                    if (usedTables.isEmpty()) {
+                        usedTables.add(tableGeneric);
+                    }
                     usedTables.add(table);
                     revalidate();
                     pack();

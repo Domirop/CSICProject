@@ -5,6 +5,7 @@
  */
 package Model.Atomo;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +48,13 @@ public class Calculations {
                 }
             }
         }
-        totalDifferentiator.setValue(result);
+        totalDifferentiator.setValue(new BigDecimal(result));
         return totalDifferentiator;
     }
 
     /**
      * Get TotalDiferentiator elements to the molecule
+     *
      * @param files files where the methods search data.
      * @param coordinates coordinates of the atoms.
      * @return return a TotalDiferentiator object.
@@ -62,7 +64,7 @@ public class Calculations {
         totalDifferentiator.setGaussian(coordinates);
         double minValue = getEnergyMinValue(files);
         double expS = getExps(files, minValue);
-        double result = 0.0;
+        BigDecimal result = new BigDecimal(0.0);
         for (int i = 0; i < files.size(); i++) {
             double contribution = 0.0;
             if (files.get(i).getEnergyValue() == minValue) {
@@ -73,15 +75,21 @@ public class Calculations {
                 contribution = mediumValue / expS;
             }
             for (int j = 0; j < files.get(i).getAtomsTable().size(); j++) {
-                result += contribution * files.get(i).getAtoms().get(j).getIsotropic();
+                int column = files.get(i).getAtomsTable().get(j).getColumn();
+                int row = files.get(i).getAtomsTable().get(j).getRow();
+                if (totalDifferentiator.getGaussian().equals(row + "," + column)) {
+                    result = result.add(new BigDecimal(contribution).multiply(files.get(i).getAtomsTable().get(j).getValue()));
+                }
+
             }
         }
         totalDifferentiator.setValue(result);
         return totalDifferentiator;
     }
-    
+
     /**
      * This method get de energy value of the file.
+     *
      * @param files files where the method search a energy value.
      * @return return a double value. it is the energy value.
      */
@@ -97,8 +105,10 @@ public class Calculations {
 
     /**
      * This methods get a mathematical formula thats necesary for other methods
+     *
      * @param files files where methods search data.
-     * @param minValue a double value that this methods used for calculated other elements.
+     * @param minValue a double value that this methods used for calculated
+     * other elements.
      * @return a double value. it is the value of the mathematical formula.
      */
     public double getExps(List<FileData> files, double minValue) {

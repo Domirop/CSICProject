@@ -5,6 +5,8 @@
  */
 package Model.Atomo;
 
+import java.math.BigDecimal;
+
 /**
  *
  * @author domit
@@ -12,7 +14,7 @@ package Model.Atomo;
 public class AtomTable {
     private int column;
     private int row;
-    private double value;
+    private BigDecimal value;
 
     public int getColumn() {
         return column;
@@ -30,11 +32,11 @@ public class AtomTable {
         this.row = row;
     }
 
-    public double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }  
 }
