@@ -44,4 +44,9 @@ public class Controller implements ControllerInt{
         ChooseFilesFrame frame = new ChooseFilesFrame(this);
         frame.setVisible(true);
     }
+    
+    @Override
+    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key) {
+        return model.getMoleculeTable(files, coordinates, key);
+    }
 }

@@ -13,7 +13,6 @@ public class Atom {
     private String atom;
     private String gaussianData;
     private double isotropic;
-    private double contribution;
 
     public String getAtom() {
         return atom;
@@ -44,13 +43,5 @@ public class Atom {
 
     public void setIsotropic(double isotropic) {
         this.isotropic = isotropic;
-    }
-
-    public double getContribution() {
-        return contribution;
-    }
-
-    public void setContribution(double contribution) {
-        this.contribution = contribution;
-    }  
+    } 
 }

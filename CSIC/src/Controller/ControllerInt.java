@@ -24,4 +24,6 @@ public interface ControllerInt {
     
     public void startApp();
     
+    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key);
+    
 }
