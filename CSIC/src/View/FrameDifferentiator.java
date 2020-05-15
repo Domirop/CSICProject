@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -20,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -39,11 +41,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private JPanel panelGeneric = new JPanel();
     private List<String> names = new ArrayList<>();
     private List<File> usedFiles = new ArrayList<>();
+    private List<JTable> normalTables = new ArrayList<>();
+    private List<JTable> specialTables = new ArrayList<>();
     private List<JTable> usedTables = new ArrayList<>();
     private List<String> keywordsUsed = new ArrayList<>();
-    private List<List<String>> rows = new ArrayList<>();
+    private List<List<Object>> rows = new ArrayList<>();
     List<String> colAndRows = new ArrayList<>();
-
     ControllerInt controller;
     JTable tableGeneric;
 
@@ -58,8 +61,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         panelGeneric.setLayout(new GridLayout(0, 1));
         tabbedPane.addTab("Generic", panelGeneric);
         tabbedPane.setVisible(false);
-
+        orderMayor.setVisible(false);
+        orderMenor.setVisible(false);
+        buttonValue.setVisible(false);
+        itemExport.setEnabled(false);
+        itemReset.setEnabled(false);
+        buttonExportCSV.setVisible(false);
+        deleteButtton.setVisible(false);
         this.files = files;
+        itemSearchValue.setEnabled(false);
         this.errorText.setVisible(true);
         this.filesData = filesData;
     }
@@ -97,6 +107,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonExportCSV = new javax.swing.JButton();
         errorText = new javax.swing.JLabel();
         buttonValue = new javax.swing.JButton();
+        orderMenor = new javax.swing.JButton();
+        orderMayor = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         itemSearchValue = new javax.swing.JMenuItem();
@@ -270,6 +282,20 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
+        orderMenor.setText("<");
+        orderMenor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orderMenorActionPerformed(evt);
+            }
+        });
+
+        orderMayor.setText(">");
+        orderMayor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orderMayorActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Options");
 
         itemSearchValue.setText("Search values");
@@ -323,24 +349,30 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(266, 266, 266))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonAdd)
-                        .addGap(77, 77, 77)
-                        .addComponent(buttonValue)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonExportCSV)
+                    .addComponent(tabbedPane)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(42, 42, 42)
+                                .addComponent(orderMayor))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buttonAdd)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                                .addComponent(buttonValue)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(buttonExportCSV)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteButtton))
-                    .addComponent(tabbedPane))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(deleteButtton)
+                            .addComponent(orderMenor))
+                        .addGap(32, 32, 32)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -355,8 +387,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addComponent(deleteButtton)
                     .addComponent(buttonValue)
                     .addComponent(buttonExportCSV))
-                .addGap(15, 15, 15)
-                .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(orderMenor)
+                        .addComponent(orderMayor)))
                 .addGap(12, 12, 12)
                 .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -570,6 +606,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValuesActionPerformed
+        normalTables.add(tableGeneric);
+        orderMayor.setVisible(true);
+        orderMenor.setVisible(true);
         JPanel newPane = new JPanel();
         newPane.setLayout(new GridLayout(0, 1));
         String[] values = new String[keywordsUsed.size() + 2];
@@ -643,7 +682,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         rows.forEach((row) -> {
             model.addRow(row.toArray());
         });
-
+        specialTables.add(tableCoord);
         usedTables.add(tableCoord);
         JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         newPane.add(scrollpaneHola);
@@ -709,10 +748,18 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         errorText.setForeground(Color.red);
         keywordsUsed.clear();
         tabbedPane.removeAll();
+        itemSearchValue.setEnabled(false);
         tabbedPane.addTab("Generic", panelGeneric);
         tabbedPane.setVisible(false);
+        orderMayor.setVisible(false);
+        orderMenor.setVisible(false);
+        buttonExportCSV.setVisible(false);
+        deleteButtton.setVisible(false);
         panelGeneric.removeAll();
         tableGeneric = null;
+        buttonValue.setVisible(false);
+        itemReset.setEnabled(false);
+        itemExport.setEnabled(false);
     }//GEN-LAST:event_itemResetActionPerformed
 
     /**
@@ -725,10 +772,18 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         errorText.setForeground(Color.red);
         keywordsUsed.clear();
         tabbedPane.removeAll();
+        itemSearchValue.setEnabled(false);
         tabbedPane.addTab("Generic", panelGeneric);
         tabbedPane.setVisible(false);
+        orderMayor.setVisible(false);
+        orderMenor.setVisible(false);
+        buttonExportCSV.setVisible(false);
+        deleteButtton.setVisible(false);
         panelGeneric.removeAll();
         tableGeneric = null;
+        buttonValue.setVisible(false);
+        itemReset.setEnabled(false);
+        itemExport.setEnabled(false);
     }//GEN-LAST:event_deleteButttonActionPerformed
 
     /**
@@ -737,6 +792,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
+        normalTables.add(tableGeneric);
         errorText.setForeground(Color.red);
         String folder = "";
         JFileChooser fileChooser = new JFileChooser();
@@ -798,6 +854,69 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void itemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_itemExitActionPerformed
+
+    private void orderMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderMayorActionPerformed
+        JTable myTabla = getSelectedTable();
+        if (specialTables.contains(myTabla)) {
+            if (myTabla.getSelectedRows().length == 2) {
+                String[] datas = getGaussianToOrder();
+                reorderNormalTables(datas[0], datas[1], ">");
+                reorderSpecialTables(datas[0], datas[1], ">");
+            } else {
+                errorText.setText("Please select only 2 rows");
+                errorText.setVisible(true);
+            }
+        } else {
+            errorText.setText("Please create selectable tables");
+            errorText.setVisible(true);
+        }
+    }//GEN-LAST:event_orderMayorActionPerformed
+
+    private void orderMenorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderMenorActionPerformed
+        JTable myTabla = getSelectedTable();
+        if (myTabla.getSelectedRows().length == 2) {
+            String[] datas = getGaussianToOrder();
+            reorderNormalTables(datas[0], datas[1], "<");
+            reorderSpecialTables(datas[0], datas[1], "<");
+        } else {
+            errorText.setText("Please select only 2 rows");
+            errorText.setVisible(true);
+        }
+    }//GEN-LAST:event_orderMenorActionPerformed
+
+    private JTable getSelectedTable() {
+        JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
+        JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+        JViewport viewport = scrollPane.getViewport();
+        JTable myTable = (JTable) viewport.getView();
+        return myTable;
+    }
+
+    private String[] getGaussianToOrder() {
+        JTable myTable = getSelectedTable();
+        DefaultTableModel model = (DefaultTableModel) myTable.getModel();
+        int[] rows = myTable.getSelectedRows();
+        String[] firstRow = String.valueOf(model.getDataVector().elementAt(rows[0])).replace("[", "").split(",");
+        String[] secondRow = String.valueOf(model.getDataVector().elementAt(rows[1])).replace("[", "").split(",");
+        String firstRow1 = firstRow[0].replace(" ", "");
+        String firstRow2 = firstRow[1].replace(" ", "");
+        String secondRow1 = secondRow[0].replace(" ", "");
+        String secondRow2 = secondRow[1].replace(" ", "");
+        String gausian1;
+        String gausian2;
+        if (firstRow1.equals(secondRow1) || firstRow1.equals(secondRow2)) {
+            gausian1 = firstRow2;
+        } else {
+            gausian1 = firstRow1;
+        }
+        if (secondRow1.equals(firstRow1) || secondRow1.equals(firstRow2)) {
+            gausian2 = secondRow2;
+        } else {
+            gausian2 = secondRow1;
+        }
+        String[] datas = new String[]{gausian1, gausian2};
+        return datas;
+    }
 
     /**
      * Creates the "generic" table with all the info from the other tables.
@@ -893,20 +1012,18 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param molecule contains all the necessary info about the molecules.
      */
     private void addElementsToGeneric(Molecule molecule) {
-
         DefaultTableModel model = (DefaultTableModel) tableGeneric.getModel();
-        List<List<String>> auxList = new ArrayList<>(rows);
+        List<List<Object>> auxList = new ArrayList<>(rows);
         rows.clear();
-
         for (int i = 0; i < molecule.getResult().size(); i++) {
             if (keywordsUsed.size() == 1) {
-                List<String> values = new ArrayList<>();
+                List<Object> values = new ArrayList<>();
                 values.add(molecule.getResult().get(i).getGaussian());
                 values.add(molecule.getResult().get(i).getAtom());
-                values.add(molecule.getResult().get(i).getValue().toString());
+                values.add(molecule.getResult().get(i).getValue().doubleValue());
                 rows.add(values);
             } else {
-                List<String> values = new ArrayList<>(auxList.get(i));
+                List<Object> values = new ArrayList<>(auxList.get(i));
                 values.add(molecule.getResult().get(i).getValue().toString());
                 rows.add(values);
             }
@@ -935,7 +1052,16 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 JTable table = addRowsToTable(initTablesDifferentiators());
                 if (table.getRowCount() != 0) {
                     JPanel panel = new JPanel();
-                    tabbedPane.setVisible(true);
+                    if (usedTables.isEmpty()) {
+                        itemSearchValue.setEnabled(true);
+                        itemExport.setEnabled(false);
+                        itemReset.setEnabled(true);
+                        buttonValue.setVisible(true);
+                        buttonExportCSV.setVisible(true);
+                        deleteButtton.setVisible(true);
+                        tabbedPane.setVisible(true);
+                        itemExport.setEnabled(true);
+                    }
                     panel.setLayout(new GridLayout(0, 1));
                     JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                     TableColumn column = null;
@@ -956,16 +1082,101 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     if (usedTables.isEmpty()) {
                         usedTables.add(tableGeneric);
                     }
+                    normalTables.add(table);
                     usedTables.add(table);
                     revalidate();
                     pack();
                 } else {
                     errorText.setText("Couldn't find any file with the provided keyword.");
                 }
+            } else {
+                keywordsUsed.remove(fieldKeyword.getText());
             }
         }
     }
 
+    private void reorderNormalTables(String gausian1, String gausian2, String order) {
+        for (JTable normalTables : normalTables) {
+            DefaultTableModel model = (DefaultTableModel) normalTables.getModel();
+            List<Integer> indexs1 = new ArrayList<>();
+            for (int i = 0; i < normalTables.getRowCount(); i++) {
+                if (String.valueOf(normalTables.getValueAt(i, 0)).equals(gausian1) || String.valueOf(normalTables.getValueAt(i, 0)).equals(gausian2)) {
+                    indexs1.add(Integer.parseInt(String.valueOf(normalTables.getValueAt(i, 0))));
+                }
+            }
+            for (int i = 2; i < model.getColumnCount(); i++) {
+                BigDecimal bg1 = new BigDecimal(Double.parseDouble(model.getValueAt(indexs1.get(0) - 1, i).toString()));
+                BigDecimal bg2 = new BigDecimal(Double.parseDouble(model.getValueAt(indexs1.get(1) - 1, i).toString()));
+                if (order.equals("<")) {
+                    if (bg1.compareTo(bg2) > 0) {
+                        BigDecimal aux = bg1;
+                        model.setValueAt(bg2.doubleValue(), indexs1.get(0) - 1, i);
+                        model.setValueAt(aux.doubleValue(), indexs1.get(1) - 1, i);
+                    }
+                } else {
+                    if (bg2.compareTo(bg1) > 0) {
+                        BigDecimal aux = bg2;
+                        model.setValueAt(bg1.doubleValue(), indexs1.get(1) - 1, i);
+                        model.setValueAt(aux.doubleValue(), indexs1.get(0) - 1, i);
+                    }
+                }
+            }
+            normalTables.repaint();
+        }
+    }
+
+    private void reorderSpecialTables(String gausian1, String gausian2, String order) {
+        for (JTable specialTable : specialTables) {
+            DefaultTableModel model = (DefaultTableModel) specialTable.getModel();
+            List<Integer> indexs1 = new ArrayList<>();
+            List<Integer> indexs2 = new ArrayList<>();
+            for (int i = 0; i < model.getRowCount(); i++) {
+                for (int j = 0; j < 2; j++) {
+                    if (model.getValueAt(i, j).equals(gausian1) || model.getValueAt(i, j).equals(gausian2)) {
+                        indexs1.add(i);
+                        if (j == 0) {
+                            indexs2.add(1);
+                        } else {
+                            indexs2.add(0);
+                        }
+                    }
+                }
+            }
+            List<Integer> valores = new ArrayList<>();
+            for (int i = 0; i < indexs1.size(); i++) {
+                for (int j = 0; j < model.getRowCount(); j++) {
+                    for (int k = 0; k < 2; k++) {
+                        if (j != indexs1.get(i)) {
+                            if (model.getValueAt(j, k).equals(model.getValueAt(indexs1.get(i), indexs2.get(i)))) {
+                                valores.add(j);
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < indexs1.size(); i++) {
+                for (int j = 2; j < model.getColumnCount() - 2; j++) {
+                    BigDecimal bg1 = new BigDecimal(Double.parseDouble(model.getValueAt(indexs1.get(i), j).toString()));
+                    BigDecimal bg2 = new BigDecimal(Double.parseDouble(model.getValueAt(valores.get(i), j).toString()));
+                    if (order.equals("<")) {
+                        if (bg1.compareTo(bg2) > 0) {
+                            BigDecimal aux = bg1;
+                            model.setValueAt(bg2.toString(), indexs1.get(0), i);
+                            model.setValueAt(aux.toString(), indexs1.get(1), i);
+                        }
+                    } else {
+                        if (bg2.compareTo(bg1) > 0) {
+                            BigDecimal aux = bg2;
+                            model.setValueAt(bg1.toString(), indexs1.get(1), i);
+                            model.setValueAt(aux.toString(), indexs1.get(0), i);
+                        }
+                    }
+                }
+            }
+
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaValues;
     private javax.swing.JButton buttonAdd;
@@ -997,6 +1208,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton orderMayor;
+    private javax.swing.JButton orderMenor;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
 }
