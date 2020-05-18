@@ -732,7 +732,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 }
                 if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
                     errorText.setForeground(Color.green);
-                    errorText.setText("All files has been created.");
+                    errorText.setText("All files have been created.");
                 }
             }
         }
@@ -837,7 +837,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 }
                 if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
                     errorText.setForeground(Color.green);
-                    errorText.setText("All files has been created.");
+                    errorText.setText("All files have been created.");
                 }
             }
         }
@@ -877,7 +877,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 errorText.setVisible(true);
             }
         } else {
-            errorText.setText("Please create selectable tables");
+            errorText.setText("Please create a table first");
             errorText.setVisible(true);
         }
     }//GEN-LAST:event_orderMayorActionPerformed
@@ -1102,7 +1102,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     errorText.setText("Couldn't find any file with the provided keyword.");
                 }
             } else {
-                errorText.setText("Sorry, but i don't find any files with this characteristics.");
+                errorText.setText("There is no files with this characteristics.");
                 keywordsUsed.remove(fieldKeyword.getText());
             }
         }
