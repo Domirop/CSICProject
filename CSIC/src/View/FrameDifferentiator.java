@@ -97,7 +97,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         fieldNameValues = new javax.swing.JTextField();
         buttonValues = new javax.swing.JButton();
-        jMenu2 = new javax.swing.JMenu();
         jLabel1 = new javax.swing.JLabel();
         comboOptions = new javax.swing.JComboBox<>();
         fieldKeyword = new javax.swing.JTextField();
@@ -235,8 +234,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addComponent(buttonValues)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        jMenu2.setText("jMenu2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -606,7 +603,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValuesActionPerformed
-        normalTables.add(tableGeneric);
         orderMayor.setVisible(true);
         orderMenor.setVisible(true);
         JPanel newPane = new JPanel();
@@ -700,44 +696,43 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_itemSearchValueActionPerformed
 
     private void itemExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemExportActionPerformed
-        if (tabbedPane.isVisible()) {
-            errorText.setForeground(Color.red);
-            String folder = "";
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int option = fileChooser.showOpenDialog(this);
-            if (option == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                if (!file.exists()) {
-                    new File(file.getAbsolutePath()).mkdir();
-                }
-                folder = file.getAbsolutePath();
+        normalTables.add(tableGeneric);
+        errorText.setForeground(Color.red);
+        String folder = "";
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int option = fileChooser.showOpenDialog(this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            if (!file.exists()) {
+                new File(file.getAbsolutePath()).mkdir();
             }
+            folder = file.getAbsolutePath();
+        }
 
-            keywordsUsed.add("Generic");
+        keywordsUsed.add("Generic");
 
-            if (usedTables.size() > 0) {
-                for (int i = 0; i < keywordsUsed.size(); i++) {
-                    List<String[]> datas = new ArrayList<>();
-                    TableModel model = usedTables.get(i).getModel();
-                    String[] columnNames = new String[model.getColumnCount()];
+        if (usedTables.size() > 0) {
+            for (int i = 0; i < keywordsUsed.size(); i++) {
+                List<String[]> datas = new ArrayList<>();
+                TableModel model = usedTables.get(i).getModel();
+                String[] columnNames = new String[model.getColumnCount()];
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    columnNames[j] = model.getColumnName(j);
+                }
+                datas.add(columnNames);
+                for (int k = 0; k < model.getRowCount(); k++) {
+                    String[] data = new String[model.getColumnCount()];
                     for (int j = 0; j < model.getColumnCount(); j++) {
-                        columnNames[j] = model.getColumnName(j);
-                    }
-                    datas.add(columnNames);
-                    for (int k = 0; k < model.getRowCount(); k++) {
-                        String[] data = new String[model.getColumnCount()];
-                        for (int j = 0; j < model.getColumnCount(); j++) {
-                            if (model.getValueAt(k, j) != null && model.getValueAt(k, j).toString().trim().length() != 0) {
-                                data[j] = String.valueOf(model.getValueAt(k, j));
-                            }
+                        if (model.getValueAt(k, j) != null && model.getValueAt(k, j).toString().trim().length() != 0) {
+                            data[j] = String.valueOf(model.getValueAt(k, j));
                         }
-                        datas.add(data);
                     }
-                    if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
-                        errorText.setForeground(Color.green);
-                        errorText.setText("All files has been created.");
-                    }
+                    datas.add(data);
+                }
+                if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
+                    errorText.setForeground(Color.green);
+                    errorText.setText("All files has been created.");
                 }
             }
         }
@@ -746,8 +741,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
         errorText.setText("");
         errorText.setForeground(Color.red);
-        keywordsUsed.clear();
         tabbedPane.removeAll();
+        usedFiles.clear();
+        normalTables.clear();
+        fieldKeyword.setText("");
+        specialTables.clear();
+        usedTables.clear();
+        rows.clear();
+        colAndRows.clear();
+        keywordsUsed.clear();
         itemSearchValue.setEnabled(false);
         tabbedPane.addTab("Generic", panelGeneric);
         tabbedPane.setVisible(false);
@@ -770,8 +772,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void deleteButttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButttonActionPerformed
         errorText.setText("");
         errorText.setForeground(Color.red);
-        keywordsUsed.clear();
         tabbedPane.removeAll();
+        fieldKeyword.setText("");
+        usedFiles.clear();
+        normalTables.clear();
+        specialTables.clear();
+        usedTables.clear();
+        rows.clear();
+        colAndRows.clear();
+        keywordsUsed.clear();
         itemSearchValue.setEnabled(false);
         tabbedPane.addTab("Generic", panelGeneric);
         tabbedPane.setVisible(false);
@@ -938,13 +947,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             addElementsToGeneric(molecule);
             JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             panelGeneric.add(scrollpaneGeneric);
+            normalTables.add(tableGeneric);
         } else {
+            normalTables.remove(tableGeneric);
             panelGeneric.removeAll();
             initGenericTable(values);
             addElementsToGeneric(molecule);
             JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             panelGeneric.add(scrollpaneGeneric);
-
+            normalTables.add(tableGeneric);
         }
         TableColumn column = null;
         for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
@@ -1091,6 +1102,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     errorText.setText("Couldn't find any file with the provided keyword.");
                 }
             } else {
+                errorText.setText("Sorry, but i don't find any files with this characteristics.");
                 keywordsUsed.remove(fieldKeyword.getText());
             }
         }
@@ -1178,6 +1190,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         }
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaValues;
     private javax.swing.JButton buttonAdd;
@@ -1205,7 +1218,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
