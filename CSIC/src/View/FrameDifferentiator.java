@@ -46,6 +46,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<JTable> usedTables = new ArrayList<>();
     private List<String> keywordsUsed = new ArrayList<>();
     private List<List<Object>> rows = new ArrayList<>();
+    private List<String> coorValues = new ArrayList<>();
+
     List<String> colAndRows = new ArrayList<>();
     ControllerInt controller;
     JTable tableGeneric;
@@ -89,10 +91,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         fieldColumn = new javax.swing.JTextField();
         buttonAddValue = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        areaValues = new javax.swing.JTextArea();
         finishButton = new javax.swing.JButton();
         errorDialogCoor = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listValues = new javax.swing.JList<>();
+        buttonRemoveItem = new javax.swing.JButton();
         dialogNombre = new javax.swing.JDialog();
         jLabel4 = new javax.swing.JLabel();
         fieldNameValues = new javax.swing.JTextField();
@@ -127,11 +130,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        areaValues.setEditable(false);
-        areaValues.setColumns(3);
-        areaValues.setRows(5);
-        jScrollPane1.setViewportView(areaValues);
-
         finishButton.setText("Finish");
         finishButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,6 +138,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
 
         errorDialogCoor.setForeground(new java.awt.Color(255, 0, 0));
+
+        jScrollPane2.setViewportView(listValues);
+
+        buttonRemoveItem.setText("Remove");
+        buttonRemoveItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRemoveItemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout dialogCoordinatesLayout = new javax.swing.GroupLayout(dialogCoordinates.getContentPane());
         dialogCoordinates.getContentPane().setLayout(dialogCoordinatesLayout);
@@ -160,43 +167,47 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addGap(12, 12, 12)
                                 .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(buttonAddValue)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE))
+                        .addComponent(buttonAddValue))
+                    .addComponent(errorDialogCoor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(dialogCoordinatesLayout.createSequentialGroup()
-                        .addComponent(errorDialogCoor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(86, 86, 86)
+                        .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(buttonRemoveItem)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogCoordinatesLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(finishButton)))
                 .addContainerGap())
         );
         dialogCoordinatesLayout.setVerticalGroup(
             dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogCoordinatesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(dialogCoordinatesLayout.createSequentialGroup()
-                        .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(dialogCoordinatesLayout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addComponent(buttonAddValue))
-                            .addGroup(dialogCoordinatesLayout.createSequentialGroup()
-                                .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel2)
-                                    .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(fieldColumn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(29, 29, 29))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogCoordinatesLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addGap(17, 17, 17)
+                        .addComponent(buttonAddValue))
+                    .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                        .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(fieldColumn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addComponent(errorDialogCoor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonRemoveItem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(finishButton)
-                        .addGap(0, 16, Short.MAX_VALUE))
-                    .addComponent(errorDialogCoor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addContainerGap(7, Short.MAX_VALUE))))
         );
 
         jLabel4.setText("Choose a name for the values");
@@ -569,8 +580,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             int row = Integer.parseInt(fieldRow.getText());
             int column = Integer.parseInt(fieldColumn.getText());
             if (row >= column) {
+                coorValues.add(row + "," + column);
                 colAndRows.add(row + "," + column);
-                areaValues.append(row + "," + column + "\n");
+                String[] vals = coorValues.toArray(new String[0]);
+                listValues.setListData(vals);
                 errorDialogCoor.setText("");
             } else {
                 errorDialogCoor.setText("<html><body>The value of the row must be greater<br>than or equal to the column value.</body></html>");
@@ -589,11 +602,19 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
-        errorDialogCoor.setText("");
-        areaValues.setText("");
-        dialogCoordinates.dispose();
-        dialogNombre.pack();
-        dialogNombre.setVisible(true);
+        if (colAndRows.size() % 2 != 0) {
+            errorDialogCoor.setText("Values must be even.");
+            errorDialogCoor.setVisible(true);
+        } else {
+            errorDialogCoor.setVisible(false);
+
+            listValues.setListData(new String[0]);
+            coorValues.clear();
+            errorDialogCoor.setText("");
+            dialogCoordinates.dispose();
+            dialogNombre.pack();
+            dialogNombre.setVisible(true);
+        }
     }//GEN-LAST:event_finishButtonActionPerformed
 
     /**
@@ -894,6 +915,18 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_orderMenorActionPerformed
 
+    private void buttonRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveItemActionPerformed
+        if (!listValues.isSelectionEmpty()) {
+            coorValues.remove(listValues.getSelectedIndex());
+            colAndRows.remove(listValues.getSelectedIndex());
+            listValues.setListData(coorValues.toArray(new String[0]));
+        }
+        listValues.repaint();
+        listValues.revalidate();
+        this.pack();
+
+    }//GEN-LAST:event_buttonRemoveItemActionPerformed
+
     private JTable getSelectedTable() {
         JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
         JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
@@ -1192,10 +1225,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea areaValues;
     private javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonAddValue;
     private javax.swing.JButton buttonExportCSV;
+    private javax.swing.JButton buttonRemoveItem;
     private javax.swing.JButton buttonValue;
     private javax.swing.JButton buttonValues;
     private javax.swing.JComboBox<String> comboOptions;
@@ -1220,7 +1253,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList<String> listValues;
     private javax.swing.JButton orderMayor;
     private javax.swing.JButton orderMenor;
     private javax.swing.JTabbedPane tabbedPane;
