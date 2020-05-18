@@ -858,9 +858,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         JTable myTabla = getSelectedTable();
         if (specialTables.contains(myTabla)) {
             if (myTabla.getSelectedRows().length == 2) {
+                System.out.println("hola");
                 String[] datas = getGaussianToOrder();
                 reorderNormalTables(datas[0], datas[1], ">");
-                reorderSpecialTables(datas[0], datas[1], ">");
+                //reorderSpecialTables(datas[0], datas[1], ">");
             } else {
                 errorText.setText("Please select only 2 rows");
                 errorText.setVisible(true);
@@ -876,7 +877,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         if (myTabla.getSelectedRows().length == 2) {
             String[] datas = getGaussianToOrder();
             reorderNormalTables(datas[0], datas[1], "<");
-            reorderSpecialTables(datas[0], datas[1], "<");
+            //reorderSpecialTables(datas[0], datas[1], "<");
         } else {
             errorText.setText("Please select only 2 rows");
             errorText.setVisible(true);
