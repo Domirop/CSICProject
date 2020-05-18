@@ -173,10 +173,12 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
     private void buttonChooseFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseFilesActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Nombre", "log"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Files", "log"));
         fileChooser.setMultiSelectionEnabled(true);
         int returnVal = fileChooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
+            BufferedImage bi = null;
+            decorate(dropTextArea, bi);
             File[] files = fileChooser.getSelectedFiles();
             for (File file : files) {
                 dropTextArea.append(file.getName() + "\n");
