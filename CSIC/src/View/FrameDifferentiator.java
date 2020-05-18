@@ -97,6 +97,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         fieldNameValues = new javax.swing.JTextField();
         buttonValues = new javax.swing.JButton();
+        jMenu2 = new javax.swing.JMenu();
         jLabel1 = new javax.swing.JLabel();
         comboOptions = new javax.swing.JComboBox<>();
         fieldKeyword = new javax.swing.JTextField();
@@ -234,6 +235,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addComponent(buttonValues)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jMenu2.setText("jMenu2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -741,7 +744,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_itemExportActionPerformed
 
     private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
-        usedTables.clear();
         errorText.setText("");
         errorText.setForeground(Color.red);
         keywordsUsed.clear();
@@ -766,7 +768,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void deleteButttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButttonActionPerformed
-        usedTables.clear();
         errorText.setText("");
         errorText.setForeground(Color.red);
         keywordsUsed.clear();
@@ -1053,7 +1054,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     JPanel panel = new JPanel();
                     if (usedTables.isEmpty()) {
                         itemSearchValue.setEnabled(true);
-                        itemExport.setEnabled(true);
+                        itemExport.setEnabled(false);
                         itemReset.setEnabled(true);
                         buttonValue.setVisible(true);
                         buttonExportCSV.setVisible(true);
@@ -1125,26 +1126,19 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     private void reorderSpecialTables(String gausian1, String gausian2, String order) {
-        /*for (JTable specialTable : specialTables) {
+        for (JTable specialTable : specialTables) {
             DefaultTableModel model = (DefaultTableModel) specialTable.getModel();
             List<Integer> indexs1 = new ArrayList<>();
-            //List<Integer> indexs2 = new ArrayList<>();
+            List<Integer> indexs2 = new ArrayList<>();
             for (int i = 0; i < model.getRowCount(); i++) {
                 for (int j = 0; j < 2; j++) {
                     if (model.getValueAt(i, j).equals(gausian1) || model.getValueAt(i, j).equals(gausian2)) {
                         indexs1.add(i);
-                    }
-                }
-            }
-            List<List<String>> val = new ArrayList<>();
-            for (int i = 0; i < indexs1.size(); i++) {
-                for (int j = 0; j < indexs1.size(); j++) {
-                    if (j != 0) {
-                        String firstRow1 = String.valueOf(model.getValueAt(i, 0));
-                        String firstRow2 = String.valueOf(model.getValueAt(i, 1));
-                        String secondRow1 = String.valueOf(model.getValueAt(j, 0));
-                        String secondRow2 = String.valueOf(model.getValueAt(j, 1));
-                        if(firstRow1.equals(secondRow1) || firstRow1.equals(secondRow2))
+                        if (j == 0) {
+                            indexs2.add(1);
+                        } else {
+                            indexs2.add(0);
+                        }
                     }
                 }
             }
@@ -1162,7 +1156,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
 
             for (int i = 0; i < indexs1.size(); i++) {
-                for (int j = 2; j < model.getColumnCount(); j++) {
+                for (int j = 2; j < model.getColumnCount() - 2; j++) {
                     BigDecimal bg1 = new BigDecimal(Double.parseDouble(model.getValueAt(indexs1.get(i), j).toString()));
                     BigDecimal bg2 = new BigDecimal(Double.parseDouble(model.getValueAt(valores.get(i), j).toString()));
                     if (order.equals("<")) {
@@ -1181,7 +1175,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 }
             }
 
-        }*/
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaValues;
@@ -1210,6 +1204,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
