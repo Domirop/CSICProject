@@ -889,10 +889,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         JTable myTabla = getSelectedTable();
         if (specialTables.contains(myTabla)) {
             if (myTabla.getSelectedRows().length == 2) {
-                System.out.println("hola");
                 String[] datas = getGaussianToOrder();
                 reorderNormalTables(datas[0], datas[1], ">");
-                //reorderSpecialTables(datas[0], datas[1], ">");
+                reorderSpecialTables(datas[0], datas[1], ">");
             } else {
                 errorText.setText("Please select only 2 rows");
                 errorText.setVisible(true);
@@ -908,7 +907,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         if (myTabla.getSelectedRows().length == 2) {
             String[] datas = getGaussianToOrder();
             reorderNormalTables(datas[0], datas[1], "<");
-            //reorderSpecialTables(datas[0], datas[1], "<");
+            reorderSpecialTables(datas[0], datas[1], "<");
         } else {
             errorText.setText("Please select only 2 rows");
             errorText.setVisible(true);
@@ -1065,7 +1064,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 List<Object> values = new ArrayList<>();
                 values.add(molecule.getResult().get(i).getGaussian());
                 values.add(molecule.getResult().get(i).getAtom());
-                values.add(molecule.getResult().get(i).getValue().doubleValue());
+                values.add(molecule.getResult().get(i).getValue().toString());
                 rows.add(values);
             } else {
                 List<Object> values = new ArrayList<>(auxList.get(i));
@@ -1151,19 +1150,19 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 }
             }
             for (int i = 2; i < model.getColumnCount(); i++) {
-                BigDecimal bg1 = new BigDecimal(Double.parseDouble(model.getValueAt(indexs1.get(0) - 1, i).toString()));
-                BigDecimal bg2 = new BigDecimal(Double.parseDouble(model.getValueAt(indexs1.get(1) - 1, i).toString()));
+                BigDecimal bg1 = new BigDecimal(model.getValueAt(indexs1.get(0) - 1, i).toString());
+                BigDecimal bg2 = new BigDecimal(model.getValueAt(indexs1.get(1) - 1, i).toString());
                 if (order.equals("<")) {
                     if (bg1.compareTo(bg2) > 0) {
                         BigDecimal aux = bg1;
-                        model.setValueAt(bg2.doubleValue(), indexs1.get(0) - 1, i);
-                        model.setValueAt(aux.doubleValue(), indexs1.get(1) - 1, i);
+                        model.setValueAt(bg2.toString(), indexs1.get(0) - 1, i);
+                        model.setValueAt(aux.toString(), indexs1.get(1) - 1, i);
                     }
                 } else {
                     if (bg2.compareTo(bg1) > 0) {
                         BigDecimal aux = bg2;
-                        model.setValueAt(bg1.doubleValue(), indexs1.get(1) - 1, i);
-                        model.setValueAt(aux.doubleValue(), indexs1.get(0) - 1, i);
+                        model.setValueAt(bg1.toString(), indexs1.get(1) - 1, i);
+                        model.setValueAt(aux.toString(), indexs1.get(0) - 1, i);
                     }
                 }
             }
@@ -1173,54 +1172,44 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     private void reorderSpecialTables(String gausian1, String gausian2, String order) {
         for (JTable specialTable : specialTables) {
-            DefaultTableModel model = (DefaultTableModel) specialTable.getModel();
-            List<Integer> indexs1 = new ArrayList<>();
-            List<Integer> indexs2 = new ArrayList<>();
-            for (int i = 0; i < model.getRowCount(); i++) {
-                for (int j = 0; j < 2; j++) {
-                    if (model.getValueAt(i, j).equals(gausian1) || model.getValueAt(i, j).equals(gausian2)) {
-                        indexs1.add(i);
-                        if (j == 0) {
-                            indexs2.add(1);
-                        } else {
-                            indexs2.add(0);
-                        }
-                    }
+            List<TableElement> element1 = new ArrayList<>();
+            List<TableElement> element2 = new ArrayList<>();
+            for (int i = 0; i < specialTable.getRowCount(); i++) {
+                String rowValue = specialTable.getValueAt(i, 0).toString();
+                String columnValue = specialTable.getValueAt(i, 1).toString();
+                if (rowValue.equals(gausian1) || columnValue.equals(gausian1)) {
+                    element1.add(new TableElement(rowValue, columnValue, i));
+                }
+                if (rowValue.equals(gausian2) || columnValue.equals(gausian2)) {
+                    element2.add(new TableElement(rowValue, columnValue, i));
                 }
             }
-            List<Integer> valores = new ArrayList<>();
-            for (int i = 0; i < indexs1.size(); i++) {
-                for (int j = 0; j < model.getRowCount(); j++) {
-                    for (int k = 0; k < 2; k++) {
-                        if (j != indexs1.get(i)) {
-                            if (model.getValueAt(j, k).equals(model.getValueAt(indexs1.get(i), indexs2.get(i)))) {
-                                valores.add(j);
+            for (TableElement elementType1 : element1) {
+                next:
+                for (TableElement elementType2 : element2) {
+                    if (elementType1.column.equals(elementType2.column) || elementType1.column.equals(elementType2.row)
+                            || elementType1.row.equals(elementType2.column) || elementType1.row.equals(elementType2.row)) {
+                        for (int i = 2; i < specialTable.getColumnCount(); i++) {
+                            BigDecimal bg1 = new BigDecimal(specialTable.getValueAt(elementType1.indexRow, i).toString());
+                            BigDecimal bg2 = new BigDecimal(specialTable.getValueAt(elementType2.indexRow, i).toString());
+                            if (order.equals("<")) {
+                                if (bg1.compareTo(bg2) > 0) {
+                                    BigDecimal aux = bg1;
+                                    specialTable.setValueAt(bg2.toString(), elementType1.indexRow, i);
+                                    specialTable.setValueAt(aux.toString(), elementType2.indexRow, i);
+                                }
+                            } else {
+                                if (bg2.compareTo(bg1) > 0) {
+                                    BigDecimal aux = bg2;
+                                    specialTable.setValueAt(bg1.toString(), elementType2.indexRow, i);
+                                    specialTable.setValueAt(aux.toString(), elementType1.indexRow, i);
+                                }
                             }
                         }
+                        break next;
                     }
                 }
             }
-
-            for (int i = 0; i < indexs1.size(); i++) {
-                for (int j = 2; j < model.getColumnCount() - 2; j++) {
-                    BigDecimal bg1 = new BigDecimal(Double.parseDouble(model.getValueAt(indexs1.get(i), j).toString()));
-                    BigDecimal bg2 = new BigDecimal(Double.parseDouble(model.getValueAt(valores.get(i), j).toString()));
-                    if (order.equals("<")) {
-                        if (bg1.compareTo(bg2) > 0) {
-                            BigDecimal aux = bg1;
-                            model.setValueAt(bg2.toString(), indexs1.get(0), i);
-                            model.setValueAt(aux.toString(), indexs1.get(1), i);
-                        }
-                    } else {
-                        if (bg2.compareTo(bg1) > 0) {
-                            BigDecimal aux = bg2;
-                            model.setValueAt(bg1.toString(), indexs1.get(1), i);
-                            model.setValueAt(aux.toString(), indexs1.get(0), i);
-                        }
-                    }
-                }
-            }
-
         }
     }
 
