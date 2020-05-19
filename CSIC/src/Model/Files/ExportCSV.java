@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * Class used to export all the tables to CSV
  *
  * @author daviddiaz
  */
@@ -27,9 +28,10 @@ public class ExportCSV {
     public void setDataLines(List<String[]> dataLines) {
         this.dataLines = dataLines;
     }
-    
+
     /**
      * This method is responsible for converting an array of data in CSV format.
+     *
      * @param data Array to be converted.
      * @return String converted to CSV type.
      */
@@ -38,36 +40,39 @@ public class ExportCSV {
                 .map(this::escapeSpecialCharacters)
                 .collect(Collectors.joining(","));
     }
-    
+
     /**
      * This method is responsible for creating the CSV file.
+     *
      * @param path Path where the file will be created.
      * @param fileName Name that will receive the file.
      * @return True or false whether or not an error occurs.
      */
     public boolean createCSV(String path, String fileName) {
         String separator = "";
-        if(path.contains("/")){
+        if (path.contains("/")) {
             separator = "/";
-        }else{
+        } else {
             separator = "\\";
         }
-        File csvOutputFile = new File(path  + separator + fileName + ".csv");
+        File csvOutputFile = new File(path + separator + fileName + ".csv");
         try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
             dataLines.stream()
                     .map(this::convertToCSV)
                     .forEach(pw::println);
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
     /**
-     * This method is in charge of controlling if the lines 
-     * that arrive have some kind of special character so that it is not erased.
+     * This method is in charge of controlling if the lines that arrive have
+     * some kind of special character so that it is not erased.
+     *
      * @param data Phrase to be controlled.
-     * @return Returns a new string with the characters that we do not want deleted.
+     * @return Returns a new string with the characters that we do not want
+     * deleted.
      */
     public String escapeSpecialCharacters(String data) {
         String escapedData = data.replaceAll("\\R", " ");

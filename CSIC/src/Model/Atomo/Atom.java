@@ -6,10 +6,12 @@
 package Model.Atomo;
 
 /**
- *
+ * Represents a molecule.
+ * 
  * @author domit
  */
 public class Atom {
+
     private String atom;
     private String gaussianData;
     private double isotropic;
@@ -23,7 +25,6 @@ public class Atom {
         this.gaussianData = gaussianData;
         this.isotropic = isotropic;
     }
-    
 
     public void setAtom(String atom) {
         this.atom = atom;
@@ -43,5 +44,5 @@ public class Atom {
 
     public void setIsotropic(double isotropic) {
         this.isotropic = isotropic;
-    } 
+    }
 }

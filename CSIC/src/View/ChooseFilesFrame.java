@@ -28,6 +28,7 @@ import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
+ * View that is used to let the user pick files.
  *
  * @author domit
  */

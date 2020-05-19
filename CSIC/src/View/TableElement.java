@@ -6,10 +6,12 @@
 package View;
 
 /**
+ * Represents the table elements.
  *
  * @author domit
  */
 public class TableElement {
+
     String column;
     String row;
     int indexRow;
@@ -23,5 +25,5 @@ public class TableElement {
     @Override
     public String toString() {
         return "TableElement{" + "column=" + column + ", row=" + row + ", indexRow=" + indexRow + '}';
-    }  
+    }
 }

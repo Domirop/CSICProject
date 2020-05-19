@@ -6,11 +6,11 @@
 package Model;
 
 import Model.Atomo.Atom;
-import Model.Atomo.MoleculeTable;
-import Model.Atomo.Calculations;
+import Model.Atomo.AtomTable;
+import Model.Atomo.Calculus;
 import Model.Atomo.Molecule;
 import Model.Atomo.FileData;
-import Model.Atomo.TotalDifferentiator;
+import Model.Atomo.AverageValue;
 import Model.Files.ExportCSV;
 import Model.Files.ReadEnergyValue;
 import Model.Files.ReadLines;
@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Groups all the methods from other classes.
+ * 
  * @author domit
  */
 public class Model implements ModelInt {
@@ -29,7 +30,7 @@ public class Model implements ModelInt {
     private ReadLines readIso = new ReadLines();
     private ReadTable readTable = new ReadTable();
     private ReadEnergyValue readEnergy = new ReadEnergyValue();
-    private Calculations calculations = new Calculations();
+    private Calculus calculations = new Calculus();
     private ExportCSV csv = new ExportCSV();
 
     /**
@@ -108,9 +109,9 @@ public class Model implements ModelInt {
     public Molecule getMolecule(List<File> files, String key) {
         Molecule molecule = new Molecule(getFileData(files), key);
         List<String> gaussianAtom = getAtomsGaussian(molecule.getFilesData());
-        List<TotalDifferentiator> total = new ArrayList<>();
+        List<AverageValue> total = new ArrayList<>();
         for (String string : gaussianAtom) {
-            TotalDifferentiator totalDifferentiator = new TotalDifferentiator();
+            AverageValue totalDifferentiator = new AverageValue();
             totalDifferentiator = calculations.getTotalMoleculeValue(molecule.getFilesData(), string);
             total.add(totalDifferentiator);
         }
@@ -196,13 +197,13 @@ public class Model implements ModelInt {
      *
      * @param coordinates coordinates of atoms in the table.
      * @param path path of file.
-     * @return List o element MoleculeTable.
+     * @return List o element AtomTable.
      */
     @Override
-    public List<MoleculeTable> getAtomTables(List<String> coordinates, String path) {
-        List<MoleculeTable> atomsTable = new ArrayList<>();
+    public List<AtomTable> getAtomTables(List<String> coordinates, String path) {
+        List<AtomTable> atomsTable = new ArrayList<>();
         for (String coordinate : coordinates) {
-            MoleculeTable atomTable = new MoleculeTable();
+            AtomTable atomTable = new AtomTable();
             String[] position = coordinate.split(",");
             atomTable.setColumn(Integer.parseInt(position[1]));
             atomTable.setRow(Integer.parseInt(position[0]));
@@ -228,9 +229,9 @@ public class Model implements ModelInt {
         Molecule molecule = new Molecule();
         molecule.setFilesData(getFileDataTable(files, coordinates));
         molecule.setDifferentiator(key);
-        List<TotalDifferentiator> total = new ArrayList<>();
+        List<AverageValue> total = new ArrayList<>();
         for (String coordinate : coordinates) {
-            TotalDifferentiator totalDifferentiator = calculations.getValueToMoleculeTable(molecule.getFilesData(), coordinate);
+            AverageValue totalDifferentiator = calculations.getValueToMoleculeTable(molecule.getFilesData(), coordinate);
             total.add(totalDifferentiator);
         }
         molecule.setResult(total);

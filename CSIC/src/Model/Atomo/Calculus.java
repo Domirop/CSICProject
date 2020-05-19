@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class used to make all the calculation.
  *
  * @author domit
  */
-public class Calculations {
+public class Calculus {
 
     /**
      * This method is responsible for obtaining a list with all the total.
@@ -24,8 +25,8 @@ public class Calculations {
      * being searched.
      * @return A differentiator object with all the necessary data.
      */
-    public TotalDifferentiator getTotalMoleculeValue(List<FileData> files, String gaussianData) {
-        TotalDifferentiator totalDifferentiator = new TotalDifferentiator();
+    public AverageValue getTotalMoleculeValue(List<FileData> files, String gaussianData) {
+        AverageValue totalDifferentiator = new AverageValue();
         totalDifferentiator.setGaussian(gaussianData);
         double minValue = getEnergyMinValue(files);
         double expS = getExps(files, minValue);
@@ -59,8 +60,8 @@ public class Calculations {
      * @param coordinates coordinates of the atoms.
      * @return return a TotalDiferentiator object.
      */
-    public TotalDifferentiator getValueToMoleculeTable(List<FileData> files, String coordinates) {
-        TotalDifferentiator totalDifferentiator = new TotalDifferentiator();
+    public AverageValue getValueToMoleculeTable(List<FileData> files, String coordinates) {
+        AverageValue totalDifferentiator = new AverageValue();
         totalDifferentiator.setGaussian(coordinates);
         double minValue = getEnergyMinValue(files);
         double expS = getExps(files, minValue);

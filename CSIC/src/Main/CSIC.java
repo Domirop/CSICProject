@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package csic;
+package Main;
 import Controller.Controller;
 import Controller.ControllerInt;
 import Model.Model;

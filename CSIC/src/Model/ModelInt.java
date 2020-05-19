@@ -5,7 +5,7 @@
  */
 package Model;
 
-import Model.Atomo.MoleculeTable;
+import Model.Atomo.AtomTable;
 import Model.Atomo.FileData;
 import Model.Atomo.Molecule;
 import java.io.File;
@@ -26,19 +26,19 @@ public interface ModelInt {
     public String getValue(String path, int column, int row, String start);
 
     public String SCFDone(String path);
-    
+
     public Molecule getMolecule(List<File> files, String key);
-    
+
     public List<String> getAtomsGaussian(List<FileData> files);
-    
+
     public List<FileData> getFileData(List<File> files);
-    
+
     public boolean writeCSV(List<String[]> datas, String path, String fileName);
-    
+
     public List<FileData> getFileDataTable(List<File> files, List<String> coordinates);
-    
+
     public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key);
-    
-    public List<MoleculeTable> getAtomTables(List<String> coordinates, String path);
-        
+
+    public List<AtomTable> getAtomTables(List<String> coordinates, String path);
+
 }

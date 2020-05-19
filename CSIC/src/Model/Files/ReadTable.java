@@ -10,13 +10,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * Class used to read the table from a single file.
  *
  * @author daviddiaz
  */
 public class ReadTable {
-    
+
     /**
      * Get the data of the files that come in table format.
+     *
      * @param path the path of the file.
      * @return list of the data.
      */
@@ -46,20 +48,21 @@ public class ReadTable {
             try (Stream<String> lines = Files.lines(Paths.get(path))) {
                 table = lines.skip(lineStart).limit(lineEnd - 1).collect(Collectors.toList());
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
 
             for (String string : table) {
                 data.add(string);
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
         return data;
     }
 
     /**
      * Gets the specific data in row and column when they come in table format.
+     *
      * @param path the path of the file
      * @param column integer that represents the column
      * @param row integer that represents the row

@@ -9,13 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Represents all the values from a molecule.
  *
  * @author domit
  */
 public class Molecule {
+
     private List<FileData> filesData;
     private String differentiator;
-    private List<TotalDifferentiator> result = new ArrayList<>();
+    private List<AverageValue> result = new ArrayList<>();
 
     public Molecule() {
     }
@@ -41,12 +43,12 @@ public class Molecule {
         this.differentiator = differentiator;
     }
 
-    public List<TotalDifferentiator> getResult() {
+    public List<AverageValue> getResult() {
         return result;
     }
 
-    public void setResult(List<TotalDifferentiator> result) {
+    public void setResult(List<AverageValue> result) {
         this.result = result;
     }
-    
+
 }

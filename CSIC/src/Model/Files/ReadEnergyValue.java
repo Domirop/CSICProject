@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
+ * Class used to read the energy value from a single file.
  *
  * @author daviddiaz
  */
@@ -17,9 +18,10 @@ public class ReadEnergyValue {
 
     /**
      * This method obtains the energy value.
+     *
      * @param path path of the file.
      * @return Energy value.
-     */   
+     */
     public String SCFDone(String path) {
         String line = "";
         String value = "";

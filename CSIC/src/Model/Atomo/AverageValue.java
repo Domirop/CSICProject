@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package Model.Atomo;
+
 /**
+ * Represents the average value calculated.
  *
  * @author domit
  */
-public class TotalDifferentiator {
+public class AverageValue {
+
     private String gaussian;
     private String atom;
     private double value;
@@ -21,7 +24,7 @@ public class TotalDifferentiator {
         this.atom = atom;
     }
 
-    public TotalDifferentiator() {
+    public AverageValue() {
     }
 
     public String getGaussian() {

@@ -28,6 +28,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 /**
+ * Contains all the necesary methods to show the user the application.
  *
  * @author daviddiaz
  */
@@ -63,8 +64,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         panelGeneric.setLayout(new GridLayout(0, 1));
         tabbedPane.addTab("Generic", panelGeneric);
         tabbedPane.setVisible(false);
-        orderMayor.setVisible(false);
-        orderMenor.setVisible(false);
+        orderDesc.setVisible(false);
+        orderAsc.setVisible(false);
         buttonValue.setVisible(false);
         itemExport.setEnabled(false);
         itemReset.setEnabled(false);
@@ -109,14 +110,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonExportCSV = new javax.swing.JButton();
         errorText = new javax.swing.JLabel();
         buttonValue = new javax.swing.JButton();
-        orderMenor = new javax.swing.JButton();
-        orderMayor = new javax.swing.JButton();
+        orderAsc = new javax.swing.JButton();
+        orderDesc = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         itemSearchValue = new javax.swing.JMenuItem();
         itemExport = new javax.swing.JMenuItem();
         itemReset = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        itemChooseFiles = new javax.swing.JMenuItem();
         itemExit = new javax.swing.JMenuItem();
 
         jLabel2.setText("Row:");
@@ -290,17 +291,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        orderMenor.setText("<");
-        orderMenor.addActionListener(new java.awt.event.ActionListener() {
+        orderAsc.setText("Order desc.");
+        orderAsc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                orderMenorActionPerformed(evt);
+                orderAscActionPerformed(evt);
             }
         });
 
-        orderMayor.setText(">");
-        orderMayor.addActionListener(new java.awt.event.ActionListener() {
+        orderDesc.setText("Order asc.");
+        orderDesc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                orderMayorActionPerformed(evt);
+                orderDescActionPerformed(evt);
             }
         });
 
@@ -330,13 +331,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
         jMenu1.add(itemReset);
 
-        jMenuItem1.setText("Choose files");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        itemChooseFiles.setText("Choose files");
+        itemChooseFiles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                itemChooseFilesActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(itemChooseFiles);
 
         itemExit.setText("Exit");
         itemExit.addActionListener(new java.awt.event.ActionListener() {
@@ -359,11 +360,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(tabbedPane)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(42, 42, 42)
-                                .addComponent(orderMayor))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -372,15 +369,21 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(buttonAdd)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
-                                .addComponent(buttonValue)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(buttonExportCSV)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(deleteButtton)
-                            .addComponent(orderMenor))
-                        .addGap(32, 32, 32)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(buttonValue))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(100, 100, 100)))
+                        .addGap(98, 98, 98)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(buttonExportCSV)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deleteButtton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(orderDesc)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(orderAsc)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -399,8 +402,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(orderMenor)
-                        .addComponent(orderMayor)))
+                        .addComponent(orderAsc)
+                        .addComponent(orderDesc)))
                 .addGap(12, 12, 12)
                 .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -612,7 +615,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             errorDialogCoor.setVisible(true);
         } else {
             errorDialogCoor.setVisible(false);
-
             listValues.setListData(new String[0]);
             coorValues.clear();
             errorDialogCoor.setText("");
@@ -629,90 +631,104 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValuesActionPerformed
-        orderMayor.setVisible(true);
-        orderMenor.setVisible(true);
-        JPanel newPane = new JPanel();
-        newPane.setLayout(new GridLayout(0, 1));
-        String[] values = new String[keywordsUsed.size() + 2];
-        values[0] = "Row";
-        values[1] = "Column";
-        for (int i = 2; i < keywordsUsed.size() + 2; i++) {
-            values[i] = keywordsUsed.get(i - 2);
-        }
-
-        JTable tableCoord = new JTable();
-        boolean[] canEditTry = new boolean[2 + keywordsUsed.size()];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
-
-        DefaultTableModel modelTable = new DefaultTableModel(values, 0) {
-            boolean[] canEdit = canEditTry;
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+        try {
+            orderDesc.setVisible(true);
+            orderAsc.setVisible(true);
+            JPanel newPane = new JPanel();
+            newPane.setLayout(new GridLayout(0, 1));
+            String[] values = new String[keywordsUsed.size() + 2];
+            values[0] = "Row";
+            values[1] = "Column";
+            for (int i = 2; i < keywordsUsed.size() + 2; i++) {
+                values[i] = keywordsUsed.get(i - 2);
             }
 
-            @Override
-            public Class<?> getColumnClass(int column) {
-                Class<?> returnValue;
-                if ((column >= 0) && (column < getColumnCount())) {
-                    returnValue = getValueAt(0, column).getClass();
-                } else {
-                    returnValue = Object.class;
+            JTable tableCoord = new JTable();
+            boolean[] canEditTry = new boolean[2 + keywordsUsed.size()];
+            for (int i = 0; i < canEditTry.length; i++) {
+                canEditTry[i] = false;
+            }
+
+            DefaultTableModel modelTable = new DefaultTableModel(values, 0) {
+                boolean[] canEdit = canEditTry;
+
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit[columnIndex];
                 }
 
-                return returnValue;
+                @Override
+                public Class<?> getColumnClass(int column) {
+                    Class<?> returnValue;
+                    if ((column >= 0) && (column < getColumnCount())) {
+                        returnValue = getValueAt(0, column).getClass();
+                    } else {
+                        returnValue = Object.class;
+                    }
 
-            }
-        ;
-        };
+                    return returnValue;
+
+                }
+            ;
+            };
         tableCoord.setModel(modelTable);
-        //Center columns
-        for (int i = 0; i < tableCoord.getColumnCount(); i++) {
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            tableCoord.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableCoord.getTableHeader().getDefaultRenderer();
-        renderer.setHorizontalAlignment(0);
-        tableCoord.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-
-        DefaultTableModel model = (DefaultTableModel) tableCoord.getModel();
-
-        List<Molecule> molList = new ArrayList<>();
-
-        for (int i = 2; i < tableCoord.getColumnCount(); i++) {
-            usedFiles.clear();
-            getUsedFiles(tableCoord.getColumnName(i));
-            Molecule mole = controller.getTableMolecule(usedFiles, colAndRows, tableCoord.getColumnName(i));
-            molList.add(mole);
-        }
-
-        List<List<String>> rows = new ArrayList<>();
-        for (int i = 0; i < colAndRows.size(); i++) {
-            List<String> val = new ArrayList<>();
-            String[] coord = colAndRows.get(i).split(",");
-            val.add(coord[0]);
-            val.add(coord[1]);
-            for (int j = 0; j < molList.size(); j++) {
-                val.add(String.valueOf(molList.get(j).getResult().get(i).getValue()));
+            //Center columns
+            for (int i = 0; i < tableCoord.getColumnCount(); i++) {
+                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+                centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+                tableCoord.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
             }
-            rows.add(val);
-        }
+            DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableCoord.getTableHeader().getDefaultRenderer();
+            renderer.setHorizontalAlignment(0);
+            tableCoord.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
 
-        rows.forEach((row) -> {
-            model.addRow(row.toArray());
-        });
-        specialTables.add(tableCoord);
-        usedTables.add(tableCoord);
-        JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        newPane.add(scrollpaneHola);
-        tabbedPane.insertTab(fieldNameValues.getText(), new ImageIcon(""), newPane, null, 1);
-        dialogNombre.dispose();
-        fieldNameValues.setText("");
+            DefaultTableModel model = (DefaultTableModel) tableCoord.getModel();
+
+            List<Molecule> molList = new ArrayList<>();
+
+            for (int i = 2; i < tableCoord.getColumnCount(); i++) {
+                usedFiles.clear();
+                getUsedFiles(tableCoord.getColumnName(i));
+
+                Molecule mole = controller.getTableMolecule(usedFiles, colAndRows, tableCoord.getColumnName(i));
+                molList.add(mole);
+
+            }
+
+            List<List<String>> rows = new ArrayList<>();
+            for (int i = 0; i < colAndRows.size(); i++) {
+                List<String> val = new ArrayList<>();
+                String[] coord = colAndRows.get(i).split(",");
+                val.add(coord[0]);
+                val.add(coord[1]);
+                for (int j = 0; j < molList.size(); j++) {
+                    val.add(String.valueOf(molList.get(j).getResult().get(i).getValue()));
+                }
+                rows.add(val);
+            }
+
+            rows.forEach((row) -> {
+                model.addRow(row.toArray());
+            });
+            specialTables.add(tableCoord);
+            usedTables.add(tableCoord);
+            JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            newPane.add(scrollpaneHola);
+            tabbedPane.insertTab(fieldNameValues.getText(), new ImageIcon(""), newPane, null, 1);
+            dialogNombre.dispose();
+            fieldNameValues.setText("");
+        } catch (Exception e) {
+            dialogNombre.dispose();
+            errorText.setVisible(true);
+            errorText.setText("An error has ocurred. Check the file format.");
+
+        }
     }//GEN-LAST:event_buttonValuesActionPerformed
 
+    /**
+     * Button to search table values
+     *
+     * @param evt
+     */
     private void itemSearchValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSearchValueActionPerformed
         if (tabbedPane.isVisible()) {
             dialogCoordinates.pack();
@@ -721,6 +737,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_itemSearchValueActionPerformed
 
+    /**
+     * Button to export tables to CSV
+     *
+     * @param evt
+     */
     private void itemExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemExportActionPerformed
         normalTables.add(tableGeneric);
         errorText.setForeground(Color.red);
@@ -764,6 +785,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_itemExportActionPerformed
 
+    /**
+     * Clears all the tables.
+     *
+     * @param evt
+     */
     private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
         errorText.setText("");
         errorText.setForeground(Color.red);
@@ -779,8 +805,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemSearchValue.setEnabled(false);
         tabbedPane.addTab("Generic", panelGeneric);
         tabbedPane.setVisible(false);
-        orderMayor.setVisible(false);
-        orderMenor.setVisible(false);
+        orderDesc.setVisible(false);
+        orderAsc.setVisible(false);
         buttonExportCSV.setVisible(false);
         deleteButtton.setVisible(false);
         panelGeneric.removeAll();
@@ -810,8 +836,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemSearchValue.setEnabled(false);
         tabbedPane.addTab("Generic", panelGeneric);
         tabbedPane.setVisible(false);
-        orderMayor.setVisible(false);
-        orderMenor.setVisible(false);
+        orderDesc.setVisible(false);
+        orderAsc.setVisible(false);
         buttonExportCSV.setVisible(false);
         deleteButtton.setVisible(false);
         panelGeneric.removeAll();
@@ -880,17 +906,32 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         colAndRows.clear();
     }//GEN-LAST:event_buttonValueActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    /**
+     * Choose files button
+     *
+     * @param evt
+     */
+    private void itemChooseFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemChooseFilesActionPerformed
         ChooseFilesFrame chooseFilesFrame = new ChooseFilesFrame(controller);
         chooseFilesFrame.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_itemChooseFilesActionPerformed
 
+    /**
+     * Exit button
+     *
+     * @param evt
+     */
     private void itemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemExitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_itemExitActionPerformed
 
-    private void orderMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderMayorActionPerformed
+    /**
+     * Order selected values desc.
+     *
+     * @param evt
+     */
+    private void orderDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderDescActionPerformed
         JTable myTabla = getSelectedTable();
         errorText.setText("");
         if (specialTables.contains(myTabla)) {
@@ -899,16 +940,21 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 reorderNormalTables(datas[0], datas[1], ">");
                 reorderSpecialTables(datas[0], datas[1], ">");
             } else {
-                errorText.setText("Please select only 2 rows");
+                errorText.setText("Please select 2 rows");
                 errorText.setVisible(true);
             }
         } else {
             errorText.setText("Please create a table first");
             errorText.setVisible(true);
         }
-    }//GEN-LAST:event_orderMayorActionPerformed
+    }//GEN-LAST:event_orderDescActionPerformed
 
-    private void orderMenorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderMenorActionPerformed
+    /**
+     * Order selected values asc.
+     *
+     * @param evt
+     */
+    private void orderAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderAscActionPerformed
         JTable myTabla = getSelectedTable();
         errorText.setText("");
         if (myTabla.getSelectedRows().length == 2) {
@@ -916,11 +962,16 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             reorderNormalTables(datas[0], datas[1], "<");
             reorderSpecialTables(datas[0], datas[1], "<");
         } else {
-            errorText.setText("Please select only 2 rows");
+            errorText.setText("Please select 2 rows");
             errorText.setVisible(true);
         }
-    }//GEN-LAST:event_orderMenorActionPerformed
+    }//GEN-LAST:event_orderAscActionPerformed
 
+    /**
+     * Remove item from list
+     *
+     * @param evt
+     */
     private void buttonRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveItemActionPerformed
         if (!listValues.isSelectionEmpty()) {
             coorValues.remove(listValues.getSelectedIndex());
@@ -933,6 +984,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     }//GEN-LAST:event_buttonRemoveItemActionPerformed
 
+    /**
+     *
+     * @return selected table
+     */
     private JTable getSelectedTable() {
         JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
         JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
@@ -941,6 +996,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         return myTable;
     }
 
+    /**
+     * Used to order values
+     *
+     * @return gaussian values ordered
+     */
     private String[] getGaussianToOrder() {
         JTable myTable = getSelectedTable();
         DefaultTableModel model = (DefaultTableModel) myTable.getModel();
@@ -1087,7 +1147,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     /**
-     * This methos is used by buttonAdd and textField.s
+     * Method used to add new files.
      */
     private void actionButtonAdd() {
         errorText.setForeground(Color.red);
@@ -1147,6 +1207,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Method used to order the "normal" tables.
+     *
+     * @param gausian1
+     * @param gausian2
+     * @param order desc or asc
+     */
     private void reorderNormalTables(String gausian1, String gausian2, String order) {
         for (JTable normalTables : normalTables) {
             DefaultTableModel model = (DefaultTableModel) normalTables.getModel();
@@ -1177,6 +1244,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Method used to order the "special" tables.
+     *
+     * @param gausian1
+     * @param gausian2
+     * @param order desc or asc
+     */
     private void reorderSpecialTables(String gausian1, String gausian2, String order) {
         for (JTable specialTable : specialTables) {
             List<TableElement> element1 = new ArrayList<>();
@@ -1198,10 +1272,18 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             } else {
                 reorderElements(order, specialTable, element1, element2);
             }
-            
+
         }
     }
 
+    /**
+     * Method used to check wether a value has a pair or not
+     *
+     * @param order desc or asc
+     * @param specialTable table that is going to be ordered
+     * @param element1 values used as keywords
+     * @param element2 values used as keywords
+     */
     public void reorderElements(String order, JTable specialTable, List<TableElement> element1, List<TableElement> element2) {
         List<TableElement> elements = new ArrayList<>();
         for (TableElement elementType1 : element1) {
@@ -1237,7 +1319,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
         if (errorText.getText().length() == 0) {
             errorText.setVisible(false);
-            errorText.setText("Sorry, the elements are:");
+            errorText.setText("The following values will not be ordered: ");
             if (!elements.isEmpty()) {
                 errorText.setVisible(true);
                 for (TableElement element : elements) {
@@ -1271,6 +1353,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JTextField fieldNameValues;
     private javax.swing.JTextField fieldRow;
     private javax.swing.JButton finishButton;
+    private javax.swing.JMenuItem itemChooseFiles;
     private javax.swing.JMenuItem itemExit;
     private javax.swing.JMenuItem itemExport;
     private javax.swing.JMenuItem itemReset;
@@ -1281,11 +1364,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> listValues;
-    private javax.swing.JButton orderMayor;
-    private javax.swing.JButton orderMenor;
+    private javax.swing.JButton orderAsc;
+    private javax.swing.JButton orderDesc;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
 }

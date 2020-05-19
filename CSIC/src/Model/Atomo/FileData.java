@@ -8,27 +8,27 @@ package Model.Atomo;
 import java.util.List;
 
 /**
+ * Represents all the data from the files.
  *
  * @author domit
  */
 public class FileData {
+
     private String fileName;
     private List<Atom> atoms;
-    private List<MoleculeTable> atomsTable;
+    private List<AtomTable> atomsTable;
     private double energyValue;
-    
+
     public FileData() {
     }
 
-    public List<MoleculeTable> getAtomsTable() {
+    public List<AtomTable> getAtomsTable() {
         return atomsTable;
     }
 
-    public void setAtomsTable(List<MoleculeTable> atomsTable) {
+    public void setAtomsTable(List<AtomTable> atomsTable) {
         this.atomsTable = atomsTable;
     }
-    
-    
 
     public String getFileName() {
         return fileName;
@@ -53,5 +53,5 @@ public class FileData {
     public void setEnergyValue(double energyValue) {
         this.energyValue = energyValue;
     }
-    
+
 }

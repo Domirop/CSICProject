@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * Class used to read all the lines from a single file.
  *
  * @author daviddiaz
  */

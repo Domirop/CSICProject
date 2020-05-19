@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package Model.Atomo;
+
 /**
+ * Represents the table that contains the atom values.
  *
  * @author domit
  */
-public class MoleculeTable {
+public class AtomTable {
+
     private int column;
     private int row;
     private double value;
@@ -35,5 +38,5 @@ public class MoleculeTable {
 
     public void setValue(double value) {
         this.value = value;
-    }  
+    }
 }
