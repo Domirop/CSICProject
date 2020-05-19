@@ -579,14 +579,19 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         if (fieldRow.getText().matches(regex) && fieldColumn.getText().matches(regex)) {
             int row = Integer.parseInt(fieldRow.getText());
             int column = Integer.parseInt(fieldColumn.getText());
-            if (row >= column) {
-                coorValues.add(row + "," + column);
-                colAndRows.add(row + "," + column);
-                String[] vals = coorValues.toArray(new String[0]);
-                listValues.setListData(vals);
-                errorDialogCoor.setText("");
+            if (row <= usedTables.get(0).getRowCount() || column <= usedTables.get(0).getRowCount()) {
+                if (row >= column) {
+                    coorValues.add(row + "," + column);
+                    colAndRows.add(row + "," + column);
+                    String[] vals = coorValues.toArray(new String[0]);
+                    listValues.setListData(vals);
+                    errorDialogCoor.setText("");
+                } else {
+                    errorDialogCoor.setText("<html><body>The value of the row must be greater than the column value.</body></html>");
+                }
             } else {
-                errorDialogCoor.setText("<html><body>The value of the row must be greater<br>than or equal to the column value.</body></html>");
+                errorDialogCoor.setText("<html><body>The value of the column and row must be greater than the number gaussians.</body></html>");
+
             }
         } else {
             errorDialogCoor.setText("The values need to be integer.");
@@ -887,6 +892,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     private void orderMayorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderMayorActionPerformed
         JTable myTabla = getSelectedTable();
+        errorText.setText("");
         if (specialTables.contains(myTabla)) {
             if (myTabla.getSelectedRows().length == 2) {
                 String[] datas = getGaussianToOrder();
@@ -904,6 +910,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     private void orderMenorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderMenorActionPerformed
         JTable myTabla = getSelectedTable();
+        errorText.setText("");
         if (myTabla.getSelectedRows().length == 2) {
             String[] datas = getGaussianToOrder();
             reorderNormalTables(datas[0], datas[1], "<");
@@ -1064,11 +1071,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 List<Object> values = new ArrayList<>();
                 values.add(molecule.getResult().get(i).getGaussian());
                 values.add(molecule.getResult().get(i).getAtom());
-                values.add(molecule.getResult().get(i).getValue().toString());
+                values.add(String.valueOf(molecule.getResult().get(i).getValue()));
                 rows.add(values);
             } else {
                 List<Object> values = new ArrayList<>(auxList.get(i));
-                values.add(molecule.getResult().get(i).getValue().toString());
+                values.add(String.valueOf(molecule.getResult().get(i).getValue()));
                 rows.add(values);
             }
         }
@@ -1184,30 +1191,63 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     element2.add(new TableElement(rowValue, columnValue, i));
                 }
             }
-            for (TableElement elementType1 : element1) {
-                next:
-                for (TableElement elementType2 : element2) {
-                    if (elementType1.column.equals(elementType2.column) || elementType1.column.equals(elementType2.row)
-                            || elementType1.row.equals(elementType2.column) || elementType1.row.equals(elementType2.row)) {
-                        for (int i = 2; i < specialTable.getColumnCount(); i++) {
-                            BigDecimal bg1 = new BigDecimal(specialTable.getValueAt(elementType1.indexRow, i).toString());
-                            BigDecimal bg2 = new BigDecimal(specialTable.getValueAt(elementType2.indexRow, i).toString());
-                            if (order.equals("<")) {
-                                if (bg1.compareTo(bg2) > 0) {
-                                    BigDecimal aux = bg1;
-                                    specialTable.setValueAt(bg2.toString(), elementType1.indexRow, i);
-                                    specialTable.setValueAt(aux.toString(), elementType2.indexRow, i);
-                                }
-                            } else {
-                                if (bg2.compareTo(bg1) > 0) {
-                                    BigDecimal aux = bg2;
-                                    specialTable.setValueAt(bg1.toString(), elementType2.indexRow, i);
-                                    specialTable.setValueAt(aux.toString(), elementType1.indexRow, i);
-                                }
+            if (element1.size() > element2.size()) {
+                reorderElements(order, specialTable, element2, element1);
+            } else if (element2.size() > element1.size()) {
+                reorderElements(order, specialTable, element1, element2);
+            } else {
+                reorderElements(order, specialTable, element1, element2);
+            }
+            
+        }
+    }
+
+    public void reorderElements(String order, JTable specialTable, List<TableElement> element1, List<TableElement> element2) {
+        List<TableElement> elements = new ArrayList<>();
+        for (TableElement elementType1 : element1) {
+            next:
+            for (int j = 0; j < element2.size(); j++) {
+                if (elementType1.column.equals(element2.get(j).column) || elementType1.column.equals(element2.get(j).row)
+                        || elementType1.row.equals(element2.get(j).column) || elementType1.row.equals(element2.get(j).row)) {
+                    for (int i = 2; i < specialTable.getColumnCount(); i++) {
+                        BigDecimal bg1 = new BigDecimal(specialTable.getValueAt(elementType1.indexRow, i).toString());
+                        BigDecimal bg2 = new BigDecimal(specialTable.getValueAt(element2.get(j).indexRow, i).toString());
+                        if (order.equals("<")) {
+                            if (bg1.compareTo(bg2) > 0) {
+                                BigDecimal aux = bg1;
+                                specialTable.setValueAt(bg2.toString(), elementType1.indexRow, i);
+                                specialTable.setValueAt(aux.toString(), element2.get(j).indexRow, i);
+                            }
+                        } else {
+                            if (bg2.compareTo(bg1) > 0) {
+                                BigDecimal aux = bg2;
+                                specialTable.setValueAt(bg1.toString(), element2.get(j).indexRow, i);
+                                specialTable.setValueAt(aux.toString(), elementType1.indexRow, i);
                             }
                         }
-                        break next;
                     }
+                    element2.remove(element2.get(j));
+                    break next;
+                } else {
+                    if (j == element2.size() - 1) {
+                        elements.add(elementType1);
+                    }
+                }
+            }
+        }
+        if (errorText.getText().length() == 0) {
+            errorText.setVisible(false);
+            errorText.setText("Sorry, the elements are:");
+            if (!elements.isEmpty()) {
+                errorText.setVisible(true);
+                for (TableElement element : elements) {
+                    errorText.setText(errorText.getText() + " " + element.row + "," + element.column + "  ");
+                }
+            }
+            if (!element2.isEmpty()) {
+                for (TableElement element : element2) {
+                    errorText.setVisible(true);
+                    errorText.setText(errorText.getText() + " " + element.row + "," + element.column + "  ");
                 }
             }
         }

@@ -5,7 +5,7 @@
  */
 package Model;
 
-import Model.Atomo.AtomTable;
+import Model.Atomo.MoleculeTable;
 import Model.Atomo.FileData;
 import Model.Atomo.Molecule;
 import java.io.File;
@@ -39,6 +39,6 @@ public interface ModelInt {
     
     public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key);
     
-    public List<AtomTable> getAtomTables(List<String> coordinates, String path);
+    public List<MoleculeTable> getAtomTables(List<String> coordinates, String path);
         
 }

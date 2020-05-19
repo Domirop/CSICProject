@@ -48,7 +48,7 @@ public class Calculations {
                 }
             }
         }
-        totalDifferentiator.setValue(new BigDecimal(result));
+        totalDifferentiator.setValue(result);
         return totalDifferentiator;
     }
 
@@ -59,7 +59,7 @@ public class Calculations {
      * @param coordinates coordinates of the atoms.
      * @return return a TotalDiferentiator object.
      */
-    public TotalDifferentiator getValueToAtomTable(List<FileData> files, String coordinates) {
+    public TotalDifferentiator getValueToMoleculeTable(List<FileData> files, String coordinates) {
         TotalDifferentiator totalDifferentiator = new TotalDifferentiator();
         totalDifferentiator.setGaussian(coordinates);
         double minValue = getEnergyMinValue(files);
@@ -78,12 +78,12 @@ public class Calculations {
                 int column = files.get(i).getAtomsTable().get(j).getColumn();
                 int row = files.get(i).getAtomsTable().get(j).getRow();
                 if (totalDifferentiator.getGaussian().equals(row + "," + column)) {
-                    result = result.add(new BigDecimal(contribution).multiply(files.get(i).getAtomsTable().get(j).getValue()));
+                    result = result.add(new BigDecimal(contribution).multiply(new BigDecimal(files.get(i).getAtomsTable().get(j).getValue())));
                 }
 
             }
         }
-        totalDifferentiator.setValue(result);
+        totalDifferentiator.setValue(result.doubleValue());
         return totalDifferentiator;
     }
 

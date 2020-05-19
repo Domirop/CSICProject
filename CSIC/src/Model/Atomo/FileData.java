@@ -14,17 +14,17 @@ import java.util.List;
 public class FileData {
     private String fileName;
     private List<Atom> atoms;
-    private List<AtomTable> atomsTable;
+    private List<MoleculeTable> atomsTable;
     private double energyValue;
     
     public FileData() {
     }
 
-    public List<AtomTable> getAtomsTable() {
+    public List<MoleculeTable> getAtomsTable() {
         return atomsTable;
     }
 
-    public void setAtomsTable(List<AtomTable> atomsTable) {
+    public void setAtomsTable(List<MoleculeTable> atomsTable) {
         this.atomsTable = atomsTable;
     }
     

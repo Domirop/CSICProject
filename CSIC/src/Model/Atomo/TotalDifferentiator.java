@@ -4,9 +4,6 @@
  * and open the template in the editor.
  */
 package Model.Atomo;
-
-import java.math.BigDecimal;
-
 /**
  *
  * @author domit
@@ -14,7 +11,7 @@ import java.math.BigDecimal;
 public class TotalDifferentiator {
     private String gaussian;
     private String atom;
-    private BigDecimal value;
+    private double value;
 
     public String getAtom() {
         return atom;
@@ -35,11 +32,11 @@ public class TotalDifferentiator {
         this.gaussian = atomo;
     }
 
-    public BigDecimal getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(BigDecimal value) {
+    public void setValue(double value) {
         this.value = value;
     }
 }

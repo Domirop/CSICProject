@@ -14,10 +14,14 @@ public class TableElement {
     String row;
     int indexRow;
 
-    public TableElement(String column, String row, int indexRow) {
+    public TableElement(String row, String column, int indexRow) {
         this.column = column;
         this.row = row;
         this.indexRow = indexRow;
     }
-    
+
+    @Override
+    public String toString() {
+        return "TableElement{" + "column=" + column + ", row=" + row + ", indexRow=" + indexRow + '}';
+    }  
 }

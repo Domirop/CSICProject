@@ -4,17 +4,14 @@
  * and open the template in the editor.
  */
 package Model.Atomo;
-
-import java.math.BigDecimal;
-
 /**
  *
  * @author domit
  */
-public class AtomTable {
+public class MoleculeTable {
     private int column;
     private int row;
-    private BigDecimal value;
+    private double value;
 
     public int getColumn() {
         return column;
@@ -32,11 +29,11 @@ public class AtomTable {
         this.row = row;
     }
 
-    public BigDecimal getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(BigDecimal value) {
+    public void setValue(double value) {
         this.value = value;
     }  
 }

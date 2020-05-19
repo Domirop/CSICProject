@@ -6,7 +6,7 @@
 package Model;
 
 import Model.Atomo.Atom;
-import Model.Atomo.AtomTable;
+import Model.Atomo.MoleculeTable;
 import Model.Atomo.Calculations;
 import Model.Atomo.Molecule;
 import Model.Atomo.FileData;
@@ -171,8 +171,9 @@ public class Model implements ModelInt {
     }
 
     /**
-     * This method is in charge of obtaining all the necessary data from the table's
-     * files.
+     * This method is in charge of obtaining all the necessary data from the
+     * table's files.
+     *
      * @param files Files where we look for the data to get all the data.
      * @param coordinates Coordinates of values.
      * @return List of elements FileData.
@@ -183,7 +184,7 @@ public class Model implements ModelInt {
         for (File file : files) {
             FileData fileData = new FileData();
             fileData.setFileName(file.getName().split(",")[0]);
-            fileData.setEnergyValue(Double.parseDouble(SCFDone(file.getAbsolutePath())));        
+            fileData.setEnergyValue(Double.parseDouble(SCFDone(file.getAbsolutePath())));
             fileData.setAtomsTable(getAtomTables(coordinates, file.getAbsolutePath()));
             filesDatas.add(fileData);
         }
@@ -192,20 +193,21 @@ public class Model implements ModelInt {
 
     /**
      * Returns a list with all the atomsTable that exist in the files.
+     *
      * @param coordinates coordinates of atoms in the table.
      * @param path path of file.
-     * @return List o element AtomTable.
+     * @return List o element MoleculeTable.
      */
     @Override
-    public List<AtomTable> getAtomTables(List<String> coordinates, String path) {
-        List<AtomTable> atomsTable = new ArrayList<>();
+    public List<MoleculeTable> getAtomTables(List<String> coordinates, String path) {
+        List<MoleculeTable> atomsTable = new ArrayList<>();
         for (String coordinate : coordinates) {
-            AtomTable atomTable = new AtomTable();
+            MoleculeTable atomTable = new MoleculeTable();
             String[] position = coordinate.split(",");
             atomTable.setColumn(Integer.parseInt(position[1]));
             atomTable.setRow(Integer.parseInt(position[0]));
             atomTable.setValue(new BigDecimal(this.getValue(path, atomTable.getColumn(),
-                    atomTable.getRow(), "contribution to J").replace("D", "e")));
+                    atomTable.getRow(), "contribution to J").replace("D", "e")).doubleValue());
             atomsTable.add(atomTable);
         }
         return atomsTable;
@@ -214,6 +216,7 @@ public class Model implements ModelInt {
     /**
      * This method is responsible for obtaining the total value ​​of the
      * molecule.
+     *
      * @param files files where the methods search data.
      * @param coordinates coordinates of the elements.
      * @param key diferentiator to the rest of molecules.
@@ -227,7 +230,7 @@ public class Model implements ModelInt {
         molecule.setDifferentiator(key);
         List<TotalDifferentiator> total = new ArrayList<>();
         for (String coordinate : coordinates) {
-            TotalDifferentiator totalDifferentiator = calculations.getValueToAtomTable(molecule.getFilesData(), coordinate);
+            TotalDifferentiator totalDifferentiator = calculations.getValueToMoleculeTable(molecule.getFilesData(), coordinate);
             total.add(totalDifferentiator);
         }
         molecule.setResult(total);
