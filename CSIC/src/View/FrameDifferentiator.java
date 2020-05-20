@@ -32,7 +32,7 @@ import javax.swing.table.TableModel;
  *
  * @author daviddiaz
  *
- * 
+ *
  */
 public class FrameDifferentiator extends javax.swing.JFrame {
 
@@ -745,7 +745,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemExportActionPerformed
-        normalTables.add(tableGeneric);
         errorText.setForeground(Color.red);
         String folder = "";
         JFileChooser fileChooser = new JFileChooser();
@@ -857,7 +856,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
         List<String> tableNames = new ArrayList<>();
         keywordsUsed.add("Generic");
-        normalTables.add(tableGeneric);
         errorText.setForeground(Color.red);
         String folder = "";
         JFileChooser fileChooser = new JFileChooser();
@@ -874,7 +872,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             tableNames.add(tabbedPane.getTitleAt(i));
 
         }
-
 
         if (usedTables.size() > 0) {
             for (int i = 0; i < tabbedPane.getTabCount(); i++) {
@@ -946,17 +943,27 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void orderDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderDescActionPerformed
         JTable myTabla = getSelectedTable();
         errorText.setText("");
-        if (specialTables.contains(myTabla)) {
-            if (myTabla.getSelectedRows().length == 2) {
-                String[] datas = getGaussianToOrder();
-                reorderNormalTables(datas[0], datas[1], ">");
-                reorderSpecialTables(datas[0], datas[1], ">");
-            } else {
-                errorText.setText("Please select 2 rows");
-                errorText.setVisible(true);
+        if (myTabla.getSelectedRows().length == 2) {
+            JPanel myPanel = (JPanel) (tabbedPane.getComponentAt(0));
+            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+            JViewport viewport = scrollPane.getViewport();
+            JTable genericTable = (JTable) viewport.getView();
+            for (int i = 2; i < myTabla.getColumnCount(); i++) {
+                BigDecimal bg1 = new BigDecimal(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
+                BigDecimal bg2 = new BigDecimal(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
+                if (bg2.compareTo(bg1) > 0) {
+                    String[] datas = getGaussianToOrder();
+                    double a = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[0]) - 1, i).toString());
+                    double b = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[1]) - 1, i).toString());
+                    double ax = a;
+                    genericTable.setValueAt(b, Integer.parseInt(datas[0]) - 1, i);
+                    genericTable.setValueAt(ax, Integer.parseInt(datas[0]) - 1, i);
+                    reorderNormalTables(datas[0], datas[1], myTabla, (i - 2));
+                    reorderSpecialTables(datas[0], datas[1], i);
+                }
             }
         } else {
-            errorText.setText("Please create a table first");
+            errorText.setText("Please select 2 rows");
             errorText.setVisible(true);
         }
     }//GEN-LAST:event_orderDescActionPerformed
@@ -970,14 +977,137 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         JTable myTabla = getSelectedTable();
         errorText.setText("");
         if (myTabla.getSelectedRows().length == 2) {
+            JPanel myPanel = (JPanel) (tabbedPane.getComponentAt(0));
+            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+            JViewport viewport = scrollPane.getViewport();
+            JTable genericTable = (JTable) viewport.getView();
             String[] datas = getGaussianToOrder();
-            reorderNormalTables(datas[0], datas[1], "<");
-            reorderSpecialTables(datas[0], datas[1], "<");
+            for (int i = 2; i < myTabla.getColumnCount(); i++) {
+                BigDecimal bg1 = new BigDecimal(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
+                BigDecimal bg2 = new BigDecimal(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
+                if (bg1.compareTo(bg2) > 0) {
+                    double a = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[0]) - 1, i).toString());
+                    double b = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[1]) - 1, i).toString());
+                    double ax = a;
+                    genericTable.setValueAt(String.valueOf(b), Integer.parseInt(datas[0]) - 1, i);
+                    genericTable.setValueAt(String.valueOf(ax), Integer.parseInt(datas[1]) - 1, i);
+                    reorderNormalTables(datas[0], datas[1], myTabla, (i - 2));
+                    reorderSpecialTables(datas[0], datas[1], i);
+                    genericTable.repaint();
+                }
+            }
         } else {
             errorText.setText("Please select 2 rows");
             errorText.setVisible(true);
         }
     }//GEN-LAST:event_orderAscActionPerformed
+
+    /**
+     * Method used to order the "normal" tables.
+     *
+     * @param gausian1
+     * @param gausian2
+     * @param order desc or asc
+     */
+    private void reorderNormalTables(String gausian1, String gausian2, JTable selectedTable, int index) {
+        if (normalTables.get(index) != selectedTable) {
+            DefaultTableModel model = (DefaultTableModel) normalTables.get(index).getModel();
+            List<Integer> indexs1 = new ArrayList<>();
+            for (int i = 0; i < normalTables.get(index).getRowCount(); i++) {
+                if (String.valueOf(normalTables.get(index).getValueAt(i, 0)).equals(gausian1) || String.valueOf(normalTables.get(index).getValueAt(i, 0)).equals(gausian2)) {
+                    indexs1.add(Integer.parseInt(String.valueOf(normalTables.get(index).getValueAt(i, 0))));
+                }
+            }
+            for (int i = 2; i < model.getColumnCount(); i++) {
+                BigDecimal bg1 = new BigDecimal(model.getValueAt(indexs1.get(0) - 1, i).toString());
+                BigDecimal bg2 = new BigDecimal(model.getValueAt(indexs1.get(1) - 1, i).toString());
+                BigDecimal aux = bg1;
+                model.setValueAt(bg2.toString(), indexs1.get(0) - 1, i);
+                model.setValueAt(aux.toString(), indexs1.get(1) - 1, i);
+            }
+            normalTables.get(index).repaint();
+        } else {
+
+        }
+    }
+
+    /**
+     * Method used to order the "special" tables.
+     *
+     * @param gausian1
+     * @param gausian2
+     * @param order desc or asc
+     */
+    private void reorderSpecialTables(String gausian1, String gausian2, int index) {
+        for (JTable specialTable : specialTables) {
+            List<TableElement> element1 = new ArrayList<>();
+            List<TableElement> element2 = new ArrayList<>();
+            for (int i = 0; i < specialTable.getRowCount(); i++) {
+                String rowValue = specialTable.getValueAt(i, 0).toString();
+                String columnValue = specialTable.getValueAt(i, 1).toString();
+                if (rowValue.equals(gausian1) || columnValue.equals(gausian1)) {
+                    element1.add(new TableElement(rowValue, columnValue, i));
+                }
+                if (rowValue.equals(gausian2) || columnValue.equals(gausian2)) {
+                    element2.add(new TableElement(rowValue, columnValue, i));
+                }
+            }
+            if (element1.size() > element2.size()) {
+                reorderElements(specialTable, element2, element1, index);
+            } else if (element2.size() > element1.size()) {
+                reorderElements(specialTable, element1, element2, index);
+            } else {
+                reorderElements(specialTable, element1, element2, index);
+            }
+
+        }
+    }
+
+    /**
+     * Method used to check wether a value has a pair or not
+     *
+     * @param specialTable table that is going to be ordered
+     * @param element1 values used as keywords
+     * @param element2 values used as keywords
+     */
+    public void reorderElements(JTable specialTable, List<TableElement> element1, List<TableElement> element2, int index) {
+        List<TableElement> elements = new ArrayList<>();
+        for (TableElement elementType1 : element1) {
+            next:
+            for (int j = 0; j < element2.size(); j++) {
+                if (elementType1.column.equals(element2.get(j).column) || elementType1.column.equals(element2.get(j).row)
+                        || elementType1.row.equals(element2.get(j).column) || elementType1.row.equals(element2.get(j).row)) {
+                        BigDecimal bg1 = new BigDecimal(specialTable.getValueAt(elementType1.indexRow, index).toString());
+                        BigDecimal bg2 = new BigDecimal(specialTable.getValueAt(element2.get(j).indexRow, index).toString());
+                        BigDecimal aux = bg1;
+                        specialTable.setValueAt(bg2.toString(), elementType1.indexRow, index);
+                        specialTable.setValueAt(aux.toString(), element2.get(j).indexRow, index);
+                    element2.remove(element2.get(j));
+                    break next;
+                } else {
+                    if (j == element2.size() - 1) {
+                        elements.add(elementType1);
+                    }
+                }
+            }
+        }
+        if (errorText.getText().length() == 0) {
+            errorText.setVisible(false);
+            errorText.setText("The following values will not be ordered: ");
+            if (!elements.isEmpty()) {
+                errorText.setVisible(true);
+                for (TableElement element : elements) {
+                    errorText.setText(errorText.getText() + " " + element.row + "," + element.column + "  ");
+                }
+            }
+            if (!element2.isEmpty()) {
+                for (TableElement element : element2) {
+                    errorText.setVisible(true);
+                    errorText.setText(errorText.getText() + " " + element.row + "," + element.column + "  ");
+                }
+            }
+        }
+    }
 
     /**
      * Remove item from list
@@ -1058,15 +1188,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             addElementsToGeneric(molecule);
             JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             panelGeneric.add(scrollpaneGeneric);
-            normalTables.add(tableGeneric);
         } else {
-            normalTables.remove(tableGeneric);
             panelGeneric.removeAll();
             initGenericTable(values);
             addElementsToGeneric(molecule);
             JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             panelGeneric.add(scrollpaneGeneric);
-            normalTables.add(tableGeneric);
         }
         TableColumn column = null;
         for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
@@ -1107,6 +1234,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 Class<?> returnValue;
                 if ((column >= 0) && (column < getColumnCount())) {
                     returnValue = getValueAt(0, column).getClass();
+
                 } else {
                     returnValue = Object.class;
                 }
@@ -1215,134 +1343,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             } else {
                 errorText.setText("There is no files with this characteristics.");
                 keywordsUsed.remove(fieldKeyword.getText());
-            }
-        }
-    }
-
-    /**
-     * Method used to order the "normal" tables.
-     *
-     * @param gausian1
-     * @param gausian2
-     * @param order desc or asc
-     */
-    private void reorderNormalTables(String gausian1, String gausian2, String order) {
-        for (JTable normalTables : normalTables) {
-            DefaultTableModel model = (DefaultTableModel) normalTables.getModel();
-            List<Integer> indexs1 = new ArrayList<>();
-            for (int i = 0; i < normalTables.getRowCount(); i++) {
-                if (String.valueOf(normalTables.getValueAt(i, 0)).equals(gausian1) || String.valueOf(normalTables.getValueAt(i, 0)).equals(gausian2)) {
-                    indexs1.add(Integer.parseInt(String.valueOf(normalTables.getValueAt(i, 0))));
-                }
-            }
-            for (int i = 2; i < model.getColumnCount(); i++) {
-                BigDecimal bg1 = new BigDecimal(model.getValueAt(indexs1.get(0) - 1, i).toString());
-                BigDecimal bg2 = new BigDecimal(model.getValueAt(indexs1.get(1) - 1, i).toString());
-                if (order.equals("<")) {
-                    if (bg1.compareTo(bg2) > 0) {
-                        BigDecimal aux = bg1;
-                        model.setValueAt(bg2.toString(), indexs1.get(0) - 1, i);
-                        model.setValueAt(aux.toString(), indexs1.get(1) - 1, i);
-                    }
-                } else {
-                    if (bg2.compareTo(bg1) > 0) {
-                        BigDecimal aux = bg2;
-                        model.setValueAt(bg1.toString(), indexs1.get(1) - 1, i);
-                        model.setValueAt(aux.toString(), indexs1.get(0) - 1, i);
-                    }
-                }
-            }
-            normalTables.repaint();
-        }
-    }
-
-    /**
-     * Method used to order the "special" tables.
-     *
-     * @param gausian1
-     * @param gausian2
-     * @param order desc or asc
-     */
-    private void reorderSpecialTables(String gausian1, String gausian2, String order) {
-        for (JTable specialTable : specialTables) {
-            List<TableElement> element1 = new ArrayList<>();
-            List<TableElement> element2 = new ArrayList<>();
-            for (int i = 0; i < specialTable.getRowCount(); i++) {
-                String rowValue = specialTable.getValueAt(i, 0).toString();
-                String columnValue = specialTable.getValueAt(i, 1).toString();
-                if (rowValue.equals(gausian1) || columnValue.equals(gausian1)) {
-                    element1.add(new TableElement(rowValue, columnValue, i));
-                }
-                if (rowValue.equals(gausian2) || columnValue.equals(gausian2)) {
-                    element2.add(new TableElement(rowValue, columnValue, i));
-                }
-            }
-            if (element1.size() > element2.size()) {
-                reorderElements(order, specialTable, element2, element1);
-            } else if (element2.size() > element1.size()) {
-                reorderElements(order, specialTable, element1, element2);
-            } else {
-                reorderElements(order, specialTable, element1, element2);
-            }
-
-        }
-    }
-
-    /**
-     * Method used to check wether a value has a pair or not
-     *
-     * @param order desc or asc
-     * @param specialTable table that is going to be ordered
-     * @param element1 values used as keywords
-     * @param element2 values used as keywords
-     */
-    public void reorderElements(String order, JTable specialTable, List<TableElement> element1, List<TableElement> element2) {
-        List<TableElement> elements = new ArrayList<>();
-        for (TableElement elementType1 : element1) {
-            next:
-            for (int j = 0; j < element2.size(); j++) {
-                if (elementType1.column.equals(element2.get(j).column) || elementType1.column.equals(element2.get(j).row)
-                        || elementType1.row.equals(element2.get(j).column) || elementType1.row.equals(element2.get(j).row)) {
-                    for (int i = 2; i < specialTable.getColumnCount(); i++) {
-                        BigDecimal bg1 = new BigDecimal(specialTable.getValueAt(elementType1.indexRow, i).toString());
-                        BigDecimal bg2 = new BigDecimal(specialTable.getValueAt(element2.get(j).indexRow, i).toString());
-                        if (order.equals("<")) {
-                            if (bg1.compareTo(bg2) > 0) {
-                                BigDecimal aux = bg1;
-                                specialTable.setValueAt(bg2.toString(), elementType1.indexRow, i);
-                                specialTable.setValueAt(aux.toString(), element2.get(j).indexRow, i);
-                            }
-                        } else {
-                            if (bg2.compareTo(bg1) > 0) {
-                                BigDecimal aux = bg2;
-                                specialTable.setValueAt(bg1.toString(), element2.get(j).indexRow, i);
-                                specialTable.setValueAt(aux.toString(), elementType1.indexRow, i);
-                            }
-                        }
-                    }
-                    element2.remove(element2.get(j));
-                    break next;
-                } else {
-                    if (j == element2.size() - 1) {
-                        elements.add(elementType1);
-                    }
-                }
-            }
-        }
-        if (errorText.getText().length() == 0) {
-            errorText.setVisible(false);
-            errorText.setText("The following values will not be ordered: ");
-            if (!elements.isEmpty()) {
-                errorText.setVisible(true);
-                for (TableElement element : elements) {
-                    errorText.setText(errorText.getText() + " " + element.row + "," + element.column + "  ");
-                }
-            }
-            if (!element2.isEmpty()) {
-                for (TableElement element : element2) {
-                    errorText.setVisible(true);
-                    errorText.setText(errorText.getText() + " " + element.row + "," + element.column + "  ");
-                }
             }
         }
     }
