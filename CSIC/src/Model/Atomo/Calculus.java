@@ -28,18 +28,23 @@ public class Calculus {
     public AverageValue getTotalMoleculeValue(List<FileData> files, String gaussianData) {
         AverageValue totalDifferentiator = new AverageValue();
         totalDifferentiator.setGaussian(gaussianData);
+
         double minValue = getEnergyMinValue(files);
         double expS = getExps(files, minValue);
         double result = 0.0;
         for (int i = 0; i < files.size(); i++) {
+            double mediumValue = 0.0;
+            double initialValue = 0.0;
             double contribution = 0.0;
             if (files.get(i).getEnergyValue() == minValue) {
-                contribution = 0;
+                initialValue = 0;
             } else {
-                double initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
-                double mediumValue = Math.pow(initialValue, -1);
-                contribution = mediumValue / expS;
+                initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
             }
+            mediumValue = Math.exp(initialValue * -1);
+
+            contribution = mediumValue / expS;
+
             for (int j = 0; j < files.get(i).getAtoms().size(); j++) {
                 if (files.get(i).getAtoms().get(j).getGaussianData().equals(gaussianData)) {
                     if (i == 0) {
@@ -49,6 +54,7 @@ public class Calculus {
                 }
             }
         }
+
         totalDifferentiator.setValue(result);
         return totalDifferentiator;
     }
@@ -67,14 +73,17 @@ public class Calculus {
         double expS = getExps(files, minValue);
         BigDecimal result = new BigDecimal(0.0);
         for (int i = 0; i < files.size(); i++) {
+            double mediumValue = 0.0;
+            double initialValue = 0.0;
             double contribution = 0.0;
             if (files.get(i).getEnergyValue() == minValue) {
-                contribution = 0;
+                initialValue = 0;
             } else {
-                double initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
-                double mediumValue = Math.pow(initialValue, -1);
-                contribution = mediumValue / expS;
+                initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
             }
+            mediumValue = Math.exp(initialValue * -1);
+
+            contribution = mediumValue / expS;
             for (int j = 0; j < files.get(i).getAtomsTable().size(); j++) {
                 int column = files.get(i).getAtomsTable().get(j).getColumn();
                 int row = files.get(i).getAtomsTable().get(j).getRow();
@@ -83,6 +92,7 @@ public class Calculus {
                 }
 
             }
+
         }
         totalDifferentiator.setValue(result.doubleValue());
         return totalDifferentiator;
@@ -117,9 +127,10 @@ public class Calculus {
         for (FileData file : files) {
             double initialValue = (file.getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
             if (initialValue == 0.0) {
-                expS = expS;
+                expS += 1;
             } else {
-                double i = Math.pow(initialValue, -1);
+                double i = Math.exp(initialValue * -1);
+
                 expS = expS + i;
             }
         }

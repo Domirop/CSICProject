@@ -78,6 +78,7 @@ public class Model implements ModelInt {
      */
     @Override
     public String SCFDone(String path) {
+        //System.out.println(readEnergy.SCFDone(path));
         return readEnergy.SCFDone(path);
     }
 

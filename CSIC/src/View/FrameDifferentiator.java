@@ -31,6 +31,8 @@ import javax.swing.table.TableModel;
  * Contains all the necesary methods to show the user the application.
  *
  * @author daviddiaz
+ *
+ * 
  */
 public class FrameDifferentiator extends javax.swing.JFrame {
 
@@ -291,14 +293,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        orderAsc.setText("Order desc.");
+        orderAsc.setText("Order asc.");
         orderAsc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 orderAscActionPerformed(evt);
             }
         });
 
-        orderDesc.setText("Order asc.");
+        orderDesc.setText("Order desc.");
         orderDesc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 orderDescActionPerformed(evt);
@@ -369,21 +371,21 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(buttonAdd)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buttonValue))
+                                .addGap(0, 131, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(100, 100, 100)))
-                        .addGap(98, 98, 98)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(buttonExportCSV)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButtton))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(orderDesc)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(orderAsc)))))
+                                .addComponent(orderAsc))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(buttonValue)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonExportCSV)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deleteButtton)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -853,6 +855,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
+        List<String> tableNames = new ArrayList<>();
+        keywordsUsed.add("Generic");
         normalTables.add(tableGeneric);
         errorText.setForeground(Color.red);
         String folder = "";
@@ -866,13 +870,20 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
             folder = file.getAbsolutePath();
         }
+        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            tableNames.add(tabbedPane.getTitleAt(i));
 
-        keywordsUsed.add("Generic");
+        }
+
 
         if (usedTables.size() > 0) {
-            for (int i = 0; i < keywordsUsed.size(); i++) {
+            for (int i = 0; i < tabbedPane.getTabCount(); i++) {
                 List<String[]> datas = new ArrayList<>();
-                TableModel model = usedTables.get(i).getModel();
+                JPanel myPanel = (JPanel) (tabbedPane.getComponentAt(i));
+                JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+                JViewport viewport = scrollPane.getViewport();
+                JTable myTable = (JTable) viewport.getView();
+                DefaultTableModel model = (DefaultTableModel) myTable.getModel();
                 String[] columnNames = new String[model.getColumnCount()];
                 for (int j = 0; j < model.getColumnCount(); j++) {
                     columnNames[j] = model.getColumnName(j);
@@ -887,7 +898,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     }
                     datas.add(data);
                 }
-                if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
+
+                if (this.controller.writeCSV(datas, folder, tableNames.get(i))) {
                     errorText.setForeground(Color.green);
                     errorText.setText("All files have been created.");
                 }
