@@ -386,7 +386,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addComponent(buttonExportCSV)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(deleteButtton)))))
-                .addContainerGap())
+                .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -956,8 +956,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     double a = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[0]) - 1, i).toString());
                     double b = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[1]) - 1, i).toString());
                     double ax = a;
-                    genericTable.setValueAt(b, Integer.parseInt(datas[0]) - 1, i);
-                    genericTable.setValueAt(ax, Integer.parseInt(datas[0]) - 1, i);
+                    genericTable.setValueAt(String.valueOf(b), Integer.parseInt(datas[0]) - 1, i);
+                    genericTable.setValueAt(String.valueOf(ax), Integer.parseInt(datas[0]) - 1, i);
                     reorderNormalTables(datas[0], datas[1], myTabla, (i - 2));
                     reorderSpecialTables(datas[0], datas[1], i);
                 }
@@ -1022,8 +1022,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 BigDecimal bg1 = new BigDecimal(model.getValueAt(indexs1.get(0) - 1, i).toString());
                 BigDecimal bg2 = new BigDecimal(model.getValueAt(indexs1.get(1) - 1, i).toString());
                 BigDecimal aux = bg1;
-                model.setValueAt(bg2.toString(), indexs1.get(0) - 1, i);
-                model.setValueAt(aux.toString(), indexs1.get(1) - 1, i);
+                model.setValueAt(String.valueOf(bg2), indexs1.get(0) - 1, i);
+                model.setValueAt(String.valueOf(aux), indexs1.get(1) - 1, i);
             }
             normalTables.get(index).repaint();
         } else {
@@ -1080,8 +1080,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         BigDecimal bg1 = new BigDecimal(specialTable.getValueAt(elementType1.indexRow, index).toString());
                         BigDecimal bg2 = new BigDecimal(specialTable.getValueAt(element2.get(j).indexRow, index).toString());
                         BigDecimal aux = bg1;
-                        specialTable.setValueAt(bg2.toString(), elementType1.indexRow, index);
-                        specialTable.setValueAt(aux.toString(), element2.get(j).indexRow, index);
+                        specialTable.setValueAt(String.valueOf(bg2), elementType1.indexRow, index);
+                        specialTable.setValueAt(String.valueOf(aux), element2.get(j).indexRow, index);
                     element2.remove(element2.get(j));
                     break next;
                 } else {
