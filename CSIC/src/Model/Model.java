@@ -93,7 +93,7 @@ public class Model implements ModelInt {
      * @return The chosen value.
      */
     @Override
-    public String getValue(String path, int column, int row, String start) {
+    public String getValue(String path, int column, int row, String start) throws Exception{
         return readTable.getValue(path, column, row, start);
     }
 
@@ -181,7 +181,7 @@ public class Model implements ModelInt {
      * @return List of elements FileData.
      */
     @Override
-    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates) {
+    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates) throws Exception{
         List<FileData> filesDatas = new ArrayList<>();
         for (File file : files) {
             FileData fileData = new FileData();
@@ -201,7 +201,7 @@ public class Model implements ModelInt {
      * @return List o element AtomTable.
      */
     @Override
-    public List<AtomTable> getAtomTables(List<String> coordinates, String path) {
+    public List<AtomTable> getAtomTables(List<String> coordinates, String path) throws Exception{
         List<AtomTable> atomsTable = new ArrayList<>();
         for (String coordinate : coordinates) {
             AtomTable atomTable = new AtomTable();
@@ -225,7 +225,7 @@ public class Model implements ModelInt {
      * @return A Molecule object.
      */
     @Override
-    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key) {
+    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key) throws Exception{
 
         Molecule molecule = new Molecule();
         molecule.setFilesData(getFileDataTable(files, coordinates));

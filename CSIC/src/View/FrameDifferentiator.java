@@ -633,97 +633,98 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValuesActionPerformed
-        try {
-            orderDesc.setVisible(true);
-            orderAsc.setVisible(true);
-            JPanel newPane = new JPanel();
-            newPane.setLayout(new GridLayout(0, 1));
-            String[] values = new String[keywordsUsed.size() + 2];
-            values[0] = "Row";
-            values[1] = "Column";
-            for (int i = 2; i < keywordsUsed.size() + 2; i++) {
-                values[i] = keywordsUsed.get(i - 2);
+        orderDesc.setVisible(true);
+        orderAsc.setVisible(true);
+        JPanel newPane = new JPanel();
+        newPane.setLayout(new GridLayout(0, 1));
+        String[] values = new String[keywordsUsed.size() + 2];
+        values[0] = "Row";
+        values[1] = "Column";
+        for (int i = 2; i < keywordsUsed.size() + 2; i++) {
+            values[i] = keywordsUsed.get(i - 2);
+        }
+
+        JTable tableCoord = new JTable();
+        boolean[] canEditTry = new boolean[2 + keywordsUsed.size()];
+        for (int i = 0; i < canEditTry.length; i++) {
+            canEditTry[i] = false;
+        }
+
+        DefaultTableModel modelTable = new DefaultTableModel(values, 0) {
+            boolean[] canEdit = canEditTry;
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
             }
 
-            JTable tableCoord = new JTable();
-            boolean[] canEditTry = new boolean[2 + keywordsUsed.size()];
-            for (int i = 0; i < canEditTry.length; i++) {
-                canEditTry[i] = false;
+            @Override
+            public Class<?> getColumnClass(int column) {
+                Class<?> returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+                } else {
+                    returnValue = Object.class;
+                }
+
+                return returnValue;
+
             }
-
-            DefaultTableModel modelTable = new DefaultTableModel(values, 0) {
-                boolean[] canEdit = canEditTry;
-
-                public boolean isCellEditable(int rowIndex, int columnIndex) {
-                    return canEdit[columnIndex];
-                }
-
-                @Override
-                public Class<?> getColumnClass(int column) {
-                    Class<?> returnValue;
-                    if ((column >= 0) && (column < getColumnCount())) {
-                        returnValue = getValueAt(0, column).getClass();
-                    } else {
-                        returnValue = Object.class;
-                    }
-
-                    return returnValue;
-
-                }
-            ;
-            };
+        ;
+        };
         tableCoord.setModel(modelTable);
-            //Center columns
-            for (int i = 0; i < tableCoord.getColumnCount(); i++) {
-                DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-                centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-                tableCoord.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        //Center columns
+        for (int i = 0; i < tableCoord.getColumnCount(); i++) {
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            tableCoord.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableCoord.getTableHeader().getDefaultRenderer();
+        renderer.setHorizontalAlignment(0);
+        tableCoord.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+
+        DefaultTableModel model = (DefaultTableModel) tableCoord.getModel();
+
+        List<Molecule> molList = new ArrayList<>();
+
+        for (int i = 2; i < tableCoord.getColumnCount(); i++) {
+            usedFiles.clear();
+            getUsedFiles(tableCoord.getColumnName(i));
+            Molecule mole = new Molecule();
+            try {
+                mole = controller.getTableMolecule(usedFiles, colAndRows, tableCoord.getColumnName(i));
+            } catch (Exception e) {
+                dialogNombre.dispose();
+                errorText.setVisible(true);
+                errorText.setText(e.getMessage());
+                return;
             }
-            DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableCoord.getTableHeader().getDefaultRenderer();
-            renderer.setHorizontalAlignment(0);
-            tableCoord.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-
-            DefaultTableModel model = (DefaultTableModel) tableCoord.getModel();
-
-            List<Molecule> molList = new ArrayList<>();
-
-            for (int i = 2; i < tableCoord.getColumnCount(); i++) {
-                usedFiles.clear();
-                getUsedFiles(tableCoord.getColumnName(i));
-
-                Molecule mole = controller.getTableMolecule(usedFiles, colAndRows, tableCoord.getColumnName(i));
-                molList.add(mole);
-
-            }
-
-            List<List<String>> rows = new ArrayList<>();
-            for (int i = 0; i < colAndRows.size(); i++) {
-                List<String> val = new ArrayList<>();
-                String[] coord = colAndRows.get(i).split(",");
-                val.add(coord[0]);
-                val.add(coord[1]);
-                for (int j = 0; j < molList.size(); j++) {
-                    val.add(String.valueOf(molList.get(j).getResult().get(i).getValue()));
-                }
-                rows.add(val);
-            }
-
-            rows.forEach((row) -> {
-                model.addRow(row.toArray());
-            });
-            specialTables.add(tableCoord);
-            usedTables.add(tableCoord);
-            JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            newPane.add(scrollpaneHola);
-            tabbedPane.insertTab(fieldNameValues.getText(), new ImageIcon(""), newPane, null, 1);
-            dialogNombre.dispose();
-            fieldNameValues.setText("");
-        } catch (Exception e) {
-            dialogNombre.dispose();
-            errorText.setVisible(true);
-            errorText.setText("An error has ocurred. Check the file format.");
+            molList.add(mole);
 
         }
+
+        List<List<String>> rows = new ArrayList<>();
+        for (int i = 0; i < colAndRows.size(); i++) {
+            List<String> val = new ArrayList<>();
+            String[] coord = colAndRows.get(i).split(",");
+            val.add(coord[0]);
+            val.add(coord[1]);
+            for (int j = 0; j < molList.size(); j++) {
+                val.add(String.valueOf(molList.get(j).getResult().get(i).getValue()));
+            }
+            rows.add(val);
+        }
+
+        rows.forEach((row) -> {
+            model.addRow(row.toArray());
+        });
+        specialTables.add(tableCoord);
+        usedTables.add(tableCoord);
+        JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        newPane.add(scrollpaneHola);
+        tabbedPane.insertTab(fieldNameValues.getText(), new ImageIcon(""), newPane, null, 1);
+        dialogNombre.dispose();
+        fieldNameValues.setText("");
+
     }//GEN-LAST:event_buttonValuesActionPerformed
 
     /**
@@ -1077,11 +1078,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             for (int j = 0; j < element2.size(); j++) {
                 if (elementType1.column.equals(element2.get(j).column) || elementType1.column.equals(element2.get(j).row)
                         || elementType1.row.equals(element2.get(j).column) || elementType1.row.equals(element2.get(j).row)) {
-                        BigDecimal bg1 = new BigDecimal(specialTable.getValueAt(elementType1.indexRow, index).toString());
-                        BigDecimal bg2 = new BigDecimal(specialTable.getValueAt(element2.get(j).indexRow, index).toString());
-                        BigDecimal aux = bg1;
-                        specialTable.setValueAt(String.valueOf(bg2), elementType1.indexRow, index);
-                        specialTable.setValueAt(String.valueOf(aux), element2.get(j).indexRow, index);
+                    BigDecimal bg1 = new BigDecimal(specialTable.getValueAt(elementType1.indexRow, index).toString());
+                    BigDecimal bg2 = new BigDecimal(specialTable.getValueAt(element2.get(j).indexRow, index).toString());
+                    BigDecimal aux = bg1;
+                    specialTable.setValueAt(String.valueOf(bg2), elementType1.indexRow, index);
+                    specialTable.setValueAt(String.valueOf(aux), element2.get(j).indexRow, index);
                     element2.remove(element2.get(j));
                     break next;
                 } else {
