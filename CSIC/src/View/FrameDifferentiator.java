@@ -491,6 +491,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jLabel1.setText("Search by keyword:");
 
         comboOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Starts with", "Ends with", "Contains", "Range starts with" }));
+        comboOptions.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboOptionsItemStateChanged(evt);
+            }
+        });
 
         fieldKeyword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -841,46 +846,48 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 actionButtonAdd(fieldKeyword.getText());
                 break;
             case "Range starts with":
-                String[] values = new String[2];
-                boolean fFileCero = false;
-                boolean sFileCero = false;
-                values = value.split("-");
-                if (values[0].startsWith("0")) {
-                    values[0].replace("0", "");
-                    fFileCero = true;
-                }
-                if (values[1].startsWith("0")) {
-                    values[1].replace("0", "");
-                    sFileCero = true;
-                }
-
-                for (int j = Integer.valueOf(values[0]); j <= Integer.valueOf(values[1]); j++) {
-                    usedFiles.clear();
-                    names.clear();
-                    String charact = "";
-                    if (fFileCero == true) {
-                        charact = "0" + String.valueOf(j);
-                    } else {
-                        charact = String.valueOf(j);
+                if (value.matches("^[0-9]+(\\-[0-9]+)*$")) {
+                    String[] values = new String[2];
+                    boolean fFileCero = false;
+                    boolean sFileCero = false;
+                    values = value.split("-");
+                    if (values[0].startsWith("0")) {
+                        values[0].replace("0", "");
+                        fFileCero = true;
                     }
-
-                    if (sFileCero == true) {
-                        charact = "0" + String.valueOf(j);
-                    } else {
-                        charact = String.valueOf(j);
+                    if (values[1].startsWith("0")) {
+                        values[1].replace("0", "");
+                        sFileCero = true;
                     }
-                    for (int i = 0; i < files.size(); i++) {
-                        String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
+                    for (int j = Integer.valueOf(values[0]); j <= Integer.valueOf(values[1]); j++) {
+                        usedFiles.clear();
+                        names.clear();
+                        String charact = "";
+                        if (fFileCero == true || j < 10) {
+                            charact = "0" + String.valueOf(j);
+                        } else {
+                            charact = String.valueOf(j);
+                        }
 
-                        if (filename.startsWith(charact)) {
-                            usedFiles.add(filesData.get(i));
-                            if (!names.contains(filename)) {
-                                names.add(filename);
+                        if (sFileCero == true || j < 10) {
+                            charact = "0" + String.valueOf(j);
+                        } else {
+                            charact = String.valueOf(j);
+                        }
+                        for (int i = 0; i < files.size(); i++) {
+                            String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
+                            System.out.println(charact);
+
+                            if (filename.startsWith(charact)) {
+                                usedFiles.add(filesData.get(i));
+                                if (!names.contains(filename)) {
+                                    names.add(filename);
+                                }
                             }
                         }
-                    }
-                    actionButtonAdd(charact);
+                        actionButtonAdd(charact);
 
+                    }
                 }
                 break;
 
@@ -1583,6 +1590,25 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             dialogAddMoreFiles.setVisible(false);
         }
     }//GEN-LAST:event_buttonNextActionPerformed
+    private void comboOptionsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboOptionsItemStateChanged
+        switch (String.valueOf(comboOptions.getSelectedItem())) {
+            case "Starts with":
+                break;
+            case "Ends with":
+                fieldKeyword.setToolTipText(null);
+                break;
+            case "Contains":
+                fieldKeyword.setToolTipText(null);
+                break;
+            case "Range starts with":
+                fieldKeyword.setToolTipText("Two values separate by \"-\". I.e: 01-09");
+
+                break;
+
+            default:
+                break;
+        }
+    }//GEN-LAST:event_comboOptionsItemStateChanged
 
     /**
      *
@@ -1813,7 +1839,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     errorText.setText("Couldn't find any file with the provided keyword.");
                 }
             } else {
-                errorText.setText("There is no files with this characteristics.");
+                errorText.setText("Some files were not imported.");
                 keywordsUsed.remove(fieldKeyword.getText());
             }
         }
