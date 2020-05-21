@@ -42,4 +42,11 @@ public class AverageValue {
     public void setValue(double value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "AverageValue{" + "gaussian=" + gaussian + ", atom=" + atom + ", value=" + value + '}';
+    }
+    
+    
 }

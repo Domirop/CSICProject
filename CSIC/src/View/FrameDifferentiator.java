@@ -9,12 +9,16 @@ import Controller.ControllerInt;
 import Model.Atomo.FileData;
 import Model.Atomo.Molecule;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -62,9 +66,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
+        buttonAddValue.setFocusable(false);
+        listValues.setFocusable(false);
+        buttonRemoveItem.setFocusable(false);
+        finishButton.setFocusable(false);
+        errorDialogCoor.setFocusable(false);
         this.controller = controller;
         panelGeneric.setLayout(new GridLayout(0, 1));
-        tabbedPane.addTab("Generic", panelGeneric);
+        tabbedPane.addTab("Average", panelGeneric);
         tabbedPane.setVisible(false);
         orderDesc.setVisible(false);
         orderAsc.setVisible(false);
@@ -124,7 +133,19 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel2.setText("Row:");
 
+        fieldRow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldRowActionPerformed(evt);
+            }
+        });
+
         jLabel3.setText("Column:");
+
+        fieldColumn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldColumnActionPerformed(evt);
+            }
+        });
 
         buttonAddValue.setText(">");
         buttonAddValue.addActionListener(new java.awt.event.ActionListener() {
@@ -580,6 +601,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonAddValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddValueActionPerformed
+        addValueToList();
+    }//GEN-LAST:event_buttonAddValueActionPerformed
+
+    public void addValueToList(){
         String regex = "\\d+";
         if (fieldRow.getText().matches(regex) && fieldColumn.getText().matches(regex)) {
             int row = Integer.parseInt(fieldRow.getText());
@@ -603,27 +628,21 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
         fieldRow.setText("");
         fieldColumn.setText("");
-
-    }//GEN-LAST:event_buttonAddValueActionPerformed
-
+    }
+    
     /**
      * Closes the dialog and opens the dialog that asks for a name.
      *
      * @param evt
      */
     private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
-        if (colAndRows.size() % 2 != 0) {
-            errorDialogCoor.setText("Values must be even.");
-            errorDialogCoor.setVisible(true);
-        } else {
-            errorDialogCoor.setVisible(false);
-            listValues.setListData(new String[0]);
-            coorValues.clear();
-            errorDialogCoor.setText("");
-            dialogCoordinates.dispose();
-            dialogNombre.pack();
-            dialogNombre.setVisible(true);
-        }
+        errorDialogCoor.setVisible(false);
+        listValues.setListData(new String[0]);
+        coorValues.clear();
+        errorDialogCoor.setText("");
+        dialogCoordinates.dispose();
+        dialogNombre.pack();
+        dialogNombre.setVisible(true);
     }//GEN-LAST:event_finishButtonActionPerformed
 
     /**
@@ -759,7 +778,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             folder = file.getAbsolutePath();
         }
 
-        keywordsUsed.add("Generic");
+        keywordsUsed.add("Average");
 
         if (usedTables.size() > 0) {
             for (int i = 0; i < keywordsUsed.size(); i++) {
@@ -805,7 +824,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         colAndRows.clear();
         keywordsUsed.clear();
         itemSearchValue.setEnabled(false);
-        tabbedPane.addTab("Generic", panelGeneric);
+        tabbedPane.addTab("Average", panelGeneric);
         tabbedPane.setVisible(false);
         orderDesc.setVisible(false);
         orderAsc.setVisible(false);
@@ -836,7 +855,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         colAndRows.clear();
         keywordsUsed.clear();
         itemSearchValue.setEnabled(false);
-        tabbedPane.addTab("Generic", panelGeneric);
+        tabbedPane.addTab("Average", panelGeneric);
         tabbedPane.setVisible(false);
         orderDesc.setVisible(false);
         orderAsc.setVisible(false);
@@ -856,7 +875,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
         List<String> tableNames = new ArrayList<>();
-        keywordsUsed.add("Generic");
+        keywordsUsed.add("Average");
         errorText.setForeground(Color.red);
         String folder = "";
         JFileChooser fileChooser = new JFileChooser();
@@ -1127,6 +1146,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     }//GEN-LAST:event_buttonRemoveItemActionPerformed
 
+    private void fieldColumnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldColumnActionPerformed
+        addValueToList();
+    }//GEN-LAST:event_fieldColumnActionPerformed
+
+    private void fieldRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldRowActionPerformed
+        addValueToList();
+    }//GEN-LAST:event_fieldRowActionPerformed
+
     /**
      *
      * @return selected table
@@ -1171,7 +1198,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     /**
-     * Creates the "generic" table with all the info from the other tables.
+     * Creates the "Average" table with all the info from the other tables.
      *
      * @param usedFiles
      */
@@ -1211,7 +1238,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     /**
-     * Initializes the generic table.
+     * Initializes the Average table.
      *
      * @param values are the "keywords" used.
      */
@@ -1259,7 +1286,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     /**
-     * Add all the elements to the generic table.
+     * Add all the elements to the Average table.
      *
      * @param molecule contains all the necessary info about the molecules.
      */

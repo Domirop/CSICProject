@@ -54,4 +54,9 @@ public class FileData {
         this.energyValue = energyValue;
     }
 
+    @Override
+    public String toString() {
+        return "FileData{" + "fileName=" + fileName + ", energyValue=" + energyValue + '}';
+    }
+
 }
