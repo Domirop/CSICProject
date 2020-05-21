@@ -24,12 +24,11 @@ public class Calculus {
      * being searched.
      * @return A differentiator object with all the necessary data.
      */
-    public AverageValue getTotalMoleculeValue(List<FileData> files, String gaussianData) {
+    public AverageValue getTotalMoleculeValue(List<FileData> files, String gaussianData, double temp) {
         AverageValue totalDifferentiator = new AverageValue();
         totalDifferentiator.setGaussian(gaussianData);
-
         double minValue = getEnergyMinValue(files);
-        double expS = getExps(files, minValue);
+        double expS = getExps(files, minValue, temp);
         double result = 0.0;
         for (int i = 0; i < files.size(); i++) {
             double mediumValue = 0.0;
@@ -38,7 +37,7 @@ public class Calculus {
             if (files.get(i).getEnergyValue() == minValue) {
                 initialValue = 0;
             } else {
-                initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
+                initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * temp);
             }
             mediumValue = Math.exp(initialValue * -1);
 
@@ -65,11 +64,11 @@ public class Calculus {
      * @param coordinates coordinates of the atoms.
      * @return return a TotalDiferentiator object.
      */
-    public AverageValue getValueToMoleculeTable(List<FileData> files, String coordinates) {
+    public AverageValue getValueToMoleculeTable(List<FileData> files, String coordinates, double temp) {
         AverageValue totalDifferentiator = new AverageValue();
         totalDifferentiator.setGaussian(coordinates);
         double minValue = getEnergyMinValue(files);
-        double expS = getExps(files, minValue);
+        double expS = getExps(files, minValue, temp);
         double result = 0.0;
         for (int i = 0; i < files.size(); i++) {
             double mediumValue = 0.0;
@@ -78,7 +77,7 @@ public class Calculus {
             if (files.get(i).getEnergyValue() == minValue) {
                 initialValue = 0;
             } else {
-                initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
+                initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * temp);
             }
             mediumValue = Math.exp(initialValue * -1);
             contribution = mediumValue / expS;
@@ -119,10 +118,11 @@ public class Calculus {
      * other elements.
      * @return a double value. it is the value of the mathematical formula.
      */
-    public double getExps(List<FileData> files, double minValue) {
+    public double getExps(List<FileData> files, double minValue, double temp) {
+
         double expS = 0.0;
         for (FileData file : files) {
-            double initialValue = (file.getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
+            double initialValue = (file.getEnergyValue() - minValue) * 2625500 / (8.315 * temp);
             if (initialValue == 0.0) {
                 expS += 1;
             } else {

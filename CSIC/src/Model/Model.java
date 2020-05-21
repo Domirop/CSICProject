@@ -106,13 +106,13 @@ public class Model implements ModelInt {
      * @return Molecule object with the obtained data.
      */
     @Override
-    public Molecule getMolecule(List<File> files, String key) {
+    public Molecule getMolecule(List<File> files, String key, double temp) {
         Molecule molecule = new Molecule(getFileData(files), key);
         List<String> gaussianAtom = getAtomsGaussian(molecule.getFilesData());
         List<AverageValue> total = new ArrayList<>();
         for (String string : gaussianAtom) {
             AverageValue totalDifferentiator = new AverageValue();
-            totalDifferentiator = calculations.getTotalMoleculeValue(molecule.getFilesData(), string);
+            totalDifferentiator = calculations.getTotalMoleculeValue(molecule.getFilesData(), string, temp);
             total.add(totalDifferentiator);
         }
         molecule.setResult(total);
@@ -224,14 +224,14 @@ public class Model implements ModelInt {
      * @return A Molecule object.
      */
     @Override
-    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key) throws Exception{
+    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp) throws Exception{
 
         Molecule molecule = new Molecule();
         molecule.setFilesData(getFileDataTable(files, coordinates));
         molecule.setDifferentiator(key);
         List<AverageValue> total = new ArrayList<>();
         for (String coordinate : coordinates) {
-            AverageValue totalDifferentiator = calculations.getValueToMoleculeTable(molecule.getFilesData(), coordinate);
+            AverageValue totalDifferentiator = calculations.getValueToMoleculeTable(molecule.getFilesData(), coordinate, temp);
             total.add(totalDifferentiator);
         }
         molecule.setResult(total);

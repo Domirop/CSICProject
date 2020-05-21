@@ -35,12 +35,12 @@ public class Controller implements ControllerInt {
     }
 
     @Override
-    public Molecule getMolecule(List<File> files, String key) {
-        return model.getMolecule(files, key);
+    public Molecule getMolecule(List<File> files, String key, double temp) {
+        return model.getMolecule(files, key, temp);
     }
 
     @Override
-    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key) throws Exception{
-        return model.getMoleculeTable(files, coordinates, key);
+    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key, double temp) throws Exception{
+        return model.getMoleculeTable(files, coordinates, key, temp);
     }
 }
