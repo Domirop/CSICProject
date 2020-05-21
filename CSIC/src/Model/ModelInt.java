@@ -23,7 +23,7 @@ public interface ModelInt {
 
     public List<String> getTable(String path, String start);
 
-    public String getValue(String path, int column, int row, String start);
+    public String getValue(String path, int column, int row, String start) throws Exception;
 
     public String SCFDone(String path);
 
@@ -35,10 +35,10 @@ public interface ModelInt {
 
     public boolean writeCSV(List<String[]> datas, String path, String fileName);
 
-    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates);
+    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates) throws Exception;
 
-    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key);
+    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key) throws Exception;
 
-    public List<AtomTable> getAtomTables(List<String> coordinates, String path);
+    public List<AtomTable> getAtomTables(List<String> coordinates, String path) throws Exception;
 
 }

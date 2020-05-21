@@ -1,5 +1,6 @@
 package Model.Files;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -113,10 +114,8 @@ public class ReadTable {
                 }
             }
             return lineValues.get(column - (val * 5));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return "La columna no puede ser mayor que la fila";
-        } catch (IndexOutOfBoundsException ex) {
-            return "La columna o fila no existen, El valor máximo es: " + numeroLineas;
-        }
+        } catch (Exception e) {
+            throw new IndexOutOfBoundsException("An error has ocurred. Check the file " + new File(path).getName());
+        } 
     }
 }
