@@ -14,15 +14,22 @@ import java.awt.GridLayout;
 import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.DefaultListModel;
+import javax.swing.DropMode;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.TransferHandler;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -52,10 +59,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<String> keywordsUsed = new ArrayList<>();
     private List<List<Object>> rows = new ArrayList<>();
     private List<String> coorValues = new ArrayList<>();
+    private ControllerInt controller;
     private String temperature = "298.15";
-
     List<String> colAndRows = new ArrayList<>();
-    ControllerInt controller;
     JTable tableGeneric;
 
     public FrameDifferentiator(ControllerInt controller) {
@@ -65,9 +71,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
+        ListTransferHandler lh = new ListTransferHandler(this);
+        listValues.setModel(new DefaultListModel());
+        listValues.setDragEnabled(true);
+        listValues.setTransferHandler(lh);
+        listValues.setDropMode(DropMode.ON_OR_INSERT);
+        setMappings(listValues);
         comboOptions.setFocusable(false);
         buttonAddValue.setFocusable(false);
-        listValues.setFocusable(false);
         buttonRemoveItem.setFocusable(false);
         finishButton.setFocusable(false);
         this.controller = controller;
@@ -88,6 +99,27 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         this.errorText.setVisible(true);
         this.filesData = filesData;
 
+    }
+
+    public void addElementsToRows(int row, int column) {
+        coorValues.add(row + "," + column);
+        colAndRows.add(row + "," + column);
+        errorDialogCoor.setText("");
+    }
+
+    public void setErrorDialogCoor(String string) {
+        this.errorDialogCoor.setText(string);
+    }
+    
+
+    private void setMappings(JList list) {
+        ActionMap map = list.getActionMap();
+        map.put(TransferHandler.getCutAction().getValue(Action.NAME),
+                TransferHandler.getCutAction());
+        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),
+                TransferHandler.getCopyAction());
+        map.put(TransferHandler.getPasteAction().getValue(Action.NAME),
+                TransferHandler.getPasteAction());
     }
 
     /**
@@ -139,6 +171,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemChangeTemperature = new javax.swing.JMenuItem();
         itemExit = new javax.swing.JMenuItem();
 
+        dialogCoordinates.setResizable(false);
+
         jLabel2.setText("Row:");
 
         fieldRow.addActionListener(new java.awt.event.ActionListener() {
@@ -187,6 +221,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             .addGroup(dialogCoordinatesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(errorDialogCoor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(dialogCoordinatesLayout.createSequentialGroup()
                         .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -199,47 +234,45 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addGap(12, 12, 12)
                                 .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
-                        .addComponent(buttonAddValue))
-                    .addComponent(errorDialogCoor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(buttonAddValue)))
                 .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(dialogCoordinatesLayout.createSequentialGroup()
-                        .addGap(86, 86, 86)
+                        .addGap(117, 117, 117)
                         .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(buttonRemoveItem)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogCoordinatesLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(finishButton)))
+                            .addComponent(finishButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         dialogCoordinatesLayout.setVerticalGroup(
             dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogCoordinatesLayout.createSequentialGroup()
+            .addGroup(dialogCoordinatesLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(dialogCoordinatesLayout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(buttonAddValue))
-                    .addGroup(dialogCoordinatesLayout.createSequentialGroup()
-                        .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(fieldColumn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                        .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addComponent(buttonAddValue))
+                            .addGroup(dialogCoordinatesLayout.createSequentialGroup()
+                                .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(fieldRow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(dialogCoordinatesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(fieldColumn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(29, 29, 29)
-                        .addComponent(errorDialogCoor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                        .addComponent(errorDialogCoor, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE))
                     .addGroup(dialogCoordinatesLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(buttonRemoveItem)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(finishButton)
-                        .addContainerGap(7, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(finishButton)))
+                .addContainerGap())
         );
 
         jLabel4.setText("Choose a name for the values");
@@ -459,44 +492,43 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(buttonAdd)
-                                .addGap(0, 131, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(100, 100, 100)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(buttonRemoveTable)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(orderDesc)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(orderAsc))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(buttonValue)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonExportCSV)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButtton)))))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(120, 120, 120)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(buttonValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(orderDesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(buttonExportCSV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(orderAsc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(buttonRemoveTable, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                            .addComponent(deleteButtton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(6, 6, 6))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonAdd)
-                    .addComponent(deleteButtton)
-                    .addComponent(buttonValue)
-                    .addComponent(buttonExportCSV))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonAdd))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(buttonValue)
+                        .addComponent(buttonExportCSV)
+                        .addComponent(deleteButtton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(orderAsc)
                         .addComponent(orderDesc)
-                        .addComponent(buttonRemoveTable)))
+                        .addComponent(buttonRemoveTable)
+                        .addComponent(orderAsc)))
                 .addGap(12, 12, 12)
                 .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(21, Short.MAX_VALUE))
@@ -798,7 +830,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             val.add(coord[0]);
             val.add(coord[1]);
             for (int j = 0; j < molList.size(); j++) {
-                val.add(String.valueOf(molList.get(j).getResult().get(i).getValue()));
+                double value = molList.get(j).getResult().get(i).getValue();
+                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
+                otherSymbols.setDecimalSeparator('.');
+                otherSymbols.setGroupingSeparator(',');
+                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                df.setRoundingMode(RoundingMode.CEILING);
+                val.add(String.valueOf(df.format(value)));
             }
             rows.add(val);
         }
@@ -1005,6 +1043,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private void buttonValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValueActionPerformed
         dialogCoordinates.pack();
+        listValues.removeAll();
         dialogCoordinates.setVisible(true);
         colAndRows.clear();
     }//GEN-LAST:event_buttonValueActionPerformed
@@ -1043,9 +1082,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             JViewport viewport = scrollPane.getViewport();
             JTable genericTable = (JTable) viewport.getView();
             for (int i = 2; i < myTabla.getColumnCount(); i++) {
-                Double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
-                Double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
-                if (bg1.compareTo(bg2) < 0) {
+                double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
+                double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
+                if (bg1 < bg2) {
                     String[] datas = getGaussianToOrder();
                     double a = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[0]) - 1, i).toString());
                     double b = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[1]) - 1, i).toString());
@@ -1077,9 +1116,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             JTable genericTable = (JTable) viewport.getView();
             String[] datas = getGaussianToOrder();
             for (int i = 2; i < myTabla.getColumnCount(); i++) {
-                Double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
-                Double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
-                if (bg1.compareTo(bg2) > 0) {
+                double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
+                double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
+                if (bg1 > bg2) {
                     double a = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[0]) - 1, i).toString());
                     double b = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[1]) - 1, i).toString());
                     double ax = a;
@@ -1441,14 +1480,20 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 values.add(molecule.getResult().get(i).getGaussian());
                 values.add(molecule.getResult().get(i).getAtom());
                 double value = molecule.getResult().get(i).getValue();
-                DecimalFormat df = new DecimalFormat("#.####");
+                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
+                otherSymbols.setDecimalSeparator('.');
+                otherSymbols.setGroupingSeparator(',');
+                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
                 df.setRoundingMode(RoundingMode.CEILING);
                 values.add(String.valueOf(df.format(value)));
                 rows.add(values);
             } else {
                 List<Object> values = new ArrayList<>(auxList.get(i));
                 double value = molecule.getResult().get(i).getValue();
-                DecimalFormat df = new DecimalFormat("#.####");
+                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
+                otherSymbols.setDecimalSeparator('.');
+                otherSymbols.setGroupingSeparator(',');
+                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
                 df.setRoundingMode(RoundingMode.CEILING);
                 values.add(String.valueOf(df.format(value)));
                 rows.add(values);
