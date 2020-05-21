@@ -16,9 +16,11 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -320,7 +322,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel1.setText("Search by keyword:");
 
-        comboOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Starts with", "Ends with", "Contains", "Range" }));
+        comboOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Starts with", "Ends with", "Contains", "Range starts with" }));
 
         fieldKeyword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -459,7 +461,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(buttonAdd)
-                                .addGap(0, 131, Short.MAX_VALUE))
+                                .addGap(0, 89, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(100, 100, 100)))
@@ -511,7 +513,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
-        actionButtonAdd();
+        names.clear();
+        usedFiles.clear();
+        if (fieldKeyword.getText().length() > 0) {
+            getUsedFiles(fieldKeyword.getText());
+        }
+
     }//GEN-LAST:event_buttonAddActionPerformed
 
     /**
@@ -632,6 +639,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         }
                     }
                 }
+                actionButtonAdd(fieldKeyword.getText());
                 break;
             case "Ends with":
                 for (int i = 0; i < files.size(); i++) {
@@ -641,6 +649,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         names.add(filename);
                     }
                 }
+                actionButtonAdd(fieldKeyword.getText());
                 break;
             case "Contains":
                 for (int i = 0; i < files.size(); i++) {
@@ -650,7 +659,52 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         names.add(filename);
                     }
                 }
+                actionButtonAdd(fieldKeyword.getText());
                 break;
+            case "Range starts with":
+                String[] values = new String[2];
+                boolean fFileCero = false;
+                boolean sFileCero = false;
+                values = value.split("-");
+                if (values[0].startsWith("0")) {
+                    values[0].replace("0", "");
+                    fFileCero = true;
+                }
+                if (values[1].startsWith("0")) {
+                    values[1].replace("0", "");
+                    sFileCero = true;
+                }
+
+                for (int j = Integer.valueOf(values[0]); j <= Integer.valueOf(values[1]); j++) {
+                    usedFiles.clear();
+                    names.clear();
+                    String charact = "";
+                    if (fFileCero == true) {
+                        charact = "0" + String.valueOf(j);
+                    } else {
+                        charact = String.valueOf(j);
+                    }
+
+                    if (sFileCero == true) {
+                        charact = "0" + String.valueOf(j);
+                    } else {
+                        charact = String.valueOf(j);
+                    }
+                    for (int i = 0; i < files.size(); i++) {
+                        String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
+
+                        if (filename.startsWith(charact)) {
+                            usedFiles.add(filesData.get(i));
+                            if (!names.contains(filename)) {
+                                names.add(filename);
+                            }
+                        }
+                    }
+                    actionButtonAdd(charact);
+
+                }
+                break;
+
             default:
                 break;
         }
@@ -662,7 +716,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void fieldKeywordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldKeywordActionPerformed
-        actionButtonAdd();
+        names.clear();
+        usedFiles.clear();
+        if (fieldKeyword.getText().length() > 0) {
+            getUsedFiles(fieldKeyword.getText());
+        }
     }//GEN-LAST:event_fieldKeywordActionPerformed
 
     /**
@@ -1464,15 +1522,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     /**
      * Method used to add new files.
      */
-    private void actionButtonAdd() {
+    private void actionButtonAdd(String fieldText) {
         errorText.setForeground(Color.red);
-        if (fieldKeyword.getText().length() > 0) {
-            if (!keywordsUsed.contains(fieldKeyword.getText())) {
-                keywordsUsed.add(fieldKeyword.getText());
-            }
-            names.clear();
-            usedFiles.clear();
-            getUsedFiles(fieldKeyword.getText());
+
+        if (!keywordsUsed.contains(fieldText)) {
+            keywordsUsed.add(fieldText);
+
             if (!usedFiles.isEmpty()) {
                 errorText.setText("");
                 JTable table = addRowsToTable(initTablesDifferentiators());
@@ -1503,7 +1558,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     }
                     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
                     panel.add(scrollpane);
-                    tabbedPane.addTab(fieldKeyword.getText(), panel);
+                    tabbedPane.addTab(fieldText, panel);
                     tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
                     genericTable(usedFiles);
                     if (usedTables.isEmpty()) {
