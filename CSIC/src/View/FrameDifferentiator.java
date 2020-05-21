@@ -5,25 +5,18 @@
  */
 package View;
 
-import Controller.ControllerInt;
 import Model.Atomo.FileData;
 import Model.Atomo.Molecule;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -32,12 +25,31 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.TransferHandler;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
+import Controller.ControllerInt;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Contains all the necesary methods to show the user the application.
@@ -63,6 +75,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<List<Object>> rows = new ArrayList<>();
     private List<String> coorValues = new ArrayList<>();
     private ControllerInt controller;
+    List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     private String temperature = "298.15";
     List<String> colAndRows = new ArrayList<>();
     JTable tableGeneric;
@@ -101,6 +114,67 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemSearchValue.setEnabled(false);
         this.errorText.setVisible(true);
         this.filesData = filesData;
+    }
+
+    private void enableDragAndDrop() {
+        DropTarget target = new DropTarget(textAreaMoreFiles, new DropTargetListener() {
+            public void dragEnter(DropTargetDragEvent e) {
+            }
+
+            public void dragExit(DropTargetEvent e) {
+            }
+
+            public void dragOver(DropTargetDragEvent e) {
+            }
+
+            public void dropActionChanged(DropTargetDragEvent e) {
+            }
+
+            public void drop(DropTargetDropEvent e) {
+                BufferedImage bi = null;
+                decorate(textAreaMoreFiles, bi);
+                try {
+                    e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+                    List list = (java.util.List) e.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    list.forEach(v -> {
+                        File file = (File) v;
+                        if (filesTypes.contains(file.getName().split("\\.")[1])) {
+                            textAreaMoreFiles.append(file.getName() + "\n");
+                            filesData.add(file);
+                        }
+                    });
+                    dialogAddMoreFiles.pack();
+                    dialogAddMoreFiles.revalidate();
+                    dialogAddMoreFiles.repaint();
+                } catch (Exception ex) {
+                }
+            }
+        });
+    }
+
+    public void decorate(JTextArea a, final BufferedImage img) {
+        if (img != null) {
+            int x = (dialogAddMoreFiles.getPreferredSize().width - img.getWidth(null) - 20) / 2;
+            int y = (dialogAddMoreFiles.getPreferredSize().height - img.getHeight(null)) / 4;
+            a.setUI(new javax.swing.plaf.basic.BasicTextAreaUI() {
+                @Override
+                protected void paintBackground(Graphics g) {
+                    g.drawImage(img, x, y, null);
+                }
+            });
+            a.setPreferredSize(new Dimension(img.getWidth(), img.getHeight()));
+        } else {
+            a.setUI(new javax.swing.plaf.basic.BasicTextAreaUI() {
+                @Override
+                protected void paintBackground(Graphics g) {
+                    g.drawString("", 0, 0);
+                }
+            });
+        }
+        a.setForeground(Color.black);
+        a.setCaretColor(Color.lightGray);
+        a.setEditable(false);
+        dialogAddMoreFiles.setResizable(false);
     }
 
     public void addElementsToRows(int row, int column) {
@@ -151,6 +225,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         fieldTemperature = new javax.swing.JTextField();
         buttonOKTemp = new javax.swing.JButton();
+        dialogAddMoreFiles = new javax.swing.JDialog();
+        jLabel6 = new javax.swing.JLabel();
+        buttonChooseFiles = new javax.swing.JButton();
+        buttonNext = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        textAreaMoreFiles = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         comboOptions = new javax.swing.JComboBox<>();
         fieldKeyword = new javax.swing.JTextField();
@@ -170,6 +250,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemReset = new javax.swing.JMenuItem();
         itemChooseFiles = new javax.swing.JMenuItem();
         itemChangeTemperature = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         itemExit = new javax.swing.JMenuItem();
 
         dialogCoordinates.setResizable(false);
@@ -350,6 +431,61 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel6.setText("Choose files:");
+
+        buttonChooseFiles.setText("Open");
+        buttonChooseFiles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonChooseFilesActionPerformed(evt);
+            }
+        });
+
+        buttonNext.setText("Add");
+        buttonNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonNextActionPerformed(evt);
+            }
+        });
+
+        jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
+
+        textAreaMoreFiles.setBackground(new java.awt.Color(255, 255, 255));
+        textAreaMoreFiles.setColumns(20);
+        textAreaMoreFiles.setRows(5);
+        jScrollPane3.setViewportView(textAreaMoreFiles);
+
+        javax.swing.GroupLayout dialogAddMoreFilesLayout = new javax.swing.GroupLayout(dialogAddMoreFiles.getContentPane());
+        dialogAddMoreFiles.getContentPane().setLayout(dialogAddMoreFilesLayout);
+        dialogAddMoreFilesLayout.setHorizontalGroup(
+            dialogAddMoreFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogAddMoreFilesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(dialogAddMoreFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogAddMoreFilesLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(buttonNext))
+                    .addGroup(dialogAddMoreFilesLayout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonChooseFiles)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        dialogAddMoreFilesLayout.setVerticalGroup(
+            dialogAddMoreFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogAddMoreFilesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(dialogAddMoreFilesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(buttonChooseFiles))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonNext)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Search by keyword:");
@@ -468,6 +604,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
         jMenu1.add(itemChangeTemperature);
 
+        jMenuItem1.setText("Add more files");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
         itemExit.setText("Exit");
         itemExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -584,6 +728,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 0) {
             boolean[] canEdit = canEditTry;
 
+            @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
@@ -1400,6 +1545,51 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_buttonOKTempActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        enableDragAndDrop();
+        BufferedImage bi = null;
+        try {
+            bi = ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/add-file.png"));
+        } catch (IOException ex) {
+        }
+        decorate(textAreaMoreFiles, bi);
+        dialogAddMoreFiles.setVisible(true);
+        dialogAddMoreFiles.pack();
+        dialogAddMoreFiles.revalidate();
+        dialogAddMoreFiles.repaint();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+
+    private void buttonChooseFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseFilesActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Files", "log"));
+        fileChooser.setMultiSelectionEnabled(true);
+        int returnVal = fileChooser.showOpenDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            BufferedImage bi = null;
+            decorate(textAreaMoreFiles, bi);
+            File[] files = fileChooser.getSelectedFiles();
+            for (File file : files) {
+                textAreaMoreFiles.append(file.getName() + "\n");
+                filesData.add(file);
+            }
+            dialogAddMoreFiles.pack();
+            dialogAddMoreFiles.revalidate();
+            dialogAddMoreFiles.repaint();
+        }
+    }//GEN-LAST:event_buttonChooseFilesActionPerformed
+
+    private void buttonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNextActionPerformed
+        if (textAreaMoreFiles.getText().length() > 0) {
+            for (File listFile : filesData) {
+                if (!this.files.contains(listFile.getName())) {
+                    this.files.add(listFile.getName());
+                }
+            }
+            dialogAddMoreFiles.setVisible(false);
+        }
+    }//GEN-LAST:event_buttonNextActionPerformed
     private void comboOptionsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboOptionsItemStateChanged
         switch (String.valueOf(comboOptions.getSelectedItem())) {
             case "Starts with":
@@ -1736,7 +1926,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonAddValue;
+    private javax.swing.JButton buttonChooseFiles;
     private javax.swing.JButton buttonExportCSV;
+    private javax.swing.JButton buttonNext;
     private javax.swing.JButton buttonOKTemp;
     private javax.swing.JButton buttonRemoveItem;
     private javax.swing.JButton buttonRemoveTable;
@@ -1744,6 +1936,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JButton buttonValues;
     private javax.swing.JComboBox<String> comboOptions;
     private javax.swing.JButton deleteButtton;
+    private javax.swing.JDialog dialogAddMoreFiles;
     private javax.swing.JDialog dialogCoordinates;
     private javax.swing.JDialog dialogNombre;
     private javax.swing.JDialog dialogTemperature;
@@ -1766,12 +1959,16 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<String> listValues;
     private javax.swing.JButton orderAsc;
     private javax.swing.JButton orderDesc;
     private javax.swing.JTabbedPane tabbedPane;
+    private javax.swing.JTextArea textAreaMoreFiles;
     // End of variables declaration//GEN-END:variables
 }
