@@ -5,7 +5,6 @@
  */
 package Model.Atomo;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +70,7 @@ public class Calculus {
         totalDifferentiator.setGaussian(coordinates);
         double minValue = getEnergyMinValue(files);
         double expS = getExps(files, minValue);
-        BigDecimal result = new BigDecimal(0.0);
+        double result = 0.0;
         for (int i = 0; i < files.size(); i++) {
             double mediumValue = 0.0;
             double initialValue = 0.0;
@@ -82,19 +81,17 @@ public class Calculus {
                 initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
             }
             mediumValue = Math.exp(initialValue * -1);
-
             contribution = mediumValue / expS;
             for (int j = 0; j < files.get(i).getAtomsTable().size(); j++) {
                 int column = files.get(i).getAtomsTable().get(j).getColumn();
                 int row = files.get(i).getAtomsTable().get(j).getRow();
                 if (totalDifferentiator.getGaussian().equals(row + "," + column)) {
-                    result = result.add(new BigDecimal(contribution).multiply(new BigDecimal(files.get(i).getAtomsTable().get(j).getValue())));
+                    result += contribution * files.get(i).getAtomsTable().get(j).getValue();
                 }
-
             }
 
         }
-        totalDifferentiator.setValue(result.doubleValue());
+        totalDifferentiator.setValue(result);
         return totalDifferentiator;
     }
 

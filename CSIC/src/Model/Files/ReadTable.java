@@ -77,14 +77,13 @@ public class ReadTable {
             ArrayList<String> lineValues = new ArrayList<>();
             ArrayList<String> singleValues = new ArrayList<>();
             int aux = 0;
-            int val = (int) Math.floor(column / 5.0);
+            int val = column % 5 == 0 ? (int)Math.floor(column / 5.0) - 1 : (int) Math.floor(column / 5.0);
             int subs = 0;
             int count = 0;
             int index = 0;
             for (int i = 0; i < sep.length; i++) {
                 if (!sep[i].isEmpty()) {
                     lineValues.add(sep[i]);
-
                 }
             }
             numeroLineas = Integer.parseInt(lineValues.get(0));
@@ -105,7 +104,6 @@ public class ReadTable {
                 }
                 index = row - (count * 5);
             }
-
             String[] splitVal = singleValues.get(index).split("\\s+");
             lineValues.clear();
             for (String string : splitVal) {

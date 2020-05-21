@@ -9,16 +9,13 @@ import Controller.ControllerInt;
 import Model.Atomo.FileData;
 import Model.Atomo.Molecule;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.File;
-import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -66,11 +63,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
+        comboOptions.setFocusable(false);
         buttonAddValue.setFocusable(false);
         listValues.setFocusable(false);
         buttonRemoveItem.setFocusable(false);
         finishButton.setFocusable(false);
-        errorDialogCoor.setFocusable(false);
         this.controller = controller;
         panelGeneric.setLayout(new GridLayout(0, 1));
         tabbedPane.addTab("Average", panelGeneric);
@@ -609,7 +606,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         if (fieldRow.getText().matches(regex) && fieldColumn.getText().matches(regex)) {
             int row = Integer.parseInt(fieldRow.getText());
             int column = Integer.parseInt(fieldColumn.getText());
-            if (row <= usedTables.get(0).getRowCount() || column <= usedTables.get(0).getRowCount()) {
+            if (row <= tableGeneric.getRowCount() || column <= tableGeneric.getRowCount()) {
                 if (row >= column) {
                     coorValues.add(row + "," + column);
                     colAndRows.add(row + "," + column);
@@ -969,15 +966,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             JViewport viewport = scrollPane.getViewport();
             JTable genericTable = (JTable) viewport.getView();
             for (int i = 2; i < myTabla.getColumnCount(); i++) {
-                BigDecimal bg1 = new BigDecimal(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
-                BigDecimal bg2 = new BigDecimal(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
-                if (bg2.compareTo(bg1) > 0) {
+                Double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
+                Double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
+                if (bg1.compareTo(bg2) < 0) {
                     String[] datas = getGaussianToOrder();
                     double a = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[0]) - 1, i).toString());
                     double b = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[1]) - 1, i).toString());
                     double ax = a;
                     genericTable.setValueAt(String.valueOf(b), Integer.parseInt(datas[0]) - 1, i);
-                    genericTable.setValueAt(String.valueOf(ax), Integer.parseInt(datas[0]) - 1, i);
+                    genericTable.setValueAt(String.valueOf(ax), Integer.parseInt(datas[1]) - 1, i);
                     reorderNormalTables(datas[0], datas[1], myTabla, (i - 2));
                     reorderSpecialTables(datas[0], datas[1], i);
                 }
@@ -1003,8 +1000,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             JTable genericTable = (JTable) viewport.getView();
             String[] datas = getGaussianToOrder();
             for (int i = 2; i < myTabla.getColumnCount(); i++) {
-                BigDecimal bg1 = new BigDecimal(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
-                BigDecimal bg2 = new BigDecimal(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
+                Double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
+                Double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
                 if (bg1.compareTo(bg2) > 0) {
                     double a = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[0]) - 1, i).toString());
                     double b = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[1]) - 1, i).toString());
@@ -1039,9 +1036,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 }
             }
             for (int i = 2; i < model.getColumnCount(); i++) {
-                BigDecimal bg1 = new BigDecimal(model.getValueAt(indexs1.get(0) - 1, i).toString());
-                BigDecimal bg2 = new BigDecimal(model.getValueAt(indexs1.get(1) - 1, i).toString());
-                BigDecimal aux = bg1;
+                double bg1 = Double.parseDouble(model.getValueAt(indexs1.get(0) - 1, i).toString());
+                double bg2 = Double.parseDouble(model.getValueAt(indexs1.get(1) - 1, i).toString());
+                double aux = bg1;
                 model.setValueAt(String.valueOf(bg2), indexs1.get(0) - 1, i);
                 model.setValueAt(String.valueOf(aux), indexs1.get(1) - 1, i);
             }
@@ -1097,9 +1094,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             for (int j = 0; j < element2.size(); j++) {
                 if (elementType1.column.equals(element2.get(j).column) || elementType1.column.equals(element2.get(j).row)
                         || elementType1.row.equals(element2.get(j).column) || elementType1.row.equals(element2.get(j).row)) {
-                    BigDecimal bg1 = new BigDecimal(specialTable.getValueAt(elementType1.indexRow, index).toString());
-                    BigDecimal bg2 = new BigDecimal(specialTable.getValueAt(element2.get(j).indexRow, index).toString());
-                    BigDecimal aux = bg1;
+                    double bg1 = Double.parseDouble(specialTable.getValueAt(elementType1.indexRow, index).toString());
+                    double bg2 = Double.parseDouble(specialTable.getValueAt(element2.get(j).indexRow, index).toString());
+                    double aux = bg1;
                     specialTable.setValueAt(String.valueOf(bg2), elementType1.indexRow, index);
                     specialTable.setValueAt(String.valueOf(aux), element2.get(j).indexRow, index);
                     element2.remove(element2.get(j));
@@ -1299,11 +1296,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 List<Object> values = new ArrayList<>();
                 values.add(molecule.getResult().get(i).getGaussian());
                 values.add(molecule.getResult().get(i).getAtom());
-                values.add(String.valueOf(molecule.getResult().get(i).getValue()));
+                double value = molecule.getResult().get(i).getValue();
+                DecimalFormat df = new DecimalFormat("#.####");
+                df.setRoundingMode(RoundingMode.CEILING);
+                values.add(String.valueOf(df.format(value)));
                 rows.add(values);
             } else {
                 List<Object> values = new ArrayList<>(auxList.get(i));
-                values.add(String.valueOf(molecule.getResult().get(i).getValue()));
+                double value = molecule.getResult().get(i).getValue();
+                DecimalFormat df = new DecimalFormat("#.####");
+                df.setRoundingMode(RoundingMode.CEILING);
+                values.add(String.valueOf(df.format(value)));
                 rows.add(values);
             }
         }
