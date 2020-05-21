@@ -224,14 +224,14 @@ public class Model implements ModelInt {
      * @return A Molecule object.
      */
     @Override
-    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key) throws Exception{
+    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp) throws Exception{
 
         Molecule molecule = new Molecule();
         molecule.setFilesData(getFileDataTable(files, coordinates));
         molecule.setDifferentiator(key);
         List<AverageValue> total = new ArrayList<>();
         for (String coordinate : coordinates) {
-            AverageValue totalDifferentiator = calculations.getValueToMoleculeTable(molecule.getFilesData(), coordinate);
+            AverageValue totalDifferentiator = calculations.getValueToMoleculeTable(molecule.getFilesData(), coordinate, temp);
             total.add(totalDifferentiator);
         }
         molecule.setResult(total);

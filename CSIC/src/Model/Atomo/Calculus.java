@@ -65,7 +65,7 @@ public class Calculus {
      * @param coordinates coordinates of the atoms.
      * @return return a TotalDiferentiator object.
      */
-    public AverageValue getValueToMoleculeTable(List<FileData> files, String coordinates) {
+    public AverageValue getValueToMoleculeTable(List<FileData> files, String coordinates, double temp) {
         AverageValue totalDifferentiator = new AverageValue();
         totalDifferentiator.setGaussian(coordinates);
         double minValue = getEnergyMinValue(files);
@@ -78,7 +78,7 @@ public class Calculus {
             if (files.get(i).getEnergyValue() == minValue) {
                 initialValue = 0;
             } else {
-                initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * 298.15);
+                initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * temp);
             }
             mediumValue = Math.exp(initialValue * -1);
             contribution = mediumValue / expS;

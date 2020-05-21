@@ -40,7 +40,7 @@ public class Controller implements ControllerInt {
     }
 
     @Override
-    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key) throws Exception{
-        return model.getMoleculeTable(files, coordinates, key);
+    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key, double temp) throws Exception{
+        return model.getMoleculeTable(files, coordinates, key, temp);
     }
 }

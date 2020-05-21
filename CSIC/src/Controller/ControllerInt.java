@@ -22,6 +22,6 @@ public interface ControllerInt {
 
     public Molecule getMolecule(List<File> files, String key);
 
-    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key) throws Exception;
+    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key, double temp) throws Exception;
 
 }

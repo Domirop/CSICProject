@@ -37,7 +37,7 @@ public interface ModelInt {
 
     public List<FileData> getFileDataTable(List<File> files, List<String> coordinates) throws Exception;
 
-    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key) throws Exception;
+    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp) throws Exception;
 
     public List<AtomTable> getAtomTables(List<String> coordinates, String path) throws Exception;
 
