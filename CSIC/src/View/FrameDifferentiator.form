@@ -94,6 +94,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldRow">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldRowActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -101,6 +104,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldColumn">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldColumnActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buttonAddValue">
           <Properties>

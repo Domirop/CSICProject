@@ -233,6 +233,7 @@ public class Model implements ModelInt {
         List<AverageValue> total = new ArrayList<>();
         for (String coordinate : coordinates) {
             AverageValue totalDifferentiator = calculations.getValueToMoleculeTable(molecule.getFilesData(), coordinate);
+            System.out.println(totalDifferentiator.toString());
             total.add(totalDifferentiator);
         }
         molecule.setResult(total);
