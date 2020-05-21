@@ -20,8 +20,8 @@ public interface ControllerInt {
 
     public boolean writeCSV(List<String[]> datas, String path, String fileName);
 
-    public Molecule getMolecule(List<File> files, String key);
+    public Molecule getMolecule(List<File> files, String key, double temp);
 
-    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key) throws Exception;
+    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key, double temp) throws Exception;
 
 }

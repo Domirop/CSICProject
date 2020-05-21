@@ -27,7 +27,7 @@ public interface ModelInt {
 
     public String SCFDone(String path);
 
-    public Molecule getMolecule(List<File> files, String key);
+    public Molecule getMolecule(List<File> files, String key, double temp);
 
     public List<String> getAtomsGaussian(List<FileData> files);
 
@@ -37,7 +37,7 @@ public interface ModelInt {
 
     public List<FileData> getFileDataTable(List<File> files, List<String> coordinates) throws Exception;
 
-    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key) throws Exception;
+    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp) throws Exception;
 
     public List<AtomTable> getAtomTables(List<String> coordinates, String path) throws Exception;
 

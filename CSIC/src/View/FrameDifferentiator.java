@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.TransferHandler;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -58,8 +59,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<String> keywordsUsed = new ArrayList<>();
     private List<List<Object>> rows = new ArrayList<>();
     private List<String> coorValues = new ArrayList<>();
-    private List<String> colAndRows = new ArrayList<>();
     private ControllerInt controller;
+    private String temperature = "298.15";
+    List<String> colAndRows = new ArrayList<>();
     JTable tableGeneric;
 
     public FrameDifferentiator(ControllerInt controller) {
@@ -88,6 +90,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonValue.setVisible(false);
         itemExport.setEnabled(false);
         itemReset.setEnabled(false);
+        itemChangeTemperature.setEnabled(true);
         buttonExportCSV.setVisible(false);
         buttonRemoveTable.setVisible(false);
         deleteButtton.setVisible(false);
@@ -143,6 +146,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         fieldNameValues = new javax.swing.JTextField();
         buttonValues = new javax.swing.JButton();
+        dialogTemperature = new javax.swing.JDialog();
+        jLabel5 = new javax.swing.JLabel();
+        fieldTemperature = new javax.swing.JTextField();
+        buttonOKTemp = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         comboOptions = new javax.swing.JComboBox<>();
         fieldKeyword = new javax.swing.JTextField();
@@ -161,6 +168,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemExport = new javax.swing.JMenuItem();
         itemReset = new javax.swing.JMenuItem();
         itemChooseFiles = new javax.swing.JMenuItem();
+        itemChangeTemperature = new javax.swing.JMenuItem();
         itemExit = new javax.swing.JMenuItem();
 
         dialogCoordinates.setResizable(false);
@@ -303,6 +311,44 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel5.setText("Change temperature:");
+
+        fieldTemperature.setText("298.15");
+
+        buttonOKTemp.setText("Ok");
+        buttonOKTemp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonOKTempActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout dialogTemperatureLayout = new javax.swing.GroupLayout(dialogTemperature.getContentPane());
+        dialogTemperature.getContentPane().setLayout(dialogTemperatureLayout);
+        dialogTemperatureLayout.setHorizontalGroup(
+            dialogTemperatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogTemperatureLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(fieldTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogTemperatureLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonOKTemp)
+                .addContainerGap())
+        );
+        dialogTemperatureLayout.setVerticalGroup(
+            dialogTemperatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialogTemperatureLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(dialogTemperatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(fieldTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(buttonOKTemp)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Search by keyword:");
@@ -407,6 +453,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
         jMenu1.add(itemChooseFiles);
+
+        itemChangeTemperature.setText("Change temperature");
+        itemChangeTemperature.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemChangeTemperatureActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemChangeTemperature);
 
         itemExit.setText("Exit");
         itemExit.addActionListener(new java.awt.event.ActionListener() {
@@ -758,7 +812,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             getUsedFiles(tableCoord.getColumnName(i));
             Molecule mole = new Molecule();
             try {
-                mole = controller.getTableMolecule(usedFiles, colAndRows, tableCoord.getColumnName(i));
+                mole = controller.getTableMolecule(usedFiles, colAndRows, tableCoord.getColumnName(i), Double.parseDouble(temperature));
             } catch (Exception e) {
                 dialogNombre.dispose();
                 errorText.setVisible(true);
@@ -866,6 +920,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
+        itemChangeTemperature.setEnabled(true);
         errorText.setText("");
         errorText.setForeground(Color.red);
         tabbedPane.removeAll();
@@ -922,6 +977,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonValue.setVisible(false);
         itemReset.setEnabled(false);
         itemExport.setEnabled(false);
+        itemChangeTemperature.setEnabled(true);
     }//GEN-LAST:event_deleteButttonActionPerformed
 
     /**
@@ -1263,6 +1319,20 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tabbedPaneStateChanged
 
+    private void itemChangeTemperatureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemChangeTemperatureActionPerformed
+        dialogTemperature.pack();
+        dialogTemperature.setVisible(true);
+    }//GEN-LAST:event_itemChangeTemperatureActionPerformed
+
+    private void buttonOKTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKTempActionPerformed
+        if (fieldTemperature.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$")) {
+            temperature = fieldTemperature.getText();
+            dialogTemperature.dispose();
+        } else {
+            fieldTemperature.setBorder(new LineBorder(Color.red, 1));
+        }
+    }//GEN-LAST:event_buttonOKTempActionPerformed
+
     /**
      *
      * @return selected table
@@ -1312,7 +1382,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param usedFiles
      */
     private void genericTable(List<File> usedFiles) {
-        Molecule molecule = this.controller.getMolecule(usedFiles, fieldKeyword.getText());
+        Molecule molecule = this.controller.getMolecule(usedFiles, fieldKeyword.getText(), Double.parseDouble(temperature)
+        );
         String[] values = new String[keywordsUsed.size() + 2];
         values[0] = "Gaussian";
         values[1] = "Atom";
@@ -1487,6 +1558,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     usedTables.add(table);
                     revalidate();
                     pack();
+                    itemChangeTemperature.setEnabled(false);
+                    itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
+
                 } else {
                     errorText.setText("Couldn't find any file with the provided keyword.");
                 }
@@ -1579,6 +1653,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonAddValue;
     private javax.swing.JButton buttonExportCSV;
+    private javax.swing.JButton buttonOKTemp;
     private javax.swing.JButton buttonRemoveItem;
     private javax.swing.JButton buttonRemoveTable;
     private javax.swing.JButton buttonValue;
@@ -1587,13 +1662,16 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JButton deleteButtton;
     private javax.swing.JDialog dialogCoordinates;
     private javax.swing.JDialog dialogNombre;
+    private javax.swing.JDialog dialogTemperature;
     private javax.swing.JLabel errorDialogCoor;
     private javax.swing.JLabel errorText;
     private javax.swing.JTextField fieldColumn;
     private javax.swing.JTextField fieldKeyword;
     private javax.swing.JTextField fieldNameValues;
     private javax.swing.JTextField fieldRow;
+    private javax.swing.JTextField fieldTemperature;
     private javax.swing.JButton finishButton;
+    private javax.swing.JMenuItem itemChangeTemperature;
     private javax.swing.JMenuItem itemChooseFiles;
     private javax.swing.JMenuItem itemExit;
     private javax.swing.JMenuItem itemExport;
@@ -1603,6 +1681,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
