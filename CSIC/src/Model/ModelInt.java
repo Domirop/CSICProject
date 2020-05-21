@@ -27,7 +27,7 @@ public interface ModelInt {
 
     public String SCFDone(String path);
 
-    public Molecule getMolecule(List<File> files, String key);
+    public Molecule getMolecule(List<File> files, String key, double temp);
 
     public List<String> getAtomsGaussian(List<FileData> files);
 

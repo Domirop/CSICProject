@@ -52,7 +52,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<String> keywordsUsed = new ArrayList<>();
     private List<List<Object>> rows = new ArrayList<>();
     private List<String> coorValues = new ArrayList<>();
-    private String temperature;
+    private String temperature = "298.15";
 
     List<String> colAndRows = new ArrayList<>();
     ControllerInt controller;
@@ -882,6 +882,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
+        itemChangeTemperature.setEnabled(true);
         errorText.setText("");
         errorText.setForeground(Color.red);
         tabbedPane.removeAll();
@@ -1288,8 +1289,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         if (fieldTemperature.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$")) {
             temperature = fieldTemperature.getText();
             dialogTemperature.dispose();
-        }else{
-            fieldTemperature.setBorder(new LineBorder(Color.red,1));
+        } else {
+            fieldTemperature.setBorder(new LineBorder(Color.red, 1));
         }
     }//GEN-LAST:event_buttonOKTempActionPerformed
 
@@ -1342,7 +1343,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param usedFiles
      */
     private void genericTable(List<File> usedFiles) {
-        Molecule molecule = this.controller.getMolecule(usedFiles, fieldKeyword.getText());
+        Molecule molecule = this.controller.getMolecule(usedFiles, fieldKeyword.getText(), Double.parseDouble(temperature)
+        );
         String[] values = new String[keywordsUsed.size() + 2];
         values[0] = "Gaussian";
         values[1] = "Atom";

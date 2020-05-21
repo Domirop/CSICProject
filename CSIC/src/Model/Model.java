@@ -106,13 +106,13 @@ public class Model implements ModelInt {
      * @return Molecule object with the obtained data.
      */
     @Override
-    public Molecule getMolecule(List<File> files, String key) {
+    public Molecule getMolecule(List<File> files, String key, double temp) {
         Molecule molecule = new Molecule(getFileData(files), key);
         List<String> gaussianAtom = getAtomsGaussian(molecule.getFilesData());
         List<AverageValue> total = new ArrayList<>();
         for (String string : gaussianAtom) {
             AverageValue totalDifferentiator = new AverageValue();
-            totalDifferentiator = calculations.getTotalMoleculeValue(molecule.getFilesData(), string);
+            totalDifferentiator = calculations.getTotalMoleculeValue(molecule.getFilesData(), string, temp);
             total.add(totalDifferentiator);
         }
         molecule.setResult(total);
