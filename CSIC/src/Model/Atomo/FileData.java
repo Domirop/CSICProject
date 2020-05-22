@@ -18,7 +18,17 @@ public class FileData {
     private List<Atom> atoms;
     private List<AtomTable> atomsTable;
     private double energyValue;
+    private double contribution;
 
+    public double getContribution() {
+        return contribution;
+    }
+
+    public void setContribution(double contribution) {
+        this.contribution = contribution;
+    }
+
+    
     public FileData() {
     }
 

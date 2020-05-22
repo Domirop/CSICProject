@@ -77,7 +77,6 @@ public class Model implements ModelInt {
      */
     @Override
     public String SCFDone(String path) {
-        //System.out.println(readEnergy.SCFDone(path));
         return readEnergy.SCFDone(path);
     }
 
@@ -107,7 +106,7 @@ public class Model implements ModelInt {
      */
     @Override
     public Molecule getMolecule(List<File> files, String key, double temp) {
-        Molecule molecule = new Molecule(getFileData(files), key);
+        Molecule molecule = new Molecule(getFileData(files, temp), key);
         List<String> gaussianAtom = getAtomsGaussian(molecule.getFilesData());
         List<AverageValue> total = new ArrayList<>();
         for (String string : gaussianAtom) {
@@ -147,7 +146,7 @@ public class Model implements ModelInt {
      * @return List of FileData object.
      */
     @Override
-    public List<FileData> getFileData(List<File> files) {
+    public List<FileData> getFileData(List<File> files, double temp) {
         List<FileData> fileData = new ArrayList<>();
         for (File file : files) {
             List<String> atomsData = formatLine(getLines(file.getAbsolutePath(), "Isotropic"));
@@ -157,9 +156,10 @@ public class Model implements ModelInt {
                 fileData.add(calculations.getFileData(atomsData, energyValue, fileName));
             }
         }
+        fileData = calculations.getContribution(fileData, temp);
         return fileData;
     }
-
+    
     /**
      * This method communicates with the class that writes the file of type csv.
      *

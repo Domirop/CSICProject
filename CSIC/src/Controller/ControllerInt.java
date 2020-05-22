@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface ControllerInt {
 
-    public List<FileData> getFileData(List<File> files);
+    public List<FileData> getFileData(List<File> files, double temp);
 
     public boolean writeCSV(List<String[]> datas, String path, String fileName);
 
