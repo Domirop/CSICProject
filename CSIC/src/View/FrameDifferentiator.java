@@ -33,6 +33,7 @@ import Controller.ControllerInt;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -46,6 +47,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
@@ -114,6 +117,60 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemSearchValue.setEnabled(false);
         this.errorText.setVisible(true);
         this.filesData = filesData;
+        addIcons();
+    }
+
+    public void addIcons() {
+
+        ImageIcon imageIcon;
+        try {
+            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/rightarrow.png"))); // load the image to a imageIcon
+
+            Image imageadd = imageIcon.getImage(); // transform it 
+            Image newimgadd = imageadd.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+            imageIcon = new ImageIcon(newimgadd);  // transform it back
+            buttonAdd.setIcon(imageIcon);
+
+            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/search.png"))); // load the image to a imageIcon
+            Image imagesearch = imageIcon.getImage(); // transform it 
+            Image newimgsearch = imagesearch.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+            imageIcon = new ImageIcon(newimgsearch);  // transform it back
+            buttonValue.setIcon(imageIcon);
+
+            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/csv.png"))); // load the image to a imageIcon
+            Image imagecsv = imageIcon.getImage(); // transform it 
+            Image newimgcsv = imagecsv.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+            imageIcon = new ImageIcon(newimgcsv);  // transform it back
+            buttonExportCSV.setIcon(imageIcon);
+
+            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/reset.png"))); // load the image to a imageIcon
+            Image imagereset = imageIcon.getImage(); // transform it 
+            Image newimgreset = imagereset.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+            imageIcon = new ImageIcon(newimgreset);  // transform it back
+            deleteButtton.setIcon(imageIcon);
+
+            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/delete.png"))); // load the image to a imageIcon
+            Image imagedelete = imageIcon.getImage(); // transform it 
+            Image newimgdelete = imagedelete.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+            imageIcon = new ImageIcon(newimgdelete);  // transform it back
+            buttonRemoveTable.setIcon(imageIcon);
+
+            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/increase.png"))); // load the image to a imageIcon
+            Image imageincrease = imageIcon.getImage(); // transform it 
+            Image newimgincrease = imageincrease.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+            imageIcon = new ImageIcon(newimgincrease);  // transform it back
+            orderAsc.setIcon(imageIcon);
+
+            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/decrease.png"))); // load the image to a imageIcon
+            Image imagedecrease= imageIcon.getImage(); // transform it 
+            Image newimgdecrease = imagedecrease.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+            imageIcon = new ImageIcon(newimgdecrease);  // transform it back
+            orderDesc.setIcon(imageIcon);
+            
+            this.repaint();
+
+        } catch (IOException ex) {
+        }
     }
 
     private void enableDragAndDrop() {
