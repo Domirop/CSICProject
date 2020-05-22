@@ -34,6 +34,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -76,6 +77,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<List<Object>> rows = new ArrayList<>();
     private List<String> coorValues = new ArrayList<>();
     private ControllerInt controller;
+
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     private String temperature = "298.15";
     List<String> colAndRows = new ArrayList<>();
@@ -115,6 +117,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemSearchValue.setEnabled(false);
         this.errorText.setVisible(true);
         this.filesData = filesData;
+        itemSCF.setEnabled(false);
         addIcons();
     }
 
@@ -571,15 +574,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        dialogSCF.setResizable(false);
+
         javax.swing.GroupLayout dialogSCFLayout = new javax.swing.GroupLayout(dialogSCF.getContentPane());
         dialogSCF.getContentPane().setLayout(dialogSCFLayout);
         dialogSCFLayout.setHorizontalGroup(
             dialogSCFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPaneSCF, javax.swing.GroupLayout.DEFAULT_SIZE, 920, Short.MAX_VALUE)
+            .addComponent(tabPaneSCF)
         );
         dialogSCFLayout.setVerticalGroup(
             dialogSCFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabPaneSCF, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+            .addComponent(tabPaneSCF)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1298,6 +1303,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonValue.setVisible(false);
         itemReset.setEnabled(false);
         itemExport.setEnabled(false);
+        itemSCF.setEnabled(false);
         itemChangeTemperature.setEnabled(true);
     }//GEN-LAST:event_deleteButttonActionPerformed
 
@@ -1376,6 +1382,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private void itemChooseFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemChooseFilesActionPerformed
         ChooseFilesFrame chooseFilesFrame = new ChooseFilesFrame(controller);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        chooseFilesFrame.setLocation(dim.width / 2 - chooseFilesFrame.getSize().width / 2, dim.height / 2 - chooseFilesFrame.getSize().height / 2);
         chooseFilesFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_itemChooseFilesActionPerformed
@@ -1778,8 +1786,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     }//GEN-LAST:event_itemSCFActionPerformed
 
-    private void SCFTable(List<File> usedFiles) {
-        List<FileData> fileData = controller.getFileData(usedFiles, Double.parseDouble(temperature));
+    private void SCFTable() {
         tabPaneSCF.add(fieldKeyword.getText(), initSCFTable());
     }
 
@@ -1808,7 +1815,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         String[] headers = nameFiles.toArray(new String[0]);
         JTable tableSCF = new JTable(data, headers);
-        tableSCF.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         boolean[] canEditTry = new boolean[SCF.size() + 1];
         for (int i = 0; i < canEditTry.length; i++) {
@@ -1851,7 +1857,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         TableColumn column = null;
         for (int i = 0; i < tableSCF.getColumnCount(); i++) {
-            if (i == 0 || i == 1) {
+            if (i == 0) {
                 column = tableSCF.getColumnModel().getColumn(i);
                 column.setMinWidth(100);
             } else {
@@ -1859,8 +1865,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 column.setMinWidth(250);
             }
         }
+
+        tableSCF.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         JScrollPane scrollpaneGeneric = new JScrollPane(tableSCF, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(0, 1));
+        panel.setPreferredSize(new Dimension(1000, 100));
         panel.add(scrollpaneGeneric);
         return panel;
     }
@@ -2062,6 +2072,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         deleteButtton.setVisible(true);
                         tabbedPane.setVisible(true);
                         itemExport.setEnabled(true);
+                        itemSCF.setEnabled(true);
+
                     }
                     panel.setLayout(new GridLayout(0, 1));
                     JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -2080,7 +2092,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     tabbedPane.addTab(fieldText, panel);
                     tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
                     genericTable(usedFiles);
-                    SCFTable(usedFiles);
+                    SCFTable();
                     if (usedTables.isEmpty()) {
                         usedTables.add(tableGeneric);
                     }

@@ -9,6 +9,7 @@ import Controller.ControllerInt;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTarget;
@@ -200,6 +201,8 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
                 fileNames.add(listFile.getName());
             }
             FrameDifferentiator frameDiff = new FrameDifferentiator(fileNames, listFiles, controller);
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);
             this.dispose();
             frameDiff.setVisible(true);
         }
