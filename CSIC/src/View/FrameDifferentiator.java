@@ -172,7 +172,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         } catch (IOException ex) {
         }
     }
-
+    
+    /**
+     * This method is used for ability the functions drop to add new files.
+     */
     private void enableDragAndDrop() {
         DropTarget target = new DropTarget(textAreaMoreFiles, new DropTargetListener() {
             public void dragEnter(DropTargetDragEvent e) {
@@ -208,7 +211,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    /**
+     * this method decorate de textArea to the dialogAddMoreFiles.
+     * @param a The textArea will be decorate.
+     * @param img The image which you want decorate.
+     */
     public void decorate(JTextArea a, final BufferedImage img) {
         if (img != null) {
             int x = (dialogAddMoreFiles.getPreferredSize().width - img.getWidth(null) - 20) / 2;
@@ -234,16 +242,31 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         dialogAddMoreFiles.setResizable(false);
     }
 
+    /**
+     * This method used to recharge the List of the dialogCoordinates
+     * when you copy an paste elements in JList.
+     * @param row Reference of the coordinates.
+     * @param column Reference of the coordinates.
+     */
     public void addElementsToRows(int row, int column) {
         coorValues.add(row + "," + column);
         colAndRows.add(row + "," + column);
         errorDialogCoor.setText("");
     }
-
+    
+    /**
+     * This method used to control the textError of the dialogCoordinates
+     * when you copy an paste elements in JList.
+     * @param string The message which you want put
+     */
     public void setErrorDialogCoor(String string) {
         this.errorDialogCoor.setText(string);
     }
-
+    
+    /**
+     * This methos use to map the element you copy to elements of the JList,
+     * @param list JList when element you copy will be paste.
+     */
     private void setMappings(JList list) {
         ActionMap map = list.getActionMap();
         map.put(TransferHandler.getCutAction().getValue(Action.NAME),
@@ -307,7 +330,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemReset = new javax.swing.JMenuItem();
         itemChooseFiles = new javax.swing.JMenuItem();
         itemChangeTemperature = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        itemAddMoreFiles = new javax.swing.JMenuItem();
         itemExit = new javax.swing.JMenuItem();
 
         dialogCoordinates.setResizable(false);
@@ -661,13 +684,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
         jMenu1.add(itemChangeTemperature);
 
-        jMenuItem1.setText("Add more files");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        itemAddMoreFiles.setText("Add more files");
+        itemAddMoreFiles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                itemAddMoreFilesActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(itemAddMoreFiles);
 
         itemExit.setText("Exit");
         itemExit.addActionListener(new java.awt.event.ActionListener() {
@@ -825,7 +848,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private JTable addRowsToTable(JTable table) {
         JTable tableWithElements = table;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        List<FileData> fileData = this.controller.getFileData(usedFiles);
+        List<FileData> fileData = this.controller.getFileData(usedFiles, Double.parseDouble(temperature));
         String fileNameError = "";
         boolean correcto = false;
         for (String name : names) {
@@ -974,7 +997,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void buttonAddValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddValueActionPerformed
         addValueToList();
     }//GEN-LAST:event_buttonAddValueActionPerformed
-
+    
+    /**
+     * This method add element to the JList of the dialogCoordinates.
+     */
     public void addValueToList() {
         String regex = "\\d+";
         if (fieldRow.getText().matches(regex) && fieldColumn.getText().matches(regex)) {
@@ -1527,15 +1553,27 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         this.pack();
 
     }//GEN-LAST:event_buttonRemoveItemActionPerformed
-
+    
+    /**
+     * Text action Coordinations dialog box that adds elements to the jList.
+     * @param evt event when you press enter.
+     */
     private void fieldColumnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldColumnActionPerformed
         addValueToList();
     }//GEN-LAST:event_fieldColumnActionPerformed
-
+    
+    /**
+     * Text action Coordinations dialog box that adds elements to the jList.
+     * @param evt event when you press enter.
+     */
     private void fieldRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldRowActionPerformed
         addValueToList();
     }//GEN-LAST:event_fieldRowActionPerformed
-
+    
+    /**
+     * This button remove tab and table of the screen.
+     * @param evt Event when you press the button.
+     */
     private void buttonRemoveTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveTableActionPerformed
         String name = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
         JPanel genericPane = (JPanel) (tabbedPane.getComponentAt(0));
@@ -1579,7 +1617,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_buttonRemoveTableActionPerformed
-
+    
+    /**
+     * This method block the delete table button when the user is in the first tab.
+     * @param evt Event when the user change the tab.
+     */
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
         if (tabbedPane.getSelectedIndex() == 0) {
             buttonRemoveTable.setEnabled(false);
@@ -1587,12 +1629,20 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             buttonRemoveTable.setEnabled(true);
         }
     }//GEN-LAST:event_tabbedPaneStateChanged
-
+    
+    /**
+     * This method open the dialog to change temperature.
+     * @param evt Event when the user press in the item.
+     */
     private void itemChangeTemperatureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemChangeTemperatureActionPerformed
         dialogTemperature.pack();
         dialogTemperature.setVisible(true);
     }//GEN-LAST:event_itemChangeTemperatureActionPerformed
-
+    
+    /**
+     * This method put the new value of the temperature.
+     * @param evt Event when press the button.
+     */
     private void buttonOKTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKTempActionPerformed
         if (fieldTemperature.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$")) {
             temperature = fieldTemperature.getText();
@@ -1601,8 +1651,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             fieldTemperature.setBorder(new LineBorder(Color.red, 1));
         }
     }//GEN-LAST:event_buttonOKTempActionPerformed
-
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    
+    /**
+     * This method open the dialog add more file.
+     * @param evt Event when the user press in the item.
+     */
+    private void itemAddMoreFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAddMoreFilesActionPerformed
         enableDragAndDrop();
         BufferedImage bi = null;
         try {
@@ -1614,9 +1668,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         dialogAddMoreFiles.pack();
         dialogAddMoreFiles.revalidate();
         dialogAddMoreFiles.repaint();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-
+    }//GEN-LAST:event_itemAddMoreFilesActionPerformed
+    
+    /**
+     * This method open a frame when you can choose files.
+     * @param evt Event when the user press in the button to choose files.
+     */
     private void buttonChooseFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChooseFilesActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setAcceptAllFileFilterUsed(false);
@@ -1636,7 +1693,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             dialogAddMoreFiles.repaint();
         }
     }//GEN-LAST:event_buttonChooseFilesActionPerformed
-
+    
+    /**
+     * This button close the diialog chooseMoreFiles and add new Files to lists.
+     * @param evt Event when the user press in the button.
+     */
     private void buttonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNextActionPerformed
         if (textAreaMoreFiles.getText().length() > 0) {
             for (File listFile : filesData) {
@@ -1647,6 +1708,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             dialogAddMoreFiles.setVisible(false);
         }
     }//GEN-LAST:event_buttonNextActionPerformed
+    
+    /**
+     * This method put toolTipeText to the texField of the main frame.
+     * @param evt Event when the user choose a option to the combo.
+     */
     private void comboOptionsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboOptionsItemStateChanged
         switch (String.valueOf(comboOptions.getSelectedItem())) {
             case "Starts with":
@@ -2005,6 +2071,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JTextField fieldRow;
     private javax.swing.JTextField fieldTemperature;
     private javax.swing.JButton finishButton;
+    private javax.swing.JMenuItem itemAddMoreFiles;
     private javax.swing.JMenuItem itemChangeTemperature;
     private javax.swing.JMenuItem itemChooseFiles;
     private javax.swing.JMenuItem itemExit;
@@ -2019,7 +2086,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<String> listValues;

@@ -31,7 +31,7 @@ public interface ModelInt {
 
     public List<String> getAtomsGaussian(List<FileData> files);
 
-    public List<FileData> getFileData(List<File> files);
+    public List<FileData> getFileData(List<File> files, double temp);
 
     public boolean writeCSV(List<String[]> datas, String path, String fileName);
 

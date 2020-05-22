@@ -25,8 +25,8 @@ public class Controller implements ControllerInt {
     }
 
     @Override
-    public List<FileData> getFileData(List<File> files) {
-        return model.getFileData(files);
+    public List<FileData> getFileData(List<File> files, double temp) {
+        return model.getFileData(files, temp);
     }
 
     @Override
