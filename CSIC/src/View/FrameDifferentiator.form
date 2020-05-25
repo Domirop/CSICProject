@@ -483,7 +483,7 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jLabel1" max="32767" attributes="0"/>
-                          <Component id="buttonValue" pref="117" max="32767" attributes="0"/>
+                          <Component id="buttonValue" min="-2" pref="117" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
@@ -497,18 +497,18 @@
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
-                              <Component id="buttonExportCSV" pref="117" max="32767" attributes="0"/>
+                              <Component id="buttonExportCSV" min="-2" pref="117" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="orderDesc" pref="117" max="32767" attributes="0"/>
+                              <Component id="orderDesc" min="-2" pref="117" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="orderAsc" pref="117" max="32767" attributes="0"/>
+                              <Component id="orderAsc" min="-2" pref="117" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="buttonRemoveTable" pref="117" max="32767" attributes="0"/>
+                              <Component id="buttonRemoveTable" min="-2" pref="117" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="buttonAverage" pref="125" max="32767" attributes="0"/>
+                              <Component id="buttonAverage" min="-2" pref="125" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="deleteButtton" pref="117" max="32767" attributes="0"/>
-                              <EmptySpace min="-2" pref="332" max="-2" attributes="0"/>
+                              <Component id="deleteButtton" min="-2" pref="117" max="-2" attributes="0"/>
+                              <EmptySpace pref="332" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -527,14 +527,16 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="buttonValue" alignment="1" max="32767" attributes="0"/>
-                  <Component id="buttonExportCSV" alignment="1" max="32767" attributes="0"/>
-                  <Component id="orderDesc" alignment="1" max="32767" attributes="0"/>
-                  <Component id="orderAsc" alignment="1" max="32767" attributes="0"/>
-                  <Component id="buttonRemoveTable" alignment="1" max="32767" attributes="0"/>
-                  <Component id="deleteButtton" alignment="3" max="32767" attributes="0"/>
-                  <Component id="buttonAverage" alignment="3" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="buttonValue" alignment="1" max="-2" attributes="0"/>
+                  <Component id="buttonExportCSV" alignment="1" max="-2" attributes="0"/>
+                  <Component id="orderDesc" alignment="1" max="-2" attributes="0"/>
+                  <Component id="orderAsc" alignment="1" max="-2" attributes="0"/>
+                  <Component id="buttonRemoveTable" alignment="1" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="deleteButtton" alignment="3" max="-2" attributes="0"/>
+                      <Component id="buttonAverage" alignment="3" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">

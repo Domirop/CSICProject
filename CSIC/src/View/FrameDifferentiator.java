@@ -85,7 +85,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private ControllerInt controller;
     private boolean searchAdded = false;
 
-
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     private String temperature = "298.15";
     List<String> colAndRows = new ArrayList<>();
@@ -762,7 +761,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(buttonValue, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                            .addComponent(buttonValue, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -774,18 +773,18 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(4, 4, 4)
-                                .addComponent(buttonExportCSV, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addComponent(buttonExportCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(orderDesc, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addComponent(orderDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(orderAsc, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addComponent(orderAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonRemoveTable, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addComponent(buttonRemoveTable, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonAverage, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                                .addComponent(buttonAverage, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButtton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                                .addGap(332, 332, 332))))
+                                .addComponent(deleteButtton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(332, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -796,14 +795,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonExportCSV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(orderDesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(orderAsc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonRemoveTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(deleteButtton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonAverage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonValue, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(buttonExportCSV, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(orderDesc, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(orderAsc, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(buttonRemoveTable, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(deleteButtton)
+                        .addComponent(buttonAverage)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -1083,7 +1083,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                             }
                         }
                         actionButtonAdd(charact);
-
                     }
                 }
                 break;
@@ -1861,7 +1860,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 break;
             case "Range starts with":
                 fieldKeyword.setToolTipText("Two values separate by \"-\". I.e: 01-09");
-
                 break;
 
             default:
@@ -1887,8 +1885,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             List<Object> localRows = new ArrayList<>();
             if (i == firstIndex || i == secondIndex || i == thirdIndex) {
                 if (i == firstIndex) {
-                    localRows.add(myTable.getValueAt(firstIndex, 0).toString() + "-" +
-                            myTable.getValueAt(secondIndex, 0).toString() + "-"
+                    localRows.add(myTable.getValueAt(firstIndex, 0).toString() + "-"
+                            + myTable.getValueAt(secondIndex, 0).toString() + "-"
                             + myTable.getValueAt(thirdIndex, 0).toString());
                     localRows.add(myTable.getValueAt(i, 1).toString());
                 }
@@ -1961,7 +1959,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableGeneric.getTableHeader().getDefaultRenderer();
         renderer.setHorizontalAlignment(0);
         averageTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-        
+
         JScrollPane scrollpane = new JScrollPane(averageTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         panel.add(scrollpane);
         panel.revalidate();
@@ -2246,67 +2244,66 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void actionButtonAdd(String fieldText) {
         try {
             errorText.setForeground(Color.red);
-          
-            if (!keywordsUsed.contains(fieldText)) {
-                keywordsUsed.add(fieldText);
-                if (!usedFiles.isEmpty()) {
-                    if (!searchAdded) {
-                        searchTab();
-                        searchAdded = true;
-                    }
-
-                    errorText.setText("");
-                    JTable table = addRowsToTable(initTablesDifferentiators());
-                    if (table.getRowCount() != 0) {
-                        JPanel panel = new JPanel();
-                        if (usedTables.isEmpty()) {
-                            itemSearchValue.setEnabled(true);
-                            itemExport.setEnabled(false);
-                            itemReset.setEnabled(true);
-                            buttonValue.setVisible(true);
-                            buttonExportCSV.setVisible(true);
-                            buttonRemoveTable.setVisible(true);
-                            deleteButtton.setVisible(true);
-                            tabbedPane.setVisible(true);
-                            itemExport.setEnabled(true);
-                            itemSCF.setEnabled(true);
-
-                        }
-                        panel.setLayout(new GridLayout(0, 1));
-                        JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                        TableColumn column = null;
-                        for (int i = 0; i < table.getColumnCount(); i++) {
-                            if (i == 0 || i == 1) {
-                                column = table.getColumnModel().getColumn(i);
-                                column.setMinWidth(100);
-                            } else {
-                                column = table.getColumnModel().getColumn(i);
-                                column.setMinWidth(300);
-                            }
-                        }
-                        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                        panel.add(scrollpane);
-                        tabbedPane.addTab(fieldText, panel);
-                        tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-                        genericTable(usedFiles);
-                        SCFTable();
-                        if (usedTables.isEmpty()) {
-                            usedTables.add(tableGeneric);
-                        }
-                        normalTables.add(table);
-                        usedTables.add(table);
-                        revalidate();
-                        pack();
-                        itemChangeTemperature.setEnabled(false);
-                        itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
-
-                    } else {
-                        errorText.setText("Couldn't find any file with the provided keyword.");
-                    }
-                } else {
-                    errorText.setText("Some files were not imported.");
-                    keywordsUsed.remove(fieldKeyword.getText());
+            if (!usedFiles.isEmpty()) {
+                if (!keywordsUsed.contains(fieldText)) {
+                    keywordsUsed.add(fieldText);
                 }
+                if (!searchAdded) {
+                    searchTab();
+                    searchAdded = true;
+                }
+
+                errorText.setText("");
+                JTable table = addRowsToTable(initTablesDifferentiators());
+                if (table.getRowCount() != 0) {
+                    JPanel panel = new JPanel();
+                    if (usedTables.isEmpty()) {
+                        itemSearchValue.setEnabled(true);
+                        itemExport.setEnabled(false);
+                        itemReset.setEnabled(true);
+                        buttonValue.setVisible(true);
+                        buttonExportCSV.setVisible(true);
+                        buttonRemoveTable.setVisible(true);
+                        deleteButtton.setVisible(true);
+                        tabbedPane.setVisible(true);
+                        itemExport.setEnabled(true);
+                        itemSCF.setEnabled(true);
+
+                    }
+                    panel.setLayout(new GridLayout(0, 1));
+                    JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                    TableColumn column = null;
+                    for (int i = 0; i < table.getColumnCount(); i++) {
+                        if (i == 0 || i == 1) {
+                            column = table.getColumnModel().getColumn(i);
+                            column.setMinWidth(100);
+                        } else {
+                            column = table.getColumnModel().getColumn(i);
+                            column.setMinWidth(300);
+                        }
+                    }
+                    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                    panel.add(scrollpane);
+                    tabbedPane.addTab(fieldText, panel);
+                    tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+                    genericTable(usedFiles);
+                    SCFTable();
+                    if (usedTables.isEmpty()) {
+                        usedTables.add(tableGeneric);
+                    }
+                    normalTables.add(table);
+                    usedTables.add(table);
+                    revalidate();
+                    pack();
+                    itemChangeTemperature.setEnabled(false);
+                    itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
+
+                } else {
+                    errorText.setText("Couldn't find any file with the provided keyword.");
+                }
+
+            } else {
+                errorText.setText("Some files were not imported.");
             }
         } catch (Exception e) {
             errorText.setText("Some files were not imported.");
@@ -2355,6 +2352,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 Class<?> returnValue;
                 if ((column >= 0) && (column < getColumnCount())) {
                     returnValue = getValueAt(0, column).getClass();
+
                 } else {
                     returnValue = Object.class;
                 }
@@ -2411,17 +2409,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
 
         });
-        
+
         textField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                try{
-                for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-                    if (tabbedPane.getTitleAt(i).equals(textField.getText())) {
-                        tabbedPane.setSelectedIndex(i);
+                try {
+                    for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+                        if (tabbedPane.getTitleAt(i).equals(textField.getText())) {
+                            tabbedPane.setSelectedIndex(i);
+                        }
                     }
-                }
-                }catch(Exception e){
-                    
+                } catch (Exception e) {
+
                 }
             }
         });
