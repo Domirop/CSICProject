@@ -48,9 +48,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -90,6 +94,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
+        
         ListTransferHandler lh = new ListTransferHandler(this);
         listValues.setModel(new DefaultListModel());
         listValues.setDragEnabled(true);
@@ -591,7 +596,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel1.setText("Search by keyword:");
 
-        comboOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Starts with", "Ends with", "Contains", "Range starts with" }));
+        comboOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Starts with", "Ends with", "Contains", "Range starts with", "Range ends with" }));
         comboOptions.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 comboOptionsItemStateChanged(evt);
@@ -964,7 +969,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         values[0].replace("0", "");
                         fFileCero = true;
                     }
-                    
+
                     if (values[1].startsWith("0")) {
                         values[1].replace("0", "");
                         sFileCero = true;
@@ -989,7 +994,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                             String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
                             searchSeparator:
                             for (char c : filename.toCharArray()) {
-                                if(!Character.isDigit(c)){
+                                if (!Character.isDigit(c)) {
                                     separador = String.valueOf(c);
                                     break searchSeparator;
                                 }
@@ -1006,7 +1011,63 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     }
                 }
                 break;
+            case "Range ends with":
+                if (value.matches("^[0-9]+(\\-[0-9]+)*$")) {
+                    String[] values = new String[2];
+                    boolean fFileCero = false;
+                    boolean sFileCero = false;
+                    values = value.split("-");
+                    if (values[0].startsWith("0")) {
+                        values[0].replace("0", "");
+                        fFileCero = true;
+                    }
+                    if (values[1].startsWith("0")) {
+                        values[1].replace("0", "");
+                        sFileCero = true;
+                    }
+                    for (int j = Integer.valueOf(values[0]); j <= Integer.valueOf(values[1]); j++) {
+                        usedFiles.clear();
+                        names.clear();
+                        String charact = "";
+                        if (fFileCero == true && j < 10) {
+                            charact = "0" + String.valueOf(j);
+                        } else {
+                            charact = String.valueOf(j);
+                        }
 
+                        if (sFileCero == true && j < 10) {
+                            charact = "0" + String.valueOf(j);
+                        } else {
+                            charact = String.valueOf(j);
+                        }
+                        String separador = "";
+                        for (int i = 0; i < files.size(); i++) {
+                            String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
+                            StringBuilder sb1 = new StringBuilder();
+                            sb1.append(filename);
+                            sb1 = sb1.reverse();
+                            String reversedFilename = sb1.toString();
+
+                            searchSeparator:
+                            for (char c : reversedFilename.toCharArray()) {
+                                if (!Character.isDigit(c)) {
+                                    separador = String.valueOf(c);
+                                    break searchSeparator;
+                                }
+                            }
+                            String[] separated = filename.split(separador);
+                            if (separated[separated.length - 1].equals(charact)) {
+                                usedFiles.add(filesData.get(i));
+                                if (!names.contains(filename)) {
+                                    names.add(filename);
+                                }
+                            }
+                        }
+                        actionButtonAdd(charact);
+
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -2059,64 +2120,68 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * Method used to add new files.
      */
     private void actionButtonAdd(String fieldText) {
-        errorText.setForeground(Color.red);
+        try {
+            errorText.setForeground(Color.red);
 
-        if (!keywordsUsed.contains(fieldText)) {
-            keywordsUsed.add(fieldText);
+            if (!keywordsUsed.contains(fieldText)) {
+                keywordsUsed.add(fieldText);
 
-            if (!usedFiles.isEmpty()) {
-                errorText.setText("");
-                JTable table = addRowsToTable(initTablesDifferentiators());
-                if (table.getRowCount() != 0) {
-                    JPanel panel = new JPanel();
-                    if (usedTables.isEmpty()) {
-                        itemSearchValue.setEnabled(true);
-                        itemExport.setEnabled(false);
-                        itemReset.setEnabled(true);
-                        buttonValue.setVisible(true);
-                        buttonExportCSV.setVisible(true);
-                        buttonRemoveTable.setVisible(true);
-                        deleteButtton.setVisible(true);
-                        tabbedPane.setVisible(true);
-                        itemExport.setEnabled(true);
-                        itemSCF.setEnabled(true);
+                if (!usedFiles.isEmpty()) {
+                    errorText.setText("");
+                    JTable table = addRowsToTable(initTablesDifferentiators());
+                    if (table.getRowCount() != 0) {
+                        JPanel panel = new JPanel();
+                        if (usedTables.isEmpty()) {
+                            itemSearchValue.setEnabled(true);
+                            itemExport.setEnabled(false);
+                            itemReset.setEnabled(true);
+                            buttonValue.setVisible(true);
+                            buttonExportCSV.setVisible(true);
+                            buttonRemoveTable.setVisible(true);
+                            deleteButtton.setVisible(true);
+                            tabbedPane.setVisible(true);
+                            itemExport.setEnabled(true);
+                            itemSCF.setEnabled(true);
 
-                    }
-                    panel.setLayout(new GridLayout(0, 1));
-                    JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                    TableColumn column = null;
-                    for (int i = 0; i < table.getColumnCount(); i++) {
-                        if (i == 0 || i == 1) {
-                            column = table.getColumnModel().getColumn(i);
-                            column.setMinWidth(100);
-                        } else {
-                            column = table.getColumnModel().getColumn(i);
-                            column.setMinWidth(300);
                         }
-                    }
-                    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                    panel.add(scrollpane);
-                    tabbedPane.addTab(fieldText, panel);
-                    tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-                    genericTable(usedFiles);
-                    SCFTable();
-                    if (usedTables.isEmpty()) {
-                        usedTables.add(tableGeneric);
-                    }
-                    normalTables.add(table);
-                    usedTables.add(table);
-                    revalidate();
-                    pack();
-                    itemChangeTemperature.setEnabled(false);
-                    itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
+                        panel.setLayout(new GridLayout(0, 1));
+                        JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                        TableColumn column = null;
+                        for (int i = 0; i < table.getColumnCount(); i++) {
+                            if (i == 0 || i == 1) {
+                                column = table.getColumnModel().getColumn(i);
+                                column.setMinWidth(100);
+                            } else {
+                                column = table.getColumnModel().getColumn(i);
+                                column.setMinWidth(300);
+                            }
+                        }
+                        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                        panel.add(scrollpane);
+                        tabbedPane.addTab(fieldText, panel);
+                        tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+                        genericTable(usedFiles);
+                        SCFTable();
+                        if (usedTables.isEmpty()) {
+                            usedTables.add(tableGeneric);
+                        }
+                        normalTables.add(table);
+                        usedTables.add(table);
+                        revalidate();
+                        pack();
+                        itemChangeTemperature.setEnabled(false);
+                        itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
 
+                    } else {
+                        errorText.setText("Couldn't find any file with the provided keyword.");
+                    }
                 } else {
-                    errorText.setText("Couldn't find any file with the provided keyword.");
+                    errorText.setText("Some files were not imported.");
+                    keywordsUsed.remove(fieldKeyword.getText());
                 }
-            } else {
-                errorText.setText("Some files were not imported.");
-                keywordsUsed.remove(fieldKeyword.getText());
             }
+        } catch (Exception e) {
+            errorText.setText("Some files were not imported.");
         }
     }
 
