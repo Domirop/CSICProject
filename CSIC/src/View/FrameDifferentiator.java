@@ -42,19 +42,20 @@ import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -81,6 +82,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<List<Object>> rows = new ArrayList<>();
     private List<String> coorValues = new ArrayList<>();
     private ControllerInt controller;
+    private boolean searchAdded = false;
+
 
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     private String temperature = "298.15";
@@ -94,7 +97,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
-        
         ListTransferHandler lh = new ListTransferHandler(this);
         listValues.setModel(new DefaultListModel());
         listValues.setDragEnabled(true);
@@ -2127,6 +2129,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 keywordsUsed.add(fieldText);
 
                 if (!usedFiles.isEmpty()) {
+                    if (!searchAdded) {
+                        searchTab();
+                        searchAdded = true;
+                    }
+
                     errorText.setText("");
                     JTable table = addRowsToTable(initTablesDifferentiators());
                     if (table.getRowCount() != 0) {
@@ -2261,6 +2268,43 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
+    }
+
+    public void searchTab() {
+
+        jMenuBar1.add(Box.createHorizontalGlue());
+        JTextField textField = new JTextField(10);
+        textField.setForeground(Color.GRAY);
+        textField.setText("Search...");
+        textField.setMaximumSize(textField.getPreferredSize());
+        textField.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+                textField.setForeground(Color.BLACK);
+                textField.setText("");
+            }
+
+            public void focusLost(FocusEvent e) {
+                textField.setForeground(Color.GRAY);
+                textField.setText("Search...");
+
+            }
+
+        });
+        
+        textField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                try{
+                for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+                    if (tabbedPane.getTitleAt(i).equals(textField.getText())) {
+                        tabbedPane.setSelectedIndex(i);
+                    }
+                }
+                }catch(Exception e){
+                    
+                }
+            }
+        });
+        jMenuBar1.add(textField);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
