@@ -81,14 +81,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<JTable> usedTables = new ArrayList<>();
     private List<String> keywordsUsed = new ArrayList<>();
     private List<List<Object>> rows = new ArrayList<>();
-    private List<String> coorValues = new ArrayList<>();
+    public List<String> coorValues = new ArrayList<>();
     private ControllerInt controller;
     private boolean multiTable = false;
     private boolean searchAdded = false;
 
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     private String temperature = "298.15";
-    List<String> colAndRows = new ArrayList<>();
+    public List<String> colAndRows = new ArrayList<>();
     JTable tableGeneric;
 
     public FrameDifferentiator(ControllerInt controller) {
@@ -98,6 +98,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
+        this.setSize(1080, 480);
+        jMenuBar1.add(buttonValue);
+        jMenuBar1.add(buttonExportCSV);
+        jMenuBar1.add(orderDesc);
+        jMenuBar1.add(orderAsc);
+        jMenuBar1.add(buttonRemoveTable);
+        jMenuBar1.add(buttonAverage);
+        jMenuBar1.add(buttonDelete);
         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         ListTransferHandler lh = new ListTransferHandler(this);
         listValues.setModel(new DefaultListModel());
@@ -110,6 +118,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonRemoveItem.setFocusable(false);
         buttonAverage.setFocusable(false);
         finishButton.setFocusable(false);
+        //listValues.setFocusable(false);
         this.controller = controller;
         panelGeneric.setLayout(new GridLayout(0, 1));
         tabbedPane.addTab("Average", panelGeneric);
@@ -123,12 +132,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonExportCSV.setVisible(false);
         buttonRemoveTable.setVisible(false);
         buttonAverage.setVisible(false);
-        deleteButtton.setVisible(false);
+        buttonDelete.setVisible(false);
         this.files = files;
         itemSearchValue.setEnabled(false);
         this.errorText.setVisible(true);
         this.filesData = filesData;
         itemSCF.setEnabled(false);
+        if (!buttonRemoveTable.isEnabled()) {
+            buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
+        }
         addIcons();
     }
 
@@ -159,7 +171,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             Image imagereset = imageIcon.getImage(); // transform it 
             Image newimgreset = imagereset.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
             imageIcon = new ImageIcon(newimgreset);  // transform it back
-            deleteButtton.setIcon(imageIcon);
+            buttonDelete.setIcon(imageIcon);
 
             imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/delete.png"))); // load the image to a imageIcon
             Image imagedelete = imageIcon.getImage(); // transform it 
@@ -178,6 +190,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             Image newimgdecrease = imagedecrease.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
             imageIcon = new ImageIcon(newimgdecrease);  // transform it back
             orderDesc.setIcon(imageIcon);
+
+            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/average.png"))); // load the image to a imageIcon
+            Image imageaverage = imageIcon.getImage(); // transform it 
+            Image newimgaverage = imageaverage.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+            imageIcon = new ImageIcon(newimgaverage);  // transform it back
+            buttonAverage.setIcon(imageIcon);
 
             this.repaint();
 
@@ -334,7 +352,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         fieldKeyword = new javax.swing.JTextField();
         buttonAdd = new javax.swing.JButton();
         tabbedPane = new javax.swing.JTabbedPane();
-        deleteButtton = new javax.swing.JButton();
+        buttonDelete = new javax.swing.JButton();
         buttonExportCSV = new javax.swing.JButton();
         errorText = new javax.swing.JLabel();
         buttonValue = new javax.swing.JButton();
@@ -357,6 +375,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel2.setText("Row:");
 
+        fieldRow.setFocusCycleRoot(true);
+        fieldRow.setNextFocusableComponent(fieldColumn);
         fieldRow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldRowActionPerformed(evt);
@@ -365,6 +385,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel3.setText("Column:");
 
+        fieldColumn.setFocusCycleRoot(true);
+        fieldColumn.setNextFocusableComponent(fieldRow);
         fieldColumn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldColumnActionPerformed(evt);
@@ -372,6 +394,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
 
         buttonAddValue.setText(">");
+        buttonAddValue.setFocusCycleRoot(true);
+        buttonAddValue.setFocusable(false);
+        buttonAddValue.setNextFocusableComponent(fieldRow);
         buttonAddValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAddValueActionPerformed(evt);
@@ -379,6 +404,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
 
         finishButton.setText("Finish");
+        finishButton.setFocusable(false);
         finishButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 finishButtonActionPerformed(evt);
@@ -390,6 +416,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jScrollPane2.setViewportView(listValues);
 
         buttonRemoveItem.setText("Remove");
+        buttonRemoveItem.setFocusable(false);
         buttonRemoveItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonRemoveItemActionPerformed(evt);
@@ -629,10 +656,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        deleteButtton.setText("Reset");
-        deleteButtton.addActionListener(new java.awt.event.ActionListener() {
+        buttonDelete.setText("Reset");
+        buttonDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButttonActionPerformed(evt);
+                buttonDeleteActionPerformed(evt);
             }
         });
 
@@ -762,7 +789,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(buttonValue, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(buttonValue))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -770,9 +797,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(buttonAdd))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
+                                .addComponent(buttonAdd)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(buttonExportCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(orderDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -783,26 +811,28 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(buttonAverage, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButtton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+                                .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(332, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(buttonValue, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(buttonExportCSV, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(orderDesc, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(orderAsc, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(buttonRemoveTable, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(deleteButtton)
-                        .addComponent(buttonAverage)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(buttonAverage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(buttonRemoveTable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(orderAsc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(buttonValue, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(buttonExportCSV, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(orderDesc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -829,7 +859,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         if (fieldKeyword.getText().length() > 0) {
             getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
         }
-
     }//GEN-LAST:event_buttonAddActionPerformed
 
     /**
@@ -950,6 +979,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         }
                     }
                 }
+                if (this.getSize() != new Dimension(1080, 480)) {
+            this.setSize(1080, 480);
+        }
                 if (isAdd) {
                     actionButtonAdd(fieldKeyword.getText());
                 }
@@ -1109,6 +1141,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private void buttonAddValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddValueActionPerformed
         addValueToList();
+
     }//GEN-LAST:event_buttonAddValueActionPerformed
 
     /**
@@ -1138,6 +1171,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
         fieldRow.setText("");
         fieldColumn.setText("");
+        fieldRow.requestFocusInWindow();
+        fieldRow.requestFocus();
     }
 
     /**
@@ -1251,6 +1286,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         rows.forEach((row) -> {
             model.addRow(row.toArray());
         });
+        tableCoord.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         specialTables.add(tableCoord);
         usedTables.add(tableCoord);
         JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -1348,7 +1384,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonExportCSV.setVisible(false);
         buttonRemoveTable.setVisible(false);
         buttonAverage.setVisible(false);
-        deleteButtton.setVisible(false);
+        buttonDelete.setVisible(false);
         panelGeneric.removeAll();
         tabPaneSCF.removeAll();
         tableGeneric = null;
@@ -1362,7 +1398,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      *
      * @param evt
      */
-    private void deleteButttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButttonActionPerformed
+    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
         errorText.setText("");
         multiTable = false;
         errorText.setForeground(Color.red);
@@ -1383,7 +1419,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonExportCSV.setVisible(false);
         buttonRemoveTable.setVisible(false);
         buttonAverage.setVisible(false);
-        deleteButtton.setVisible(false);
+        buttonDelete.setVisible(false);
         panelGeneric.removeAll();
         tabPaneSCF.removeAll();
         tableGeneric = null;
@@ -1392,7 +1428,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemExport.setEnabled(false);
         itemSCF.setEnabled(false);
         itemChangeTemperature.setEnabled(true);
-    }//GEN-LAST:event_deleteButttonActionPerformed
+    }//GEN-LAST:event_buttonDeleteActionPerformed
 
     /**
      * Method used to export the tables to a CSV file
@@ -1490,6 +1526,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         listValues.removeAll();
         dialogCoordinates.setVisible(true);
         colAndRows.clear();
+        fieldRow.requestFocusInWindow();
+        dialogCoordinates.getRootPane().setDefaultButton(buttonAdd);
+
+
     }//GEN-LAST:event_buttonValueActionPerformed
 
     /**
@@ -1694,6 +1734,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveItemActionPerformed
+
+        listValues.repaint();
+        listValues.revalidate();
         if (!listValues.isSelectionEmpty()) {
             coorValues.remove(listValues.getSelectedIndex());
             colAndRows.remove(listValues.getSelectedIndex());
@@ -1787,6 +1830,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             buttonRemoveTable.setEnabled(true);
             buttonAverage.setEnabled(false);
         }
+        if (!buttonRemoveTable.isEnabled()) {
+            buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
+        } else {
+            buttonRemoveTable.setToolTipText(null);
+
+        }
+
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     /**
@@ -2328,31 +2378,30 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void actionButtonAdd(String fieldText) {
         try {
             errorText.setForeground(Color.red);
-            if (!usedFiles.isEmpty()) {
-                if (!keywordsUsed.contains(fieldText)) {
-                    keywordsUsed.add(fieldText);
-                }
-                if (!searchAdded) {
-                    searchTab();
-                    searchAdded = true;
-                }
+            if (!keywordsUsed.contains(fieldText)) {
+                keywordsUsed.add(fieldText);
+                if (!usedFiles.isEmpty()) {
+                    if (!searchAdded) {
+                        searchTab();
+                        searchAdded = true;
+                    }
 
-                errorText.setText("");
-                JTable table = addRowsToTable(initTablesDifferentiators());
-                if (table.getRowCount() != 0) {
-                    JPanel panel = new JPanel();
-                    if (usedTables.isEmpty()) {
-                        itemSearchValue.setEnabled(true);
-                        itemExport.setEnabled(false);
-                        itemReset.setEnabled(true);
-                        buttonValue.setVisible(true);
-                        buttonExportCSV.setVisible(true);
-                        buttonRemoveTable.setVisible(true);
-                        deleteButtton.setVisible(true);
-                        tabbedPane.setVisible(true);
-                        itemExport.setEnabled(true);
-                        itemSCF.setEnabled(true);
-
+                    errorText.setText("");
+                    JTable table = addRowsToTable(initTablesDifferentiators());
+                    if (table.getRowCount() != 0) {
+                        JPanel panel = new JPanel();
+                        if (usedTables.isEmpty()) {
+                            itemSearchValue.setEnabled(true);
+                            itemExport.setEnabled(false);
+                            itemReset.setEnabled(true);
+                            buttonValue.setVisible(true);
+                            buttonExportCSV.setVisible(true);
+                            buttonRemoveTable.setVisible(true);
+                            buttonDelete.setVisible(true);
+                            tabbedPane.setVisible(true);
+                            itemExport.setEnabled(true);
+                            itemSCF.setEnabled(true);
+                            buttonAverage.setVisible(true);
                     }
                     panel.setLayout(new GridLayout(0, 1));
                     JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -2365,6 +2414,36 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                             column = table.getColumnModel().getColumn(i);
                             column.setMinWidth(300);
                         }
+                        panel.setLayout(new GridLayout(0, 1));
+                        JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                        TableColumn column = null;
+                        for (int i = 0; i < table.getColumnCount(); i++) {
+                            if (i == 0 || i == 1) {
+                                column = table.getColumnModel().getColumn(i);
+                                column.setMinWidth(100);
+                            } else {
+                                column = table.getColumnModel().getColumn(i);
+                                column.setMinWidth(300);
+                            }
+                        }
+                        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                        panel.add(scrollpane);
+                        tabbedPane.addTab(fieldText, panel);
+                        tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+                        genericTable(usedFiles);
+                        SCFTable();
+                        if (usedTables.isEmpty()) {
+                            usedTables.add(tableGeneric);
+                        }
+                        normalTables.add(table);
+                        usedTables.add(table);
+                        revalidate();
+                        //pack();
+                        itemChangeTemperature.setEnabled(false);
+                        itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
+
+                    } else {
+                        errorText.setText("Couldn't find any file with the provided keyword.");
                     }
                     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
                     panel.add(scrollpane);
@@ -2391,6 +2470,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             errorText.setText("Some files were not imported.");
+        }
+        if (this.getSize() != new Dimension(1080, 480)) {
+            this.setSize(1080, 480);
         }
     }
 
@@ -2474,7 +2556,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     public void searchTab() {
-
         jMenuBar1.add(Box.createHorizontalGlue());
         JTextField textField = new JTextField(10);
         textField.setForeground(Color.GRAY);
@@ -2515,6 +2596,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JButton buttonAddValue;
     private javax.swing.JButton buttonAverage;
     private javax.swing.JButton buttonChooseFiles;
+    private javax.swing.JButton buttonDelete;
     private javax.swing.JButton buttonExportCSV;
     private javax.swing.JButton buttonNext;
     private javax.swing.JButton buttonOKTemp;
@@ -2523,7 +2605,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JButton buttonValue;
     private javax.swing.JButton buttonValues;
     private javax.swing.JComboBox<String> comboOptions;
-    private javax.swing.JButton deleteButtton;
     private javax.swing.JDialog dialogAddMoreFiles;
     private javax.swing.JDialog dialogCoordinates;
     private javax.swing.JDialog dialogNombre;

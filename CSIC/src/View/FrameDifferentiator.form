@@ -96,6 +96,12 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldRow">
+          <Properties>
+            <Property name="focusCycleRoot" type="boolean" value="true"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="fieldColumn"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldRowActionPerformed"/>
           </Events>
@@ -106,6 +112,12 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldColumn">
+          <Properties>
+            <Property name="focusCycleRoot" type="boolean" value="true"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="fieldRow"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldColumnActionPerformed"/>
           </Events>
@@ -113,6 +125,11 @@
         <Component class="javax.swing.JButton" name="buttonAddValue">
           <Properties>
             <Property name="text" type="java.lang.String" value="&gt;"/>
+            <Property name="focusCycleRoot" type="boolean" value="true"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="fieldRow"/>
+            </Property>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAddValueActionPerformed"/>
@@ -121,6 +138,7 @@
         <Component class="javax.swing.JButton" name="finishButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Finish"/>
+            <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="finishButtonActionPerformed"/>
@@ -155,6 +173,7 @@
         <Component class="javax.swing.JButton" name="buttonRemoveItem">
           <Properties>
             <Property name="text" type="java.lang.String" value="Remove"/>
+            <Property name="focusable" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonRemoveItemActionPerformed"/>
@@ -483,7 +502,7 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jLabel1" max="32767" attributes="0"/>
-                          <Component id="buttonValue" min="-2" pref="117" max="-2" attributes="0"/>
+                          <Component id="buttonValue" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
@@ -494,8 +513,8 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="buttonAdd" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="buttonExportCSV" min="-2" pref="117" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="orderDesc" min="-2" pref="117" max="-2" attributes="0"/>
@@ -506,7 +525,8 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="buttonAverage" min="-2" pref="125" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="deleteButtton" min="-2" pref="117" max="-2" attributes="0"/>
+                              <Component id="buttonDelete" min="-2" pref="117" max="-2" attributes="0"/>
+                              <EmptySpace pref="332" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -522,18 +542,18 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="buttonValue" alignment="1" max="-2" attributes="0"/>
-                  <Component id="buttonExportCSV" alignment="1" max="-2" attributes="0"/>
-                  <Component id="orderDesc" alignment="1" max="-2" attributes="0"/>
-                  <Component id="orderAsc" alignment="1" max="-2" attributes="0"/>
-                  <Component id="buttonRemoveTable" alignment="1" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="deleteButtton" alignment="3" max="-2" attributes="0"/>
-                      <Component id="buttonAverage" alignment="3" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="buttonDelete" pref="0" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="buttonAverage" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="buttonRemoveTable" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="orderAsc" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="buttonValue" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="buttonExportCSV" alignment="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="orderDesc" alignment="0" min="-2" pref="17" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="comboOptions" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -594,12 +614,12 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
     </Container>
-    <Component class="javax.swing.JButton" name="deleteButtton">
+    <Component class="javax.swing.JButton" name="buttonDelete">
       <Properties>
         <Property name="text" type="java.lang.String" value="Reset"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteButttonActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonDeleteActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="buttonExportCSV">
