@@ -39,4 +39,10 @@ public class AtomTable {
     public void setValue(double value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "AtomTable{" + "column=" + column + ", row=" + row + ", value=" + value + '}';
+    }
+    
 }
