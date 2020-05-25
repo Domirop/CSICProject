@@ -81,14 +81,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<JTable> usedTables = new ArrayList<>();
     private List<String> keywordsUsed = new ArrayList<>();
     private List<List<Object>> rows = new ArrayList<>();
-    private List<String> coorValues = new ArrayList<>();
+    public List<String> coorValues = new ArrayList<>();
     private ControllerInt controller;
     private boolean searchAdded = false;
 
-
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     private String temperature = "298.15";
-    List<String> colAndRows = new ArrayList<>();
+    public List<String> colAndRows = new ArrayList<>();
     JTable tableGeneric;
 
     public FrameDifferentiator(ControllerInt controller) {
@@ -110,6 +109,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         buttonRemoveItem.setFocusable(false);
         buttonAverage.setFocusable(false);
         finishButton.setFocusable(false);
+        //listValues.setFocusable(false);
         this.controller = controller;
         panelGeneric.setLayout(new GridLayout(0, 1));
         tabbedPane.addTab("Average", panelGeneric);
@@ -357,6 +357,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel2.setText("Row:");
 
+        fieldRow.setFocusCycleRoot(true);
+        fieldRow.setNextFocusableComponent(fieldColumn);
         fieldRow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldRowActionPerformed(evt);
@@ -365,6 +367,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel3.setText("Column:");
 
+        fieldColumn.setFocusCycleRoot(true);
+        fieldColumn.setNextFocusableComponent(fieldRow);
         fieldColumn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldColumnActionPerformed(evt);
@@ -372,6 +376,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
 
         buttonAddValue.setText(">");
+        buttonAddValue.setFocusCycleRoot(true);
+        buttonAddValue.setFocusable(false);
+        buttonAddValue.setNextFocusableComponent(fieldRow);
         buttonAddValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAddValueActionPerformed(evt);
@@ -379,6 +386,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
 
         finishButton.setText("Finish");
+        finishButton.setFocusable(false);
         finishButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 finishButtonActionPerformed(evt);
@@ -390,6 +398,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jScrollPane2.setViewportView(listValues);
 
         buttonRemoveItem.setText("Remove");
+        buttonRemoveItem.setFocusable(false);
         buttonRemoveItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonRemoveItemActionPerformed(evt);
@@ -762,7 +771,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(buttonValue, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                            .addComponent(buttonValue))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -773,19 +782,19 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addComponent(buttonAdd)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addComponent(buttonExportCSV, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(orderDesc, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addComponent(buttonExportCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(orderAsc, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addComponent(orderDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonRemoveTable, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addComponent(orderAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonAverage, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                                .addComponent(buttonRemoveTable, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButtton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                                .addGap(332, 332, 332))))
+                                .addComponent(buttonAverage, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deleteButtton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(332, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -796,14 +805,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonExportCSV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(orderDesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(orderAsc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonRemoveTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(deleteButtton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buttonAverage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonValue, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(buttonExportCSV, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(orderDesc, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(orderAsc, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(buttonRemoveTable, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(deleteButtton)
+                        .addComponent(buttonAverage)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -1112,6 +1122,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private void buttonAddValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddValueActionPerformed
         addValueToList();
+
     }//GEN-LAST:event_buttonAddValueActionPerformed
 
     /**
@@ -1141,6 +1152,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         }
         fieldRow.setText("");
         fieldColumn.setText("");
+        fieldRow.requestFocusInWindow();
+        fieldRow.requestFocus();
     }
 
     /**
@@ -1254,6 +1267,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         rows.forEach((row) -> {
             model.addRow(row.toArray());
         });
+        tableCoord.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         specialTables.add(tableCoord);
         usedTables.add(tableCoord);
         JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -1461,6 +1475,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         listValues.removeAll();
         dialogCoordinates.setVisible(true);
         colAndRows.clear();
+        fieldRow.requestFocusInWindow();
+        dialogCoordinates.getRootPane().setDefaultButton(buttonAdd);
+
+
     }//GEN-LAST:event_buttonValueActionPerformed
 
     /**
@@ -1665,6 +1683,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveItemActionPerformed
+
+        listValues.repaint();
+        listValues.revalidate();
         if (!listValues.isSelectionEmpty()) {
             coorValues.remove(listValues.getSelectedIndex());
             colAndRows.remove(listValues.getSelectedIndex());
@@ -1887,8 +1908,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             List<Object> localRows = new ArrayList<>();
             if (i == firstIndex || i == secondIndex || i == thirdIndex) {
                 if (i == firstIndex) {
-                    localRows.add(myTable.getValueAt(firstIndex, 0).toString() + "-" +
-                            myTable.getValueAt(secondIndex, 0).toString() + "-"
+                    localRows.add(myTable.getValueAt(firstIndex, 0).toString() + "-"
+                            + myTable.getValueAt(secondIndex, 0).toString() + "-"
                             + myTable.getValueAt(thirdIndex, 0).toString());
                     localRows.add(myTable.getValueAt(i, 1).toString());
                 }
@@ -1961,7 +1982,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableGeneric.getTableHeader().getDefaultRenderer();
         renderer.setHorizontalAlignment(0);
         averageTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-        
+
         JScrollPane scrollpane = new JScrollPane(averageTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         panel.add(scrollpane);
         panel.revalidate();
@@ -2246,7 +2267,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void actionButtonAdd(String fieldText) {
         try {
             errorText.setForeground(Color.red);
-          
+
             if (!keywordsUsed.contains(fieldText)) {
                 keywordsUsed.add(fieldText);
                 if (!usedFiles.isEmpty()) {
@@ -2411,17 +2432,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
 
         });
-        
+
         textField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                try{
-                for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-                    if (tabbedPane.getTitleAt(i).equals(textField.getText())) {
-                        tabbedPane.setSelectedIndex(i);
+                try {
+                    for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+                        if (tabbedPane.getTitleAt(i).equals(textField.getText())) {
+                            tabbedPane.setSelectedIndex(i);
+                        }
                     }
-                }
-                }catch(Exception e){
-                    
+                } catch (Exception e) {
+
                 }
             }
         });
