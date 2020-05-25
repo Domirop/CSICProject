@@ -1112,7 +1112,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                             }
                         }
                         actionButtonAdd(charact);
-
                     }
                 }
                 break;
@@ -1908,7 +1907,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 break;
             case "Range starts with":
                 fieldKeyword.setToolTipText("Two values separate by \"-\". I.e: 01-09");
-
                 break;
 
             default:
@@ -2293,7 +2291,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void actionButtonAdd(String fieldText) {
         try {
             errorText.setForeground(Color.red);
-
             if (!keywordsUsed.contains(fieldText)) {
                 keywordsUsed.add(fieldText);
                 if (!usedFiles.isEmpty()) {
@@ -2318,7 +2315,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                             itemExport.setEnabled(true);
                             itemSCF.setEnabled(true);
                             buttonAverage.setVisible(true);
-
+                    }
+                    panel.setLayout(new GridLayout(0, 1));
+                    JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                    TableColumn column = null;
+                    for (int i = 0; i < table.getColumnCount(); i++) {
+                        if (i == 0 || i == 1) {
+                            column = table.getColumnModel().getColumn(i);
+                            column.setMinWidth(100);
+                        } else {
+                            column = table.getColumnModel().getColumn(i);
+                            column.setMinWidth(300);
                         }
                         panel.setLayout(new GridLayout(0, 1));
                         JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -2351,10 +2358,28 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     } else {
                         errorText.setText("Couldn't find any file with the provided keyword.");
                     }
+                    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                    panel.add(scrollpane);
+                    tabbedPane.addTab(fieldText, panel);
+                    tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+                    genericTable(usedFiles);
+                    SCFTable();
+                    if (usedTables.isEmpty()) {
+                        usedTables.add(tableGeneric);
+                    }
+                    normalTables.add(table);
+                    usedTables.add(table);
+                    revalidate();
+                    pack();
+                    itemChangeTemperature.setEnabled(false);
+                    itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
+
                 } else {
-                    errorText.setText("Some files were not imported.");
-                    keywordsUsed.remove(fieldKeyword.getText());
+                    errorText.setText("Couldn't find any file with the provided keyword.");
                 }
+
+            } else {
+                errorText.setText("Some files were not imported.");
             }
         } catch (Exception e) {
             errorText.setText("Some files were not imported.");
@@ -2406,6 +2431,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 Class<?> returnValue;
                 if ((column >= 0) && (column < getColumnCount())) {
                     returnValue = getValueAt(0, column).getClass();
+
                 } else {
                     returnValue = Object.class;
                 }
