@@ -45,4 +45,10 @@ public class Atom {
     public void setIsotropic(double isotropic) {
         this.isotropic = isotropic;
     }
+
+    @Override
+    public String toString() {
+        return "Atom{" + "atom=" + atom + ", gaussianData=" + gaussianData + ", isotropic=" + isotropic + '}';
+    }
+    
 }

@@ -54,6 +54,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.JFileChooser;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -97,6 +98,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         ListTransferHandler lh = new ListTransferHandler(this);
         listValues.setModel(new DefaultListModel());
         listValues.setDragEnabled(true);
@@ -106,6 +108,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         comboOptions.setFocusable(false);
         buttonAddValue.setFocusable(false);
         buttonRemoveItem.setFocusable(false);
+        buttonAverage.setFocusable(false);
         finishButton.setFocusable(false);
         this.controller = controller;
         panelGeneric.setLayout(new GridLayout(0, 1));
@@ -119,6 +122,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemChangeTemperature.setEnabled(true);
         buttonExportCSV.setVisible(false);
         buttonRemoveTable.setVisible(false);
+        buttonAverage.setVisible(false);
         deleteButtton.setVisible(false);
         this.files = files;
         itemSearchValue.setEnabled(false);
@@ -337,6 +341,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         orderAsc = new javax.swing.JButton();
         orderDesc = new javax.swing.JButton();
         buttonRemoveTable = new javax.swing.JButton();
+        buttonAverage = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         itemSearchValue = new javax.swing.JMenuItem();
@@ -663,10 +668,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        buttonRemoveTable.setText("Delete");
+        buttonRemoveTable.setText("Delete table");
         buttonRemoveTable.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonRemoveTableActionPerformed(evt);
+            }
+        });
+
+        buttonAverage.setText("Average values");
+        buttonAverage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAverageActionPerformed(evt);
             }
         });
 
@@ -747,60 +759,62 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tabbedPane)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(buttonValue, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(buttonAdd)
-                                .addGap(0, 89, Short.MAX_VALUE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(100, 100, 100)))
-                        .addGap(120, 120, 120)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(buttonValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(orderDesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(buttonExportCSV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(orderAsc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(buttonRemoveTable, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                            .addComponent(deleteButtton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(6, 6, 6))
+                                .addGap(4, 4, 4)
+                                .addComponent(buttonExportCSV, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(orderDesc, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(orderAsc, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonRemoveTable, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonAverage, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deleteButtton, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                .addGap(332, 332, 332))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(buttonAdd))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(buttonValue)
-                        .addComponent(buttonExportCSV)
-                        .addComponent(deleteButtton)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(buttonValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonExportCSV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(orderDesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(orderAsc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonRemoveTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(deleteButtton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buttonAverage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(orderDesc)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(buttonRemoveTable)
-                            .addComponent(orderAsc))))
-                .addGap(12, 12, 12)
-                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonAdd))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -815,15 +829,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         names.clear();
         usedFiles.clear();
         if (fieldKeyword.getText().length() > 0) {
-            getUsedFiles(fieldKeyword.getText());
+            getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
         }
 
     }//GEN-LAST:event_buttonAddActionPerformed
 
     /**
-     * Creates a table with every single keyword.
+     * Creates a myTable with every single keyword.
      *
-     * @return the table.
+     * @return the myTable.
      */
     private JTable initTablesDifferentiators() {
         JTable table = new JTable();
@@ -876,10 +890,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     /**
-     * Method used to add rows to the table.
+     * Method used to add rows to the myTable.
      *
-     * @param table the table that we want to add rows to.
-     * @return table with rows added.
+     * @param table the myTable that we want to add rows to.
+     * @return myTable with rows added.
      */
     private JTable addRowsToTable(JTable table) {
         JTable tableWithElements = table;
@@ -926,9 +940,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     /**
      * Add the used files to a List.F
      */
-    private void getUsedFiles(String value) {
-        //String.valueOf(comboOptions.getSelectedItem())
-        switch (String.valueOf(comboOptions.getSelectedItem())) {
+    private void getUsedFiles(String value, String caseValue, boolean isAdd) {
+        switch (caseValue) {
             case "Starts with":
                 for (int i = 0; i < files.size(); i++) {
                     String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
@@ -939,7 +952,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         }
                     }
                 }
-                actionButtonAdd(fieldKeyword.getText());
+                if (isAdd) {
+                    actionButtonAdd(fieldKeyword.getText());
+                }
                 break;
             case "Ends with":
                 for (int i = 0; i < files.size(); i++) {
@@ -949,7 +964,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         names.add(filename);
                     }
                 }
-                actionButtonAdd(fieldKeyword.getText());
+                if (isAdd) {
+                    actionButtonAdd(fieldKeyword.getText());
+                }
                 break;
             case "Contains":
                 for (int i = 0; i < files.size(); i++) {
@@ -976,6 +993,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         values[1].replace("0", "");
                         sFileCero = true;
                     }
+
                     for (int j = Integer.valueOf(values[0]); j <= Integer.valueOf(values[1]); j++) {
                         usedFiles.clear();
                         names.clear();
@@ -1009,7 +1027,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                             }
                         }
                         actionButtonAdd(charact);
-
                     }
                 }
                 break;
@@ -1084,7 +1101,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         names.clear();
         usedFiles.clear();
         if (fieldKeyword.getText().length() > 0) {
-            getUsedFiles(fieldKeyword.getText());
+            getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
         }
     }//GEN-LAST:event_fieldKeywordActionPerformed
 
@@ -1142,7 +1159,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_finishButtonActionPerformed
 
     /**
-     * Gets the name of the table and creates it with all the data from the
+     * Gets the name of the myTable and creates it with all the data from the
      * coordinates.
      *
      * @param evt
@@ -1203,7 +1220,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         for (int i = 2; i < tableCoord.getColumnCount(); i++) {
             usedFiles.clear();
-            getUsedFiles(tableCoord.getColumnName(i));
+            getUsedFiles(tableCoord.getColumnName(i), "Starts with", false);
             Molecule mole = new Molecule();
             try {
                 mole = controller.getTableMolecule(usedFiles, colAndRows, tableCoord.getColumnName(i), Double.parseDouble(temperature));
@@ -1214,7 +1231,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 return;
             }
             molList.add(mole);
-
         }
 
         List<List<String>> rows = new ArrayList<>();
@@ -1249,7 +1265,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonValuesActionPerformed
 
     /**
-     * Button to search table values
+     * Button to search myTable values
      *
      * @param evt
      */
@@ -1333,6 +1349,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         orderAsc.setVisible(false);
         buttonExportCSV.setVisible(false);
         buttonRemoveTable.setVisible(false);
+        buttonAverage.setVisible(false);
         deleteButtton.setVisible(false);
         panelGeneric.removeAll();
         tabPaneSCF.removeAll();
@@ -1366,6 +1383,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         orderAsc.setVisible(false);
         buttonExportCSV.setVisible(false);
         buttonRemoveTable.setVisible(false);
+        buttonAverage.setVisible(false);
         deleteButtton.setVisible(false);
         panelGeneric.removeAll();
         tabPaneSCF.removeAll();
@@ -1598,7 +1616,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     /**
      * Method used to check wether a value has a pair or not
      *
-     * @param specialTable table that is going to be ordered
+     * @param specialTable myTable that is going to be ordered
      * @param element1 values used as keywords
      * @param element2 values used as keywords
      */
@@ -1677,7 +1695,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_fieldRowActionPerformed
 
     /**
-     * This button remove tab and table of the screen.
+     * This button remove tab and myTable of the screen.
      *
      * @param evt Event when you press the button.
      */
@@ -1726,7 +1744,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonRemoveTableActionPerformed
 
     /**
-     * This method block the delete table button when the user is in the first
+     * This method block the delete myTable button when the user is in the first
      * tab.
      *
      * @param evt Event when the user change the tab.
@@ -1734,8 +1752,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
         if (tabbedPane.getSelectedIndex() == 0) {
             buttonRemoveTable.setEnabled(false);
+            buttonAverage.setEnabled(true);
+            buttonAverage.setVisible(true);
         } else {
             buttonRemoveTable.setEnabled(true);
+            buttonAverage.setEnabled(false);
         }
     }//GEN-LAST:event_tabbedPaneStateChanged
 
@@ -1856,6 +1877,107 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     }//GEN-LAST:event_itemSCFActionPerformed
 
+    private void buttonAverageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAverageActionPerformed
+        JTable myTable = getSelectedTable();
+        List<List<Object>> values = new ArrayList<>();
+        int firstIndex = myTable.getSelectedRows()[0];
+        int secondIndex = myTable.getSelectedRows()[1];
+        int thirdIndex = myTable.getSelectedRows()[2];
+        for (int i = 0; i < myTable.getRowCount(); i++) {
+            List<Object> localRows = new ArrayList<>();
+            if (i == firstIndex || i == secondIndex || i == thirdIndex) {
+                if (i == firstIndex) {
+                    localRows.add(myTable.getValueAt(firstIndex, 0).toString() + "-" +
+                            myTable.getValueAt(secondIndex, 0).toString() + "-"
+                            + myTable.getValueAt(thirdIndex, 0).toString());
+                    localRows.add(myTable.getValueAt(i, 1).toString());
+                }
+            } else {
+                localRows.add(myTable.getValueAt(i, 0).toString());
+                localRows.add(myTable.getValueAt(i, 1).toString());
+            }
+            for (int j = 2; j < myTable.getColumnCount(); j++) {
+                if (i == firstIndex || i == secondIndex || i == thirdIndex) {
+                    if (i == firstIndex) {
+                        Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, j).toString())
+                                + Double.parseDouble(myTable.getValueAt(secondIndex, j).toString())
+                                + Double.parseDouble(myTable.getValueAt(thirdIndex, j).toString())) / 3;
+                        localRows.add(averageValue);
+                    }
+                } else {
+                    localRows.add(myTable.getValueAt(i, j).toString());
+                }
+            }
+            values.add(localRows);
+        }
+
+        String[] headerValues = new String[myTable.getColumnCount()];
+        for (int i = 0; i < myTable.getColumnCount(); i++) {
+            headerValues[i] = myTable.getColumnName(i);
+        }
+
+        JPanel panel = (JPanel) tabbedPane.getComponentAt(0);
+        JTable averageTable = new JTable();
+        boolean[] canEditTry = new boolean[headerValues.length];
+        for (int i = 0; i < canEditTry.length; i++) {
+            canEditTry[i] = false;
+        }
+
+        DefaultTableModel modelAverage = new DefaultTableModel(headerValues, 0) {
+            boolean[] canEdit = canEditTry;
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+
+            @Override
+            public Class<?> getColumnClass(int column) {
+                Class<?> returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+
+                } else {
+                    returnValue = Object.class;
+                }
+
+                return returnValue;
+
+            }
+        ;
+        };
+        averageTable.setAutoCreateRowSorter(true);
+        for (List<Object> value : values) {
+            Object[] datas = value.toArray();
+            modelAverage.addRow(datas);
+        }
+        averageTable.setModel(modelAverage);
+        averageTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        //Center columns
+        for (int i = 0; i < averageTable.getColumnCount(); i++) {
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            averageTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableGeneric.getTableHeader().getDefaultRenderer();
+        renderer.setHorizontalAlignment(0);
+        averageTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        
+        JScrollPane scrollpane = new JScrollPane(averageTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        panel.add(scrollpane);
+        panel.revalidate();
+        panel.repaint();
+        TableColumn column = null;
+        for (int i = 0; i < averageTable.getColumnCount(); i++) {
+            if (i == 0 || i == 1) {
+                column = averageTable.getColumnModel().getColumn(i);
+                column.setMinWidth(100);
+            } else {
+                column = averageTable.getColumnModel().getColumn(i);
+                column.setMinWidth(300);
+            }
+        }
+    }//GEN-LAST:event_buttonAverageActionPerformed
+
     private void SCFTable() {
         tabPaneSCF.add(fieldKeyword.getText(), initSCFTable());
     }
@@ -1947,7 +2069,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     /**
      *
-     * @return selected table
+     * @return selected myTable
      */
     private JTable getSelectedTable() {
         JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
@@ -1989,7 +2111,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     /**
-     * Creates the "Average" table with all the info from the other tables.
+     * Creates the "Average" myTable with all the info from the other tables.
      *
      * @param usedFiles
      */
@@ -2030,7 +2152,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     /**
-     * Initializes the Average table.
+     * Initializes the Average myTable.
      *
      * @param values are the "keywords" used.
      */
@@ -2078,7 +2200,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     /**
-     * Add all the elements to the Average table.
+     * Add all the elements to the Average myTable.
      *
      * @param molecule contains all the necessary info about the molecules.
      */
@@ -2124,10 +2246,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void actionButtonAdd(String fieldText) {
         try {
             errorText.setForeground(Color.red);
-
+          
             if (!keywordsUsed.contains(fieldText)) {
                 keywordsUsed.add(fieldText);
-
                 if (!usedFiles.isEmpty()) {
                     if (!searchAdded) {
                         searchTab();
@@ -2310,6 +2431,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonAddValue;
+    private javax.swing.JButton buttonAverage;
     private javax.swing.JButton buttonChooseFiles;
     private javax.swing.JButton buttonExportCSV;
     private javax.swing.JButton buttonNext;
