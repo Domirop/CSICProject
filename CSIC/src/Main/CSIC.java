@@ -9,6 +9,8 @@ import Controller.ControllerInt;
 import Model.Model;
 import Model.ModelInt;
 import View.ChooseFilesFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class CSIC {
 
@@ -17,6 +19,10 @@ public class CSIC {
      * @author domit
      */
     public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+        }
         ModelInt model = new Model();
         ControllerInt controller = new Controller(model);
         ChooseFilesFrame frame = new ChooseFilesFrame(controller);

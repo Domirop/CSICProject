@@ -33,14 +33,12 @@ class ListTransferHandler extends TransferHandler {
      */
     public boolean importData(TransferHandler.TransferSupport info) {
         String data = null;
-        // If we can't handle the import, bail now.
         if (!canImport(info)) {
             return false;
         }
         JList list = (JList) info.getComponent();
         ListModel listModel = list.getModel();
         DefaultListModel model = (DefaultListModel) listModel;
-        // Fetch the data -- bail if this fails
         String[] allData = new String[]{};
         try {
             data = (String) info.getTransferable().getTransferData(
@@ -60,7 +58,7 @@ class ListTransferHandler extends TransferHandler {
                 int column = Integer.parseInt(values[1]);
                 if (row <= fr.tableGeneric.getRowCount() || column <= fr.tableGeneric.getRowCount()) {
                     if (row >= column) {
-                        if (info.isDrop()) { // This is a drop
+                        if (info.isDrop()) {
                             JList.DropLocation dl = (JList.DropLocation) info.getDropLocation();
                             int index = i;
                             if (dl.isInsert()) {
@@ -68,13 +66,10 @@ class ListTransferHandler extends TransferHandler {
                             } else {
                                 model.set(index, allData[i]);
                             }
-                        } else { // This is a paste
+                        } else {
                             int index = list.getSelectedIndex();
-                            // if there is a valid selection,
-                            // insert data after the selection
                             if (index >= 0) {
                                 model.add(list.getSelectedIndex() + 1, allData[i]);
-                                // else append to the end of the list
                             } else {
                                 model.addElement(allData[i]);
                             }

@@ -83,6 +83,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private List<List<Object>> rows = new ArrayList<>();
     private List<String> coorValues = new ArrayList<>();
     private ControllerInt controller;
+    private boolean multiTable = false;
     private boolean searchAdded = false;
 
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
@@ -763,15 +764,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(buttonValue, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(buttonAdd)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(buttonAdd))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(4, 4, 4)
                                 .addComponent(buttonExportCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -783,13 +783,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(buttonAverage, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(deleteButtton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(332, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addContainerGap())))
+                                .addComponent(deleteButtton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1226,7 +1224,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             } catch (Exception e) {
                 dialogNombre.dispose();
                 errorText.setVisible(true);
-                errorText.setText(e.getMessage());
+                errorText.setText("Some files were not imported or format file isn't correct.");
                 return;
             }
             molList.add(mole);
@@ -1330,6 +1328,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
         itemChangeTemperature.setEnabled(true);
+        multiTable = false;
         errorText.setText("");
         errorText.setForeground(Color.red);
         tabbedPane.removeAll();
@@ -1365,6 +1364,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private void deleteButttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButttonActionPerformed
         errorText.setText("");
+        multiTable = false;
         errorText.setForeground(Color.red);
         tabbedPane.removeAll();
         fieldKeyword.setText("");
@@ -1400,7 +1400,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
-        List<String> tableNames = new ArrayList<>();
         keywordsUsed.add("Average");
         errorText.setForeground(Color.red);
         String folder = "";
@@ -1414,41 +1413,72 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
             folder = file.getAbsolutePath();
         }
-        for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-            tableNames.add(tabbedPane.getTitleAt(i));
-
-        }
-
         if (usedTables.size() > 0) {
-            for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+            for (int i = 0; i < tabbedPane.getTabCount() + 1; i++) {
                 List<String[]> datas = new ArrayList<>();
-                JPanel myPanel = (JPanel) (tabbedPane.getComponentAt(i));
-                JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-                JViewport viewport = scrollPane.getViewport();
-                JTable myTable = (JTable) viewport.getView();
-                DefaultTableModel model = (DefaultTableModel) myTable.getModel();
-                String[] columnNames = new String[model.getColumnCount()];
-                for (int j = 0; j < model.getColumnCount(); j++) {
-                    columnNames[j] = model.getColumnName(j);
-                }
-                datas.add(columnNames);
-                for (int k = 0; k < model.getRowCount(); k++) {
-                    String[] data = new String[model.getColumnCount()];
-                    for (int j = 0; j < model.getColumnCount(); j++) {
-                        if (model.getValueAt(k, j) != null && model.getValueAt(k, j).toString().trim().length() != 0) {
-                            data[j] = String.valueOf(model.getValueAt(k, j));
-                        }
+                if (i == 0) {
+                    if (multiTable == true) {
+                        datas = exportTable(null, i, 0, tabbedPane);
+                        datas.add(new String[0]);
+                        datas.add(new String[0]);
+                        datas.addAll(exportTable(null, i, 1, tabbedPane));
+                        exportCSVFunction(datas, folder, "Average");
+                    } else {
+                        datas = exportTable(null, i, 0, tabbedPane);
+                        exportCSVFunction(datas, folder, "Average");
                     }
-                    datas.add(data);
-                }
-
-                if (this.controller.writeCSV(datas, folder, tableNames.get(i))) {
-                    errorText.setForeground(Color.green);
-                    errorText.setText("All files have been created.");
+                } else if (i == tabbedPane.getTabCount()) {
+                    JTabbedPane panes = (JTabbedPane) dialogSCF.getContentPane().getComponent(0);
+                    for (int j = 0; j < panes.getTabCount(); j++) {
+                        JPanel myPanel = (JPanel) panes.getComponentAt(j);
+                        JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+                        JViewport viewport = scrollPane.getViewport();
+                        JTable myTable = (JTable) viewport.getView();
+                        datas.addAll(exportTable(myTable, j, 0, panes));
+                    }
+                    exportCSVFunction(datas, folder, "SCF_and_CONTRIBUTION");
+                } else {
+                    datas = exportTable(null, i, 0, tabbedPane);
+                    exportCSVFunction(datas, folder, tabbedPane.getTitleAt(i));
                 }
             }
         }
     }//GEN-LAST:event_buttonExportCSVActionPerformed
+
+    private void exportCSVFunction(List<String[]> datas, String folder, String nameFile) {
+        if (this.controller.writeCSV(datas, folder, nameFile)) {
+            errorText.setForeground(Color.green);
+            errorText.setText("All files have been created.");
+        } else {
+            errorText.setForeground(Color.RED);
+            errorText.setText("Error has ocurred in table " + nameFile);
+        }
+    }
+
+    private List<String[]> exportTable(JTable myTable, int indexTab, int indexComponent, JTabbedPane pane) {
+        List<String[]> datas = new ArrayList<>();
+        if (myTable == null) {
+            JPanel myPanel = (JPanel) (pane.getComponentAt(indexTab));
+            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(indexComponent);
+            JViewport viewport = scrollPane.getViewport();
+            myTable = (JTable) viewport.getView();
+        }
+        String[] columnNames = new String[myTable.getColumnCount()];
+        for (int j = 0; j < myTable.getColumnCount(); j++) {
+            columnNames[j] = myTable.getColumnName(j);
+        }
+        datas.add(columnNames);
+        for (int k = 0; k < myTable.getRowCount(); k++) {
+            String[] data = new String[myTable.getColumnCount()];
+            for (int j = 0; j < myTable.getColumnCount(); j++) {
+                if (myTable.getValueAt(k, j) != null && myTable.getValueAt(k, j).toString().trim().length() != 0) {
+                    data[j] = String.valueOf(myTable.getValueAt(k, j));
+                }
+            }
+            datas.add(data);
+        }
+        return datas;
+    }
 
     /**
      * Shows the dialog that gets the column and rows.
@@ -1876,7 +1906,30 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_itemSCFActionPerformed
 
     private void buttonAverageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAverageActionPerformed
-        JTable myTable = getSelectedTable();
+        JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
+        if (myPanel.getComponentCount() == 1) {
+            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+            JViewport viewport = scrollPane.getViewport();
+            JTable myTable = (JTable) viewport.getView();
+            if (myTable.getSelectedRowCount() == 3) {
+                averageTableNotExist(myTable);
+
+            } else {
+                errorText.setText("Sorry, but you need check 3 rows");
+            }
+        } else {
+            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(1);
+            JViewport viewport = scrollPane.getViewport();
+            JTable myTable = (JTable) viewport.getView();
+            if (myTable.getSelectedRowCount() == 3) {
+                averageTableExist(myTable);
+            } else {
+                errorText.setText("Sorry, but you need check 3 rows in second table.");
+            }
+        }
+    }//GEN-LAST:event_buttonAverageActionPerformed
+
+    private void averageTableNotExist(JTable myTable) {
         List<List<Object>> values = new ArrayList<>();
         int firstIndex = myTable.getSelectedRows()[0];
         int secondIndex = myTable.getSelectedRows()[1];
@@ -1906,7 +1959,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     localRows.add(myTable.getValueAt(i, j).toString());
                 }
             }
-            values.add(localRows);
+            if (i == firstIndex || i == secondIndex || i == thirdIndex) {
+                if (i == firstIndex) {
+                    values.add(localRows);
+                }
+            } else {
+                values.add(localRows);
+            }
+
         }
 
         String[] headerValues = new String[myTable.getColumnCount()];
@@ -1974,10 +2034,34 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 column.setMinWidth(300);
             }
         }
-    }//GEN-LAST:event_buttonAverageActionPerformed
+        multiTable = true;
+    }
 
-    private void SCFTable() {
-        tabPaneSCF.add(fieldKeyword.getText(), initSCFTable());
+    private void averageTableExist(JTable myTable) {
+        int firstIndex = myTable.getSelectedRows()[0];
+        int secondIndex = myTable.getSelectedRows()[1];
+        int thirdIndex = myTable.getSelectedRows()[2];
+        System.out.println(firstIndex);
+
+        System.out.println(firstIndex);
+        String gaussians = myTable.getValueAt(firstIndex, 0).toString() + "-"
+                + myTable.getValueAt(secondIndex, 0).toString() + "-"
+                + myTable.getValueAt(thirdIndex, 0).toString();
+        myTable.setValueAt(gaussians, firstIndex, 0);
+        for (int i = 2; i < myTable.getColumnCount(); i++) {
+            Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, i).toString())
+                    + Double.parseDouble(myTable.getValueAt(secondIndex, i).toString())
+                    + Double.parseDouble(myTable.getValueAt(thirdIndex, i).toString())) / 3;
+            myTable.setValueAt(averageValue, firstIndex, i);
+        }
+        DefaultTableModel df = (DefaultTableModel) myTable.getModel();
+        df.removeRow(thirdIndex);
+        df.removeRow(secondIndex);
+        multiTable = true;
+    }
+
+    private void SCFTable(String keyword) {
+        tabPaneSCF.add(keyword, initSCFTable());
     }
 
     private JPanel initSCFTable() {
@@ -2287,7 +2371,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     tabbedPane.addTab(fieldText, panel);
                     tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
                     genericTable(usedFiles);
-                    SCFTable();
+                    SCFTable(fieldText);
                     if (usedTables.isEmpty()) {
                         usedTables.add(tableGeneric);
                     }
