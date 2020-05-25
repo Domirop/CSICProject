@@ -964,6 +964,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         values[0].replace("0", "");
                         fFileCero = true;
                     }
+                    
                     if (values[1].startsWith("0")) {
                         values[1].replace("0", "");
                         sFileCero = true;
@@ -972,22 +973,28 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         usedFiles.clear();
                         names.clear();
                         String charact = "";
-                        if (fFileCero == true || j < 10) {
+                        if (fFileCero == true && j < 10) {
                             charact = "0" + String.valueOf(j);
                         } else {
                             charact = String.valueOf(j);
                         }
 
-                        if (sFileCero == true || j < 10) {
+                        if (sFileCero == true && j < 10) {
                             charact = "0" + String.valueOf(j);
                         } else {
                             charact = String.valueOf(j);
                         }
+                        String separador = "";
                         for (int i = 0; i < files.size(); i++) {
                             String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                            System.out.println(charact);
-
-                            if (filename.startsWith(charact)) {
+                            searchSeparator:
+                            for (char c : filename.toCharArray()) {
+                                if(!Character.isDigit(c)){
+                                    separador = String.valueOf(c);
+                                    break searchSeparator;
+                                }
+                            }
+                            if (filename.split(separador)[0].equals(charact)) {
                                 usedFiles.add(filesData.get(i));
                                 if (!names.contains(filename)) {
                                     names.add(filename);
