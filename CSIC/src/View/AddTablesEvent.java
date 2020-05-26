@@ -224,12 +224,12 @@ public class AddTablesEvent {
     /**
      * This method add element to the JList of the dialogCoordinates.
      */
-    public void addValueToList() {
+    public void addValueToList(int rowCount) {
         String regex = "\\d+";
         if (fd.fieldRow.getText().matches(regex) && fd.fieldColumn.getText().matches(regex)) {
             int row = Integer.parseInt(fd.fieldRow.getText());
             int column = Integer.parseInt(fd.fieldColumn.getText());
-            if (row <= fd.tableGeneric.getRowCount() || column <= fd.tableGeneric.getRowCount()) {
+            if (row <= rowCount && column <= rowCount) {
                 if (row >= column) {
                     fd.coorValues.add(row + "," + column);
                     fd.colAndRows.add(row + "," + column);

@@ -650,7 +650,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonAddValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddValueActionPerformed
-        ate.addValueToList();
+        ate.addValueToList(this.tableGeneric.getRowCount());
     }//GEN-LAST:event_buttonAddValueActionPerformed
 
     /**
@@ -807,7 +807,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt event when you press enter.
      */
     private void fieldColumnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldColumnActionPerformed
-        ate.addValueToList();
+        ate.addValueToList(this.tableGeneric.getRowCount());
     }//GEN-LAST:event_fieldColumnActionPerformed
 
     /**
@@ -816,7 +816,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt event when you press enter.
      */
     private void fieldRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldRowActionPerformed
-        ate.addValueToList();
+        ate.addValueToList(this.tableGeneric.getRowCount());
     }//GEN-LAST:event_fieldRowActionPerformed
 
     /**
