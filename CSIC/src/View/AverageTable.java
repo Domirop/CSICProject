@@ -174,9 +174,6 @@ public class AverageTable {
         int firstIndex = myTable.getSelectedRows()[0];
         int secondIndex = myTable.getSelectedRows()[1];
         int thirdIndex = myTable.getSelectedRows()[2];
-        System.out.println(firstIndex);
-
-        System.out.println(firstIndex);
         String gaussians = myTable.getValueAt(firstIndex, 0).toString() + "-"
                 + myTable.getValueAt(secondIndex, 0).toString() + "-"
                 + myTable.getValueAt(thirdIndex, 0).toString();

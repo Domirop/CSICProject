@@ -7,6 +7,7 @@ package View;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -18,9 +19,17 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -201,7 +210,7 @@ public class DecorateFrame {
 
     }
     
-    public void buttonDeleteActionPerformed(ActionEvent evt){
+    public void buttonDelete(){
         fd.errorText.setText("");
         fd.multiTable = false;
         fd.errorText.setForeground(Color.red);
@@ -233,34 +242,124 @@ public class DecorateFrame {
         fd.itemChangeTemperature.setEnabled(true);
     }
     
-    public void itemResetActionPerformed(ActionEvent evt){
-        fd.itemChangeTemperature.setEnabled(true);
-        fd.multiTable = false;
-        fd.errorText.setText("");
-        fd.errorText.setForeground(Color.red);
-        fd.tabbedPane.removeAll();
-        fd.usedFiles.clear();
-        fd.normalTables.clear();
-        fd.fieldKeyword.setText("");
-        fd.specialTables.clear();
-        fd.usedTables.clear();
-        fd.rows.clear();
-        fd.colAndRows.clear();
-        fd.keywordsUsed.clear();
-        fd.itemSearchValue.setEnabled(false);
-        fd.tabbedPane.addTab("Average", fd.panelGeneric);
-        fd.tabbedPane.setVisible(false);
-        fd.orderDesc.setVisible(false);
-        fd.orderAsc.setVisible(false);
-        fd.buttonExportCSV.setVisible(false);
-        fd.buttonRemoveTable.setVisible(false);
-        fd.buttonAverage.setVisible(false);
-        fd.buttonDelete.setVisible(false);
-        fd.panelGeneric.removeAll();
-        fd.tabPaneSCF.removeAll();
-        fd.tableGeneric = null;
-        fd.buttonValue.setVisible(false);
-        fd.itemReset.setEnabled(false);
-        fd.itemExport.setEnabled(false);
+    public void removeTable(){
+        String name = fd.tabbedPane.getTitleAt(fd.tabbedPane.getSelectedIndex());
+        JPanel genericPane = (JPanel) (fd.tabbedPane.getComponentAt(0));
+        JScrollPane scrollPaneGeneric = (JScrollPane) genericPane.getComponent(0);
+        JViewport viewportGeneric = scrollPaneGeneric.getViewport();
+        JTable genericTable = (JTable) viewportGeneric.getView();
+        for (int i = 0; i < genericTable.getColumnCount(); i++) {
+            if (name.equals(genericTable.getColumnName(i))) {
+                removeColumn(i, genericTable);
+            }
+        }
+
+        for (JTable specialTable : fd.specialTables) {
+            for (int i = 0; i < specialTable.getColumnCount(); i++) {
+                if (name.equals(specialTable.getColumnName(i))) {
+                    removeColumn(i, specialTable);
+                }
+            }
+        }
+
+        if (fd.tabbedPane.isVisible()) {
+            JPanel myPanel = (JPanel) (fd.tabbedPane.getSelectedComponent());
+            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+            JViewport viewport = scrollPane.getViewport();
+            JTable myTable = (JTable) viewport.getView();
+
+            if (fd.usedTables.contains(myTable)) {
+                fd.usedTables.remove(myTable);
+            }
+            if (fd.normalTables.contains(myTable)) {
+                fd.normalTables.remove(myTable);
+            }
+            if (fd.specialTables.contains(myTable)) {
+                fd.specialTables.remove(myTable);
+            }
+            if (fd.keywordsUsed.contains(name)) {
+                fd.keywordsUsed.remove(name);
+            }
+            fd.tabbedPane.remove(fd.tabbedPane.getSelectedComponent());
+        }
+    }
+    
+    /**
+     *
+     * @param table
+     * @param col_index
+     */
+    private void removeColumn(int index, JTable myTable) {
+        int nRow = myTable.getRowCount();
+        int nCol = myTable.getColumnCount() - 1;
+        Object[][] cells = new Object[nRow][nCol];
+        String[] names = new String[nCol];
+
+        for (int j = 0; j < nCol; j++) {
+            if (j < index) {
+                names[j] = myTable.getColumnName(j);
+                for (int i = 0; i < nRow; i++) {
+                    cells[i][j] = myTable.getValueAt(i, j);
+                }
+            } else {
+                names[j] = myTable.getColumnName(j + 1);
+                for (int i = 0; i < nRow; i++) {
+                    cells[i][j] = myTable.getValueAt(i, j + 1);
+                }
+            }
+        }
+        boolean[] canEditTry = new boolean[names.length];
+        for (int i = 0; i < canEditTry.length; i++) {
+            canEditTry[i] = false;
+        }
+        DefaultTableModel newModel = new DefaultTableModel(
+                cells, names
+        ) {
+            boolean[] canEdit = canEditTry;
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+
+            @Override
+            public Class<?> getColumnClass(int column) {
+                Class<?> returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+
+                } else {
+                    returnValue = Object.class;
+                }
+
+                return returnValue;
+
+            }
+        ;
+        };
+        
+        myTable.setModel(newModel);
+
+        for (int i = 0; i < myTable.getColumnCount(); i++) {
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            myTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) myTable.getTableHeader().getDefaultRenderer();
+        renderer.setHorizontalAlignment(0);
+        myTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+
+        TableColumn column = null;
+        for (int i = 0; i < myTable.getColumnCount(); i++) {
+            if (i == 0 || i == 1) {
+                column = myTable.getColumnModel().getColumn(i);
+                column.setMinWidth(100);
+            } else {
+                column = myTable.getColumnModel().getColumn(i);
+                column.setMinWidth(200);
+            }
+        }
+
+        myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
     }
 }

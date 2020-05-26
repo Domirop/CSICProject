@@ -27,12 +27,8 @@ class ListTransferHandler extends TransferHandler {
 
     public ListTransferHandler(FrameDifferentiator fr) {
         this.fr = fr;
-    }
-
-    public ListTransferHandler(ElementsDragAndDrop edd) {
-        this.edd = edd;
-    }
-    
+        this.edd = new ElementsDragAndDrop(fr);
+    }  
 
     /**
      * Perform the actual data import.

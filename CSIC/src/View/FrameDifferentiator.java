@@ -6,15 +6,9 @@
 package View;
 
 import Model.Atomo.FileData;
-import Model.Atomo.Molecule;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -66,21 +60,18 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     protected ControllerInt controller;
     protected boolean multiTable = false;
     protected boolean searchAdded = false;
-    
-    
     DecorateFrame decorate = new DecorateFrame(this);
     SCFTable scf = new SCFTable(this);
     AverageTable avg = new AverageTable(this);
-    ElementsDragAndDrop edd = new ElementsDragAndDrop(this);
-    
-    
-    
-
+    ElementsDragAndDrop edd = new ElementsDragAndDrop(this);  
+    AddTablesEvent ate = new AddTablesEvent(this, decorate, scf, avg);
+    CSV csv = new CSV(this);
+    Order od = new Order(this);
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     protected String temperature = "298.15";
     public List<String> colAndRows = new ArrayList<>();
     JTable tableGeneric;
-
+    
     public FrameDifferentiator(ControllerInt controller) {
         initComponents();
         this.controller = controller;
@@ -88,217 +79,18 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
-//        this.setSize(1080, 480);
-//        jMenuBar1.add(buttonValue);
-//        jMenuBar1.add(buttonExportCSV);
-//        jMenuBar1.add(orderDesc);
-//        jMenuBar1.add(orderAsc);
-//        jMenuBar1.add(buttonRemoveTable);
-//        jMenuBar1.add(buttonAverage);
-//        jMenuBar1.add(buttonDelete);
-//        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         ListTransferHandler lh = new ListTransferHandler(this);
         listValues.setModel(new DefaultListModel());
         listValues.setDragEnabled(true);
         listValues.setTransferHandler(lh);
         listValues.setDropMode(DropMode.ON_OR_INSERT);
         edd.setMappings(listValues);
-//        comboOptions.setFocusable(false);
-//        buttonAddValue.setFocusable(false);
-//        buttonRemoveItem.setFocusable(false);
-//        buttonAverage.setFocusable(false);
-//        finishButton.setFocusable(false);
-        //listValues.setFocusable(false);
         this.controller = controller;
-//        panelGeneric.setLayout(new GridLayout(0, 1));
-//        tabbedPane.addTab("Average", panelGeneric);
-//        tabbedPane.setVisible(false);
-//        orderDesc.setVisible(false);
-//        orderAsc.setVisible(false);
-//        buttonValue.setVisible(false);
-//        itemExport.setEnabled(false);
-//        itemReset.setEnabled(false);
-//        itemChangeTemperature.setEnabled(true);
-//        buttonExportCSV.setVisible(false);
-//        buttonRemoveTable.setVisible(false);
-//        buttonAverage.setVisible(false);
-//        buttonDelete.setVisible(false);
         this.files = files;
-//        itemSearchValue.setEnabled(false);
-//        this.errorText.setVisible(true);
         this.filesData = filesData;
-//        itemSCF.setEnabled(false);
-//        if (!buttonRemoveTable.isEnabled()) {
-//            buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
-//        }
         decorate.addIcons();
         decorate.initElements();
     }
-
-//    public void addIcons() {
-//
-//        ImageIcon imageIcon;
-//        try {
-//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/rightarrow.png"))); // load the image to a imageIcon
-//
-//            Image imageadd = imageIcon.getImage(); // transform it 
-//            Image newimgadd = imageadd.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-//            imageIcon = new ImageIcon(newimgadd);  // transform it back
-//            buttonAdd.setIcon(imageIcon);
-//
-//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/search.png"))); // load the image to a imageIcon
-//            Image imagesearch = imageIcon.getImage(); // transform it 
-//            Image newimgsearch = imagesearch.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-//            imageIcon = new ImageIcon(newimgsearch);  // transform it back
-//            buttonValue.setIcon(imageIcon);
-//
-//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/csv.png"))); // load the image to a imageIcon
-//            Image imagecsv = imageIcon.getImage(); // transform it 
-//            Image newimgcsv = imagecsv.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-//            imageIcon = new ImageIcon(newimgcsv);  // transform it back
-//            buttonExportCSV.setIcon(imageIcon);
-//
-//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/reset.png"))); // load the image to a imageIcon
-//            Image imagereset = imageIcon.getImage(); // transform it 
-//            Image newimgreset = imagereset.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-//            imageIcon = new ImageIcon(newimgreset);  // transform it back
-//            buttonDelete.setIcon(imageIcon);
-//
-//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/delete.png"))); // load the image to a imageIcon
-//            Image imagedelete = imageIcon.getImage(); // transform it 
-//            Image newimgdelete = imagedelete.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-//            imageIcon = new ImageIcon(newimgdelete);  // transform it back
-//            buttonRemoveTable.setIcon(imageIcon);
-//
-//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/increase.png"))); // load the image to a imageIcon
-//            Image imageincrease = imageIcon.getImage(); // transform it 
-//            Image newimgincrease = imageincrease.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-//            imageIcon = new ImageIcon(newimgincrease);  // transform it back
-//            orderAsc.setIcon(imageIcon);
-//
-//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/decrease.png"))); // load the image to a imageIcon
-//            Image imagedecrease = imageIcon.getImage(); // transform it 
-//            Image newimgdecrease = imagedecrease.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-//            imageIcon = new ImageIcon(newimgdecrease);  // transform it back
-//            orderDesc.setIcon(imageIcon);
-//
-//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/average.png"))); // load the image to a imageIcon
-//            Image imageaverage = imageIcon.getImage(); // transform it 
-//            Image newimgaverage = imageaverage.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-//            imageIcon = new ImageIcon(newimgaverage);  // transform it back
-//            buttonAverage.setIcon(imageIcon);
-//
-//            this.repaint();
-//
-//        } catch (IOException ex) {
-//        }
-//    }
-//    /**
-//     * This method is used for ability the functions drop to add new files.
-//     */
-//    private void enableDragAndDrop() {
-//        DropTarget target = new DropTarget(textAreaMoreFiles, new DropTargetListener() {
-//            public void dragEnter(DropTargetDragEvent e) {
-//            }
-//
-//            public void dragExit(DropTargetEvent e) {
-//            }
-//
-//            public void dragOver(DropTargetDragEvent e) {
-//            }
-//
-//            public void dropActionChanged(DropTargetDragEvent e) {
-//            }
-//
-//            public void drop(DropTargetDropEvent e) {
-//                BufferedImage bi = null;
-//                decorate.decorate(textAreaMoreFiles, bi);
-//                try {
-//                    e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-//                    List list = (java.util.List) e.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-//                    list.forEach(v -> {
-//                        File file = (File) v;
-//                        if (filesTypes.contains(file.getName().split("\\.")[1])) {
-//                            textAreaMoreFiles.append(file.getName() + "\n");
-//                            filesData.add(file);
-//                        }
-//                    });
-//                    dialogAddMoreFiles.pack();
-//                    dialogAddMoreFiles.revalidate();
-//                    dialogAddMoreFiles.repaint();
-//                } catch (Exception ex) {
-//                }
-//            }
-//        });
-//    }
-
-//    /**
-//     * this method decorate de textArea to the dialogAddMoreFiles.
-//     *
-//     * @param a The textArea will be decorate.
-//     * @param img The image which you want decorate.
-//     */
-//    public void decorate(JTextArea a, final BufferedImage img) {
-//        if (img != null) {
-//            int x = (dialogAddMoreFiles.getPreferredSize().width - img.getWidth(null) - 20) / 2;
-//            int y = (dialogAddMoreFiles.getPreferredSize().height - img.getHeight(null)) / 4;
-//            a.setUI(new javax.swing.plaf.basic.BasicTextAreaUI() {
-//                @Override
-//                protected void paintBackground(Graphics g) {
-//                    g.drawImage(img, x, y, null);
-//                }
-//            });
-//            a.setPreferredSize(new Dimension(img.getWidth(), img.getHeight()));
-//        } else {
-//            a.setUI(new javax.swing.plaf.basic.BasicTextAreaUI() {
-//                @Override
-//                protected void paintBackground(Graphics g) {
-//                    g.drawString("", 0, 0);
-//                }
-//            });
-//        }
-//        a.setForeground(Color.black);
-//        a.setCaretColor(Color.lightGray);
-//        a.setEditable(false);
-//        dialogAddMoreFiles.setResizable(false);
-//    }
-//    /**
-//     * This method used to recharge the List of the dialogCoordinates when you
-//     * copy an paste elements in JList.
-//     *
-//     * @param row Reference of the coordinates.
-//     * @param column Reference of the coordinates.
-//     */
-//    public void addElementsToRows(int row, int column) {
-//        coorValues.add(row + "," + column);
-//        colAndRows.add(row + "," + column);
-//        errorDialogCoor.setText("");
-//    }
-//
-//    /**
-//     * This method used to control the textError of the dialogCoordinates when
-//     * you copy an paste elements in JList.
-//     *
-//     * @param string The message which you want put
-//     */
-//    public void setErrorDialogCoor(String string) {
-//        this.errorDialogCoor.setText(string);
-//    }
-
-//    /**
-//     * This method use to map the element you copy to elements of the JList,
-//     *
-//     * @param list JList when element you copy will be paste.
-//     */
-//    private void setMappings(JList list) {
-//        ActionMap map = list.getActionMap();
-//        map.put(TransferHandler.getCutAction().getValue(Action.NAME),
-//                TransferHandler.getCutAction());
-//        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),
-//                TransferHandler.getCopyAction());
-//        map.put(TransferHandler.getPasteAction().getValue(Action.NAME),
-//                TransferHandler.getPasteAction());
-//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -843,269 +635,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         names.clear();
         usedFiles.clear();
         if (fieldKeyword.getText().length() > 0) {
-            getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
+            ate.getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
         }
     }//GEN-LAST:event_buttonAddActionPerformed
-
-    /**
-     * Creates a myTable with every single keyword.
-     *
-     * @return the myTable.
-     */
-    private JTable initTablesDifferentiators() {
-        JTable table = new JTable();
-        table.setAutoCreateRowSorter(true);
-        List<String> singleNames = new ArrayList<>();
-        singleNames.add("Gaussian");
-        singleNames.add("Atom");
-
-        names.stream().filter((file) -> (!singleNames.contains(file))).forEachOrdered((file) -> {
-            singleNames.add(file);
-        });
-        boolean[] canEditTry = new boolean[singleNames.size()];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
-        DefaultTableModel model = new DefaultTableModel(
-                singleNames.toArray(new String[0]),
-                0) {
-            boolean[] canEdit = canEditTry;
-
-            @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-
-            @Override
-            public Class<?> getColumnClass(int column) {
-                Class<?> returnValue;
-                if ((column >= 0) && (column < getColumnCount())) {
-                    returnValue = getValueAt(0, column).getClass();
-                } else {
-                    returnValue = Object.class;
-                }
-
-                return returnValue;
-
-            }
-        ;
-        };
-        table.setModel(model);
-        for (int i = 0; i < table.getColumnCount(); i++) {
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) table.getTableHeader().getDefaultRenderer();
-        renderer.setHorizontalAlignment(0);
-        table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-        return table;
-    }
-
-    /**
-     * Method used to add rows to the myTable.
-     *
-     * @param table the myTable that we want to add rows to.
-     * @return myTable with rows added.
-     */
-    private JTable addRowsToTable(JTable table) {
-        JTable tableWithElements = table;
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        List<FileData> fileData = this.controller.getFileData(usedFiles, Double.parseDouble(temperature));
-        String fileNameError = "";
-        boolean correcto = false;
-        for (String name : names) {
-            salir:
-            if (!correcto) {
-                for (FileData fileData1 : fileData) {
-                    if (fileData1.getFileName().equals(name)) {
-                        fileNameError = "";
-                        break salir;
-                    } else {
-                        correcto = true;
-                        fileNameError = name;
-                    }
-                }
-            }
-        }
-        if (fileData.size() == usedFiles.size()) {
-            errorText.setText("");
-            List<Object> data = new ArrayList<>();
-            for (int i = 0; i < fileData.get(0).getAtoms().size(); i++) {
-                data.clear();
-                for (int j = 1; j < fileData.size() + 1; j++) {
-                    if (j == 1) {
-                        data.add(fileData.get(j - 1).getAtoms().get(i).getGaussianData());
-                        data.add(fileData.get(j - 1).getAtoms().get(i).getAtom());
-                    }
-                    data.add(fileData.get(j - 1).getAtoms().get(i).getIsotropic());
-                }
-                model.addRow(data.toArray(new Object[0]));
-            }
-            return tableWithElements;
-        } else {
-            keywordsUsed.remove(fieldKeyword.getText());
-            errorText.setText("Syntax error. Please, check the file " + fileNameError + ".");
-            return table;
-        }
-    }
-
-    /**
-     * Add the used files to a List.F
-     */
-    private void getUsedFiles(String value, String caseValue, boolean isAdd) {
-        switch (caseValue) {
-            case "Starts with":
-                for (int i = 0; i < files.size(); i++) {
-                    String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                    if (filename.startsWith(value)) {
-                        usedFiles.add(filesData.get(i));
-                        if (!names.contains(filename)) {
-                            names.add(filename);
-                        }
-                    }
-                }
-                if (this.getSize() != new Dimension(1080, 480)) {
-                    this.setSize(1080, 480);
-                }
-                if (isAdd) {
-                    actionButtonAdd(fieldKeyword.getText());
-                }
-                break;
-            case "Ends with":
-                for (int i = 0; i < files.size(); i++) {
-                    String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                    if (filename.endsWith(value)) {
-                        usedFiles.add(filesData.get(i));
-                        names.add(filename);
-                    }
-                }
-                if (isAdd) {
-                    actionButtonAdd(fieldKeyword.getText());
-                }
-                break;
-            case "Contains":
-                for (int i = 0; i < files.size(); i++) {
-                    String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                    if (filename.contains(value)) {
-                        usedFiles.add(filesData.get(i));
-                        names.add(filename);
-                    }
-                }
-                actionButtonAdd(fieldKeyword.getText());
-                break;
-            case "Range starts with":
-                if (value.matches("^[0-9]+(\\-[0-9]+)*$")) {
-                    String[] values = new String[2];
-                    boolean fFileCero = false;
-                    boolean sFileCero = false;
-                    values = value.split("-");
-                    if (values[0].startsWith("0")) {
-                        values[0].replace("0", "");
-                        fFileCero = true;
-                    }
-
-                    if (values[1].startsWith("0")) {
-                        values[1].replace("0", "");
-                        sFileCero = true;
-                    }
-
-                    for (int j = Integer.valueOf(values[0]); j <= Integer.valueOf(values[1]); j++) {
-                        usedFiles.clear();
-                        names.clear();
-                        String charact = "";
-                        if (fFileCero == true && j < 10) {
-                            charact = "0" + String.valueOf(j);
-                        } else {
-                            charact = String.valueOf(j);
-                        }
-
-                        if (sFileCero == true && j < 10) {
-                            charact = "0" + String.valueOf(j);
-                        } else {
-                            charact = String.valueOf(j);
-                        }
-                        String separador = "";
-                        for (int i = 0; i < files.size(); i++) {
-                            String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                            searchSeparator:
-                            for (char c : filename.toCharArray()) {
-                                if (!Character.isDigit(c)) {
-                                    separador = String.valueOf(c);
-                                    break searchSeparator;
-                                }
-                            }
-                            if (filename.split(separador)[0].equals(charact)) {
-                                usedFiles.add(filesData.get(i));
-                                if (!names.contains(filename)) {
-                                    names.add(filename);
-                                }
-                            }
-                        }
-                        actionButtonAdd(charact);
-                    }
-                }
-                break;
-            case "Range ends with":
-                if (value.matches("^[0-9]+(\\-[0-9]+)*$")) {
-                    String[] values = new String[2];
-                    boolean fFileCero = false;
-                    boolean sFileCero = false;
-                    values = value.split("-");
-                    if (values[0].startsWith("0")) {
-                        values[0].replace("0", "");
-                        fFileCero = true;
-                    }
-                    if (values[1].startsWith("0")) {
-                        values[1].replace("0", "");
-                        sFileCero = true;
-                    }
-                    for (int j = Integer.valueOf(values[0]); j <= Integer.valueOf(values[1]); j++) {
-                        usedFiles.clear();
-                        names.clear();
-                        String charact = "";
-                        if (fFileCero == true && j < 10) {
-                            charact = "0" + String.valueOf(j);
-                        } else {
-                            charact = String.valueOf(j);
-                        }
-
-                        if (sFileCero == true && j < 10) {
-                            charact = "0" + String.valueOf(j);
-                        } else {
-                            charact = String.valueOf(j);
-                        }
-                        String separador = "";
-                        for (int i = 0; i < files.size(); i++) {
-                            String filename = files.get(i).contains(".log") ? files.get(i).replace(".log", "") : files.get(i).replace(".txt", "");
-                            StringBuilder sb1 = new StringBuilder();
-                            sb1.append(filename);
-                            sb1 = sb1.reverse();
-                            String reversedFilename = sb1.toString();
-
-                            searchSeparator:
-                            for (char c : reversedFilename.toCharArray()) {
-                                if (!Character.isDigit(c)) {
-                                    separador = String.valueOf(c);
-                                    break searchSeparator;
-                                }
-                            }
-                            String[] separated = filename.split(separador);
-                            if (separated[separated.length - 1].equals(charact)) {
-                                usedFiles.add(filesData.get(i));
-                                if (!names.contains(filename)) {
-                                    names.add(filename);
-                                }
-                            }
-                        }
-                        actionButtonAdd(charact);
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-    }
 
     /**
      * The same function that button add.
@@ -1116,7 +648,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         names.clear();
         usedFiles.clear();
         if (fieldKeyword.getText().length() > 0) {
-            getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
+            ate.getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
         }
     }//GEN-LAST:event_fieldKeywordActionPerformed
 
@@ -1126,40 +658,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonAddValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddValueActionPerformed
-        addValueToList();
-
+        ate.addValueToList();
     }//GEN-LAST:event_buttonAddValueActionPerformed
-
-    /**
-     * This method add element to the JList of the dialogCoordinates.
-     */
-    public void addValueToList() {
-        String regex = "\\d+";
-        if (fieldRow.getText().matches(regex) && fieldColumn.getText().matches(regex)) {
-            int row = Integer.parseInt(fieldRow.getText());
-            int column = Integer.parseInt(fieldColumn.getText());
-            if (row <= tableGeneric.getRowCount() || column <= tableGeneric.getRowCount()) {
-                if (row >= column) {
-                    coorValues.add(row + "," + column);
-                    colAndRows.add(row + "," + column);
-                    String[] vals = coorValues.toArray(new String[0]);
-                    listValues.setListData(vals);
-                    errorDialogCoor.setText("");
-                } else {
-                    errorDialogCoor.setText("<html><body>The value of the row must be greater than the column value.</body></html>");
-                }
-            } else {
-                errorDialogCoor.setText("<html><body>The value of the column and row must be greater than the number gaussians.</body></html>");
-
-            }
-        } else {
-            errorDialogCoor.setText("The values need to be integer.");
-        }
-        fieldRow.setText("");
-        fieldColumn.setText("");
-        fieldRow.requestFocusInWindow();
-        fieldRow.requestFocus();
-    }
 
     /**
      * Closes the dialog and opens the dialog that asks for a name.
@@ -1183,104 +683,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValuesActionPerformed
-        orderDesc.setVisible(true);
-        orderAsc.setVisible(true);
-        JPanel newPane = new JPanel();
-        newPane.setLayout(new GridLayout(0, 1));
-        String[] values = new String[keywordsUsed.size() + 2];
-        values[0] = "Row";
-        values[1] = "Column";
-        for (int i = 2; i < keywordsUsed.size() + 2; i++) {
-            values[i] = keywordsUsed.get(i - 2);
-        }
-
-        JTable tableCoord = new JTable();
-        boolean[] canEditTry = new boolean[2 + keywordsUsed.size()];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
-
-        DefaultTableModel modelTable = new DefaultTableModel(values, 0) {
-            boolean[] canEdit = canEditTry;
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-
-            @Override
-            public Class<?> getColumnClass(int column) {
-                Class<?> returnValue;
-                if ((column >= 0) && (column < getColumnCount())) {
-                    returnValue = getValueAt(0, column).getClass();
-                } else {
-                    returnValue = Object.class;
-                }
-
-                return returnValue;
-
-            }
-        ;
-        };
-        tableCoord.setModel(modelTable);
-        //Center columns
-        for (int i = 0; i < tableCoord.getColumnCount(); i++) {
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            tableCoord.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableCoord.getTableHeader().getDefaultRenderer();
-        renderer.setHorizontalAlignment(0);
-        tableCoord.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-
-        DefaultTableModel model = (DefaultTableModel) tableCoord.getModel();
-
-        List<Molecule> molList = new ArrayList<>();
-
-        for (int i = 2; i < tableCoord.getColumnCount(); i++) {
-            usedFiles.clear();
-            getUsedFiles(tableCoord.getColumnName(i), "Starts with", false);
-            Molecule mole = new Molecule();
-            try {
-                mole = controller.getTableMolecule(usedFiles, colAndRows, tableCoord.getColumnName(i), Double.parseDouble(temperature));
-            } catch (Exception e) {
-                dialogNombre.dispose();
-                errorText.setVisible(true);
-                errorText.setText("Some files were not imported or format file isn't correct.");
-                return;
-            }
-            molList.add(mole);
-        }
-
-        List<List<String>> rows = new ArrayList<>();
-        for (int i = 0; i < colAndRows.size(); i++) {
-            List<String> val = new ArrayList<>();
-            String[] coord = colAndRows.get(i).split(",");
-            val.add(coord[0]);
-            val.add(coord[1]);
-            for (int j = 0; j < molList.size(); j++) {
-                double value = molList.get(j).getResult().get(i).getValue();
-                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
-                otherSymbols.setDecimalSeparator('.');
-                otherSymbols.setGroupingSeparator(',');
-                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
-                df.setRoundingMode(RoundingMode.CEILING);
-                val.add(String.valueOf(df.format(value)));
-            }
-            rows.add(val);
-        }
-
-        rows.forEach((row) -> {
-            model.addRow(row.toArray());
-        });
-        tableCoord.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        specialTables.add(tableCoord);
-        usedTables.add(tableCoord);
-        JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        newPane.add(scrollpaneHola);
-        tabbedPane.insertTab(fieldNameValues.getText(), new ImageIcon(""), newPane, null, 1);
-        dialogNombre.dispose();
-        fieldNameValues.setText("");
-
+        ate.actionButtondialogName(evt);
     }//GEN-LAST:event_buttonValuesActionPerformed
 
     /**
@@ -1289,11 +692,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemSearchValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSearchValueActionPerformed
-        if (tabbedPane.isVisible()) {
-            dialogCoordinates.pack();
-            dialogCoordinates.setVisible(true);
-            colAndRows.clear();
-        }
+        dialogCoordinates.pack();
+        listValues.removeAll();
+        dialogCoordinates.setVisible(true);
+        colAndRows.clear();
+        fieldRow.requestFocusInWindow();
+        dialogCoordinates.getRootPane().setDefaultButton(buttonAdd);
     }//GEN-LAST:event_itemSearchValueActionPerformed
 
     /**
@@ -1302,45 +706,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemExportActionPerformed
-        errorText.setForeground(Color.red);
-        String folder = "";
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int option = fileChooser.showOpenDialog(this);
-        if (option == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            if (!file.exists()) {
-                new File(file.getAbsolutePath()).mkdir();
-            }
-            folder = file.getAbsolutePath();
-        }
-
-        keywordsUsed.add("Average");
-
-        if (usedTables.size() > 0) {
-            for (int i = 0; i < keywordsUsed.size(); i++) {
-                List<String[]> datas = new ArrayList<>();
-                TableModel model = usedTables.get(i).getModel();
-                String[] columnNames = new String[model.getColumnCount()];
-                for (int j = 0; j < model.getColumnCount(); j++) {
-                    columnNames[j] = model.getColumnName(j);
-                }
-                datas.add(columnNames);
-                for (int k = 0; k < model.getRowCount(); k++) {
-                    String[] data = new String[model.getColumnCount()];
-                    for (int j = 0; j < model.getColumnCount(); j++) {
-                        if (model.getValueAt(k, j) != null && model.getValueAt(k, j).toString().trim().length() != 0) {
-                            data[j] = String.valueOf(model.getValueAt(k, j));
-                        }
-                    }
-                    datas.add(data);
-                }
-                if (this.controller.writeCSV(datas, folder, keywordsUsed.get(i))) {
-                    errorText.setForeground(Color.green);
-                    errorText.setText("All files have been created.");
-                }
-            }
-        }
+        csv.exportCSV();
     }//GEN-LAST:event_itemExportActionPerformed
 
     /**
@@ -1349,34 +715,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
-        itemChangeTemperature.setEnabled(true);
-        multiTable = false;
-        errorText.setText("");
-        errorText.setForeground(Color.red);
-        tabbedPane.removeAll();
-        usedFiles.clear();
-        normalTables.clear();
-        fieldKeyword.setText("");
-        specialTables.clear();
-        usedTables.clear();
-        rows.clear();
-        colAndRows.clear();
-        keywordsUsed.clear();
-        itemSearchValue.setEnabled(false);
-        tabbedPane.addTab("Average", panelGeneric);
-        tabbedPane.setVisible(false);
-        orderDesc.setVisible(false);
-        orderAsc.setVisible(false);
-        buttonExportCSV.setVisible(false);
-        buttonRemoveTable.setVisible(false);
-        buttonAverage.setVisible(false);
-        buttonDelete.setVisible(false);
-        panelGeneric.removeAll();
-        tabPaneSCF.removeAll();
-        tableGeneric = null;
-        buttonValue.setVisible(false);
-        itemReset.setEnabled(false);
-        itemExport.setEnabled(false);
+       decorate.buttonDelete();
     }//GEN-LAST:event_itemResetActionPerformed
 
     /**
@@ -1385,36 +724,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-          decorate.buttonDeleteActionPerformed(evt);
-//        errorText.setText("");
-//        multiTable = false;
-//        errorText.setForeground(Color.red);
-//        tabbedPane.removeAll();
-//        fieldKeyword.setText("");
-//        usedFiles.clear();
-//        normalTables.clear();
-//        specialTables.clear();
-//        usedTables.clear();
-//        rows.clear();
-//        colAndRows.clear();
-//        keywordsUsed.clear();
-//        itemSearchValue.setEnabled(false);
-//        tabbedPane.addTab("Average", panelGeneric);
-//        tabbedPane.setVisible(false);
-//        orderDesc.setVisible(false);
-//        orderAsc.setVisible(false);
-//        buttonExportCSV.setVisible(false);
-//        buttonRemoveTable.setVisible(false);
-//        buttonAverage.setVisible(false);
-//        buttonDelete.setVisible(false);
-//        panelGeneric.removeAll();
-//        tabPaneSCF.removeAll();
-//        tableGeneric = null;
-//        buttonValue.setVisible(false);
-//        itemReset.setEnabled(false);
-//        itemExport.setEnabled(false);
-//        itemSCF.setEnabled(false);
-//        itemChangeTemperature.setEnabled(true);
+          decorate.buttonDelete();
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
     /**
@@ -1423,87 +733,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
-
-        errorText.setForeground(Color.red);
-        String folder = "";
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int option = fileChooser.showOpenDialog(this);
-        if (option == JFileChooser.APPROVE_OPTION) {
-            keywordsUsed.add("Average");
-            File file = fileChooser.getSelectedFile();
-            if (!file.exists()) {
-                new File(file.getAbsolutePath()).mkdir();
-            }
-            folder = file.getAbsolutePath();
-
-            if (usedTables.size() > 0) {
-                for (int i = 0; i < tabbedPane.getTabCount() + 1; i++) {
-                    List<String[]> datas = new ArrayList<>();
-                    if (i == 0) {
-                        if (multiTable == true) {
-                            datas = exportTable(null, i, 0, tabbedPane);
-                            datas.add(new String[0]);
-                            datas.add(new String[0]);
-                            datas.addAll(exportTable(null, i, 1, tabbedPane));
-                            exportCSVFunction(datas, folder, "Average");
-                        } else {
-                            datas = exportTable(null, i, 0, tabbedPane);
-                            exportCSVFunction(datas, folder, "Average");
-                        }
-                    } else if (i == tabbedPane.getTabCount()) {
-                        JTabbedPane panes = (JTabbedPane) dialogSCF.getContentPane().getComponent(0);
-                        for (int j = 0; j < panes.getTabCount(); j++) {
-                            JPanel myPanel = (JPanel) panes.getComponentAt(j);
-                            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-                            JViewport viewport = scrollPane.getViewport();
-                            JTable myTable = (JTable) viewport.getView();
-                            datas.addAll(exportTable(myTable, j, 0, panes));
-                        }
-                        exportCSVFunction(datas, folder, "SCF_and_CONTRIBUTION");
-                    } else {
-                        datas = exportTable(null, i, 0, tabbedPane);
-                        exportCSVFunction(datas, folder, tabbedPane.getTitleAt(i));
-                    }
-                }
-            }
-        }
+        csv.exportCSV();
     }//GEN-LAST:event_buttonExportCSVActionPerformed
-
-    private void exportCSVFunction(List<String[]> datas, String folder, String nameFile) {
-        if (this.controller.writeCSV(datas, folder, nameFile)) {
-            errorText.setForeground(Color.green);
-            errorText.setText("All files have been created.");
-        } else {
-            errorText.setForeground(Color.RED);
-            errorText.setText("Error has ocurred in table " + nameFile);
-        }
-    }
-
-    private List<String[]> exportTable(JTable myTable, int indexTab, int indexComponent, JTabbedPane pane) {
-        List<String[]> datas = new ArrayList<>();
-        if (myTable == null) {
-            JPanel myPanel = (JPanel) (pane.getComponentAt(indexTab));
-            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(indexComponent);
-            JViewport viewport = scrollPane.getViewport();
-            myTable = (JTable) viewport.getView();
-        }
-        String[] columnNames = new String[myTable.getColumnCount()];
-        for (int j = 0; j < myTable.getColumnCount(); j++) {
-            columnNames[j] = myTable.getColumnName(j);
-        }
-        datas.add(columnNames);
-        for (int k = 0; k < myTable.getRowCount(); k++) {
-            String[] data = new String[myTable.getColumnCount()];
-            for (int j = 0; j < myTable.getColumnCount(); j++) {
-                if (myTable.getValueAt(k, j) != null && myTable.getValueAt(k, j).toString().trim().length() != 0) {
-                    data[j] = String.valueOf(myTable.getValueAt(k, j));
-                }
-            }
-            datas.add(data);
-        }
-        return datas;
-    }
 
     /**
      * Shows the dialog that gets the column and rows.
@@ -1517,8 +748,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         colAndRows.clear();
         fieldRow.requestFocusInWindow();
         dialogCoordinates.getRootPane().setDefaultButton(buttonAdd);
-
-
     }//GEN-LAST:event_buttonValueActionPerformed
 
     /**
@@ -1549,31 +778,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void orderDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderDescActionPerformed
-        JTable myTabla = getSelectedTable();
-        errorText.setText("");
-        if (myTabla.getSelectedRows().length == 2) {
-            JPanel myPanel = (JPanel) (tabbedPane.getComponentAt(0));
-            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-            JViewport viewport = scrollPane.getViewport();
-            JTable genericTable = (JTable) viewport.getView();
-            for (int i = 2; i < myTabla.getColumnCount(); i++) {
-                double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
-                double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
-                if (bg1 < bg2) {
-                    String[] datas = getGaussianToOrder();
-                    double a = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[0]) - 1, i).toString());
-                    double b = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[1]) - 1, i).toString());
-                    double ax = a;
-                    genericTable.setValueAt(String.valueOf(b), Integer.parseInt(datas[0]) - 1, i);
-                    genericTable.setValueAt(String.valueOf(ax), Integer.parseInt(datas[1]) - 1, i);
-                    reorderNormalTables(datas[0], datas[1], myTabla, (i - 2));
-                    reorderSpecialTables(datas[0], datas[1], i);
-                }
-            }
-        } else {
-            errorText.setText("Please select 2 rows");
-            errorText.setVisible(true);
-        }
+        od.orderDesc();
     }//GEN-LAST:event_orderDescActionPerformed
 
     /**
@@ -1582,140 +787,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void orderAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderAscActionPerformed
-        JTable myTabla = getSelectedTable();
-        errorText.setText("");
-        if (myTabla.getSelectedRows().length == 2) {
-            JPanel myPanel = (JPanel) (tabbedPane.getComponentAt(0));
-            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-            JViewport viewport = scrollPane.getViewport();
-            JTable genericTable = (JTable) viewport.getView();
-            String[] datas = getGaussianToOrder();
-            for (int i = 2; i < myTabla.getColumnCount(); i++) {
-                double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
-                double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
-                if (bg1 > bg2) {
-                    double a = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[0]) - 1, i).toString());
-                    double b = Double.parseDouble(genericTable.getValueAt(Integer.parseInt(datas[1]) - 1, i).toString());
-                    double ax = a;
-                    genericTable.setValueAt(String.valueOf(b), Integer.parseInt(datas[0]) - 1, i);
-                    genericTable.setValueAt(String.valueOf(ax), Integer.parseInt(datas[1]) - 1, i);
-                    reorderNormalTables(datas[0], datas[1], myTabla, (i - 2));
-                    reorderSpecialTables(datas[0], datas[1], i);
-                    genericTable.repaint();
-                }
-            }
-        } else {
-            errorText.setText("Please select 2 rows");
-            errorText.setVisible(true);
-        }
+        od.orderAsc();
     }//GEN-LAST:event_orderAscActionPerformed
-
-    /**
-     * Method used to order the "normal" tables.
-     *
-     * @param gausian1
-     * @param gausian2
-     * @param order desc or asc
-     */
-    private void reorderNormalTables(String gausian1, String gausian2, JTable selectedTable, int index) {
-        if (normalTables.get(index) != selectedTable) {
-            DefaultTableModel model = (DefaultTableModel) normalTables.get(index).getModel();
-            List<Integer> indexs1 = new ArrayList<>();
-            for (int i = 0; i < normalTables.get(index).getRowCount(); i++) {
-                if (String.valueOf(normalTables.get(index).getValueAt(i, 0)).equals(gausian1) || String.valueOf(normalTables.get(index).getValueAt(i, 0)).equals(gausian2)) {
-                    indexs1.add(Integer.parseInt(String.valueOf(normalTables.get(index).getValueAt(i, 0))));
-                }
-            }
-            for (int i = 2; i < model.getColumnCount(); i++) {
-                double bg1 = Double.parseDouble(model.getValueAt(indexs1.get(0) - 1, i).toString());
-                double bg2 = Double.parseDouble(model.getValueAt(indexs1.get(1) - 1, i).toString());
-                double aux = bg1;
-                model.setValueAt(String.valueOf(bg2), indexs1.get(0) - 1, i);
-                model.setValueAt(String.valueOf(aux), indexs1.get(1) - 1, i);
-            }
-            normalTables.get(index).repaint();
-        } else {
-
-        }
-    }
-
-    /**
-     * Method used to order the "special" tables.
-     *
-     * @param gausian1
-     * @param gausian2
-     * @param order desc or asc
-     */
-    private void reorderSpecialTables(String gausian1, String gausian2, int index) {
-        for (JTable specialTable : specialTables) {
-            List<TableElement> element1 = new ArrayList<>();
-            List<TableElement> element2 = new ArrayList<>();
-            for (int i = 0; i < specialTable.getRowCount(); i++) {
-                String rowValue = specialTable.getValueAt(i, 0).toString();
-                String columnValue = specialTable.getValueAt(i, 1).toString();
-                if (rowValue.equals(gausian1) || columnValue.equals(gausian1)) {
-                    element1.add(new TableElement(rowValue, columnValue, i));
-                }
-                if (rowValue.equals(gausian2) || columnValue.equals(gausian2)) {
-                    element2.add(new TableElement(rowValue, columnValue, i));
-                }
-            }
-            if (element1.size() > element2.size()) {
-                reorderElements(specialTable, element2, element1, index);
-            } else if (element2.size() > element1.size()) {
-                reorderElements(specialTable, element1, element2, index);
-            } else {
-                reorderElements(specialTable, element1, element2, index);
-            }
-
-        }
-    }
-
-    /**
-     * Method used to check wether a value has a pair or not
-     *
-     * @param specialTable myTable that is going to be ordered
-     * @param element1 values used as keywords
-     * @param element2 values used as keywords
-     */
-    public void reorderElements(JTable specialTable, List<TableElement> element1, List<TableElement> element2, int index) {
-        List<TableElement> elements = new ArrayList<>();
-        for (TableElement elementType1 : element1) {
-            next:
-            for (int j = 0; j < element2.size(); j++) {
-                if (elementType1.column.equals(element2.get(j).column) || elementType1.column.equals(element2.get(j).row)
-                        || elementType1.row.equals(element2.get(j).column) || elementType1.row.equals(element2.get(j).row)) {
-                    double bg1 = Double.parseDouble(specialTable.getValueAt(elementType1.indexRow, index).toString());
-                    double bg2 = Double.parseDouble(specialTable.getValueAt(element2.get(j).indexRow, index).toString());
-                    double aux = bg1;
-                    specialTable.setValueAt(String.valueOf(bg2), elementType1.indexRow, index);
-                    specialTable.setValueAt(String.valueOf(aux), element2.get(j).indexRow, index);
-                    element2.remove(element2.get(j));
-                    break next;
-                } else {
-                    if (j == element2.size() - 1) {
-                        elements.add(elementType1);
-                    }
-                }
-            }
-        }
-        if (errorText.getText().length() == 0) {
-            errorText.setVisible(false);
-            errorText.setText("The following values will not be ordered: ");
-            if (!elements.isEmpty()) {
-                errorText.setVisible(true);
-                for (TableElement element : elements) {
-                    errorText.setText(errorText.getText() + " " + element.row + "," + element.column + "  ");
-                }
-            }
-            if (!element2.isEmpty()) {
-                for (TableElement element : element2) {
-                    errorText.setVisible(true);
-                    errorText.setText(errorText.getText() + " " + element.row + "," + element.column + "  ");
-                }
-            }
-        }
-    }
 
     /**
      * Remove item from list
@@ -1723,7 +796,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveItemActionPerformed
-
         listValues.repaint();
         listValues.revalidate();
         if (!listValues.isSelectionEmpty()) {
@@ -1743,7 +815,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt event when you press enter.
      */
     private void fieldColumnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldColumnActionPerformed
-        addValueToList();
+        ate.addValueToList();
     }//GEN-LAST:event_fieldColumnActionPerformed
 
     /**
@@ -1752,7 +824,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt event when you press enter.
      */
     private void fieldRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldRowActionPerformed
-        addValueToList();
+        ate.addValueToList();
     }//GEN-LAST:event_fieldRowActionPerformed
 
     /**
@@ -1761,47 +833,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt Event when you press the button.
      */
     private void buttonRemoveTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveTableActionPerformed
-        String name = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
-        JPanel genericPane = (JPanel) (tabbedPane.getComponentAt(0));
-        JScrollPane scrollPaneGeneric = (JScrollPane) genericPane.getComponent(0);
-        JViewport viewportGeneric = scrollPaneGeneric.getViewport();
-        JTable genericTable = (JTable) viewportGeneric.getView();
-        for (int i = 0; i < genericTable.getColumnCount(); i++) {
-            if (name.equals(genericTable.getColumnName(i))) {
-                removeColumn(i, genericTable);
-            }
-        }
-
-        for (JTable specialTable : specialTables) {
-            for (int i = 0; i < specialTable.getColumnCount(); i++) {
-                if (name.equals(specialTable.getColumnName(i))) {
-                    removeColumn(i, specialTable);
-                }
-            }
-        }
-
-        if (tabbedPane.isVisible()) {
-            JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
-            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-            JViewport viewport = scrollPane.getViewport();
-            JTable myTable = (JTable) viewport.getView();
-
-            if (usedTables.contains(myTable)) {
-                usedTables.remove(myTable);
-            }
-            if (normalTables.contains(myTable)) {
-                normalTables.remove(myTable);
-            }
-            if (specialTables.contains(myTable)) {
-                specialTables.remove(myTable);
-            }
-            if (keywordsUsed.contains(name)) {
-                keywordsUsed.remove(name);
-            }
-
-            tabbedPane.remove(tabbedPane.getSelectedComponent());
-
-        }
+        decorate.removeTable();
     }//GEN-LAST:event_buttonRemoveTableActionPerformed
 
     /**
@@ -1940,8 +972,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         dialogSCF.setVisible(true);
         dialogSCF.revalidate();
         dialogSCF.pack();
-
-
     }//GEN-LAST:event_itemSCFActionPerformed
 
     private void buttonAverageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAverageActionPerformed
@@ -1969,593 +999,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 //        }
     }//GEN-LAST:event_buttonAverageActionPerformed
 
-//    private void averageTableNotExist(JTable myTable) {
-//        List<List<Object>> values = new ArrayList<>();
-//        int firstIndex = myTable.getSelectedRows()[0];
-//        int secondIndex = myTable.getSelectedRows()[1];
-//        int thirdIndex = myTable.getSelectedRows()[2];
-//        for (int i = 0; i < myTable.getRowCount(); i++) {
-//            List<Object> localRows = new ArrayList<>();
-//            if (i == firstIndex || i == secondIndex || i == thirdIndex) {
-//                if (i == firstIndex) {
-//                    localRows.add(myTable.getValueAt(firstIndex, 0).toString() + "-"
-//                            + myTable.getValueAt(secondIndex, 0).toString() + "-"
-//                            + myTable.getValueAt(thirdIndex, 0).toString());
-//                    localRows.add(myTable.getValueAt(i, 1).toString());
-//                }
-//            } else {
-//                localRows.add(myTable.getValueAt(i, 0).toString());
-//                localRows.add(myTable.getValueAt(i, 1).toString());
-//            }
-//            for (int j = 2; j < myTable.getColumnCount(); j++) {
-//                if (i == firstIndex || i == secondIndex || i == thirdIndex) {
-//                    if (i == firstIndex) {
-//                        Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, j).toString())
-//                                + Double.parseDouble(myTable.getValueAt(secondIndex, j).toString())
-//                                + Double.parseDouble(myTable.getValueAt(thirdIndex, j).toString())) / 3;
-//                        localRows.add(averageValue);
-//                    }
-//                } else {
-//                    localRows.add(myTable.getValueAt(i, j).toString());
-//                }
-//            }
-//            if (i == firstIndex || i == secondIndex || i == thirdIndex) {
-//                if (i == firstIndex) {
-//                    values.add(localRows);
-//                }
-//            } else {
-//                values.add(localRows);
-//            }
-//
-//        }
-//
-//        String[] headerValues = new String[myTable.getColumnCount()];
-//        for (int i = 0; i < myTable.getColumnCount(); i++) {
-//            headerValues[i] = myTable.getColumnName(i);
-//        }
-//
-//        JPanel panel = (JPanel) tabbedPane.getComponentAt(0);
-//        JTable averageTable = new JTable();
-//        boolean[] canEditTry = new boolean[headerValues.length];
-//        for (int i = 0; i < canEditTry.length; i++) {
-//            canEditTry[i] = false;
-//        }
-//
-//        DefaultTableModel modelAverage = new DefaultTableModel(headerValues, 0) {
-//            boolean[] canEdit = canEditTry;
-//
-//            public boolean isCellEditable(int rowIndex, int columnIndex) {
-//                return canEdit[columnIndex];
-//            }
-//
-//            @Override
-//            public Class<?> getColumnClass(int column) {
-//                Class<?> returnValue;
-//                if ((column >= 0) && (column < getColumnCount())) {
-//                    returnValue = getValueAt(0, column).getClass();
-//
-//                } else {
-//                    returnValue = Object.class;
-//                }
-//
-//                return returnValue;
-//
-//            }
-//        ;
-//        };
-//        averageTable.setAutoCreateRowSorter(true);
-//        for (List<Object> value : values) {
-//            Object[] datas = value.toArray();
-//            modelAverage.addRow(datas);
-//        }
-//        averageTable.setModel(modelAverage);
-//        averageTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-//        //Center columns
-//        for (int i = 0; i < averageTable.getColumnCount(); i++) {
-//            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-//            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-//            averageTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-//        }
-//        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableGeneric.getTableHeader().getDefaultRenderer();
-//        renderer.setHorizontalAlignment(0);
-//        averageTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-//
-//        JScrollPane scrollpane = new JScrollPane(averageTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//        panel.add(scrollpane);
-//        panel.revalidate();
-//        panel.repaint();
-//        TableColumn column = null;
-//        for (int i = 0; i < averageTable.getColumnCount(); i++) {
-//            if (i == 0 || i == 1) {
-//                column = averageTable.getColumnModel().getColumn(i);
-//                column.setMinWidth(100);
-//            } else {
-//                column = averageTable.getColumnModel().getColumn(i);
-//                column.setMinWidth(300);
-//            }
-//        }
-//        multiTable = true;
-//    }
-
-//    private void averageTableExist(JTable myTable) {
-//        int firstIndex = myTable.getSelectedRows()[0];
-//        int secondIndex = myTable.getSelectedRows()[1];
-//        int thirdIndex = myTable.getSelectedRows()[2];
-//        System.out.println(firstIndex);
-//
-//        System.out.println(firstIndex);
-//        String gaussians = myTable.getValueAt(firstIndex, 0).toString() + "-"
-//                + myTable.getValueAt(secondIndex, 0).toString() + "-"
-//                + myTable.getValueAt(thirdIndex, 0).toString();
-//        myTable.setValueAt(gaussians, firstIndex, 0);
-//        for (int i = 2; i < myTable.getColumnCount(); i++) {
-//            Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, i).toString())
-//                    + Double.parseDouble(myTable.getValueAt(secondIndex, i).toString())
-//                    + Double.parseDouble(myTable.getValueAt(thirdIndex, i).toString())) / 3;
-//            myTable.setValueAt(averageValue, firstIndex, i);
-//        }
-//        DefaultTableModel df = (DefaultTableModel) myTable.getModel();
-//        df.removeRow(thirdIndex);
-//        df.removeRow(secondIndex);
-//        multiTable = true;
-//    }
-
-//    private void SCFTable(String keyword) {
-//        tabPaneSCF.add(keyword, initSCFTable());
-//    }
-//
-//    private JPanel initSCFTable() {
-//        ArrayList<String> nameFiles = new ArrayList<>();
-//        ArrayList<Object> contribution = new ArrayList<>();
-//        ArrayList<Object> SCF = new ArrayList<>();
-//        nameFiles.add("Values");
-//        contribution.add("Contribution");
-//        SCF.add("SCF");
-//        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
-//        otherSymbols.setDecimalSeparator('.');
-//        otherSymbols.setGroupingSeparator(',');
-//        DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
-//        df.setRoundingMode(RoundingMode.CEILING);
-//
-//        for (FileData fileData : controller.getFileData(usedFiles, Double.valueOf(temperature))) {
-//            nameFiles.add(fileData.getFileName());
-//            contribution.add(df.format(fileData.getContribution()));
-//            SCF.add(df.format(fileData.getEnergyValue()));
-//        }
-//        Object[][] data = new Object[][]{
-//            contribution.toArray(new Object[0]),
-//            SCF.toArray(new Object[0])
-//        };
-//
-//        String[] headers = nameFiles.toArray(new String[0]);
-//        JTable tableSCF = new JTable(data, headers);
-//
-//        boolean[] canEditTry = new boolean[SCF.size() + 1];
-//        for (int i = 0; i < canEditTry.length; i++) {
-//            canEditTry[i] = false;
-//        }
-//        DefaultTableModel newModel = new DefaultTableModel(
-//                data, headers
-//        ) {
-//            boolean[] canEdit = canEditTry;
-//
-//            public boolean isCellEditable(int rowIndex, int columnIndex) {
-//                return canEdit[columnIndex];
-//            }
-//
-//            @Override
-//            public Class<?> getColumnClass(int column) {
-//                Class<?> returnValue;
-//                if ((column >= 0) && (column < getColumnCount())) {
-//                    returnValue = getValueAt(0, column).getClass();
-//                } else {
-//                    returnValue = Object.class;
-//                }
-//
-//                return returnValue;
-//
-//            }
-//        ;
-//        }
-//    ;
-//        tableSCF.setModel(newModel);
-//
-//        for (int i = 0; i < tableSCF.getColumnCount(); i++) {
-//            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-//            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-//            tableSCF.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-//        }
-//        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableSCF.getTableHeader().getDefaultRenderer();
-//        renderer.setHorizontalAlignment(0);
-//        tableSCF.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-//
-//        TableColumn column = null;
-//        for (int i = 0; i < tableSCF.getColumnCount(); i++) {
-//            if (i == 0) {
-//                column = tableSCF.getColumnModel().getColumn(i);
-//                column.setMinWidth(100);
-//            } else {
-//                column = tableSCF.getColumnModel().getColumn(i);
-//                column.setMinWidth(250);
-//            }
-//        }
-//
-//        tableSCF.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-//        JScrollPane scrollpaneGeneric = new JScrollPane(tableSCF, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//        JPanel panel = new JPanel();
-//        panel.setLayout(new GridLayout(0, 1));
-//        panel.setPreferredSize(new Dimension(1000, 100));
-//        panel.add(scrollpaneGeneric);
-//        return panel;
-//    }
-
-    /**
-     *
-     * @return selected myTable
-     */
-    private JTable getSelectedTable() {
-        JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
-        JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-        JViewport viewport = scrollPane.getViewport();
-        JTable myTable = (JTable) viewport.getView();
-        return myTable;
-    }
-
-    /**
-     * Used to order values
-     *
-     * @return gaussian values ordered
-     */
-    private String[] getGaussianToOrder() {
-        JTable myTable = getSelectedTable();
-        DefaultTableModel model = (DefaultTableModel) myTable.getModel();
-        int[] rows = myTable.getSelectedRows();
-        String[] firstRow = String.valueOf(model.getDataVector().elementAt(rows[0])).replace("[", "").split(",");
-        String[] secondRow = String.valueOf(model.getDataVector().elementAt(rows[1])).replace("[", "").split(",");
-        String firstRow1 = firstRow[0].replace(" ", "");
-        String firstRow2 = firstRow[1].replace(" ", "");
-        String secondRow1 = secondRow[0].replace(" ", "");
-        String secondRow2 = secondRow[1].replace(" ", "");
-        String gausian1;
-        String gausian2;
-        if (firstRow1.equals(secondRow1) || firstRow1.equals(secondRow2)) {
-            gausian1 = firstRow2;
-        } else {
-            gausian1 = firstRow1;
-        }
-        if (secondRow1.equals(firstRow1) || secondRow1.equals(firstRow2)) {
-            gausian2 = secondRow2;
-        } else {
-            gausian2 = secondRow1;
-        }
-        String[] datas = new String[]{gausian1, gausian2};
-        return datas;
-    }
-
-//    /**
-//     * Creates the "Average" myTable with all the info from the other tables.
-//     *
-//     * @param usedFiles
-//     */
-//    private void averageTable(List<File> usedFiles) {
-//        Molecule molecule = this.controller.getMolecule(usedFiles, fieldKeyword.getText(), Double.parseDouble(temperature)
-//        );
-//        String[] values = new String[keywordsUsed.size() + 2];
-//        values[0] = "Gaussian";
-//        values[1] = "Atom";
-//        for (int i = 2; i <= keywordsUsed.size() + 1; i++) {
-//            values[i] = keywordsUsed.get(i - 2);
-//        }
-//
-//        if (tableGeneric == null) {
-//            initAverageTable(values);
-//            addElementsToAverageTable(molecule);
-//            JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//            panelGeneric.add(scrollpaneGeneric);
-//        } else {
-//            panelGeneric.removeAll();
-//            initAverageTable(values);
-//            addElementsToAverageTable(molecule);
-//            JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//            panelGeneric.add(scrollpaneGeneric);
-//        }
-//        TableColumn column = null;
-//        for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
-//            if (i == 0 || i == 1) {
-//                column = tableGeneric.getColumnModel().getColumn(i);
-//                column.setMinWidth(100);
-//            } else {
-//                column = tableGeneric.getColumnModel().getColumn(i);
-//                column.setMinWidth(200);
-//            }
-//        }
-//        tableGeneric.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-//
-//    }
-//
-//    /**
-//     * Initializes the Average myTable.
-//     *
-//     * @param values are the "keywords" used.
-//     */
-//    private void initAverageTable(String[] values) {
-//        tableGeneric = new JTable();
-//
-//        boolean[] canEditTry = new boolean[keywordsUsed.size() + 2];
-//        for (int i = 0; i < canEditTry.length; i++) {
-//            canEditTry[i] = false;
-//        }
-//
-//        DefaultTableModel modelGeneric = new DefaultTableModel(values, 0) {
-//            boolean[] canEdit = canEditTry;
-//
-//            public boolean isCellEditable(int rowIndex, int columnIndex) {
-//                return canEdit[columnIndex];
-//            }
-//
-//            @Override
-//            public Class<?> getColumnClass(int column) {
-//                Class<?> returnValue;
-//                if ((column >= 0) && (column < getColumnCount())) {
-//                    returnValue = getValueAt(0, column).getClass();
-//
-//                } else {
-//                    returnValue = Object.class;
-//                }
-//
-//                return returnValue;
-//
-//            }
-//        ;
-//        };
-//        tableGeneric.setAutoCreateRowSorter(true);
-//        tableGeneric.setModel(modelGeneric);
-//        //Center columns
-//        for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
-//            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-//            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-//            tableGeneric.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-//        }
-//        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableGeneric.getTableHeader().getDefaultRenderer();
-//        renderer.setHorizontalAlignment(0);
-//        tableGeneric.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-//    }
-//
-//    /**
-//     * Add all the elements to the Average myTable.
-//     *
-//     * @param molecule contains all the necessary info about the molecules.
-//     */
-//    private void addElementsToAverageTable(Molecule molecule) {
-//        DefaultTableModel model = (DefaultTableModel) tableGeneric.getModel();
-//        List<List<Object>> auxList = new ArrayList<>(rows);
-//        rows.clear();
-//        for (int i = 0; i < molecule.getResult().size(); i++) {
-//            if (keywordsUsed.size() == 1) {
-//                List<Object> values = new ArrayList<>();
-//                values.add(molecule.getResult().get(i).getGaussian());
-//                values.add(molecule.getResult().get(i).getAtom());
-//                double value = molecule.getResult().get(i).getValue();
-//                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
-//                otherSymbols.setDecimalSeparator('.');
-//                otherSymbols.setGroupingSeparator(',');
-//                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
-//                df.setRoundingMode(RoundingMode.CEILING);
-//                values.add(String.valueOf(df.format(value)));
-//                rows.add(values);
-//            } else {
-//                List<Object> values = new ArrayList<>(auxList.get(i));
-//                double value = molecule.getResult().get(i).getValue();
-//                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
-//                otherSymbols.setDecimalSeparator('.');
-//                otherSymbols.setGroupingSeparator(',');
-//                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
-//                df.setRoundingMode(RoundingMode.CEILING);
-//                values.add(String.valueOf(df.format(value)));
-//                rows.add(values);
-//            }
-//        }
-//
-//        rows.forEach((row) -> {
-//            model.addRow(row.toArray());
-//        });
-//
-//    }
-
-    /**
-     * Method used to add new files.
-     */
-    private void actionButtonAdd(String fieldText) {
-        try {
-            errorText.setForeground(Color.red);
-            if (!keywordsUsed.contains(fieldText)) {
-                keywordsUsed.add(fieldText);
-                if (!usedFiles.isEmpty()) {
-                    if (!searchAdded) {
-                        decorate.searchTab();
-                        searchAdded = true;
-                    }
-
-                    errorText.setText("");
-                    JTable table = addRowsToTable(initTablesDifferentiators());
-                    if (table.getRowCount() != 0) {
-                        JPanel panel = new JPanel();
-                        if (usedTables.isEmpty()) {
-                            itemSearchValue.setEnabled(true);
-                            itemExport.setEnabled(false);
-                            itemReset.setEnabled(true);
-                            buttonValue.setVisible(true);
-                            buttonExportCSV.setVisible(true);
-                            buttonRemoveTable.setVisible(true);
-                            buttonDelete.setVisible(true);
-                            tabbedPane.setVisible(true);
-                            itemExport.setEnabled(true);
-                            itemSCF.setEnabled(true);
-                            buttonAverage.setVisible(true);
-                        }
-
-                        panel.setLayout(new GridLayout(0, 1));
-                        JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                        TableColumn column = null;
-                        for (int i = 0; i < table.getColumnCount(); i++) {
-                            if (i == 0 || i == 1) {
-                                column = table.getColumnModel().getColumn(i);
-                                column.setMinWidth(100);
-                            } else {
-                                column = table.getColumnModel().getColumn(i);
-                                column.setMinWidth(300);
-                            }
-                            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                            panel.add(scrollpane);
-                            tabbedPane.addTab(fieldText, panel);
-                            tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-                            avg.averageTable(usedFiles);
-                            scf.SCFTable(fieldText);
-                            if (usedTables.isEmpty()) {
-                                usedTables.add(tableGeneric);
-                            }
-                            normalTables.add(table);
-                            usedTables.add(table);
-                            revalidate();
-                            //pack();
-                            itemChangeTemperature.setEnabled(false);
-                            itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
-
-                        }
-                    } else {
-                        errorText.setText("Couldn't find any file with the provided keyword.");
-                    }
-
-                } else {
-                    errorText.setText("Couldn't find any file with the provided keyword.");
-                }
-
-            } else {
-                errorText.setText("Some files were not imported.");
-            }
-        } catch (Exception e) {
-            errorText.setText("Some files were not imported.");
-        }
-        if (this.getSize() != new Dimension(1080, 480)) {
-            this.setSize(1080, 480);
-        }
-    }
-
-    /**
-     *
-     * @param table
-     * @param col_index
-     */
-    private void removeColumn(int index, JTable myTable) {
-        int nRow = myTable.getRowCount();
-        int nCol = myTable.getColumnCount() - 1;
-        Object[][] cells = new Object[nRow][nCol];
-        String[] names = new String[nCol];
-
-        for (int j = 0; j < nCol; j++) {
-            if (j < index) {
-                names[j] = myTable.getColumnName(j);
-                for (int i = 0; i < nRow; i++) {
-                    cells[i][j] = myTable.getValueAt(i, j);
-                }
-            } else {
-                names[j] = myTable.getColumnName(j + 1);
-                for (int i = 0; i < nRow; i++) {
-                    cells[i][j] = myTable.getValueAt(i, j + 1);
-                }
-            }
-        }
-        boolean[] canEditTry = new boolean[names.length];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
-        DefaultTableModel newModel = new DefaultTableModel(
-                cells, names
-        ) {
-            boolean[] canEdit = canEditTry;
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-
-            @Override
-            public Class<?> getColumnClass(int column) {
-                Class<?> returnValue;
-                if ((column >= 0) && (column < getColumnCount())) {
-                    returnValue = getValueAt(0, column).getClass();
-
-                } else {
-                    returnValue = Object.class;
-                }
-
-                return returnValue;
-
-            }
-        ;
-        };
-        
-        myTable.setModel(newModel);
-
-        for (int i = 0; i < myTable.getColumnCount(); i++) {
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            myTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) myTable.getTableHeader().getDefaultRenderer();
-        renderer.setHorizontalAlignment(0);
-        myTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-
-        TableColumn column = null;
-        for (int i = 0; i < myTable.getColumnCount(); i++) {
-            if (i == 0 || i == 1) {
-                column = myTable.getColumnModel().getColumn(i);
-                column.setMinWidth(100);
-            } else {
-                column = myTable.getColumnModel().getColumn(i);
-                column.setMinWidth(200);
-            }
-        }
-
-        myTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-    }
-
-//    public void searchTab() {
-//        jMenuBar1.add(Box.createHorizontalGlue());
-//        JTextField textField = new JTextField(10);
-//        textField.setForeground(Color.GRAY);
-//        textField.setText("Search...");
-//        textField.setMaximumSize(textField.getPreferredSize());
-//        textField.addFocusListener(new FocusListener() {
-//            public void focusGained(FocusEvent e) {
-//                textField.setForeground(Color.BLACK);
-//                textField.setText("");
-//            }
-//
-//            public void focusLost(FocusEvent e) {
-//                textField.setForeground(Color.GRAY);
-//                textField.setText("Search...");
-//
-//            }
-//
-//        });
-//
-//        textField.addActionListener(new java.awt.event.ActionListener() {
-//            public void actionPerformed(ActionEvent event) {
-//                try {
-//                    for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-//                        if (tabbedPane.getTitleAt(i).equals(textField.getText())) {
-//                            tabbedPane.setSelectedIndex(i);
-//                        }
-//                    }
-//                } catch (Exception e) {
-//
-//                }
-//            }
-//        });
-//        jMenuBar1.add(textField);
-//    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton buttonAdd;
     public javax.swing.JButton buttonAddValue;
@@ -2572,15 +1015,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     public javax.swing.JComboBox<String> comboOptions;
     public javax.swing.JDialog dialogAddMoreFiles;
     private javax.swing.JDialog dialogCoordinates;
-    private javax.swing.JDialog dialogNombre;
-    private javax.swing.JDialog dialogSCF;
+    public javax.swing.JDialog dialogNombre;
+    public javax.swing.JDialog dialogSCF;
     private javax.swing.JDialog dialogTemperature;
     public javax.swing.JLabel errorDialogCoor;
     public javax.swing.JLabel errorText;
-    private javax.swing.JTextField fieldColumn;
+    public javax.swing.JTextField fieldColumn;
     public javax.swing.JTextField fieldKeyword;
-    private javax.swing.JTextField fieldNameValues;
-    private javax.swing.JTextField fieldRow;
+    public javax.swing.JTextField fieldNameValues;
+    public javax.swing.JTextField fieldRow;
     private javax.swing.JTextField fieldTemperature;
     public javax.swing.JButton finishButton;
     private javax.swing.JMenuItem itemAddMoreFiles;
@@ -2601,7 +1044,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     public javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JList<String> listValues;
+    public javax.swing.JList<String> listValues;
     public javax.swing.JButton orderAsc;
     public javax.swing.JButton orderDesc;
     public javax.swing.JTabbedPane tabPaneSCF;

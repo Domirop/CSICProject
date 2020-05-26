@@ -34,7 +34,7 @@ public class SCFTable {
         this.fd = fd;
     }
 
-    public void SCFTable(String keyword) {
+    public void addSCFTable(String keyword) {
         fd.tabPaneSCF.add(keyword, initSCFTable());
     }
 
