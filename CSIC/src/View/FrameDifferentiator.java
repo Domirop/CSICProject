@@ -5,20 +5,11 @@
  */
 package View;
 
-import Model.Atomo.FileData;
-import java.awt.Font;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JViewport;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 import Controller.ControllerInt;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -31,7 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import javax.swing.JTabbedPane;
+import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -63,7 +55,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     DecorateFrame decorate = new DecorateFrame(this);
     SCFTable scf = new SCFTable(this);
     AverageTable avg = new AverageTable(this);
-    ElementsDragAndDrop edd = new ElementsDragAndDrop(this);  
+    ElementsDragAndDrop edd = new ElementsDragAndDrop(this);
     AddTablesEvent ate = new AddTablesEvent(this, decorate, scf, avg);
     CSV csv = new CSV(this);
     Order od = new Order(this);
@@ -71,7 +63,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     protected String temperature = "298.15";
     public List<String> colAndRows = new ArrayList<>();
     JTable tableGeneric;
-    
+
     public FrameDifferentiator(ControllerInt controller) {
         initComponents();
         this.controller = controller;
@@ -715,7 +707,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
-       decorate.buttonDelete();
+        decorate.buttonDelete();
     }//GEN-LAST:event_itemResetActionPerformed
 
     /**
@@ -724,7 +716,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-          decorate.buttonDelete();
+        decorate.buttonDelete();
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
     /**
@@ -857,6 +849,20 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             buttonRemoveTable.setToolTipText(null);
 
         }
+        if (tabbedPane.getComponentCount()>1) {
+            JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
+            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+            JViewport viewport = scrollPane.getViewport();
+            JTable myTable = (JTable) viewport.getView();
+            if (specialTables.contains(myTable)) {
+                orderAsc.setEnabled(true);
+                orderDesc.setEnabled(true);
+            } else {
+                orderAsc.setEnabled(false);
+                orderDesc.setEnabled(false);
+            }
+        }
+
 
     }//GEN-LAST:event_tabbedPaneStateChanged
 
@@ -976,27 +982,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     private void buttonAverageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAverageActionPerformed
         avg.buttonAverageActionPerformed(evt);
-//        JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
-//        if (myPanel.getComponentCount() == 1) {
-//            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-//            JViewport viewport = scrollPane.getViewport();
-//            JTable myTable = (JTable) viewport.getView();
-//            if (myTable.getSelectedRowCount() == 3) {
-//                averageTableNotExist(myTable);
-//
-//            } else {
-//                errorText.setText("Sorry, but you need check 3 rows");
-//            }
-//        } else {
-//            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(1);
-//            JViewport viewport = scrollPane.getViewport();
-//            JTable myTable = (JTable) viewport.getView();
-//            if (myTable.getSelectedRowCount() == 3) {
-//                averageTableExist(myTable);
-//            } else {
-//                errorText.setText("Sorry, but you need check 3 rows in second table.");
-//            }
-//        }
     }//GEN-LAST:event_buttonAverageActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
