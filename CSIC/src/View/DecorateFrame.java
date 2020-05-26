@@ -210,38 +210,6 @@ public class DecorateFrame {
 
     }
     
-    public void buttonDelete(){
-        fd.errorText.setText("");
-        fd.multiTable = false;
-        fd.errorText.setForeground(Color.red);
-        fd.tabbedPane.removeAll();
-        fd.fieldKeyword.setText("");
-        fd.usedFiles.clear();
-        fd.normalTables.clear();
-        fd.specialTables.clear();
-        fd.usedTables.clear();
-        fd.rows.clear();
-        fd.colAndRows.clear();
-        fd.keywordsUsed.clear();
-        fd.itemSearchValue.setEnabled(false);
-        fd.tabbedPane.addTab("Average", fd.panelGeneric);
-        fd.tabbedPane.setVisible(false);
-        fd.orderDesc.setVisible(false);
-        fd.orderAsc.setVisible(false);
-        fd.buttonExportCSV.setVisible(false);
-        fd.buttonRemoveTable.setVisible(false);
-        fd.buttonAverage.setVisible(false);
-        fd.buttonDelete.setVisible(false);
-        fd.panelGeneric.removeAll();
-        fd.tabPaneSCF.removeAll();
-        fd.tableGeneric = null;
-        fd.buttonValue.setVisible(false);
-        fd.itemReset.setEnabled(false);
-        fd.itemExport.setEnabled(false);
-        fd.itemSCF.setEnabled(false);
-        fd.itemChangeTemperature.setEnabled(true);
-    }
-    
     public void removeTable(){
         String name = fd.tabbedPane.getTitleAt(fd.tabbedPane.getSelectedIndex());
         JPanel genericPane = (JPanel) (fd.tabbedPane.getComponentAt(0));

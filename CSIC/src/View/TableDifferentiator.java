@@ -7,6 +7,9 @@ package View;
 
 import Model.Atomo.FileData;
 import java.awt.Font;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
@@ -80,7 +83,7 @@ public class TableDifferentiator {
         table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
         return table;
     }
-    
+
     /**
      * Method used to add rows to the myTable.
      *
@@ -114,10 +117,15 @@ public class TableDifferentiator {
                 data.clear();
                 for (int j = 1; j < fileData.size() + 1; j++) {
                     if (j == 1) {
-                        data.add(fileData.get(j - 1).getAtoms().get(i).getGaussianData());
+                        data.add(Integer.parseInt(fileData.get(j - 1).getAtoms().get(i).getGaussianData()));
                         data.add(fileData.get(j - 1).getAtoms().get(i).getAtom());
                     }
-                    data.add(fileData.get(j - 1).getAtoms().get(i).getIsotropic());
+                    DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
+                    otherSymbols.setDecimalSeparator('.');
+                    otherSymbols.setGroupingSeparator(',');
+                    DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                    df.setRoundingMode(RoundingMode.CEILING);
+                    data.add(Double.parseDouble(String.valueOf(df.format(fileData.get(j - 1).getAtoms().get(i).getIsotropic()))));
                 }
                 model.addRow(data.toArray(new Object[0]));
             }

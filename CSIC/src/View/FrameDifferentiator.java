@@ -707,7 +707,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
-        decorate.buttonDelete();
+        FrameDifferentiator frameDiff = new FrameDifferentiator(files, filesData, controller);
+        frameDiff.setVisible(true);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);
+        this.dispose();
     }//GEN-LAST:event_itemResetActionPerformed
 
     /**
@@ -716,7 +720,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-        decorate.buttonDelete();
+        FrameDifferentiator frameDiff = new FrameDifferentiator(files, filesData, controller);
+        frameDiff.setVisible(true);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);
+        this.dispose();
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
     /**
@@ -849,7 +857,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             buttonRemoveTable.setToolTipText(null);
 
         }
-        if (tabbedPane.getComponentCount()>1) {
+        if (tabbedPane.getTabCount() > 1) {
             JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
             JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
             JViewport viewport = scrollPane.getViewport();
@@ -981,6 +989,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_itemSCFActionPerformed
 
     private void buttonAverageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAverageActionPerformed
+        errorText.setForeground(Color.RED);
         avg.buttonAverageActionPerformed(evt);
     }//GEN-LAST:event_buttonAverageActionPerformed
 

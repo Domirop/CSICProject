@@ -137,7 +137,7 @@ public class AverageTable {
         for (int i = 0; i < molecule.getResult().size(); i++) {
             if (fd.keywordsUsed.size() == 1) {
                 List<Object> values = new ArrayList<>();
-                values.add(molecule.getResult().get(i).getGaussian());
+                values.add(Integer.parseInt(molecule.getResult().get(i).getGaussian()));
                 values.add(molecule.getResult().get(i).getAtom());
                 double value = molecule.getResult().get(i).getValue();
                 DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
@@ -145,7 +145,7 @@ public class AverageTable {
                 otherSymbols.setGroupingSeparator(',');
                 DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
                 df.setRoundingMode(RoundingMode.CEILING);
-                values.add(String.valueOf(df.format(value)));
+                values.add(Double.parseDouble(String.valueOf(df.format(value))));
                 fd.rows.add(values);
             } else {
                 List<Object> values = new ArrayList<>(auxList.get(i));
@@ -155,7 +155,7 @@ public class AverageTable {
                 otherSymbols.setGroupingSeparator(',');
                 DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
                 df.setRoundingMode(RoundingMode.CEILING);
-                values.add(String.valueOf(df.format(value)));
+                values.add(Double.parseDouble(String.valueOf(df.format(value))));
                 fd.rows.add(values);
             }
         }
@@ -165,34 +165,48 @@ public class AverageTable {
         });
 
     }
-    
+
     /**
      * Checks if the average table exists
-     * @param myTable 
+     *
+     * @param myTable
      */
     private void averageTableExist(JTable myTable) {
         int firstIndex = myTable.getSelectedRows()[0];
         int secondIndex = myTable.getSelectedRows()[1];
         int thirdIndex = myTable.getSelectedRows()[2];
-        String gaussians = myTable.getValueAt(firstIndex, 0).toString() + "-"
-                + myTable.getValueAt(secondIndex, 0).toString() + "-"
-                + myTable.getValueAt(thirdIndex, 0).toString();
-        myTable.setValueAt(gaussians, firstIndex, 0);
-        for (int i = 2; i < myTable.getColumnCount(); i++) {
-            Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, i).toString())
-                    + Double.parseDouble(myTable.getValueAt(secondIndex, i).toString())
-                    + Double.parseDouble(myTable.getValueAt(thirdIndex, i).toString())) / 3;
-            myTable.setValueAt(averageValue, firstIndex, i);
+        try {
+            Integer.parseInt(String.valueOf(myTable.getValueAt(firstIndex, 0)));
+            Integer.parseInt(String.valueOf(myTable.getValueAt(secondIndex, 0)));
+            Integer.parseInt(String.valueOf(myTable.getValueAt(thirdIndex, 0)));
+            String gaussians = myTable.getValueAt(firstIndex, 0).toString() + "-"
+                    + myTable.getValueAt(secondIndex, 0).toString() + "-"
+                    + myTable.getValueAt(thirdIndex, 0).toString();
+            myTable.setValueAt(gaussians, firstIndex, 0);
+            for (int i = 2; i < myTable.getColumnCount(); i++) {
+                Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, i).toString())
+                        + Double.parseDouble(myTable.getValueAt(secondIndex, i).toString())
+                        + Double.parseDouble(myTable.getValueAt(thirdIndex, i).toString())) / 3;
+                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
+                otherSymbols.setDecimalSeparator('.');
+                otherSymbols.setGroupingSeparator(',');
+                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                df.setRoundingMode(RoundingMode.CEILING);
+                myTable.setValueAt(Double.parseDouble(String.valueOf(df.format(averageValue))), firstIndex, i);
+            }
+            DefaultTableModel df = (DefaultTableModel) myTable.getModel();
+            df.removeRow(thirdIndex);
+            df.removeRow(secondIndex);
+            fd.multiTable = true;
+        } catch (Exception e) {
+            fd.errorText.setText("Some of this values have already been averaged");
         }
-        DefaultTableModel df = (DefaultTableModel) myTable.getModel();
-        df.removeRow(thirdIndex);
-        df.removeRow(secondIndex);
-        fd.multiTable = true;
     }
 
     /**
      * Checks if the average table does not exist
-     * @param myTable 
+     *
+     * @param myTable
      */
     private void averageTableNotExist(JTable myTable) {
         List<List<Object>> values = new ArrayList<>();
@@ -218,7 +232,12 @@ public class AverageTable {
                         Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, j).toString())
                                 + Double.parseDouble(myTable.getValueAt(secondIndex, j).toString())
                                 + Double.parseDouble(myTable.getValueAt(thirdIndex, j).toString())) / 3;
-                        localRows.add(averageValue);
+                        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
+                        otherSymbols.setDecimalSeparator('.');
+                        otherSymbols.setGroupingSeparator(',');
+                        DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                        df.setRoundingMode(RoundingMode.CEILING);
+                        localRows.add(Double.parseDouble(String.valueOf(df.format(averageValue))));
                     }
                 } else {
                     localRows.add(myTable.getValueAt(i, j).toString());
@@ -231,7 +250,6 @@ public class AverageTable {
             } else {
                 values.add(localRows);
             }
-
         }
 
         String[] headerValues = new String[myTable.getColumnCount()];
@@ -268,7 +286,6 @@ public class AverageTable {
             }
         ;
         };
-        averageTable.setAutoCreateRowSorter(true);
         for (List<Object> value : values) {
             Object[] datas = value.toArray();
             modelAverage.addRow(datas);
@@ -303,8 +320,8 @@ public class AverageTable {
     }
 
     /**
-     * 
-     * @param evt 
+     *
+     * @param evt
      */
     public void buttonAverageActionPerformed(ActionEvent evt) {
         JPanel myPanel = (JPanel) (fd.tabbedPane.getSelectedComponent());

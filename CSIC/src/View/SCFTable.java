@@ -53,15 +53,10 @@ public class SCFTable {
         DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
         df.setRoundingMode(RoundingMode.CEILING);
 
-        
         for (FileData fileData : fd.controller.getFileData(fd.usedFiles, Double.valueOf(fd.temperature))) {
-            System.out.println(fileData.getFileName());
-            System.out.println(df.format(fileData.getContribution()));
-            System.out.println(df.format(fileData.getEnergyValue()));
-            
             nameFiles.add(fileData.getFileName());
-            contribution.add(df.format(fileData.getContribution()));
-            SCF.add(df.format(fileData.getEnergyValue()));
+            contribution.add(Double.parseDouble(df.format(fileData.getContribution())));
+            SCF.add(Double.parseDouble(df.format(fileData.getEnergyValue())));
         }
         Object[][] data = new Object[][]{
             contribution.toArray(new Object[0]),
@@ -120,7 +115,6 @@ public class SCFTable {
                 column.setMinWidth(250);
             }
         }
-
         tableSCF.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         JScrollPane scrollpaneGeneric = new JScrollPane(tableSCF, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         JPanel panel = new JPanel();

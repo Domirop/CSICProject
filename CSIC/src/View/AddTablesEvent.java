@@ -191,12 +191,12 @@ public class AddTablesEvent {
             molList.add(mole);
         }
 
-        List<List<String>> rows = new ArrayList<>();
+        List<List<Object>> rows = new ArrayList<>();
         for (int i = 0; i < fd.colAndRows.size(); i++) {
-            List<String> val = new ArrayList<>();
+            List<Object> val = new ArrayList<>();
             String[] coord = fd.colAndRows.get(i).split(",");
-            val.add(coord[0]);
-            val.add(coord[1]);
+            val.add(Integer.parseInt(coord[0]));
+            val.add(Integer.parseInt(coord[1]));
             for (int j = 0; j < molList.size(); j++) {
                 double value = molList.get(j).getResult().get(i).getValue();
                 DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
@@ -204,7 +204,7 @@ public class AddTablesEvent {
                 otherSymbols.setGroupingSeparator(',');
                 DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
                 df.setRoundingMode(RoundingMode.CEILING);
-                val.add(String.valueOf(df.format(value)));
+                val.add(Double.parseDouble(String.valueOf(df.format(value))));
             }
             rows.add(val);
         }
@@ -224,6 +224,7 @@ public class AddTablesEvent {
 
     /**
      * This method add element to the JList of the dialogCoordinates.
+     * @param rowCount numbers of rowCount.
      */
     public void addValueToList(int rowCount) {
         String regex = "\\d+";
@@ -241,7 +242,7 @@ public class AddTablesEvent {
                     fd.errorDialogCoor.setText("<html><body>The value of the row must be greater than the column value.</body></html>");
                 }
             } else {
-                fd.errorDialogCoor.setText("<html><body>The value of the column and row must be greater than the number gaussians.</body></html>");
+                fd.errorDialogCoor.setText("<html><body>The value of the column and row must be smaller than the number gaussians.</body></html>");
 
             }
         } else {
@@ -347,6 +348,8 @@ public class AddTablesEvent {
                         }
                         actionButtonAdd(charact);
                     }
+                }else{
+                    fd.errorText.setText("The format is (number-number)");
                 }
                 break;
             case "Range ends with":

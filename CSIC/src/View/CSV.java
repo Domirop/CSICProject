@@ -28,7 +28,6 @@ public class CSV {
     }
     
     public void exportCSV(){
-        fd.errorText.setForeground(Color.red);
         String folder = "";
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

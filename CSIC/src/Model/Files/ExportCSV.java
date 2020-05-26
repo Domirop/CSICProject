@@ -62,7 +62,6 @@ public class ExportCSV {
                     .forEach(pw::println);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }
