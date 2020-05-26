@@ -23,10 +23,16 @@ import javax.swing.TransferHandler;
 class ListTransferHandler extends TransferHandler {
 
     FrameDifferentiator fr;
+    ElementsDragAndDrop edd;
 
     public ListTransferHandler(FrameDifferentiator fr) {
         this.fr = fr;
     }
+
+    public ListTransferHandler(ElementsDragAndDrop edd) {
+        this.edd = edd;
+    }
+    
 
     /**
      * Perform the actual data import.
@@ -90,15 +96,15 @@ class ListTransferHandler extends TransferHandler {
                                 }
                             }
                         } else {
-                            fr.setErrorDialogCoor("<html><body>The value of the row must be greater than the column value.</body></html>");
+                            edd.setErrorDialogCoor("<html><body>The value of the row must be greater than the column value.</body></html>");
                             return true;
                         }
                     } else {
-                        fr.setErrorDialogCoor("<html><body>The value of the column and row must be greater than the number gaussians.</body></html>");
+                        edd.setErrorDialogCoor("<html><body>The value of the column and row must be greater than the number gaussians.</body></html>");
                         return true;
                     }
                 } else {
-                    fr.setErrorDialogCoor("<html><body>Incorrect values. Correct format is (number,number).)</body></html>");
+                    edd.setErrorDialogCoor("<html><body>Incorrect values. Correct format is (number,number).)</body></html>");
                     return true;
                 }
             }

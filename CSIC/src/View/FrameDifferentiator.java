@@ -12,18 +12,14 @@ import java.awt.GridLayout;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import javax.swing.Action;
-import javax.swing.ActionMap;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
-import javax.swing.TransferHandler;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -32,19 +28,7 @@ import javax.swing.table.TableModel;
 import Controller.ControllerInt;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.dnd.DnDConstants;
-import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -52,11 +36,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.swing.Box;
 import javax.swing.JFileChooser;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -85,6 +66,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     protected ControllerInt controller;
     protected boolean multiTable = false;
     protected boolean searchAdded = false;
+    
+    
+    DecorateFrame decorate = new DecorateFrame(this);
+    SCFTable scf = new SCFTable(this);
+    AverageTable avg = new AverageTable(this);
+    ElementsDragAndDrop edd = new ElementsDragAndDrop(this);
+    
+    
+    
 
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     protected String temperature = "298.15";
@@ -98,218 +88,217 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
-        this.setSize(1080, 480);
-        jMenuBar1.add(buttonValue);
-        jMenuBar1.add(buttonExportCSV);
-        jMenuBar1.add(orderDesc);
-        jMenuBar1.add(orderAsc);
-        jMenuBar1.add(buttonRemoveTable);
-        jMenuBar1.add(buttonAverage);
-        jMenuBar1.add(buttonDelete);
-        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+//        this.setSize(1080, 480);
+//        jMenuBar1.add(buttonValue);
+//        jMenuBar1.add(buttonExportCSV);
+//        jMenuBar1.add(orderDesc);
+//        jMenuBar1.add(orderAsc);
+//        jMenuBar1.add(buttonRemoveTable);
+//        jMenuBar1.add(buttonAverage);
+//        jMenuBar1.add(buttonDelete);
+//        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         ListTransferHandler lh = new ListTransferHandler(this);
         listValues.setModel(new DefaultListModel());
         listValues.setDragEnabled(true);
         listValues.setTransferHandler(lh);
         listValues.setDropMode(DropMode.ON_OR_INSERT);
-        setMappings(listValues);
-        comboOptions.setFocusable(false);
-        buttonAddValue.setFocusable(false);
-        buttonRemoveItem.setFocusable(false);
-        buttonAverage.setFocusable(false);
-        finishButton.setFocusable(false);
+        edd.setMappings(listValues);
+//        comboOptions.setFocusable(false);
+//        buttonAddValue.setFocusable(false);
+//        buttonRemoveItem.setFocusable(false);
+//        buttonAverage.setFocusable(false);
+//        finishButton.setFocusable(false);
         //listValues.setFocusable(false);
         this.controller = controller;
-        panelGeneric.setLayout(new GridLayout(0, 1));
-        tabbedPane.addTab("Average", panelGeneric);
-        tabbedPane.setVisible(false);
-        orderDesc.setVisible(false);
-        orderAsc.setVisible(false);
-        buttonValue.setVisible(false);
-        itemExport.setEnabled(false);
-        itemReset.setEnabled(false);
-        itemChangeTemperature.setEnabled(true);
-        buttonExportCSV.setVisible(false);
-        buttonRemoveTable.setVisible(false);
-        buttonAverage.setVisible(false);
-        buttonDelete.setVisible(false);
+//        panelGeneric.setLayout(new GridLayout(0, 1));
+//        tabbedPane.addTab("Average", panelGeneric);
+//        tabbedPane.setVisible(false);
+//        orderDesc.setVisible(false);
+//        orderAsc.setVisible(false);
+//        buttonValue.setVisible(false);
+//        itemExport.setEnabled(false);
+//        itemReset.setEnabled(false);
+//        itemChangeTemperature.setEnabled(true);
+//        buttonExportCSV.setVisible(false);
+//        buttonRemoveTable.setVisible(false);
+//        buttonAverage.setVisible(false);
+//        buttonDelete.setVisible(false);
         this.files = files;
-        itemSearchValue.setEnabled(false);
-        this.errorText.setVisible(true);
+//        itemSearchValue.setEnabled(false);
+//        this.errorText.setVisible(true);
         this.filesData = filesData;
-        itemSCF.setEnabled(false);
-        if (!buttonRemoveTable.isEnabled()) {
-            buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
-        }
-        addIcons();
+//        itemSCF.setEnabled(false);
+//        if (!buttonRemoveTable.isEnabled()) {
+//            buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
+//        }
+        decorate.addIcons();
+        decorate.initElements();
     }
 
-    public void addIcons() {
+//    public void addIcons() {
+//
+//        ImageIcon imageIcon;
+//        try {
+//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/rightarrow.png"))); // load the image to a imageIcon
+//
+//            Image imageadd = imageIcon.getImage(); // transform it 
+//            Image newimgadd = imageadd.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+//            imageIcon = new ImageIcon(newimgadd);  // transform it back
+//            buttonAdd.setIcon(imageIcon);
+//
+//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/search.png"))); // load the image to a imageIcon
+//            Image imagesearch = imageIcon.getImage(); // transform it 
+//            Image newimgsearch = imagesearch.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+//            imageIcon = new ImageIcon(newimgsearch);  // transform it back
+//            buttonValue.setIcon(imageIcon);
+//
+//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/csv.png"))); // load the image to a imageIcon
+//            Image imagecsv = imageIcon.getImage(); // transform it 
+//            Image newimgcsv = imagecsv.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+//            imageIcon = new ImageIcon(newimgcsv);  // transform it back
+//            buttonExportCSV.setIcon(imageIcon);
+//
+//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/reset.png"))); // load the image to a imageIcon
+//            Image imagereset = imageIcon.getImage(); // transform it 
+//            Image newimgreset = imagereset.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+//            imageIcon = new ImageIcon(newimgreset);  // transform it back
+//            buttonDelete.setIcon(imageIcon);
+//
+//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/delete.png"))); // load the image to a imageIcon
+//            Image imagedelete = imageIcon.getImage(); // transform it 
+//            Image newimgdelete = imagedelete.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+//            imageIcon = new ImageIcon(newimgdelete);  // transform it back
+//            buttonRemoveTable.setIcon(imageIcon);
+//
+//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/increase.png"))); // load the image to a imageIcon
+//            Image imageincrease = imageIcon.getImage(); // transform it 
+//            Image newimgincrease = imageincrease.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+//            imageIcon = new ImageIcon(newimgincrease);  // transform it back
+//            orderAsc.setIcon(imageIcon);
+//
+//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/decrease.png"))); // load the image to a imageIcon
+//            Image imagedecrease = imageIcon.getImage(); // transform it 
+//            Image newimgdecrease = imagedecrease.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+//            imageIcon = new ImageIcon(newimgdecrease);  // transform it back
+//            orderDesc.setIcon(imageIcon);
+//
+//            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/average.png"))); // load the image to a imageIcon
+//            Image imageaverage = imageIcon.getImage(); // transform it 
+//            Image newimgaverage = imageaverage.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+//            imageIcon = new ImageIcon(newimgaverage);  // transform it back
+//            buttonAverage.setIcon(imageIcon);
+//
+//            this.repaint();
+//
+//        } catch (IOException ex) {
+//        }
+//    }
+//    /**
+//     * This method is used for ability the functions drop to add new files.
+//     */
+//    private void enableDragAndDrop() {
+//        DropTarget target = new DropTarget(textAreaMoreFiles, new DropTargetListener() {
+//            public void dragEnter(DropTargetDragEvent e) {
+//            }
+//
+//            public void dragExit(DropTargetEvent e) {
+//            }
+//
+//            public void dragOver(DropTargetDragEvent e) {
+//            }
+//
+//            public void dropActionChanged(DropTargetDragEvent e) {
+//            }
+//
+//            public void drop(DropTargetDropEvent e) {
+//                BufferedImage bi = null;
+//                decorate.decorate(textAreaMoreFiles, bi);
+//                try {
+//                    e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+//                    List list = (java.util.List) e.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+//                    list.forEach(v -> {
+//                        File file = (File) v;
+//                        if (filesTypes.contains(file.getName().split("\\.")[1])) {
+//                            textAreaMoreFiles.append(file.getName() + "\n");
+//                            filesData.add(file);
+//                        }
+//                    });
+//                    dialogAddMoreFiles.pack();
+//                    dialogAddMoreFiles.revalidate();
+//                    dialogAddMoreFiles.repaint();
+//                } catch (Exception ex) {
+//                }
+//            }
+//        });
+//    }
 
-        ImageIcon imageIcon;
-        try {
-            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/rightarrow.png"))); // load the image to a imageIcon
+//    /**
+//     * this method decorate de textArea to the dialogAddMoreFiles.
+//     *
+//     * @param a The textArea will be decorate.
+//     * @param img The image which you want decorate.
+//     */
+//    public void decorate(JTextArea a, final BufferedImage img) {
+//        if (img != null) {
+//            int x = (dialogAddMoreFiles.getPreferredSize().width - img.getWidth(null) - 20) / 2;
+//            int y = (dialogAddMoreFiles.getPreferredSize().height - img.getHeight(null)) / 4;
+//            a.setUI(new javax.swing.plaf.basic.BasicTextAreaUI() {
+//                @Override
+//                protected void paintBackground(Graphics g) {
+//                    g.drawImage(img, x, y, null);
+//                }
+//            });
+//            a.setPreferredSize(new Dimension(img.getWidth(), img.getHeight()));
+//        } else {
+//            a.setUI(new javax.swing.plaf.basic.BasicTextAreaUI() {
+//                @Override
+//                protected void paintBackground(Graphics g) {
+//                    g.drawString("", 0, 0);
+//                }
+//            });
+//        }
+//        a.setForeground(Color.black);
+//        a.setCaretColor(Color.lightGray);
+//        a.setEditable(false);
+//        dialogAddMoreFiles.setResizable(false);
+//    }
+//    /**
+//     * This method used to recharge the List of the dialogCoordinates when you
+//     * copy an paste elements in JList.
+//     *
+//     * @param row Reference of the coordinates.
+//     * @param column Reference of the coordinates.
+//     */
+//    public void addElementsToRows(int row, int column) {
+//        coorValues.add(row + "," + column);
+//        colAndRows.add(row + "," + column);
+//        errorDialogCoor.setText("");
+//    }
+//
+//    /**
+//     * This method used to control the textError of the dialogCoordinates when
+//     * you copy an paste elements in JList.
+//     *
+//     * @param string The message which you want put
+//     */
+//    public void setErrorDialogCoor(String string) {
+//        this.errorDialogCoor.setText(string);
+//    }
 
-            Image imageadd = imageIcon.getImage(); // transform it 
-            Image newimgadd = imageadd.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-            imageIcon = new ImageIcon(newimgadd);  // transform it back
-            buttonAdd.setIcon(imageIcon);
-
-            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/search.png"))); // load the image to a imageIcon
-            Image imagesearch = imageIcon.getImage(); // transform it 
-            Image newimgsearch = imagesearch.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-            imageIcon = new ImageIcon(newimgsearch);  // transform it back
-            buttonValue.setIcon(imageIcon);
-
-            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/csv.png"))); // load the image to a imageIcon
-            Image imagecsv = imageIcon.getImage(); // transform it 
-            Image newimgcsv = imagecsv.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-            imageIcon = new ImageIcon(newimgcsv);  // transform it back
-            buttonExportCSV.setIcon(imageIcon);
-
-            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/reset.png"))); // load the image to a imageIcon
-            Image imagereset = imageIcon.getImage(); // transform it 
-            Image newimgreset = imagereset.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-            imageIcon = new ImageIcon(newimgreset);  // transform it back
-            buttonDelete.setIcon(imageIcon);
-
-            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/delete.png"))); // load the image to a imageIcon
-            Image imagedelete = imageIcon.getImage(); // transform it 
-            Image newimgdelete = imagedelete.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-            imageIcon = new ImageIcon(newimgdelete);  // transform it back
-            buttonRemoveTable.setIcon(imageIcon);
-
-            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/increase.png"))); // load the image to a imageIcon
-            Image imageincrease = imageIcon.getImage(); // transform it 
-            Image newimgincrease = imageincrease.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-            imageIcon = new ImageIcon(newimgincrease);  // transform it back
-            orderAsc.setIcon(imageIcon);
-
-            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/decrease.png"))); // load the image to a imageIcon
-            Image imagedecrease = imageIcon.getImage(); // transform it 
-            Image newimgdecrease = imagedecrease.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-            imageIcon = new ImageIcon(newimgdecrease);  // transform it back
-            orderDesc.setIcon(imageIcon);
-
-            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/average.png"))); // load the image to a imageIcon
-            Image imageaverage = imageIcon.getImage(); // transform it 
-            Image newimgaverage = imageaverage.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-            imageIcon = new ImageIcon(newimgaverage);  // transform it back
-            buttonAverage.setIcon(imageIcon);
-
-            this.repaint();
-
-        } catch (IOException ex) {
-        }
-    }
-
-    /**
-     * This method is used for ability the functions drop to add new files.
-     */
-    private void enableDragAndDrop() {
-        DropTarget target = new DropTarget(textAreaMoreFiles, new DropTargetListener() {
-            public void dragEnter(DropTargetDragEvent e) {
-            }
-
-            public void dragExit(DropTargetEvent e) {
-            }
-
-            public void dragOver(DropTargetDragEvent e) {
-            }
-
-            public void dropActionChanged(DropTargetDragEvent e) {
-            }
-
-            public void drop(DropTargetDropEvent e) {
-                BufferedImage bi = null;
-                decorate(textAreaMoreFiles, bi);
-                try {
-                    e.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-                    List list = (java.util.List) e.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                    list.forEach(v -> {
-                        File file = (File) v;
-                        if (filesTypes.contains(file.getName().split("\\.")[1])) {
-                            textAreaMoreFiles.append(file.getName() + "\n");
-                            filesData.add(file);
-                        }
-                    });
-                    dialogAddMoreFiles.pack();
-                    dialogAddMoreFiles.revalidate();
-                    dialogAddMoreFiles.repaint();
-                } catch (Exception ex) {
-                }
-            }
-        });
-    }
-
-    /**
-     * this method decorate de textArea to the dialogAddMoreFiles.
-     *
-     * @param a The textArea will be decorate.
-     * @param img The image which you want decorate.
-     */
-    public void decorate(JTextArea a, final BufferedImage img) {
-        if (img != null) {
-            int x = (dialogAddMoreFiles.getPreferredSize().width - img.getWidth(null) - 20) / 2;
-            int y = (dialogAddMoreFiles.getPreferredSize().height - img.getHeight(null)) / 4;
-            a.setUI(new javax.swing.plaf.basic.BasicTextAreaUI() {
-                @Override
-                protected void paintBackground(Graphics g) {
-                    g.drawImage(img, x, y, null);
-                }
-            });
-            a.setPreferredSize(new Dimension(img.getWidth(), img.getHeight()));
-        } else {
-            a.setUI(new javax.swing.plaf.basic.BasicTextAreaUI() {
-                @Override
-                protected void paintBackground(Graphics g) {
-                    g.drawString("", 0, 0);
-                }
-            });
-        }
-        a.setForeground(Color.black);
-        a.setCaretColor(Color.lightGray);
-        a.setEditable(false);
-        dialogAddMoreFiles.setResizable(false);
-    }
-
-    /**
-     * This method used to recharge the List of the dialogCoordinates when you
-     * copy an paste elements in JList.
-     *
-     * @param row Reference of the coordinates.
-     * @param column Reference of the coordinates.
-     */
-    public void addElementsToRows(int row, int column) {
-        coorValues.add(row + "," + column);
-        colAndRows.add(row + "," + column);
-        errorDialogCoor.setText("");
-    }
-
-    /**
-     * This method used to control the textError of the dialogCoordinates when
-     * you copy an paste elements in JList.
-     *
-     * @param string The message which you want put
-     */
-    public void setErrorDialogCoor(String string) {
-        this.errorDialogCoor.setText(string);
-    }
-
-    /**
-     * This methos use to map the element you copy to elements of the JList,
-     *
-     * @param list JList when element you copy will be paste.
-     */
-    private void setMappings(JList list) {
-        ActionMap map = list.getActionMap();
-        map.put(TransferHandler.getCutAction().getValue(Action.NAME),
-                TransferHandler.getCutAction());
-        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),
-                TransferHandler.getCopyAction());
-        map.put(TransferHandler.getPasteAction().getValue(Action.NAME),
-                TransferHandler.getPasteAction());
-    }
+//    /**
+//     * This method use to map the element you copy to elements of the JList,
+//     *
+//     * @param list JList when element you copy will be paste.
+//     */
+//    private void setMappings(JList list) {
+//        ActionMap map = list.getActionMap();
+//        map.put(TransferHandler.getCutAction().getValue(Action.NAME),
+//                TransferHandler.getCutAction());
+//        map.put(TransferHandler.getCopyAction().getValue(Action.NAME),
+//                TransferHandler.getCopyAction());
+//        map.put(TransferHandler.getPasteAction().getValue(Action.NAME),
+//                TransferHandler.getPasteAction());
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -1396,35 +1385,36 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-        errorText.setText("");
-        multiTable = false;
-        errorText.setForeground(Color.red);
-        tabbedPane.removeAll();
-        fieldKeyword.setText("");
-        usedFiles.clear();
-        normalTables.clear();
-        specialTables.clear();
-        usedTables.clear();
-        rows.clear();
-        colAndRows.clear();
-        keywordsUsed.clear();
-        itemSearchValue.setEnabled(false);
-        tabbedPane.addTab("Average", panelGeneric);
-        tabbedPane.setVisible(false);
-        orderDesc.setVisible(false);
-        orderAsc.setVisible(false);
-        buttonExportCSV.setVisible(false);
-        buttonRemoveTable.setVisible(false);
-        buttonAverage.setVisible(false);
-        buttonDelete.setVisible(false);
-        panelGeneric.removeAll();
-        tabPaneSCF.removeAll();
-        tableGeneric = null;
-        buttonValue.setVisible(false);
-        itemReset.setEnabled(false);
-        itemExport.setEnabled(false);
-        itemSCF.setEnabled(false);
-        itemChangeTemperature.setEnabled(true);
+          decorate.buttonDeleteActionPerformed(evt);
+//        errorText.setText("");
+//        multiTable = false;
+//        errorText.setForeground(Color.red);
+//        tabbedPane.removeAll();
+//        fieldKeyword.setText("");
+//        usedFiles.clear();
+//        normalTables.clear();
+//        specialTables.clear();
+//        usedTables.clear();
+//        rows.clear();
+//        colAndRows.clear();
+//        keywordsUsed.clear();
+//        itemSearchValue.setEnabled(false);
+//        tabbedPane.addTab("Average", panelGeneric);
+//        tabbedPane.setVisible(false);
+//        orderDesc.setVisible(false);
+//        orderAsc.setVisible(false);
+//        buttonExportCSV.setVisible(false);
+//        buttonRemoveTable.setVisible(false);
+//        buttonAverage.setVisible(false);
+//        buttonDelete.setVisible(false);
+//        panelGeneric.removeAll();
+//        tabPaneSCF.removeAll();
+//        tableGeneric = null;
+//        buttonValue.setVisible(false);
+//        itemReset.setEnabled(false);
+//        itemExport.setEnabled(false);
+//        itemSCF.setEnabled(false);
+//        itemChangeTemperature.setEnabled(true);
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
     /**
@@ -1868,13 +1858,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt Event when the user press in the item.
      */
     private void itemAddMoreFilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAddMoreFilesActionPerformed
-        enableDragAndDrop();
+        edd.enableDragAndDrop();
         BufferedImage bi = null;
         try {
             bi = ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/add-file.png"));
         } catch (IOException ex) {
         }
-        decorate(textAreaMoreFiles, bi);
+        decorate.decorate(textAreaMoreFiles, bi);
         dialogAddMoreFiles.setVisible(true);
         dialogAddMoreFiles.pack();
         dialogAddMoreFiles.revalidate();
@@ -1894,7 +1884,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         int returnVal = fileChooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             BufferedImage bi = null;
-            decorate(textAreaMoreFiles, bi);
+            decorate.decorate(textAreaMoreFiles, bi);
             File[] files = fileChooser.getSelectedFiles();
             for (File file : files) {
                 textAreaMoreFiles.append(file.getName() + "\n");
@@ -1955,248 +1945,249 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_itemSCFActionPerformed
 
     private void buttonAverageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAverageActionPerformed
-        JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
-        if (myPanel.getComponentCount() == 1) {
-            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-            JViewport viewport = scrollPane.getViewport();
-            JTable myTable = (JTable) viewport.getView();
-            if (myTable.getSelectedRowCount() == 3) {
-                averageTableNotExist(myTable);
-
-            } else {
-                errorText.setText("Sorry, but you need check 3 rows");
-            }
-        } else {
-            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(1);
-            JViewport viewport = scrollPane.getViewport();
-            JTable myTable = (JTable) viewport.getView();
-            if (myTable.getSelectedRowCount() == 3) {
-                averageTableExist(myTable);
-            } else {
-                errorText.setText("Sorry, but you need check 3 rows in second table.");
-            }
-        }
+        avg.buttonAverageActionPerformed(evt);
+//        JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
+//        if (myPanel.getComponentCount() == 1) {
+//            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+//            JViewport viewport = scrollPane.getViewport();
+//            JTable myTable = (JTable) viewport.getView();
+//            if (myTable.getSelectedRowCount() == 3) {
+//                averageTableNotExist(myTable);
+//
+//            } else {
+//                errorText.setText("Sorry, but you need check 3 rows");
+//            }
+//        } else {
+//            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(1);
+//            JViewport viewport = scrollPane.getViewport();
+//            JTable myTable = (JTable) viewport.getView();
+//            if (myTable.getSelectedRowCount() == 3) {
+//                averageTableExist(myTable);
+//            } else {
+//                errorText.setText("Sorry, but you need check 3 rows in second table.");
+//            }
+//        }
     }//GEN-LAST:event_buttonAverageActionPerformed
 
-    private void averageTableNotExist(JTable myTable) {
-        List<List<Object>> values = new ArrayList<>();
-        int firstIndex = myTable.getSelectedRows()[0];
-        int secondIndex = myTable.getSelectedRows()[1];
-        int thirdIndex = myTable.getSelectedRows()[2];
-        for (int i = 0; i < myTable.getRowCount(); i++) {
-            List<Object> localRows = new ArrayList<>();
-            if (i == firstIndex || i == secondIndex || i == thirdIndex) {
-                if (i == firstIndex) {
-                    localRows.add(myTable.getValueAt(firstIndex, 0).toString() + "-"
-                            + myTable.getValueAt(secondIndex, 0).toString() + "-"
-                            + myTable.getValueAt(thirdIndex, 0).toString());
-                    localRows.add(myTable.getValueAt(i, 1).toString());
-                }
-            } else {
-                localRows.add(myTable.getValueAt(i, 0).toString());
-                localRows.add(myTable.getValueAt(i, 1).toString());
-            }
-            for (int j = 2; j < myTable.getColumnCount(); j++) {
-                if (i == firstIndex || i == secondIndex || i == thirdIndex) {
-                    if (i == firstIndex) {
-                        Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, j).toString())
-                                + Double.parseDouble(myTable.getValueAt(secondIndex, j).toString())
-                                + Double.parseDouble(myTable.getValueAt(thirdIndex, j).toString())) / 3;
-                        localRows.add(averageValue);
-                    }
-                } else {
-                    localRows.add(myTable.getValueAt(i, j).toString());
-                }
-            }
-            if (i == firstIndex || i == secondIndex || i == thirdIndex) {
-                if (i == firstIndex) {
-                    values.add(localRows);
-                }
-            } else {
-                values.add(localRows);
-            }
+//    private void averageTableNotExist(JTable myTable) {
+//        List<List<Object>> values = new ArrayList<>();
+//        int firstIndex = myTable.getSelectedRows()[0];
+//        int secondIndex = myTable.getSelectedRows()[1];
+//        int thirdIndex = myTable.getSelectedRows()[2];
+//        for (int i = 0; i < myTable.getRowCount(); i++) {
+//            List<Object> localRows = new ArrayList<>();
+//            if (i == firstIndex || i == secondIndex || i == thirdIndex) {
+//                if (i == firstIndex) {
+//                    localRows.add(myTable.getValueAt(firstIndex, 0).toString() + "-"
+//                            + myTable.getValueAt(secondIndex, 0).toString() + "-"
+//                            + myTable.getValueAt(thirdIndex, 0).toString());
+//                    localRows.add(myTable.getValueAt(i, 1).toString());
+//                }
+//            } else {
+//                localRows.add(myTable.getValueAt(i, 0).toString());
+//                localRows.add(myTable.getValueAt(i, 1).toString());
+//            }
+//            for (int j = 2; j < myTable.getColumnCount(); j++) {
+//                if (i == firstIndex || i == secondIndex || i == thirdIndex) {
+//                    if (i == firstIndex) {
+//                        Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, j).toString())
+//                                + Double.parseDouble(myTable.getValueAt(secondIndex, j).toString())
+//                                + Double.parseDouble(myTable.getValueAt(thirdIndex, j).toString())) / 3;
+//                        localRows.add(averageValue);
+//                    }
+//                } else {
+//                    localRows.add(myTable.getValueAt(i, j).toString());
+//                }
+//            }
+//            if (i == firstIndex || i == secondIndex || i == thirdIndex) {
+//                if (i == firstIndex) {
+//                    values.add(localRows);
+//                }
+//            } else {
+//                values.add(localRows);
+//            }
+//
+//        }
+//
+//        String[] headerValues = new String[myTable.getColumnCount()];
+//        for (int i = 0; i < myTable.getColumnCount(); i++) {
+//            headerValues[i] = myTable.getColumnName(i);
+//        }
+//
+//        JPanel panel = (JPanel) tabbedPane.getComponentAt(0);
+//        JTable averageTable = new JTable();
+//        boolean[] canEditTry = new boolean[headerValues.length];
+//        for (int i = 0; i < canEditTry.length; i++) {
+//            canEditTry[i] = false;
+//        }
+//
+//        DefaultTableModel modelAverage = new DefaultTableModel(headerValues, 0) {
+//            boolean[] canEdit = canEditTry;
+//
+//            public boolean isCellEditable(int rowIndex, int columnIndex) {
+//                return canEdit[columnIndex];
+//            }
+//
+//            @Override
+//            public Class<?> getColumnClass(int column) {
+//                Class<?> returnValue;
+//                if ((column >= 0) && (column < getColumnCount())) {
+//                    returnValue = getValueAt(0, column).getClass();
+//
+//                } else {
+//                    returnValue = Object.class;
+//                }
+//
+//                return returnValue;
+//
+//            }
+//        ;
+//        };
+//        averageTable.setAutoCreateRowSorter(true);
+//        for (List<Object> value : values) {
+//            Object[] datas = value.toArray();
+//            modelAverage.addRow(datas);
+//        }
+//        averageTable.setModel(modelAverage);
+//        averageTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//        //Center columns
+//        for (int i = 0; i < averageTable.getColumnCount(); i++) {
+//            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+//            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+//            averageTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+//        }
+//        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableGeneric.getTableHeader().getDefaultRenderer();
+//        renderer.setHorizontalAlignment(0);
+//        averageTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+//
+//        JScrollPane scrollpane = new JScrollPane(averageTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//        panel.add(scrollpane);
+//        panel.revalidate();
+//        panel.repaint();
+//        TableColumn column = null;
+//        for (int i = 0; i < averageTable.getColumnCount(); i++) {
+//            if (i == 0 || i == 1) {
+//                column = averageTable.getColumnModel().getColumn(i);
+//                column.setMinWidth(100);
+//            } else {
+//                column = averageTable.getColumnModel().getColumn(i);
+//                column.setMinWidth(300);
+//            }
+//        }
+//        multiTable = true;
+//    }
 
-        }
+//    private void averageTableExist(JTable myTable) {
+//        int firstIndex = myTable.getSelectedRows()[0];
+//        int secondIndex = myTable.getSelectedRows()[1];
+//        int thirdIndex = myTable.getSelectedRows()[2];
+//        System.out.println(firstIndex);
+//
+//        System.out.println(firstIndex);
+//        String gaussians = myTable.getValueAt(firstIndex, 0).toString() + "-"
+//                + myTable.getValueAt(secondIndex, 0).toString() + "-"
+//                + myTable.getValueAt(thirdIndex, 0).toString();
+//        myTable.setValueAt(gaussians, firstIndex, 0);
+//        for (int i = 2; i < myTable.getColumnCount(); i++) {
+//            Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, i).toString())
+//                    + Double.parseDouble(myTable.getValueAt(secondIndex, i).toString())
+//                    + Double.parseDouble(myTable.getValueAt(thirdIndex, i).toString())) / 3;
+//            myTable.setValueAt(averageValue, firstIndex, i);
+//        }
+//        DefaultTableModel df = (DefaultTableModel) myTable.getModel();
+//        df.removeRow(thirdIndex);
+//        df.removeRow(secondIndex);
+//        multiTable = true;
+//    }
 
-        String[] headerValues = new String[myTable.getColumnCount()];
-        for (int i = 0; i < myTable.getColumnCount(); i++) {
-            headerValues[i] = myTable.getColumnName(i);
-        }
-
-        JPanel panel = (JPanel) tabbedPane.getComponentAt(0);
-        JTable averageTable = new JTable();
-        boolean[] canEditTry = new boolean[headerValues.length];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
-
-        DefaultTableModel modelAverage = new DefaultTableModel(headerValues, 0) {
-            boolean[] canEdit = canEditTry;
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-
-            @Override
-            public Class<?> getColumnClass(int column) {
-                Class<?> returnValue;
-                if ((column >= 0) && (column < getColumnCount())) {
-                    returnValue = getValueAt(0, column).getClass();
-
-                } else {
-                    returnValue = Object.class;
-                }
-
-                return returnValue;
-
-            }
-        ;
-        };
-        averageTable.setAutoCreateRowSorter(true);
-        for (List<Object> value : values) {
-            Object[] datas = value.toArray();
-            modelAverage.addRow(datas);
-        }
-        averageTable.setModel(modelAverage);
-        averageTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        //Center columns
-        for (int i = 0; i < averageTable.getColumnCount(); i++) {
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            averageTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableGeneric.getTableHeader().getDefaultRenderer();
-        renderer.setHorizontalAlignment(0);
-        averageTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-
-        JScrollPane scrollpane = new JScrollPane(averageTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        panel.add(scrollpane);
-        panel.revalidate();
-        panel.repaint();
-        TableColumn column = null;
-        for (int i = 0; i < averageTable.getColumnCount(); i++) {
-            if (i == 0 || i == 1) {
-                column = averageTable.getColumnModel().getColumn(i);
-                column.setMinWidth(100);
-            } else {
-                column = averageTable.getColumnModel().getColumn(i);
-                column.setMinWidth(300);
-            }
-        }
-        multiTable = true;
-    }
-
-    private void averageTableExist(JTable myTable) {
-        int firstIndex = myTable.getSelectedRows()[0];
-        int secondIndex = myTable.getSelectedRows()[1];
-        int thirdIndex = myTable.getSelectedRows()[2];
-        System.out.println(firstIndex);
-
-        System.out.println(firstIndex);
-        String gaussians = myTable.getValueAt(firstIndex, 0).toString() + "-"
-                + myTable.getValueAt(secondIndex, 0).toString() + "-"
-                + myTable.getValueAt(thirdIndex, 0).toString();
-        myTable.setValueAt(gaussians, firstIndex, 0);
-        for (int i = 2; i < myTable.getColumnCount(); i++) {
-            Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, i).toString())
-                    + Double.parseDouble(myTable.getValueAt(secondIndex, i).toString())
-                    + Double.parseDouble(myTable.getValueAt(thirdIndex, i).toString())) / 3;
-            myTable.setValueAt(averageValue, firstIndex, i);
-        }
-        DefaultTableModel df = (DefaultTableModel) myTable.getModel();
-        df.removeRow(thirdIndex);
-        df.removeRow(secondIndex);
-        multiTable = true;
-    }
-
-    private void SCFTable(String keyword) {
-        tabPaneSCF.add(keyword, initSCFTable());
-    }
-
-    private JPanel initSCFTable() {
-        ArrayList<String> nameFiles = new ArrayList<>();
-        ArrayList<Object> contribution = new ArrayList<>();
-        ArrayList<Object> SCF = new ArrayList<>();
-        nameFiles.add("Values");
-        contribution.add("Contribution");
-        SCF.add("SCF");
-        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
-        otherSymbols.setDecimalSeparator('.');
-        otherSymbols.setGroupingSeparator(',');
-        DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
-        df.setRoundingMode(RoundingMode.CEILING);
-
-        for (FileData fileData : controller.getFileData(usedFiles, Double.valueOf(temperature))) {
-            nameFiles.add(fileData.getFileName());
-            contribution.add(df.format(fileData.getContribution()));
-            SCF.add(df.format(fileData.getEnergyValue()));
-        }
-        Object[][] data = new Object[][]{
-            contribution.toArray(new Object[0]),
-            SCF.toArray(new Object[0])
-        };
-
-        String[] headers = nameFiles.toArray(new String[0]);
-        JTable tableSCF = new JTable(data, headers);
-
-        boolean[] canEditTry = new boolean[SCF.size() + 1];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
-        DefaultTableModel newModel = new DefaultTableModel(
-                data, headers
-        ) {
-            boolean[] canEdit = canEditTry;
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-
-            @Override
-            public Class<?> getColumnClass(int column) {
-                Class<?> returnValue;
-                if ((column >= 0) && (column < getColumnCount())) {
-                    returnValue = getValueAt(0, column).getClass();
-                } else {
-                    returnValue = Object.class;
-                }
-
-                return returnValue;
-
-            }
-        ;
-        }
-    ;
-        tableSCF.setModel(newModel);
-
-        for (int i = 0; i < tableSCF.getColumnCount(); i++) {
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            tableSCF.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableSCF.getTableHeader().getDefaultRenderer();
-        renderer.setHorizontalAlignment(0);
-        tableSCF.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-
-        TableColumn column = null;
-        for (int i = 0; i < tableSCF.getColumnCount(); i++) {
-            if (i == 0) {
-                column = tableSCF.getColumnModel().getColumn(i);
-                column.setMinWidth(100);
-            } else {
-                column = tableSCF.getColumnModel().getColumn(i);
-                column.setMinWidth(250);
-            }
-        }
-
-        tableSCF.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        JScrollPane scrollpaneGeneric = new JScrollPane(tableSCF, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(0, 1));
-        panel.setPreferredSize(new Dimension(1000, 100));
-        panel.add(scrollpaneGeneric);
-        return panel;
-    }
+//    private void SCFTable(String keyword) {
+//        tabPaneSCF.add(keyword, initSCFTable());
+//    }
+//
+//    private JPanel initSCFTable() {
+//        ArrayList<String> nameFiles = new ArrayList<>();
+//        ArrayList<Object> contribution = new ArrayList<>();
+//        ArrayList<Object> SCF = new ArrayList<>();
+//        nameFiles.add("Values");
+//        contribution.add("Contribution");
+//        SCF.add("SCF");
+//        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
+//        otherSymbols.setDecimalSeparator('.');
+//        otherSymbols.setGroupingSeparator(',');
+//        DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+//        df.setRoundingMode(RoundingMode.CEILING);
+//
+//        for (FileData fileData : controller.getFileData(usedFiles, Double.valueOf(temperature))) {
+//            nameFiles.add(fileData.getFileName());
+//            contribution.add(df.format(fileData.getContribution()));
+//            SCF.add(df.format(fileData.getEnergyValue()));
+//        }
+//        Object[][] data = new Object[][]{
+//            contribution.toArray(new Object[0]),
+//            SCF.toArray(new Object[0])
+//        };
+//
+//        String[] headers = nameFiles.toArray(new String[0]);
+//        JTable tableSCF = new JTable(data, headers);
+//
+//        boolean[] canEditTry = new boolean[SCF.size() + 1];
+//        for (int i = 0; i < canEditTry.length; i++) {
+//            canEditTry[i] = false;
+//        }
+//        DefaultTableModel newModel = new DefaultTableModel(
+//                data, headers
+//        ) {
+//            boolean[] canEdit = canEditTry;
+//
+//            public boolean isCellEditable(int rowIndex, int columnIndex) {
+//                return canEdit[columnIndex];
+//            }
+//
+//            @Override
+//            public Class<?> getColumnClass(int column) {
+//                Class<?> returnValue;
+//                if ((column >= 0) && (column < getColumnCount())) {
+//                    returnValue = getValueAt(0, column).getClass();
+//                } else {
+//                    returnValue = Object.class;
+//                }
+//
+//                return returnValue;
+//
+//            }
+//        ;
+//        }
+//    ;
+//        tableSCF.setModel(newModel);
+//
+//        for (int i = 0; i < tableSCF.getColumnCount(); i++) {
+//            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+//            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+//            tableSCF.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+//        }
+//        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableSCF.getTableHeader().getDefaultRenderer();
+//        renderer.setHorizontalAlignment(0);
+//        tableSCF.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+//
+//        TableColumn column = null;
+//        for (int i = 0; i < tableSCF.getColumnCount(); i++) {
+//            if (i == 0) {
+//                column = tableSCF.getColumnModel().getColumn(i);
+//                column.setMinWidth(100);
+//            } else {
+//                column = tableSCF.getColumnModel().getColumn(i);
+//                column.setMinWidth(250);
+//            }
+//        }
+//
+//        tableSCF.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//        JScrollPane scrollpaneGeneric = new JScrollPane(tableSCF, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//        JPanel panel = new JPanel();
+//        panel.setLayout(new GridLayout(0, 1));
+//        panel.setPreferredSize(new Dimension(1000, 100));
+//        panel.add(scrollpaneGeneric);
+//        return panel;
+//    }
 
     /**
      *
@@ -2241,135 +2232,135 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         return datas;
     }
 
-    /**
-     * Creates the "Average" myTable with all the info from the other tables.
-     *
-     * @param usedFiles
-     */
-    private void genericTable(List<File> usedFiles) {
-        Molecule molecule = this.controller.getMolecule(usedFiles, fieldKeyword.getText(), Double.parseDouble(temperature)
-        );
-        String[] values = new String[keywordsUsed.size() + 2];
-        values[0] = "Gaussian";
-        values[1] = "Atom";
-        for (int i = 2; i <= keywordsUsed.size() + 1; i++) {
-            values[i] = keywordsUsed.get(i - 2);
-        }
-
-        if (tableGeneric == null) {
-            initGenericTable(values);
-            addElementsToGeneric(molecule);
-            JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            panelGeneric.add(scrollpaneGeneric);
-        } else {
-            panelGeneric.removeAll();
-            initGenericTable(values);
-            addElementsToGeneric(molecule);
-            JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            panelGeneric.add(scrollpaneGeneric);
-        }
-        TableColumn column = null;
-        for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
-            if (i == 0 || i == 1) {
-                column = tableGeneric.getColumnModel().getColumn(i);
-                column.setMinWidth(100);
-            } else {
-                column = tableGeneric.getColumnModel().getColumn(i);
-                column.setMinWidth(200);
-            }
-        }
-        tableGeneric.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-    }
-
-    /**
-     * Initializes the Average myTable.
-     *
-     * @param values are the "keywords" used.
-     */
-    private void initGenericTable(String[] values) {
-        tableGeneric = new JTable();
-
-        boolean[] canEditTry = new boolean[keywordsUsed.size() + 2];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
-
-        DefaultTableModel modelGeneric = new DefaultTableModel(values, 0) {
-            boolean[] canEdit = canEditTry;
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-
-            @Override
-            public Class<?> getColumnClass(int column) {
-                Class<?> returnValue;
-                if ((column >= 0) && (column < getColumnCount())) {
-                    returnValue = getValueAt(0, column).getClass();
-
-                } else {
-                    returnValue = Object.class;
-                }
-
-                return returnValue;
-
-            }
-        ;
-        };
-        tableGeneric.setAutoCreateRowSorter(true);
-        tableGeneric.setModel(modelGeneric);
-        //Center columns
-        for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
-            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            tableGeneric.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableGeneric.getTableHeader().getDefaultRenderer();
-        renderer.setHorizontalAlignment(0);
-        tableGeneric.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-    }
-
-    /**
-     * Add all the elements to the Average myTable.
-     *
-     * @param molecule contains all the necessary info about the molecules.
-     */
-    private void addElementsToGeneric(Molecule molecule) {
-        DefaultTableModel model = (DefaultTableModel) tableGeneric.getModel();
-        List<List<Object>> auxList = new ArrayList<>(rows);
-        rows.clear();
-        for (int i = 0; i < molecule.getResult().size(); i++) {
-            if (keywordsUsed.size() == 1) {
-                List<Object> values = new ArrayList<>();
-                values.add(molecule.getResult().get(i).getGaussian());
-                values.add(molecule.getResult().get(i).getAtom());
-                double value = molecule.getResult().get(i).getValue();
-                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
-                otherSymbols.setDecimalSeparator('.');
-                otherSymbols.setGroupingSeparator(',');
-                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
-                df.setRoundingMode(RoundingMode.CEILING);
-                values.add(String.valueOf(df.format(value)));
-                rows.add(values);
-            } else {
-                List<Object> values = new ArrayList<>(auxList.get(i));
-                double value = molecule.getResult().get(i).getValue();
-                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
-                otherSymbols.setDecimalSeparator('.');
-                otherSymbols.setGroupingSeparator(',');
-                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
-                df.setRoundingMode(RoundingMode.CEILING);
-                values.add(String.valueOf(df.format(value)));
-                rows.add(values);
-            }
-        }
-
-        rows.forEach((row) -> {
-            model.addRow(row.toArray());
-        });
-
-    }
+//    /**
+//     * Creates the "Average" myTable with all the info from the other tables.
+//     *
+//     * @param usedFiles
+//     */
+//    private void averageTable(List<File> usedFiles) {
+//        Molecule molecule = this.controller.getMolecule(usedFiles, fieldKeyword.getText(), Double.parseDouble(temperature)
+//        );
+//        String[] values = new String[keywordsUsed.size() + 2];
+//        values[0] = "Gaussian";
+//        values[1] = "Atom";
+//        for (int i = 2; i <= keywordsUsed.size() + 1; i++) {
+//            values[i] = keywordsUsed.get(i - 2);
+//        }
+//
+//        if (tableGeneric == null) {
+//            initAverageTable(values);
+//            addElementsToAverageTable(molecule);
+//            JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//            panelGeneric.add(scrollpaneGeneric);
+//        } else {
+//            panelGeneric.removeAll();
+//            initAverageTable(values);
+//            addElementsToAverageTable(molecule);
+//            JScrollPane scrollpaneGeneric = new JScrollPane(tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//            panelGeneric.add(scrollpaneGeneric);
+//        }
+//        TableColumn column = null;
+//        for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
+//            if (i == 0 || i == 1) {
+//                column = tableGeneric.getColumnModel().getColumn(i);
+//                column.setMinWidth(100);
+//            } else {
+//                column = tableGeneric.getColumnModel().getColumn(i);
+//                column.setMinWidth(200);
+//            }
+//        }
+//        tableGeneric.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//
+//    }
+//
+//    /**
+//     * Initializes the Average myTable.
+//     *
+//     * @param values are the "keywords" used.
+//     */
+//    private void initAverageTable(String[] values) {
+//        tableGeneric = new JTable();
+//
+//        boolean[] canEditTry = new boolean[keywordsUsed.size() + 2];
+//        for (int i = 0; i < canEditTry.length; i++) {
+//            canEditTry[i] = false;
+//        }
+//
+//        DefaultTableModel modelGeneric = new DefaultTableModel(values, 0) {
+//            boolean[] canEdit = canEditTry;
+//
+//            public boolean isCellEditable(int rowIndex, int columnIndex) {
+//                return canEdit[columnIndex];
+//            }
+//
+//            @Override
+//            public Class<?> getColumnClass(int column) {
+//                Class<?> returnValue;
+//                if ((column >= 0) && (column < getColumnCount())) {
+//                    returnValue = getValueAt(0, column).getClass();
+//
+//                } else {
+//                    returnValue = Object.class;
+//                }
+//
+//                return returnValue;
+//
+//            }
+//        ;
+//        };
+//        tableGeneric.setAutoCreateRowSorter(true);
+//        tableGeneric.setModel(modelGeneric);
+//        //Center columns
+//        for (int i = 0; i < tableGeneric.getColumnCount(); i++) {
+//            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+//            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+//            tableGeneric.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+//        }
+//        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableGeneric.getTableHeader().getDefaultRenderer();
+//        renderer.setHorizontalAlignment(0);
+//        tableGeneric.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+//    }
+//
+//    /**
+//     * Add all the elements to the Average myTable.
+//     *
+//     * @param molecule contains all the necessary info about the molecules.
+//     */
+//    private void addElementsToAverageTable(Molecule molecule) {
+//        DefaultTableModel model = (DefaultTableModel) tableGeneric.getModel();
+//        List<List<Object>> auxList = new ArrayList<>(rows);
+//        rows.clear();
+//        for (int i = 0; i < molecule.getResult().size(); i++) {
+//            if (keywordsUsed.size() == 1) {
+//                List<Object> values = new ArrayList<>();
+//                values.add(molecule.getResult().get(i).getGaussian());
+//                values.add(molecule.getResult().get(i).getAtom());
+//                double value = molecule.getResult().get(i).getValue();
+//                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
+//                otherSymbols.setDecimalSeparator('.');
+//                otherSymbols.setGroupingSeparator(',');
+//                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+//                df.setRoundingMode(RoundingMode.CEILING);
+//                values.add(String.valueOf(df.format(value)));
+//                rows.add(values);
+//            } else {
+//                List<Object> values = new ArrayList<>(auxList.get(i));
+//                double value = molecule.getResult().get(i).getValue();
+//                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(getLocale());
+//                otherSymbols.setDecimalSeparator('.');
+//                otherSymbols.setGroupingSeparator(',');
+//                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+//                df.setRoundingMode(RoundingMode.CEILING);
+//                values.add(String.valueOf(df.format(value)));
+//                rows.add(values);
+//            }
+//        }
+//
+//        rows.forEach((row) -> {
+//            model.addRow(row.toArray());
+//        });
+//
+//    }
 
     /**
      * Method used to add new files.
@@ -2381,7 +2372,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 keywordsUsed.add(fieldText);
                 if (!usedFiles.isEmpty()) {
                     if (!searchAdded) {
-                        searchTab();
+                        decorate.searchTab();
                         searchAdded = true;
                     }
 
@@ -2418,8 +2409,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                             panel.add(scrollpane);
                             tabbedPane.addTab(fieldText, panel);
                             tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-                            genericTable(usedFiles);
-                            SCFTable(fieldText);
+                            avg.averageTable(usedFiles);
+                            scf.SCFTable(fieldText);
                             if (usedTables.isEmpty()) {
                                 usedTables.add(tableGeneric);
                             }
@@ -2529,77 +2520,77 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     }
 
-    public void searchTab() {
-        jMenuBar1.add(Box.createHorizontalGlue());
-        JTextField textField = new JTextField(10);
-        textField.setForeground(Color.GRAY);
-        textField.setText("Search...");
-        textField.setMaximumSize(textField.getPreferredSize());
-        textField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {
-                textField.setForeground(Color.BLACK);
-                textField.setText("");
-            }
-
-            public void focusLost(FocusEvent e) {
-                textField.setForeground(Color.GRAY);
-                textField.setText("Search...");
-
-            }
-
-        });
-
-        textField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                try {
-                    for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-                        if (tabbedPane.getTitleAt(i).equals(textField.getText())) {
-                            tabbedPane.setSelectedIndex(i);
-                        }
-                    }
-                } catch (Exception e) {
-
-                }
-            }
-        });
-        jMenuBar1.add(textField);
-    }
+//    public void searchTab() {
+//        jMenuBar1.add(Box.createHorizontalGlue());
+//        JTextField textField = new JTextField(10);
+//        textField.setForeground(Color.GRAY);
+//        textField.setText("Search...");
+//        textField.setMaximumSize(textField.getPreferredSize());
+//        textField.addFocusListener(new FocusListener() {
+//            public void focusGained(FocusEvent e) {
+//                textField.setForeground(Color.BLACK);
+//                textField.setText("");
+//            }
+//
+//            public void focusLost(FocusEvent e) {
+//                textField.setForeground(Color.GRAY);
+//                textField.setText("Search...");
+//
+//            }
+//
+//        });
+//
+//        textField.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(ActionEvent event) {
+//                try {
+//                    for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+//                        if (tabbedPane.getTitleAt(i).equals(textField.getText())) {
+//                            tabbedPane.setSelectedIndex(i);
+//                        }
+//                    }
+//                } catch (Exception e) {
+//
+//                }
+//            }
+//        });
+//        jMenuBar1.add(textField);
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton buttonAdd;
-    private javax.swing.JButton buttonAddValue;
+    public javax.swing.JButton buttonAddValue;
     public javax.swing.JButton buttonAverage;
     private javax.swing.JButton buttonChooseFiles;
     public javax.swing.JButton buttonDelete;
     public javax.swing.JButton buttonExportCSV;
     private javax.swing.JButton buttonNext;
     private javax.swing.JButton buttonOKTemp;
-    private javax.swing.JButton buttonRemoveItem;
+    public javax.swing.JButton buttonRemoveItem;
     public javax.swing.JButton buttonRemoveTable;
     public javax.swing.JButton buttonValue;
     private javax.swing.JButton buttonValues;
     public javax.swing.JComboBox<String> comboOptions;
-    private javax.swing.JDialog dialogAddMoreFiles;
+    public javax.swing.JDialog dialogAddMoreFiles;
     private javax.swing.JDialog dialogCoordinates;
     private javax.swing.JDialog dialogNombre;
     private javax.swing.JDialog dialogSCF;
     private javax.swing.JDialog dialogTemperature;
-    private javax.swing.JLabel errorDialogCoor;
-    private javax.swing.JLabel errorText;
+    public javax.swing.JLabel errorDialogCoor;
+    public javax.swing.JLabel errorText;
     private javax.swing.JTextField fieldColumn;
     public javax.swing.JTextField fieldKeyword;
     private javax.swing.JTextField fieldNameValues;
     private javax.swing.JTextField fieldRow;
     private javax.swing.JTextField fieldTemperature;
-    private javax.swing.JButton finishButton;
+    public javax.swing.JButton finishButton;
     private javax.swing.JMenuItem itemAddMoreFiles;
-    private javax.swing.JMenuItem itemChangeTemperature;
+    public javax.swing.JMenuItem itemChangeTemperature;
     private javax.swing.JMenuItem itemChooseFiles;
     private javax.swing.JMenuItem itemExit;
-    private javax.swing.JMenuItem itemExport;
-    private javax.swing.JMenuItem itemReset;
-    private javax.swing.JMenuItem itemSCF;
-    private javax.swing.JMenuItem itemSearchValue;
+    public javax.swing.JMenuItem itemExport;
+    public javax.swing.JMenuItem itemReset;
+    public javax.swing.JMenuItem itemSCF;
+    public javax.swing.JMenuItem itemSearchValue;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -2607,14 +2598,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
+    public javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<String> listValues;
     public javax.swing.JButton orderAsc;
     public javax.swing.JButton orderDesc;
-    private javax.swing.JTabbedPane tabPaneSCF;
-    private javax.swing.JTabbedPane tabbedPane;
-    private javax.swing.JTextArea textAreaMoreFiles;
+    public javax.swing.JTabbedPane tabPaneSCF;
+    public javax.swing.JTabbedPane tabbedPane;
+    public javax.swing.JTextArea textAreaMoreFiles;
     // End of variables declaration//GEN-END:variables
 }
