@@ -71,23 +71,23 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     /**
      * Creates new form FrameDifferentiator to show the tables.
      */
-    private List<String> files = new ArrayList<>();
-    private List<File> filesData = new ArrayList<>();
-    private JPanel panelGeneric = new JPanel();
-    private List<String> names = new ArrayList<>();
-    private List<File> usedFiles = new ArrayList<>();
-    private List<JTable> normalTables = new ArrayList<>();
-    private List<JTable> specialTables = new ArrayList<>();
-    private List<JTable> usedTables = new ArrayList<>();
-    private List<String> keywordsUsed = new ArrayList<>();
-    private List<List<Object>> rows = new ArrayList<>();
-    public List<String> coorValues = new ArrayList<>();
-    private ControllerInt controller;
-    private boolean multiTable = false;
-    private boolean searchAdded = false;
+    protected List<String> files = new ArrayList<>();
+    protected List<File> filesData = new ArrayList<>();
+    protected JPanel panelGeneric = new JPanel();
+    protected List<String> names = new ArrayList<>();
+    protected List<File> usedFiles = new ArrayList<>();
+    protected List<JTable> normalTables = new ArrayList<>();
+    protected List<JTable> specialTables = new ArrayList<>();
+    protected List<JTable> usedTables = new ArrayList<>();
+    protected List<String> keywordsUsed = new ArrayList<>();
+    protected List<List<Object>> rows = new ArrayList<>();
+    protected List<String> coorValues = new ArrayList<>();
+    protected ControllerInt controller;
+    protected boolean multiTable = false;
+    protected boolean searchAdded = false;
 
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
-    private String temperature = "298.15";
+    protected String temperature = "298.15";
     public List<String> colAndRows = new ArrayList<>();
     JTable tableGeneric;
 
@@ -675,6 +675,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         errorText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         buttonValue.setText("Search value");
+        buttonValue.setFocusPainted(false);
+        buttonValue.setSelected(true);
         buttonValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonValueActionPerformed(evt);
@@ -790,17 +792,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(buttonValue))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(buttonAdd)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonAdd))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(buttonExportCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(orderDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -811,13 +811,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(buttonAverage, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(332, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addContainerGap())))
+                                .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 332, Short.MAX_VALUE))
+                    .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -825,13 +823,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(buttonAverage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(buttonRemoveTable, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(orderAsc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(buttonValue, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(buttonExportCSV, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(orderDesc, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(buttonAverage, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(buttonRemoveTable, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(orderAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(buttonValue, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(buttonExportCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(orderDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -2569,19 +2566,19 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonAdd;
+    public javax.swing.JButton buttonAdd;
     private javax.swing.JButton buttonAddValue;
-    private javax.swing.JButton buttonAverage;
+    public javax.swing.JButton buttonAverage;
     private javax.swing.JButton buttonChooseFiles;
-    private javax.swing.JButton buttonDelete;
-    private javax.swing.JButton buttonExportCSV;
+    public javax.swing.JButton buttonDelete;
+    public javax.swing.JButton buttonExportCSV;
     private javax.swing.JButton buttonNext;
     private javax.swing.JButton buttonOKTemp;
     private javax.swing.JButton buttonRemoveItem;
-    private javax.swing.JButton buttonRemoveTable;
-    private javax.swing.JButton buttonValue;
+    public javax.swing.JButton buttonRemoveTable;
+    public javax.swing.JButton buttonValue;
     private javax.swing.JButton buttonValues;
-    private javax.swing.JComboBox<String> comboOptions;
+    public javax.swing.JComboBox<String> comboOptions;
     private javax.swing.JDialog dialogAddMoreFiles;
     private javax.swing.JDialog dialogCoordinates;
     private javax.swing.JDialog dialogNombre;
@@ -2590,7 +2587,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel errorDialogCoor;
     private javax.swing.JLabel errorText;
     private javax.swing.JTextField fieldColumn;
-    private javax.swing.JTextField fieldKeyword;
+    public javax.swing.JTextField fieldKeyword;
     private javax.swing.JTextField fieldNameValues;
     private javax.swing.JTextField fieldRow;
     private javax.swing.JTextField fieldTemperature;
@@ -2614,8 +2611,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<String> listValues;
-    private javax.swing.JButton orderAsc;
-    private javax.swing.JButton orderDesc;
+    public javax.swing.JButton orderAsc;
+    public javax.swing.JButton orderDesc;
     private javax.swing.JTabbedPane tabPaneSCF;
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JTextArea textAreaMoreFiles;
