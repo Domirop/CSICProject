@@ -504,17 +504,16 @@
                           <Component id="jLabel1" max="32767" attributes="0"/>
                           <Component id="buttonValue" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="comboOptions" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="fieldKeyword" min="-2" pref="156" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="buttonAdd" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
                               <Component id="buttonExportCSV" min="-2" pref="117" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="orderDesc" min="-2" pref="117" max="-2" attributes="0"/>
@@ -526,10 +525,9 @@
                               <Component id="buttonAverage" min="-2" pref="125" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="buttonDelete" min="-2" pref="117" max="-2" attributes="0"/>
-                              <EmptySpace pref="332" max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <EmptySpace pref="332" max="32767" attributes="0"/>
                   </Group>
                   <Component id="errorText" max="32767" attributes="0"/>
                   <Component id="tabbedPane" alignment="1" max="32767" attributes="0"/>
@@ -544,14 +542,12 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="buttonDelete" pref="0" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="buttonAverage" alignment="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="buttonRemoveTable" alignment="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="orderAsc" alignment="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="buttonValue" alignment="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="buttonExportCSV" alignment="0" pref="0" max="32767" attributes="0"/>
-                      <Component id="orderDesc" alignment="0" min="-2" pref="17" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="buttonAverage" alignment="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="buttonRemoveTable" alignment="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="orderAsc" alignment="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="buttonValue" alignment="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="buttonExportCSV" alignment="0" pref="0" max="32767" attributes="0"/>
+                  <Component id="orderDesc" alignment="0" min="-2" pref="17" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">

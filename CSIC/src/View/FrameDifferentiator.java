@@ -1436,46 +1436,48 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonExportCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExportCSVActionPerformed
-        keywordsUsed.add("Average");
+
         errorText.setForeground(Color.red);
         String folder = "";
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int option = fileChooser.showOpenDialog(this);
         if (option == JFileChooser.APPROVE_OPTION) {
+            keywordsUsed.add("Average");
             File file = fileChooser.getSelectedFile();
             if (!file.exists()) {
                 new File(file.getAbsolutePath()).mkdir();
             }
             folder = file.getAbsolutePath();
-        }
-        if (usedTables.size() > 0) {
-            for (int i = 0; i < tabbedPane.getTabCount() + 1; i++) {
-                List<String[]> datas = new ArrayList<>();
-                if (i == 0) {
-                    if (multiTable == true) {
-                        datas = exportTable(null, i, 0, tabbedPane);
-                        datas.add(new String[0]);
-                        datas.add(new String[0]);
-                        datas.addAll(exportTable(null, i, 1, tabbedPane));
-                        exportCSVFunction(datas, folder, "Average");
+
+            if (usedTables.size() > 0) {
+                for (int i = 0; i < tabbedPane.getTabCount() + 1; i++) {
+                    List<String[]> datas = new ArrayList<>();
+                    if (i == 0) {
+                        if (multiTable == true) {
+                            datas = exportTable(null, i, 0, tabbedPane);
+                            datas.add(new String[0]);
+                            datas.add(new String[0]);
+                            datas.addAll(exportTable(null, i, 1, tabbedPane));
+                            exportCSVFunction(datas, folder, "Average");
+                        } else {
+                            datas = exportTable(null, i, 0, tabbedPane);
+                            exportCSVFunction(datas, folder, "Average");
+                        }
+                    } else if (i == tabbedPane.getTabCount()) {
+                        JTabbedPane panes = (JTabbedPane) dialogSCF.getContentPane().getComponent(0);
+                        for (int j = 0; j < panes.getTabCount(); j++) {
+                            JPanel myPanel = (JPanel) panes.getComponentAt(j);
+                            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+                            JViewport viewport = scrollPane.getViewport();
+                            JTable myTable = (JTable) viewport.getView();
+                            datas.addAll(exportTable(myTable, j, 0, panes));
+                        }
+                        exportCSVFunction(datas, folder, "SCF_and_CONTRIBUTION");
                     } else {
                         datas = exportTable(null, i, 0, tabbedPane);
-                        exportCSVFunction(datas, folder, "Average");
+                        exportCSVFunction(datas, folder, tabbedPane.getTitleAt(i));
                     }
-                } else if (i == tabbedPane.getTabCount()) {
-                    JTabbedPane panes = (JTabbedPane) dialogSCF.getContentPane().getComponent(0);
-                    for (int j = 0; j < panes.getTabCount(); j++) {
-                        JPanel myPanel = (JPanel) panes.getComponentAt(j);
-                        JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-                        JViewport viewport = scrollPane.getViewport();
-                        JTable myTable = (JTable) viewport.getView();
-                        datas.addAll(exportTable(myTable, j, 0, panes));
-                    }
-                    exportCSVFunction(datas, folder, "SCF_and_CONTRIBUTION");
-                } else {
-                    datas = exportTable(null, i, 0, tabbedPane);
-                    exportCSVFunction(datas, folder, tabbedPane.getTitleAt(i));
                 }
             }
         }
