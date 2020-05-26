@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -35,6 +36,7 @@ public class SCFTable {
     }
 
     public void addSCFTable(String keyword) {
+        fd.tabPaneSCF.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         fd.tabPaneSCF.add(keyword, initSCFTable());
     }
 
@@ -51,7 +53,12 @@ public class SCFTable {
         DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
         df.setRoundingMode(RoundingMode.CEILING);
 
+        
         for (FileData fileData : fd.controller.getFileData(fd.usedFiles, Double.valueOf(fd.temperature))) {
+            System.out.println(fileData.getFileName());
+            System.out.println(df.format(fileData.getContribution()));
+            System.out.println(df.format(fileData.getEnergyValue()));
+            
             nameFiles.add(fileData.getFileName());
             contribution.add(df.format(fileData.getContribution()));
             SCF.add(df.format(fileData.getEnergyValue()));

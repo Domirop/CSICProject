@@ -91,7 +91,6 @@ public class AddTablesEvent {
                             fd.tabbedPane.addTab(fieldText, panel);
                             fd.tabbedPane.setSelectedIndex(fd.tabbedPane.getTabCount() - 1);
                             avg.averageTable(fd.usedFiles);
-                            scf.addSCFTable(fieldText);
                             if (fd.usedTables.isEmpty()) {
                                 fd.usedTables.add(fd.tableGeneric);
                             }
@@ -102,6 +101,8 @@ public class AddTablesEvent {
                             fd.itemChangeTemperature.setEnabled(false);
                             fd.itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
                         }
+                        scf.addSCFTable(fieldText);
+
                     } else {
                         fd.errorText.setText("Couldn't find any file with the provided keyword.");
                     }
