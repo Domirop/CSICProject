@@ -74,6 +74,9 @@ public class AddTablesEvent {
                             fd.itemExport.setEnabled(true);
                             fd.itemSCF.setEnabled(true);
                             fd.buttonAverage.setVisible(true);
+                            fd.labelSelect.setVisible(true);
+                            fd.comboSelectRowsOrColumns.setVisible(true);
+                            fd.buttonRemoveColumn.setVisible(true);
                         }
                         panel.setLayout(new GridLayout(0, 1));
                         JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -94,6 +97,7 @@ public class AddTablesEvent {
                             if (fd.usedTables.isEmpty()) {
                                 fd.usedTables.add(fd.tableGeneric);
                             }
+
                             fd.normalTables.add(table);
                             fd.usedTables.add(table);
                             fd.revalidate();
@@ -117,8 +121,8 @@ public class AddTablesEvent {
         } catch (Exception e) {
             fd.errorText.setText("Some files were not imported.");
         }
-        if (fd.getSize() != new Dimension(1080, 480)) {
-            fd.setSize(1080, 480);
+        if (fd.getSize() != new Dimension(1080, 720)) {
+            fd.setSize(1080, 720);
         }
     }
 
@@ -224,6 +228,7 @@ public class AddTablesEvent {
 
     /**
      * This method add element to the JList of the dialogCoordinates.
+     *
      * @param rowCount numbers of rowCount.
      */
     public void addValueToList(int rowCount) {
@@ -269,8 +274,8 @@ public class AddTablesEvent {
                         }
                     }
                 }
-                if (fd.getSize() != new Dimension(1080, 480)) {
-                    fd.setSize(1080, 480);
+                if (fd.getSize() != new Dimension(1080, 720)) {
+                    fd.setSize(1080, 720);
                 }
                 if (isAdd) {
                     actionButtonAdd(fd.fieldKeyword.getText());
@@ -348,7 +353,7 @@ public class AddTablesEvent {
                         }
                         actionButtonAdd(charact);
                     }
-                }else{
+                } else {
                     fd.errorText.setText("The format is (number-number)");
                 }
                 break;

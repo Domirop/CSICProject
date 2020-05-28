@@ -28,8 +28,6 @@ import javax.swing.table.TableColumn;
  * @author daviddiaz
  */
 public class AverageTable {
-    //métodos relacionados con la tabla average
-
     FrameDifferentiator fd;
 
     public AverageTable(FrameDifferentiator fd) {
@@ -84,6 +82,7 @@ public class AverageTable {
      */
     private void initAverageTable(String[] values) {
         fd.tableGeneric = new JTable();
+
 
         boolean[] canEditTry = new boolean[fd.keywordsUsed.size() + 2];
         for (int i = 0; i < canEditTry.length; i++) {

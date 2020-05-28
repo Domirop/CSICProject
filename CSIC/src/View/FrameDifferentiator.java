@@ -13,18 +13,24 @@ import javax.swing.border.LineBorder;
 import Controller.ControllerInt;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Contains all the necesary methods to show the user the application.
@@ -71,17 +77,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
-        ListTransferHandler lh = new ListTransferHandler(this);
-        listValues.setModel(new DefaultListModel());
-        listValues.setDragEnabled(true);
-        listValues.setTransferHandler(lh);
-        listValues.setDropMode(DropMode.ON_OR_INSERT);
         edd.setMappings(listValues);
         this.controller = controller;
         this.files = files;
         this.filesData = filesData;
         decorate.addIcons();
         decorate.initElements();
+
+        Set set = new HashSet();
+        set.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0));
+        fieldRow.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, set);
+
     }
 
     /**
@@ -133,6 +139,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         orderDesc = new javax.swing.JButton();
         buttonRemoveTable = new javax.swing.JButton();
         buttonAverage = new javax.swing.JButton();
+        labelSelect = new javax.swing.JLabel();
+        comboSelectRowsOrColumns = new javax.swing.JComboBox<>();
+        buttonRemoveColumn = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         itemSearchValue = new javax.swing.JMenuItem();
@@ -158,7 +167,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel3.setText("Column:");
 
-        fieldColumn.setFocusCycleRoot(true);
+        fieldColumn.setFocusTraversalKeysEnabled(false);
         fieldColumn.setNextFocusableComponent(fieldRow);
         fieldColumn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,6 +267,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         );
 
         jLabel4.setText("Choose a name for the values");
+
+        fieldNameValues.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldNameValuesActionPerformed(evt);
+            }
+        });
 
         buttonValues.setText("Ok");
         buttonValues.addActionListener(new java.awt.event.ActionListener() {
@@ -484,6 +499,22 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
+        labelSelect.setText("Select ");
+
+        comboSelectRowsOrColumns.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Rows", "Columns" }));
+        comboSelectRowsOrColumns.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboSelectRowsOrColumnsActionPerformed(evt);
+            }
+        });
+
+        buttonRemoveColumn.setText("Remove selected column");
+        buttonRemoveColumn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRemoveColumnActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Options");
 
         itemSearchValue.setText("Search values");
@@ -561,33 +592,42 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(buttonValue))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(buttonAdd))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(buttonExportCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(orderDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(orderAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonRemoveTable, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonAverage, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 332, Short.MAX_VALUE))
                     .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(buttonValue))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(comboOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(fieldKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(buttonAdd))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(buttonExportCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(orderDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(orderAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(buttonRemoveTable, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(buttonAverage, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(labelSelect)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboSelectRowsOrColumns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(buttonRemoveColumn)))
+                        .addGap(0, 326, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -610,9 +650,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addComponent(buttonAdd))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(27, 27, 27)
+                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboSelectRowsOrColumns)
+                    .addComponent(buttonRemoveColumn))
+                .addGap(17, 17, 17))
         );
 
         pack();
@@ -659,7 +704,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
-        errorDialogCoor.setVisible(false);
+        errorDialogCoor.setText("");
         listValues.setListData(new String[0]);
         coorValues.clear();
         errorDialogCoor.setText("");
@@ -684,6 +729,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemSearchValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSearchValueActionPerformed
+        ListTransferHandler lh = new ListTransferHandler(this);
+        listValues.setModel(new DefaultListModel());
+        listValues.setDragEnabled(true);
+        listValues.setTransferHandler(lh);
+        listValues.setDropMode(DropMode.ON_OR_INSERT);
         dialogCoordinates.pack();
         listValues.removeAll();
         dialogCoordinates.setVisible(true);
@@ -742,6 +792,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValueActionPerformed
+        ListTransferHandler lh = new ListTransferHandler(this);
+        listValues.setModel(new DefaultListModel());
+        listValues.setDragEnabled(true);
+        listValues.setTransferHandler(lh);
+        listValues.setDropMode(DropMode.ON_OR_INSERT);
         dialogCoordinates.pack();
         listValues.removeAll();
         dialogCoordinates.setVisible(true);
@@ -847,9 +902,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             buttonRemoveTable.setEnabled(false);
             buttonAverage.setEnabled(true);
             buttonAverage.setVisible(true);
+            comboSelectRowsOrColumns.setEnabled(false);
         } else {
             buttonRemoveTable.setEnabled(true);
             buttonAverage.setEnabled(false);
+            comboSelectRowsOrColumns.setEnabled(true);
+
         }
         if (!buttonRemoveTable.isEnabled()) {
             buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
@@ -870,6 +928,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 orderDesc.setEnabled(false);
             }
         }
+        comboSelectRowsOrColumns.setSelectedIndex(0);
 
 
     }//GEN-LAST:event_tabbedPaneStateChanged
@@ -993,6 +1052,46 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         avg.buttonAverageActionPerformed(evt);
     }//GEN-LAST:event_buttonAverageActionPerformed
 
+    private void fieldNameValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldNameValuesActionPerformed
+        ate.actionButtondialogName(evt);
+
+    }//GEN-LAST:event_fieldNameValuesActionPerformed
+
+    private void comboSelectRowsOrColumnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSelectRowsOrColumnsActionPerformed
+        try {
+            JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
+            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+            JViewport viewport = scrollPane.getViewport();
+            JTable table = (JTable) viewport.getView();
+            if (comboSelectRowsOrColumns.getSelectedIndex() == 0) {
+                table.setColumnSelectionAllowed(false);
+                table.setRowSelectionAllowed(true);
+                buttonRemoveColumn.setEnabled(false);
+
+            } else {
+                buttonRemoveColumn.setEnabled(true);
+                table.setColumnSelectionAllowed(true);
+                table.setRowSelectionAllowed(false);
+            }
+        } catch (Exception e) {
+
+        }
+    }//GEN-LAST:event_comboSelectRowsOrColumnsActionPerformed
+
+    private void buttonRemoveColumnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveColumnActionPerformed
+        if (comboSelectRowsOrColumns.getSelectedIndex() == 1) {
+            JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
+            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+            JViewport viewport = scrollPane.getViewport();
+            JTable table = (JTable) viewport.getView();
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            table.removeColumn(table.getColumnModel().getColumn(table.getSelectedColumn()));
+            
+            table.revalidate();
+            table.repaint();
+        }
+    }//GEN-LAST:event_buttonRemoveColumnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton buttonAdd;
     public javax.swing.JButton buttonAddValue;
@@ -1002,11 +1101,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     public javax.swing.JButton buttonExportCSV;
     private javax.swing.JButton buttonNext;
     private javax.swing.JButton buttonOKTemp;
+    public javax.swing.JButton buttonRemoveColumn;
     public javax.swing.JButton buttonRemoveItem;
     public javax.swing.JButton buttonRemoveTable;
     public javax.swing.JButton buttonValue;
     private javax.swing.JButton buttonValues;
     public javax.swing.JComboBox<String> comboOptions;
+    public javax.swing.JComboBox<String> comboSelectRowsOrColumns;
     public javax.swing.JDialog dialogAddMoreFiles;
     private javax.swing.JDialog dialogCoordinates;
     public javax.swing.JDialog dialogNombre;
@@ -1038,6 +1139,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     public javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    public javax.swing.JLabel labelSelect;
     public javax.swing.JList<String> listValues;
     public javax.swing.JButton orderAsc;
     public javax.swing.JButton orderDesc;
