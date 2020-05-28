@@ -44,18 +44,14 @@ public class TableDifferentiator {
         fd.names.stream().filter((file) -> (!singleNames.contains(file))).forEachOrdered((file) -> {
             singleNames.add(file);
         });
-        boolean[] canEditTry = new boolean[singleNames.size()];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
+
         DefaultTableModel model = new DefaultTableModel(
                 singleNames.toArray(new String[0]),
                 0) {
-            boolean[] canEdit = canEditTry;
 
             @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return false;
             }
 
             @Override

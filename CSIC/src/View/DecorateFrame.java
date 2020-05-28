@@ -209,8 +209,8 @@ public class DecorateFrame {
         }
 
     }
-    
-    public void removeTable(){
+
+    public void removeTable() {
         String name = fd.tabbedPane.getTitleAt(fd.tabbedPane.getSelectedIndex());
         JPanel genericPane = (JPanel) (fd.tabbedPane.getComponentAt(0));
         JScrollPane scrollPaneGeneric = (JScrollPane) genericPane.getComponent(0);
@@ -251,7 +251,7 @@ public class DecorateFrame {
             fd.tabbedPane.remove(fd.tabbedPane.getSelectedComponent());
         }
     }
-    
+
     /**
      *
      * @param table
@@ -276,17 +276,12 @@ public class DecorateFrame {
                 }
             }
         }
-        boolean[] canEditTry = new boolean[names.length];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
         DefaultTableModel newModel = new DefaultTableModel(
                 cells, names
         ) {
-            boolean[] canEdit = canEditTry;
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return false;
             }
 
             @Override

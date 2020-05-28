@@ -4,6 +4,7 @@
   <NonVisualComponents>
     <Container class="javax.swing.JDialog" name="dialogCoordinates">
       <Properties>
+        <Property name="title" type="java.lang.String" value="DataPicker4J"/>
         <Property name="resizable" type="boolean" value="false"/>
       </Properties>
 
@@ -201,6 +202,9 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JDialog" name="dialogNombre">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="DataPicker4J"/>
+      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
@@ -259,6 +263,9 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JDialog" name="dialogTemperature">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="DataPicker4J"/>
+      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -314,6 +321,9 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JDialog" name="dialogAddMoreFiles">
+      <Properties>
+        <Property name="title" type="java.lang.String" value="DataPicker4J"/>
+      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
@@ -406,6 +416,7 @@
     </Container>
     <Container class="javax.swing.JDialog" name="dialogSCF">
       <Properties>
+        <Property name="title" type="java.lang.String" value="DataPicker4J"/>
         <Property name="resizable" type="boolean" value="false"/>
       </Properties>
       <AuxValues>
@@ -530,6 +541,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="DataPicker4J"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>

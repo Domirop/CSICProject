@@ -135,16 +135,11 @@ public class AddTablesEvent {
         }
 
         JTable tableCoord = new JTable();
-        boolean[] canEditTry = new boolean[2 + fd.keywordsUsed.size()];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
 
         DefaultTableModel modelTable = new DefaultTableModel(values, 0) {
-            boolean[] canEdit = canEditTry;
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return false;
             }
 
             @Override
@@ -281,7 +276,9 @@ public class AddTablesEvent {
                     String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                     if (filename.endsWith(value)) {
                         fd.usedFiles.add(fd.filesData.get(i));
-                        fd.names.add(filename);
+                        if (!fd.names.contains(filename)) {
+                            fd.names.add(filename);
+                        }
                     }
                 }
                 if (isAdd) {
@@ -293,13 +290,15 @@ public class AddTablesEvent {
                     String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                     if (filename.contains(value)) {
                         fd.usedFiles.add(fd.filesData.get(i));
-                        fd.names.add(filename);
+                        if (!fd.names.contains(filename)) {
+                            fd.names.add(filename);
+                        }
                     }
                 }
                 actionButtonAdd(fd.fieldKeyword.getText());
                 break;
             case "Range starts with":
-                if (value.matches("^[0-9]+(\\-[0-9]+)*$")) {
+                if (value.matches("^[0-9]?[0-9]*(-)[0-9]?[0-9]*$")) {
                     String[] values = new String[2];
                     boolean fFileCero = false;
                     boolean sFileCero = false;
@@ -308,7 +307,7 @@ public class AddTablesEvent {
                         values[0].replace("0", "");
                         fFileCero = true;
                     }
-
+                    
                     if (values[1].startsWith("0")) {
                         values[1].replace("0", "");
                         sFileCero = true;

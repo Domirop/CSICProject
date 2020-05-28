@@ -108,6 +108,7 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
         buttonNext = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("DataPicker4J");
 
         jLabel1.setText("Choose files:");
 
