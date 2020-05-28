@@ -61,17 +61,11 @@ public class SCFTable {
         String[] headers = nameFiles.toArray(new String[0]);
         JTable tableSCF = new JTable(data, headers);
 
-        boolean[] canEditTry = new boolean[SCF.size() + 1];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
         DefaultTableModel newModel = new DefaultTableModel(
                 data, headers
         ) {
-            boolean[] canEdit = canEditTry;
-
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return false;
             }
 
             @Override

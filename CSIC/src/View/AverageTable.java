@@ -28,7 +28,10 @@ import javax.swing.table.TableColumn;
  * @author daviddiaz
  */
 public class AverageTable {
+
     FrameDifferentiator fd;
+    int index = 0;
+    List<String> values = new ArrayList<>();
 
     public AverageTable(FrameDifferentiator fd) {
         this.fd = fd;
@@ -42,22 +45,24 @@ public class AverageTable {
     public void averageTable(List<File> usedFiles) {
         Molecule molecule = fd.controller.getMolecule(usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature)
         );
-        String[] values = new String[fd.keywordsUsed.size() + 2];
-        values[0] = "Gaussian";
-        values[1] = "Atom";
-        for (int i = 2; i <= fd.keywordsUsed.size() + 1; i++) {
-            values[i] = fd.keywordsUsed.get(i - 2);
+        if (values.isEmpty()) {
+            values.add("Gaussian");
+            values.add("Atom");
         }
-
+        for (int i = 0; i < 1; i++) {
+            if (!values.contains(fd.names.get(i))) {
+                values.add(fd.names.get(i));
+            }
+        }
+        String[] valuesArray = values.toArray(new String[0]);
         if (fd.tableGeneric == null) {
-            initAverageTable(values);
+            initAverageTable(valuesArray);
             addElementsToAverageTable(molecule);
             JScrollPane scrollpaneGeneric = new JScrollPane(fd.tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             fd.panelGeneric.add(scrollpaneGeneric);
         } else {
             fd.panelGeneric.removeAll();
-            initAverageTable(values);
-            addElementsToAverageTable(molecule);
+            addColumnToAverageTable(molecule);
             JScrollPane scrollpaneGeneric = new JScrollPane(fd.tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             fd.panelGeneric.add(scrollpaneGeneric);
         }
@@ -72,7 +77,6 @@ public class AverageTable {
             }
         }
         fd.tableGeneric.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
     }
 
     /**
@@ -83,17 +87,10 @@ public class AverageTable {
     private void initAverageTable(String[] values) {
         fd.tableGeneric = new JTable();
 
-
-        boolean[] canEditTry = new boolean[fd.keywordsUsed.size() + 2];
-        for (int i = 0; i < canEditTry.length; i++) {
-            canEditTry[i] = false;
-        }
-
         DefaultTableModel modelGeneric = new DefaultTableModel(values, 0) {
-            boolean[] canEdit = canEditTry;
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return false;
             }
 
             @Override
@@ -162,7 +159,33 @@ public class AverageTable {
         fd.rows.forEach((row) -> {
             model.addRow(row.toArray());
         });
+    }
 
+    /**
+     * This method add new columns when the JTable isn`t null.
+     * @param molecule Object where the app get values.
+     */
+    private void addColumnToAverageTable(Molecule molecule) {
+        DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
+        List<Double> average = new ArrayList();
+        for (int i = 0; i < molecule.getResult().size(); i++) {
+            double value = molecule.getResult().get(i).getValue();
+            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
+            otherSymbols.setDecimalSeparator('.');
+            otherSymbols.setGroupingSeparator(',');
+            DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+            df.setRoundingMode(RoundingMode.CEILING);
+            average.add(Double.parseDouble(String.valueOf(df.format(value))));
+        }
+        Double[] data = average.toArray(new Double[0]);
+        if (values.size() > index) {
+            if (index > 0) {
+                for (int i = values.size(); i <= values.size(); i++) {
+                    model.addColumn(values.get(i - 1), data);
+                }
+            }
+            index = values.size();
+        }
     }
 
     /**
@@ -182,6 +205,10 @@ public class AverageTable {
                     + myTable.getValueAt(secondIndex, 0).toString() + "-"
                     + myTable.getValueAt(thirdIndex, 0).toString();
             myTable.setValueAt(gaussians, firstIndex, 0);
+            String atoms = myTable.getValueAt(firstIndex, 1).toString() + "-"
+                    + myTable.getValueAt(secondIndex, 1).toString() + "-"
+                    + myTable.getValueAt(thirdIndex, 1).toString();
+            myTable.setValueAt(atoms, firstIndex, 1);
             for (int i = 2; i < myTable.getColumnCount(); i++) {
                 Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, i).toString())
                         + Double.parseDouble(myTable.getValueAt(secondIndex, i).toString())
@@ -219,7 +246,9 @@ public class AverageTable {
                     localRows.add(myTable.getValueAt(firstIndex, 0).toString() + "-"
                             + myTable.getValueAt(secondIndex, 0).toString() + "-"
                             + myTable.getValueAt(thirdIndex, 0).toString());
-                    localRows.add(myTable.getValueAt(i, 1).toString());
+                    localRows.add(myTable.getValueAt(firstIndex, 1).toString() + "-"
+                            + myTable.getValueAt(secondIndex, 1).toString() + "-"
+                            + myTable.getValueAt(thirdIndex, 1).toString());
                 }
             } else {
                 localRows.add(myTable.getValueAt(i, 0).toString());
@@ -345,5 +374,4 @@ public class AverageTable {
             }
         }
     }
-
 }

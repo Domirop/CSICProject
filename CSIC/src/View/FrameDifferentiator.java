@@ -153,6 +153,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemSCF = new javax.swing.JMenuItem();
         itemExit = new javax.swing.JMenuItem();
 
+        dialogCoordinates.setTitle("DataPicker4J");
         dialogCoordinates.setResizable(false);
 
         jLabel2.setText("Row:");
@@ -266,6 +267,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        dialogNombre.setTitle("DataPicker4J");
+
         jLabel4.setText("Choose a name for the values");
 
         fieldNameValues.addActionListener(new java.awt.event.ActionListener() {
@@ -308,6 +311,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        dialogTemperature.setTitle("DataPicker4J");
+
         jLabel5.setText("Change temperature:");
 
         fieldTemperature.setText("298.15");
@@ -345,6 +350,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addComponent(buttonOKTemp)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        dialogAddMoreFiles.setTitle("DataPicker4J");
 
         jLabel6.setText("Choose files:");
 
@@ -401,6 +408,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        dialogSCF.setTitle("DataPicker4J");
         dialogSCF.setResizable(false);
 
         javax.swing.GroupLayout dialogSCFLayout = new javax.swing.GroupLayout(dialogSCF.getContentPane());
@@ -415,6 +423,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("DataPicker4J");
 
         jLabel1.setText("Search by keyword:");
 
@@ -670,7 +679,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAddActionPerformed
         names.clear();
-        usedFiles.clear();
         if (fieldKeyword.getText().length() > 0) {
             ate.getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
         }
@@ -686,6 +694,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         usedFiles.clear();
         if (fieldKeyword.getText().length() > 0) {
             ate.getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
+
         }
     }//GEN-LAST:event_fieldKeywordActionPerformed
 
