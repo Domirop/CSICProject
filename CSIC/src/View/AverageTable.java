@@ -86,7 +86,7 @@ public class AverageTable {
      */
     private void initAverageTable(String[] values) {
         fd.tableGeneric = new JTable();
-        
+
         DefaultTableModel modelGeneric = new DefaultTableModel(values, 0) {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
