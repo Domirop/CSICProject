@@ -174,6 +174,7 @@ public class DecorateFrame {
 
     public void initElements() {
         fd.setSize(1080, 720);
+        fd.buttonRemoveColumn.setVisible(false);
         fd.jMenuBar1.add(fd.buttonValue);
         fd.jMenuBar1.add(fd.buttonExportCSV);
         fd.jMenuBar1.add(fd.orderDesc);

@@ -11,16 +11,19 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -312,7 +315,7 @@ public class AddTablesEvent {
                         values[0].replace("0", "");
                         fFileCero = true;
                     }
-                    
+
                     if (values[1].startsWith("0")) {
                         values[1].replace("0", "");
                         sFileCero = true;
@@ -414,6 +417,49 @@ public class AddTablesEvent {
                 break;
             default:
                 break;
+        }
+    }
+
+    public void removeColumn() {
+        if (fd.comboSelectRowsOrColumns.getSelectedIndex() == 1) {
+            JPanel myPanel = (JPanel) (fd.tabbedPane.getSelectedComponent());
+            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+            JViewport viewport = scrollPane.getViewport();
+            JTable table = (JTable) viewport.getView();
+            if (table.getSelectedColumnCount() > 0) {
+                fd.usedFiles.clear();
+                List<File> aux = new ArrayList<>();
+                for (int i = 2; i < table.getColumnCount(); i++) {
+                    String tableName = table.getColumnName(i);
+                    aux.addAll(fd.filesData.stream()
+                            .filter((File v) -> v.getName().contains(tableName))
+                            .collect(Collectors.toList()));
+                }
+                int index = 0;
+                for (int i = 2; i < fd.tableGeneric.getColumnCount(); i++) {
+                    if (aux.get(0).getName().contains(fd.tableGeneric.getColumnName(i))) {
+                        index = i;
+                    }
+                }
+
+                String columnSelected = table.getColumnName(table.getSelectedColumn());
+                table.removeColumn(table.getColumnModel().getColumn(table.getSelectedColumn()));
+                fd.usedFiles.addAll(aux.stream().filter((File v) -> !v.getName().contains(columnSelected)).collect(Collectors.toList()));
+                Molecule molecule = fd.controller.getMolecule(fd.usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature));
+                for (int i = 0; i < fd.tableGeneric.getRowCount(); i++) {
+                    double value = molecule.getResult().get(i).getValue();
+                    DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
+                    otherSymbols.setDecimalSeparator('.');
+                    otherSymbols.setGroupingSeparator(',');
+                    DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                    df.setRoundingMode(RoundingMode.CEILING);
+                    fd.tableGeneric.setValueAt(Double.parseDouble(df.format(value)), i, index);
+                }
+                table.revalidate();
+                table.repaint();
+            } else {
+                fd.errorText.setText("Please selected one column");
+            }
         }
     }
 }

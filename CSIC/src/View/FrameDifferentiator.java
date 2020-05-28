@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import Controller.ControllerInt;
+import Model.Atomo.FileData;
+import Model.Atomo.Molecule;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
@@ -19,18 +21,21 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableModel;
 
 /**
  * Contains all the necesary methods to show the user the application.
@@ -83,7 +88,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         this.filesData = filesData;
         decorate.addIcons();
         decorate.initElements();
-
         Set set = new HashSet();
         set.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0));
         fieldRow.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, set);
@@ -168,7 +172,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel3.setText("Column:");
 
-        fieldColumn.setFocusTraversalKeysEnabled(false);
         fieldColumn.setNextFocusableComponent(fieldRow);
         fieldColumn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -659,8 +662,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addComponent(buttonAdd))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(errorText, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -694,7 +697,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         usedFiles.clear();
         if (fieldKeyword.getText().length() > 0) {
             ate.getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
-
         }
     }//GEN-LAST:event_fieldKeywordActionPerformed
 
@@ -1086,19 +1088,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_comboSelectRowsOrColumnsActionPerformed
-
+    
     private void buttonRemoveColumnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveColumnActionPerformed
-        if (comboSelectRowsOrColumns.getSelectedIndex() == 1) {
-            JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
-            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-            JViewport viewport = scrollPane.getViewport();
-            JTable table = (JTable) viewport.getView();
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            table.removeColumn(table.getColumnModel().getColumn(table.getSelectedColumn()));
-            
-            table.revalidate();
-            table.repaint();
-        }
+        ate.removeColumn();
     }//GEN-LAST:event_buttonRemoveColumnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

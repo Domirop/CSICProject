@@ -117,7 +117,6 @@
         </Component>
         <Component class="javax.swing.JTextField" name="fieldColumn">
           <Properties>
-            <Property name="focusTraversalKeysEnabled" type="boolean" value="false"/>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="fieldRow"/>
             </Property>
@@ -640,8 +639,8 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="errorText" min="-2" pref="23" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-              <Component id="tabbedPane" pref="335" max="32767" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="tabbedPane" pref="356" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="labelSelect" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
