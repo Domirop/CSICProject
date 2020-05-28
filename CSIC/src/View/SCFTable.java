@@ -47,16 +47,16 @@ public class SCFTable {
         nameFiles.add("Values");
         contribution.add("Contribution");
         SCF.add("SCF");
-        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
-        otherSymbols.setDecimalSeparator('.');
-        otherSymbols.setGroupingSeparator(',');
-        DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
-        df.setRoundingMode(RoundingMode.CEILING);
+//        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
+//        otherSymbols.setDecimalSeparator('.');
+//        otherSymbols.setGroupingSeparator(',');
+//        DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+//        df.setRoundingMode(RoundingMode.CEILING);
 
         for (FileData fileData : fd.controller.getFileData(fd.usedFiles, Double.valueOf(fd.temperature))) {
             nameFiles.add(fileData.getFileName());
-            contribution.add(Double.parseDouble(df.format(fileData.getContribution())));
-            SCF.add(Double.parseDouble(df.format(fileData.getEnergyValue())));
+            contribution.add(fileData.getContribution());
+            SCF.add(fileData.getEnergyValue());
         }
         Object[][] data = new Object[][]{
             contribution.toArray(new Object[0]),
