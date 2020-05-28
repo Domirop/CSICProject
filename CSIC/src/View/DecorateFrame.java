@@ -173,7 +173,7 @@ public class DecorateFrame {
     }
 
     public void initElements() {
-        fd.setSize(1080, 480);
+        fd.setSize(1080, 720);
         fd.jMenuBar1.add(fd.buttonValue);
         fd.jMenuBar1.add(fd.buttonExportCSV);
         fd.jMenuBar1.add(fd.orderDesc);
@@ -203,6 +203,9 @@ public class DecorateFrame {
         fd.itemSearchValue.setEnabled(false);
         fd.itemSCF.setEnabled(false);
         fd.errorText.setVisible(true);
+        fd.labelSelect.setVisible(false);
+        fd.comboSelectRowsOrColumns.setVisible(false);
+        
 
         if (!fd.buttonRemoveTable.isEnabled()) {
             fd.buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
