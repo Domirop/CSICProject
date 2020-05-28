@@ -38,6 +38,7 @@ class ListTransferHandler extends TransferHandler {
             String data = null;
             // If we can't handle the import, bail now.
             if (!canImport(info)) {
+                System.out.println("hm");
                 return false;
             }
             JList list = (JList) info.getComponent();
@@ -86,7 +87,6 @@ class ListTransferHandler extends TransferHandler {
                                 } else {
                                     model.addElement(allData[i]);
                                     fr.coorValues.add(allData[i]);
-
                                     fr.colAndRows.add(allData[i]);
 
                                 }

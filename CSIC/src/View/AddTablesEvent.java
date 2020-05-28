@@ -224,6 +224,7 @@ public class AddTablesEvent {
 
     /**
      * This method add element to the JList of the dialogCoordinates.
+     *
      * @param rowCount numbers of rowCount.
      */
     public void addValueToList(int rowCount) {
@@ -348,7 +349,7 @@ public class AddTablesEvent {
                         }
                         actionButtonAdd(charact);
                     }
-                }else{
+                } else {
                     fd.errorText.setText("The format is (number-number)");
                 }
                 break;

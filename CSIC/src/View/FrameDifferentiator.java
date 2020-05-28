@@ -13,17 +13,22 @@ import javax.swing.border.LineBorder;
 import Controller.ControllerInt;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -71,17 +76,18 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
         initComponents();
-        ListTransferHandler lh = new ListTransferHandler(this);
-        listValues.setModel(new DefaultListModel());
-        listValues.setDragEnabled(true);
-        listValues.setTransferHandler(lh);
-        listValues.setDropMode(DropMode.ON_OR_INSERT);
+
         edd.setMappings(listValues);
         this.controller = controller;
         this.files = files;
         this.filesData = filesData;
         decorate.addIcons();
         decorate.initElements();
+
+        Set set = new HashSet();
+
+        set.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0));
+        fieldRow.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, set);
     }
 
     /**
@@ -158,7 +164,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel3.setText("Column:");
 
-        fieldColumn.setFocusCycleRoot(true);
+        fieldColumn.setFocusTraversalKeysEnabled(false);
         fieldColumn.setNextFocusableComponent(fieldRow);
         fieldColumn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -258,6 +264,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         );
 
         jLabel4.setText("Choose a name for the values");
+
+        fieldNameValues.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldNameValuesActionPerformed(evt);
+            }
+        });
 
         buttonValues.setText("Ok");
         buttonValues.addActionListener(new java.awt.event.ActionListener() {
@@ -659,7 +671,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
-        errorDialogCoor.setVisible(false);
+        errorDialogCoor.setText("");
         listValues.setListData(new String[0]);
         coorValues.clear();
         errorDialogCoor.setText("");
@@ -684,6 +696,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemSearchValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSearchValueActionPerformed
+        ListTransferHandler lh = new ListTransferHandler(this);
+        listValues.setModel(new DefaultListModel());
+        listValues.setDragEnabled(true);
+        listValues.setTransferHandler(lh);
+        listValues.setDropMode(DropMode.ON_OR_INSERT);
         dialogCoordinates.pack();
         listValues.removeAll();
         dialogCoordinates.setVisible(true);
@@ -742,6 +759,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValueActionPerformed
+        ListTransferHandler lh = new ListTransferHandler(this);
+        listValues.setModel(new DefaultListModel());
+        listValues.setDragEnabled(true);
+        listValues.setTransferHandler(lh);
+        listValues.setDropMode(DropMode.ON_OR_INSERT);
         dialogCoordinates.pack();
         listValues.removeAll();
         dialogCoordinates.setVisible(true);
@@ -992,6 +1014,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         errorText.setForeground(Color.RED);
         avg.buttonAverageActionPerformed(evt);
     }//GEN-LAST:event_buttonAverageActionPerformed
+
+    private void fieldNameValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldNameValuesActionPerformed
+        ate.actionButtondialogName(evt);
+
+    }//GEN-LAST:event_fieldNameValuesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton buttonAdd;

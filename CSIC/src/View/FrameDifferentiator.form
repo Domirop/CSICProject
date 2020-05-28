@@ -116,7 +116,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="fieldColumn">
           <Properties>
-            <Property name="focusCycleRoot" type="boolean" value="true"/>
+            <Property name="focusTraversalKeysEnabled" type="boolean" value="false"/>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="fieldRow"/>
             </Property>
@@ -244,6 +244,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldNameValues">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldNameValuesActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
