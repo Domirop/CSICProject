@@ -11,8 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import Controller.ControllerInt;
-import Model.Atomo.FileData;
-import Model.Atomo.Molecule;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
@@ -21,20 +19,18 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -910,7 +906,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
         if (tabbedPane.getSelectedIndex() == 0) {
-            buttonRemoveTable.setEnabled(false);
+            buttonRemoveTable.setEnabled(true);
             buttonAverage.setEnabled(true);
             buttonAverage.setVisible(true);
             comboSelectRowsOrColumns.setEnabled(false);
@@ -1078,17 +1074,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 table.setColumnSelectionAllowed(false);
                 table.setRowSelectionAllowed(true);
                 buttonRemoveColumn.setEnabled(false);
-
             } else {
-                buttonRemoveColumn.setEnabled(true);
                 table.setColumnSelectionAllowed(true);
                 table.setRowSelectionAllowed(false);
+                buttonRemoveColumn.setEnabled(true);
+
             }
         } catch (Exception e) {
 
         }
     }//GEN-LAST:event_comboSelectRowsOrColumnsActionPerformed
-    
+
     private void buttonRemoveColumnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveColumnActionPerformed
         ate.removeColumn();
     }//GEN-LAST:event_buttonRemoveColumnActionPerformed

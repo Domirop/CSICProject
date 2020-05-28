@@ -109,6 +109,8 @@ public class AddTablesEvent {
                             fd.itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
                         }
                         scf.addSCFTable(fieldText);
+                        fd.orderDesc.setVisible(true);
+                        fd.orderAsc.setVisible(true);
 
                     } else {
                         fd.errorText.setText("Couldn't find any file with the provided keyword.");
@@ -121,6 +123,7 @@ public class AddTablesEvent {
             } else {
                 fd.errorText.setText("Some files have already been imported.");
             }
+
         } catch (Exception e) {
             fd.errorText.setText("Some files were not imported.");
         }
@@ -130,8 +133,6 @@ public class AddTablesEvent {
     }
 
     public void actionButtondialogName(ActionEvent evt) {
-        fd.orderDesc.setVisible(true);
-        fd.orderAsc.setVisible(true);
         JPanel newPane = new JPanel();
         newPane.setLayout(new GridLayout(0, 1));
         String[] values = new String[fd.keywordsUsed.size() + 2];
@@ -311,31 +312,34 @@ public class AddTablesEvent {
                     boolean fFileCero = false;
                     boolean sFileCero = false;
                     values = value.split("-");
+
                     if (values[0].startsWith("0")) {
-                        values[0].replace("0", "");
+                        values[0] = values[0].replace("0", "");
                         fFileCero = true;
                     }
 
                     if (values[1].startsWith("0")) {
-                        values[1].replace("0", "");
+                        values[1] = values[1].replace("0", "");
                         sFileCero = true;
                     }
 
-                    for (int j = Integer.valueOf(values[0]); j <= Integer.valueOf(values[1]); j++) {
+                    for (int j = Integer.parseInt(values[0]); j <= Integer.parseInt(values[1]); j++) {
                         fd.usedFiles.clear();
                         fd.names.clear();
-                        String charact = "";
+                        String charact1 = "";
+                        String charact2 = "";
                         if (fFileCero == true && j < 10) {
-                            charact = "0" + String.valueOf(j);
+                            charact1 = "0" + String.valueOf(j);
                         } else {
-                            charact = String.valueOf(j);
+                            charact1 = String.valueOf(j);
                         }
 
                         if (sFileCero == true && j < 10) {
-                            charact = "0" + String.valueOf(j);
+                            charact2 = "0" + String.valueOf(j);
                         } else {
-                            charact = String.valueOf(j);
+                            charact2 = String.valueOf(j);
                         }
+
                         String separador = "";
                         for (int i = 0; i < fd.files.size(); i++) {
                             String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
@@ -346,21 +350,21 @@ public class AddTablesEvent {
                                     break searchSeparator;
                                 }
                             }
-                            if (filename.split(separador)[0].equals(charact)) {
+                            if (filename.split(separador)[0].equals(charact1) || filename.split(separador)[0].equals(charact2)) {
                                 fd.usedFiles.add(fd.filesData.get(i));
                                 if (!fd.names.contains(filename)) {
                                     fd.names.add(filename);
                                 }
                             }
                         }
-                        actionButtonAdd(charact);
+                        actionButtonAdd(String.valueOf(j));
                     }
                 } else {
                     fd.errorText.setText("The format is (number-number)");
                 }
                 break;
             case "Range ends with":
-                if (value.matches("^[0-9]+(\\-[0-9]+)*$")) {
+                if (value.matches("^[0-9]?[0-9]*(-)[0-9]?[0-9]*$")) {
                     String[] values = new String[2];
                     boolean fFileCero = false;
                     boolean sFileCero = false;
@@ -376,17 +380,18 @@ public class AddTablesEvent {
                     for (int j = Integer.valueOf(values[0]); j <= Integer.valueOf(values[1]); j++) {
                         fd.usedFiles.clear();
                         fd.names.clear();
-                        String charact = "";
+                        String charact1 = "";
+                        String charact2 = "";
                         if (fFileCero == true && j < 10) {
-                            charact = "0" + String.valueOf(j);
+                            charact1 = "0" + String.valueOf(j);
                         } else {
-                            charact = String.valueOf(j);
+                            charact1 = String.valueOf(j);
                         }
 
                         if (sFileCero == true && j < 10) {
-                            charact = "0" + String.valueOf(j);
+                            charact2 = "0" + String.valueOf(j);
                         } else {
-                            charact = String.valueOf(j);
+                            charact2 = String.valueOf(j);
                         }
                         String separador = "";
                         for (int i = 0; i < fd.files.size(); i++) {
@@ -404,14 +409,14 @@ public class AddTablesEvent {
                                 }
                             }
                             String[] separated = filename.split(separador);
-                            if (separated[separated.length - 1].equals(charact)) {
+                            if (separated[separated.length - 1].equals(charact1) || separated[separated.length - 1].equals(charact2)) {
                                 fd.usedFiles.add(fd.filesData.get(i));
                                 if (!fd.names.contains(filename)) {
                                     fd.names.add(filename);
                                 }
                             }
                         }
-                        actionButtonAdd(charact);
+                        actionButtonAdd(String.valueOf(j));
                     }
                 }
                 break;
@@ -426,39 +431,49 @@ public class AddTablesEvent {
             JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
             JViewport viewport = scrollPane.getViewport();
             JTable table = (JTable) viewport.getView();
-            if (table.getSelectedColumnCount() > 0) {
-                fd.usedFiles.clear();
-                List<File> aux = new ArrayList<>();
-                for (int i = 2; i < table.getColumnCount(); i++) {
-                    String tableName = table.getColumnName(i);
-                    aux.addAll(fd.filesData.stream()
-                            .filter((File v) -> v.getName().contains(tableName))
-                            .collect(Collectors.toList()));
-                }
-                int index = 0;
-                for (int i = 2; i < fd.tableGeneric.getColumnCount(); i++) {
-                    if (aux.get(0).getName().contains(fd.tableGeneric.getColumnName(i))) {
-                        index = i;
-                    }
-                }
+            if (table.getColumnCount() > 3) {
+                if (table.getSelectedColumn() != 0 && table.getSelectedColumn() != 1) {
+                    fd.errorText.setText("");
+                    if (table.getSelectedColumnCount() > 0) {
+                        fd.usedFiles.clear();
+                        List<File> aux = new ArrayList<>();
+                        for (int i = 2; i < table.getColumnCount(); i++) {
+                            String tableName = table.getColumnName(i);
+                            aux.addAll(fd.filesData.stream()
+                                    .filter((File v) -> v.getName().contains(tableName))
+                                    .collect(Collectors.toList()));
+                        }
 
-                String columnSelected = table.getColumnName(table.getSelectedColumn());
-                table.removeColumn(table.getColumnModel().getColumn(table.getSelectedColumn()));
-                fd.usedFiles.addAll(aux.stream().filter((File v) -> !v.getName().contains(columnSelected)).collect(Collectors.toList()));
-                Molecule molecule = fd.controller.getMolecule(fd.usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature));
-                for (int i = 0; i < fd.tableGeneric.getRowCount(); i++) {
-                    double value = molecule.getResult().get(i).getValue();
-                    DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
-                    otherSymbols.setDecimalSeparator('.');
-                    otherSymbols.setGroupingSeparator(',');
-                    DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
-                    df.setRoundingMode(RoundingMode.CEILING);
-                    fd.tableGeneric.setValueAt(Double.parseDouble(df.format(value)), i, index);
+                        int index = 0;
+                        for (int i = 2; i < fd.tableGeneric.getColumnCount(); i++) {
+                            if (aux.get(0).getName().contains(fd.tableGeneric.getColumnName(i))) {
+                                index = i;
+                            }
+                        }
+
+                        String columnSelected = table.getColumnName(table.getSelectedColumn());
+                        table.removeColumn(table.getColumnModel().getColumn(table.getSelectedColumn()));
+                        fd.usedFiles.addAll(aux.stream().filter((File v) -> !v.getName().contains(columnSelected)).collect(Collectors.toList()));
+                        Molecule molecule = fd.controller.getMolecule(fd.usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature));
+                        for (int i = 0; i < fd.tableGeneric.getRowCount(); i++) {
+                            double value = molecule.getResult().get(i).getValue();
+                            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
+                            otherSymbols.setDecimalSeparator('.');
+                            otherSymbols.setGroupingSeparator(',');
+                            DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                            df.setRoundingMode(RoundingMode.CEILING);
+                            fd.tableGeneric.setValueAt(Double.parseDouble(df.format(value)), i, index);
+                        }
+                        table.revalidate();
+                        table.repaint();
+                    } else {
+                        fd.errorText.setText("Please selected one column");
+                    }
+                } else {
+                    fd.errorText.setText("This column cannot be deleted");
                 }
-                table.revalidate();
-                table.repaint();
             } else {
-                fd.errorText.setText("Please selected one column");
+                fd.errorText.setText("Last column cannot be deleted");
             }
         }
     }

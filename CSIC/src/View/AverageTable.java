@@ -66,6 +66,15 @@ public class AverageTable {
             JScrollPane scrollpaneGeneric = new JScrollPane(fd.tableGeneric, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             fd.panelGeneric.add(scrollpaneGeneric);
         }
+        for (int i = 0; i < fd.tableGeneric.getColumnCount(); i++) {
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            fd.tableGeneric.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) fd.tableGeneric.getTableHeader().getDefaultRenderer();
+        renderer.setHorizontalAlignment(0);
+        fd.tableGeneric.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        
         TableColumn column = null;
         for (int i = 0; i < fd.tableGeneric.getColumnCount(); i++) {
             if (i == 0 || i == 1) {
@@ -110,6 +119,7 @@ public class AverageTable {
         };
         fd.tableGeneric.setAutoCreateRowSorter(true);
         fd.tableGeneric.setModel(modelGeneric);
+
         //Center columns
         for (int i = 0; i < fd.tableGeneric.getColumnCount(); i++) {
             DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -163,6 +173,7 @@ public class AverageTable {
 
     /**
      * This method add new columns when the JTable isn`t null.
+     *
      * @param molecule Object where the app get values.
      */
     private void addColumnToAverageTable(Molecule molecule) {

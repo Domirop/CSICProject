@@ -206,7 +206,7 @@ public class DecorateFrame {
         fd.errorText.setVisible(true);
         fd.labelSelect.setVisible(false);
         fd.comboSelectRowsOrColumns.setVisible(false);
-        
+
 
         if (!fd.buttonRemoveTable.isEnabled()) {
             fd.buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
