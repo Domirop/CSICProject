@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -61,14 +62,37 @@ public class Order {
         }
     }
 
-    private void chargeAverageTable() {
+    private void initAverageTable() {
+
         DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
+
         Vector data = model.getDataVector();
         Vector dataColumn = new Vector();
+
         for (int i = 0; i < model.getColumnCount(); i++) {
             dataColumn.add(model.getColumnName(i));
         }
-        DefaultTableModel model2 = new DefaultTableModel();
+        DefaultTableModel model2 = new DefaultTableModel(0, 0) {
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return false;
+            }
+
+            @Override
+            public Class<?> getColumnClass(int column) {
+                Class<?> returnValue;
+                if ((column >= 0) && (column < getColumnCount())) {
+                    returnValue = getValueAt(0, column).getClass();
+
+                } else {
+                    returnValue = Object.class;
+                }
+
+                return returnValue;
+
+            }
+        ;
+        };        
         model2.setDataVector(data, dataColumn);
         fd.averageTableReorder.setModel(model2);
 
@@ -92,13 +116,12 @@ public class Order {
             }
         }
         fd.averageTableReorder.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
     }
 
     public void orderDescAverageTable() {
         if (fd.tableGeneric.getSelectedRowCount() == 2) {
             if (fd.averageTableReorder.getRowCount() == 0) {
-                chargeAverageTable();
+                initAverageTable();
             }
             fd.errorDialogCoor.setText("");
             int[] indexs = fd.tableGeneric.getSelectedRows();
@@ -112,6 +135,7 @@ public class Order {
 
                 }
             }
+
             if (!fd.dialogAverageOrder.isVisible()) {
                 fd.dialogAverageOrder.setVisible(true);
             }
@@ -125,17 +149,24 @@ public class Order {
     }
 
     public void orderAscAverageTable() {
-
         if (fd.tableGeneric.getSelectedRowCount() == 2) {
             if (fd.averageTableReorder.getRowCount() == 0) {
-                chargeAverageTable();
+                initAverageTable();
             }
             fd.errorDialogCoor.setText("");
-            fd.averageTableReorder.setDefaultRenderer(Object.class, new MiRenderer());
+            Random random = new Random();
+            final float hue = random.nextFloat();
+            final float saturation = (random.nextInt(2000) + 1000) / 10000f;
+            final float luminance = 0.9f;
+            final Color color = Color.getHSBColor(hue, saturation, luminance);
             int[] indexs = fd.tableGeneric.getSelectedRows();
+
             for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
                 double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
                 double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
+                final TableColour tce = new TableColour(indexs, color);
+                fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
+
                 if (bg1 > bg2) {
                     double ax = bg1;
                     fd.averageTableReorder.setValueAt(bg2, indexs[0], i);
@@ -143,6 +174,7 @@ public class Order {
 
                 }
             }
+
             if (!fd.dialogAverageOrder.isVisible()) {
                 fd.dialogAverageOrder.setVisible(true);
             }
@@ -334,29 +366,31 @@ public class Order {
     }
 }
 
-class MiRenderer extends DefaultTableCellRenderer {
+class TableColour
+        extends javax.swing.table.DefaultTableCellRenderer {
+
+    int[] rows;
+    Color color;
+
+    public TableColour(int[] rows, Color color) {
+        this.rows = rows;
+        this.color = color;
+    }
 
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value,
-            boolean isSelected,
-            boolean hasFocus,
-            int row,
-            int column) {
+    public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, java.lang.Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        java.awt.Component cellComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        if (row == rows[0] || row == rows[1]) {
+            cellComponent.setBackground(color);
+            cellComponent.setForeground(Color.BLACK);
 
-        int numero = (Integer) table.getValueAt(row, 1);
-
-        if (numero >= 10) {
-            setBackground(Color.GREEN);
-            setForeground(Color.BLACK);
-        } else if (numero >= 5 && numero < 10) {
-            setBackground(Color.YELLOW);
-            setForeground(Color.BLACK);
         } else {
-            setBackground(Color.RED);
-            setForeground(Color.BLACK);
+            cellComponent.setBackground(Color.white);
+            cellComponent.setForeground(Color.BLACK);
         }
 
-        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        return cellComponent;
+
     }
 
 }
