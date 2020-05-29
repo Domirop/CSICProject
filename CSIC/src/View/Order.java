@@ -7,6 +7,7 @@ package View;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -18,13 +19,14 @@ import javax.swing.table.DefaultTableModel;
  * @author daviddiaz
  */
 public class Order {
-    
+
     FrameDifferentiator fd;
 
     public Order(FrameDifferentiator fd) {
         this.fd = fd;
     }
-    public void orderDesc(){
+
+    public void orderDescValuesTable() {
         JTable myTabla = getSelectedTable();
         fd.errorText.setText("");
         if (myTabla.getSelectedRows().length == 2) {
@@ -51,8 +53,56 @@ public class Order {
             fd.errorText.setVisible(true);
         }
     }
-    
-    public void orderAsc(){
+
+    private void chargeAverageTable() {
+        DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
+        Vector data = model.getDataVector();
+        Vector dataColumn = new Vector();
+        for (int i = 0; i < model.getColumnCount(); i++) {
+            dataColumn.add(model.getColumnName(i));
+        }
+        DefaultTableModel model2 = new DefaultTableModel();
+        model2.setDataVector(data, dataColumn);
+        fd.averageTableReorder.setModel(model2);
+    }
+
+    public void orderDescAverageTable() {
+        if(fd.averageTableReorder.getRowCount() == 0) chargeAverageTable();
+        int[] indexs = fd.tableGeneric.getSelectedRows();
+        for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
+            double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
+            double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
+            if (bg1 < bg2) {
+                double ax = bg1;
+                fd.averageTableReorder.setValueAt(bg2, indexs[0], i);
+                fd.averageTableReorder.setValueAt(ax, indexs[1], i);
+            }
+        }
+        if (!fd.dialogAverageOrder.isVisible()) {
+            fd.dialogAverageOrder.setVisible(true);
+        }
+        fd.dialogAverageOrder.pack();
+    }
+
+    public void orderAscAverageTable() {
+        if(fd.averageTableReorder.getRowCount() == 0) chargeAverageTable();
+        int[] indexs = fd.tableGeneric.getSelectedRows();
+        for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
+            double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
+            double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
+            if (bg1 > bg2) {
+                double ax = bg1;
+                fd.averageTableReorder.setValueAt(bg2, indexs[0], i);
+                fd.averageTableReorder.setValueAt(ax, indexs[1], i);
+            }
+        }
+        if (!fd.dialogAverageOrder.isVisible()) {
+            fd.dialogAverageOrder.setVisible(true);
+        }
+        fd.dialogAverageOrder.pack();
+    }
+
+    public void orderAscValuesTable() {
         JTable myTabla = getSelectedTable();
         fd.errorText.setText("");
         if (myTabla.getSelectedRows().length == 2) {
@@ -80,7 +130,7 @@ public class Order {
             fd.errorText.setVisible(true);
         }
     }
-    
+
     /**
      * Method used to order the "normal" tables.
      *
@@ -187,7 +237,7 @@ public class Order {
             }
         }
     }
-    
+
     /**
      *
      * @return selected myTable
@@ -199,7 +249,7 @@ public class Order {
         JTable myTable = (JTable) viewport.getView();
         return myTable;
     }
-    
+
     /**
      * Used to order values
      *

@@ -126,6 +126,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         textAreaMoreFiles = new javax.swing.JTextArea();
         dialogSCF = new javax.swing.JDialog();
         tabPaneSCF = new javax.swing.JTabbedPane();
+        dialogAverageOrder = new javax.swing.JDialog();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        averageTableReorder = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         comboOptions = new javax.swing.JComboBox<>();
         fieldKeyword = new javax.swing.JTextField();
@@ -419,6 +422,30 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         dialogSCFLayout.setVerticalGroup(
             dialogSCFLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(tabPaneSCF)
+        );
+
+        dialogAverageOrder.setTitle("DataPicker4J");
+        dialogAverageOrder.setResizable(false);
+
+        averageTableReorder.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(averageTableReorder);
+
+        javax.swing.GroupLayout dialogAverageOrderLayout = new javax.swing.GroupLayout(dialogAverageOrder.getContentPane());
+        dialogAverageOrder.getContentPane().setLayout(dialogAverageOrderLayout);
+        dialogAverageOrderLayout.setHorizontalGroup(
+            dialogAverageOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+        );
+        dialogAverageOrderLayout.setVerticalGroup(
+            dialogAverageOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -840,7 +867,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void orderDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderDescActionPerformed
-        od.orderDesc();
+        if (tabbedPane.getSelectedIndex() == 0) {
+            od.orderDescAverageTable();
+        } else {
+            od.orderDescValuesTable();
+        }
     }//GEN-LAST:event_orderDescActionPerformed
 
     /**
@@ -849,7 +880,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void orderAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderAscActionPerformed
-        od.orderAsc();
+        if (tabbedPane.getSelectedIndex() == 0) {
+            od.orderAscAverageTable();
+        } else {
+            od.orderAscValuesTable();
+        }
     }//GEN-LAST:event_orderAscActionPerformed
 
     /**
@@ -927,7 +962,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
             JViewport viewport = scrollPane.getViewport();
             JTable myTable = (JTable) viewport.getView();
-            if (specialTables.contains(myTable)) {
+            if (specialTables.contains(myTable) || tabbedPane.getSelectedIndex() == 0) {
                 orderAsc.setEnabled(true);
                 orderDesc.setEnabled(true);
             } else {
@@ -1090,6 +1125,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonRemoveColumnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JTable averageTableReorder;
     public javax.swing.JButton buttonAdd;
     public javax.swing.JButton buttonAddValue;
     public javax.swing.JButton buttonAverage;
@@ -1106,6 +1142,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     public javax.swing.JComboBox<String> comboOptions;
     public javax.swing.JComboBox<String> comboSelectRowsOrColumns;
     public javax.swing.JDialog dialogAddMoreFiles;
+    public javax.swing.JDialog dialogAverageOrder;
     private javax.swing.JDialog dialogCoordinates;
     public javax.swing.JDialog dialogNombre;
     public javax.swing.JDialog dialogSCF;
@@ -1134,6 +1171,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     public javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     public javax.swing.JLabel labelSelect;
