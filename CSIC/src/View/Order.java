@@ -5,14 +5,20 @@
  */
 package View;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -21,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 public class Order {
 
     FrameDifferentiator fd;
+    Component c;
 
     public Order(FrameDifferentiator fd) {
         this.fd = fd;
@@ -64,42 +71,87 @@ public class Order {
         DefaultTableModel model2 = new DefaultTableModel();
         model2.setDataVector(data, dataColumn);
         fd.averageTableReorder.setModel(model2);
+
+        for (int i = 0; i < fd.averageTableReorder.getColumnCount(); i++) {
+            DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+            centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+            fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) fd.averageTableReorder.getTableHeader().getDefaultRenderer();
+        renderer.setHorizontalAlignment(0);
+        fd.averageTableReorder.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+
+        TableColumn column = null;
+        for (int i = 0; i < fd.averageTableReorder.getColumnCount(); i++) {
+            if (i == 0 || i == 1) {
+                column = fd.averageTableReorder.getColumnModel().getColumn(i);
+                column.setMinWidth(100);
+            } else {
+                column = fd.averageTableReorder.getColumnModel().getColumn(i);
+                column.setMinWidth(200);
+            }
+        }
+        fd.averageTableReorder.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
     }
 
     public void orderDescAverageTable() {
-        if(fd.averageTableReorder.getRowCount() == 0) chargeAverageTable();
-        int[] indexs = fd.tableGeneric.getSelectedRows();
-        for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
-            double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
-            double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
-            if (bg1 < bg2) {
-                double ax = bg1;
-                fd.averageTableReorder.setValueAt(bg2, indexs[0], i);
-                fd.averageTableReorder.setValueAt(ax, indexs[1], i);
+        if (fd.tableGeneric.getSelectedRowCount() == 2) {
+            if (fd.averageTableReorder.getRowCount() == 0) {
+                chargeAverageTable();
             }
+            fd.errorDialogCoor.setText("");
+            int[] indexs = fd.tableGeneric.getSelectedRows();
+            for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
+                double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
+                double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
+                if (bg1 < bg2) {
+                    double ax = bg1;
+                    fd.averageTableReorder.setValueAt(bg2, indexs[0], i);
+                    fd.averageTableReorder.setValueAt(ax, indexs[1], i);
+
+                }
+            }
+            if (!fd.dialogAverageOrder.isVisible()) {
+                fd.dialogAverageOrder.setVisible(true);
+            }
+            fd.dialogAverageOrder.pack();
+            fd.dialogAverageOrder.setSize(1080, 720);
+
+        } else {
+            fd.errorText.setText("Select 2 rows to order.");
+
         }
-        if (!fd.dialogAverageOrder.isVisible()) {
-            fd.dialogAverageOrder.setVisible(true);
-        }
-        fd.dialogAverageOrder.pack();
     }
 
     public void orderAscAverageTable() {
-        if(fd.averageTableReorder.getRowCount() == 0) chargeAverageTable();
-        int[] indexs = fd.tableGeneric.getSelectedRows();
-        for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
-            double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
-            double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
-            if (bg1 > bg2) {
-                double ax = bg1;
-                fd.averageTableReorder.setValueAt(bg2, indexs[0], i);
-                fd.averageTableReorder.setValueAt(ax, indexs[1], i);
+
+        if (fd.tableGeneric.getSelectedRowCount() == 2) {
+            if (fd.averageTableReorder.getRowCount() == 0) {
+                chargeAverageTable();
             }
+            fd.errorDialogCoor.setText("");
+            fd.averageTableReorder.setDefaultRenderer(Object.class, new MiRenderer());
+            int[] indexs = fd.tableGeneric.getSelectedRows();
+            for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
+                double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
+                double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
+                if (bg1 > bg2) {
+                    double ax = bg1;
+                    fd.averageTableReorder.setValueAt(bg2, indexs[0], i);
+                    fd.averageTableReorder.setValueAt(ax, indexs[1], i);
+
+                }
+            }
+            if (!fd.dialogAverageOrder.isVisible()) {
+                fd.dialogAverageOrder.setVisible(true);
+            }
+            fd.dialogAverageOrder.pack();
+            fd.dialogAverageOrder.setSize(1080, 720);
+
+        } else {
+            fd.errorText.setText("Select 2 rows to order.");
         }
-        if (!fd.dialogAverageOrder.isVisible()) {
-            fd.dialogAverageOrder.setVisible(true);
-        }
-        fd.dialogAverageOrder.pack();
     }
 
     public void orderAscValuesTable() {
@@ -280,4 +332,31 @@ public class Order {
         String[] datas = new String[]{gausian1, gausian2};
         return datas;
     }
+}
+
+class MiRenderer extends DefaultTableCellRenderer {
+
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected,
+            boolean hasFocus,
+            int row,
+            int column) {
+
+        int numero = (Integer) table.getValueAt(row, 1);
+
+        if (numero >= 10) {
+            setBackground(Color.GREEN);
+            setForeground(Color.BLACK);
+        } else if (numero >= 5 && numero < 10) {
+            setBackground(Color.YELLOW);
+            setForeground(Color.BLACK);
+        } else {
+            setBackground(Color.RED);
+            setForeground(Color.BLACK);
+        }
+
+        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+    }
+
 }

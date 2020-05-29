@@ -29,8 +29,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -425,7 +423,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         );
 
         dialogAverageOrder.setTitle("DataPicker4J");
-        dialogAverageOrder.setResizable(false);
 
         averageTableReorder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
