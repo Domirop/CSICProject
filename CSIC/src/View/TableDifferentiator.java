@@ -119,7 +119,7 @@ public class TableDifferentiator {
                     DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
                     otherSymbols.setDecimalSeparator('.');
                     otherSymbols.setGroupingSeparator(',');
-                    DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                    DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
                     df.setRoundingMode(RoundingMode.CEILING);
                     data.add(Double.parseDouble(String.valueOf(df.format(fileData.get(j - 1).getAtoms().get(i).getIsotropic()))));
                 }

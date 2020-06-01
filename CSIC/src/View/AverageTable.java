@@ -149,7 +149,7 @@ public class AverageTable {
                 DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
                 otherSymbols.setDecimalSeparator('.');
                 otherSymbols.setGroupingSeparator(',');
-                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
                 df.setRoundingMode(RoundingMode.CEILING);
                 values.add(Double.parseDouble(String.valueOf(df.format(value))));
                 fd.rows.add(values);
@@ -159,7 +159,7 @@ public class AverageTable {
                 DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
                 otherSymbols.setDecimalSeparator('.');
                 otherSymbols.setGroupingSeparator(',');
-                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
                 df.setRoundingMode(RoundingMode.CEILING);
                 values.add(Double.parseDouble(String.valueOf(df.format(value))));
                 fd.rows.add(values);
@@ -184,7 +184,7 @@ public class AverageTable {
             DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
             otherSymbols.setDecimalSeparator('.');
             otherSymbols.setGroupingSeparator(',');
-            DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+            DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
             df.setRoundingMode(RoundingMode.CEILING);
             average.add(Double.parseDouble(String.valueOf(df.format(value))));
         }
@@ -227,7 +227,7 @@ public class AverageTable {
                 DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
                 otherSymbols.setDecimalSeparator('.');
                 otherSymbols.setGroupingSeparator(',');
-                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
                 df.setRoundingMode(RoundingMode.CEILING);
                 myTable.setValueAt(Double.parseDouble(String.valueOf(df.format(averageValue))), firstIndex, i);
             }
@@ -274,7 +274,7 @@ public class AverageTable {
                         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
                         otherSymbols.setDecimalSeparator('.');
                         otherSymbols.setGroupingSeparator(',');
-                        DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                        DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
                         df.setRoundingMode(RoundingMode.CEILING);
                         localRows.add(Double.parseDouble(String.valueOf(df.format(averageValue))));
                     }

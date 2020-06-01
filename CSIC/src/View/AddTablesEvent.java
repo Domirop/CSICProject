@@ -125,6 +125,7 @@ public class AddTablesEvent {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             fd.errorText.setText("Some files were not imported.");
         }
         if (fd.getSize() != new Dimension(1080, 720)) {
@@ -182,12 +183,22 @@ public class AddTablesEvent {
         for (int i = 2; i < tableCoord.getColumnCount(); i++) {
             fd.usedFiles.clear();
             getUsedFiles(tableCoord.getColumnName(i), "Starts with", false);
+            if (fd.usedFiles.size() == 0) {
+                getUsedFiles(tableCoord.getColumnName(i), "Ends with", false);
+
+            }
+            if (fd.usedFiles.size() == 0) {
+                getUsedFiles(tableCoord.getColumnName(i), "Contains", false);
+
+            }
+
             Molecule mole = new Molecule();
             try {
                 mole = fd.controller.getTableMolecule(fd.usedFiles, fd.colAndRows, tableCoord.getColumnName(i), Double.parseDouble(fd.temperature));
             } catch (Exception e) {
                 fd.dialogNombre.dispose();
                 fd.errorText.setVisible(true);
+                e.printStackTrace();
                 fd.errorText.setText("Some files were not imported or format file isn't correct.");
                 return;
             }
@@ -205,7 +216,7 @@ public class AddTablesEvent {
                 DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
                 otherSymbols.setDecimalSeparator('.');
                 otherSymbols.setGroupingSeparator(',');
-                DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
                 df.setRoundingMode(RoundingMode.CEILING);
                 val.add(Double.parseDouble(String.valueOf(df.format(value))));
             }
@@ -304,7 +315,9 @@ public class AddTablesEvent {
                         }
                     }
                 }
-                actionButtonAdd(fd.fieldKeyword.getText());
+                if (isAdd) {
+                    actionButtonAdd(fd.fieldKeyword.getText());
+                }
                 break;
             case "Range starts with":
                 if (value.matches("^[0-9]?[0-9]*(-)[0-9]?[0-9]*$")) {
@@ -460,7 +473,7 @@ public class AddTablesEvent {
                             DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
                             otherSymbols.setDecimalSeparator('.');
                             otherSymbols.setGroupingSeparator(',');
-                            DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                            DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
                             df.setRoundingMode(RoundingMode.CEILING);
                             fd.tableGeneric.setValueAt(Double.parseDouble(df.format(value)), i, index);
                         }
