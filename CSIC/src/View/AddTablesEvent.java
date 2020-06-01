@@ -257,7 +257,7 @@ public class AddTablesEvent {
                     fd.errorDialogCoor.setText("<html><body>The value of the row must be greater than the column value.</body></html>");
                 }
             } else {
-                fd.errorDialogCoor.setText("<html><body>The value of the column and row must be smaller than the number gaussians.</body></html>");
+                fd.errorDialogCoor.setText("<html><body>The value of the column and row must be smaller than the number gaussians(" + rowCount + ").</body></html>");
 
             }
         } else {

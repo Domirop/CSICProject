@@ -74,7 +74,7 @@ public class AverageTable {
         DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) fd.tableGeneric.getTableHeader().getDefaultRenderer();
         renderer.setHorizontalAlignment(0);
         fd.tableGeneric.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-        
+
         TableColumn column = null;
         for (int i = 0; i < fd.tableGeneric.getColumnCount(); i++) {
             if (i == 0 || i == 1) {
@@ -190,10 +190,8 @@ public class AverageTable {
         }
         Double[] data = average.toArray(new Double[0]);
         if (values.size() > index) {
-            if (index > 0) {
-                for (int i = values.size(); i <= values.size(); i++) {
-                    model.addColumn(values.get(i - 1), data);
-                }
+            for (int i = values.size(); i <= values.size(); i++) {
+                model.addColumn(values.get(i - 1), data);
             }
             index = values.size();
         }
