@@ -493,13 +493,8 @@ public class AddTablesEvent {
                         table.revalidate();
                         table.repaint();
                     } else {
-                        fd.errorText.setText("Please selected one column");
+                        fd.errorText.setText("Please select one column");
                     }
-                    table.revalidate();
-                    table.repaint();
-                } else {
-                    fd.errorText.setText("Please selected one column");
-                }
             } else {
                 fd.errorText.setText("This column cannot be deleted");
             }
