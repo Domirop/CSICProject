@@ -92,22 +92,22 @@ public class AddTablesEvent {
                                 column = table.getColumnModel().getColumn(i);
                                 column.setMinWidth(300);
                             }
-                            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                            panel.add(scrollpane);
-                            fd.tabbedPane.addTab(fieldText, panel);
-                            fd.tabbedPane.setSelectedIndex(fd.tabbedPane.getTabCount() - 1);
-                            avg.averageTable(fd.usedFiles);
-                            if (fd.usedTables.isEmpty()) {
-                                fd.usedTables.add(fd.tableGeneric);
-                            }
-
-                            fd.normalTables.add(table);
-                            fd.usedTables.add(table);
-                            fd.revalidate();
-                            //pack();
-                            fd.itemChangeTemperature.setEnabled(false);
-                            fd.itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
                         }
+                        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                        panel.add(scrollpane);
+                        fd.tabbedPane.addTab(fieldText, panel);
+                        fd.tabbedPane.setSelectedIndex(fd.tabbedPane.getTabCount() - 1);
+                        avg.averageTable(fd.usedFiles);
+                        if (fd.usedTables.isEmpty()) {
+                            fd.usedTables.add(fd.tableGeneric);
+                        }
+                        fd.normalTables.add(table);
+                        fd.usedTables.add(table);
+                        fd.revalidate();
+                        //pack();
+                        fd.itemChangeTemperature.setEnabled(false);
+                        fd.itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
+
                         scf.addSCFTable(fieldText);
                         fd.orderDesc.setVisible(true);
                         fd.orderAsc.setVisible(true);
@@ -425,56 +425,68 @@ public class AddTablesEvent {
         }
     }
 
+    public void removeRow(List<Integer> indexs) {
+        for (int i = indexs.size() - 1; i >= 0; i--) {
+            int index = indexs.get(i);
+            fd.normalTables.forEach((normalTable) -> {
+                DefaultTableModel def = (DefaultTableModel) normalTable.getModel();
+                def.removeRow(index);
+                normalTable.repaint();
+            });
+            DefaultTableModel def = (DefaultTableModel) fd.tableGeneric.getModel();
+            def.removeRow(index);
+            fd.tableGeneric.repaint();
+        }
+    }
+
     public void removeColumn() {
-        if (fd.comboSelectRowsOrColumns.getSelectedIndex() == 1) {
-            JPanel myPanel = (JPanel) (fd.tabbedPane.getSelectedComponent());
-            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-            JViewport viewport = scrollPane.getViewport();
-            JTable table = (JTable) viewport.getView();
-            if (table.getColumnCount() > 3) {
-                if (table.getSelectedColumn() != 0 && table.getSelectedColumn() != 1) {
-                    fd.errorText.setText("");
-                    if (table.getSelectedColumnCount() > 0) {
-                        fd.usedFiles.clear();
-                        List<File> aux = new ArrayList<>();
-                        for (int i = 2; i < table.getColumnCount(); i++) {
-                            String tableName = table.getColumnName(i);
-                            aux.addAll(fd.filesData.stream()
-                                    .filter((File v) -> v.getName().contains(tableName))
-                                    .collect(Collectors.toList()));
-                        }
-
-                        int index = 0;
-                        for (int i = 2; i < fd.tableGeneric.getColumnCount(); i++) {
-                            if (aux.get(0).getName().contains(fd.tableGeneric.getColumnName(i))) {
-                                index = i;
-                            }
-                        }
-
-                        String columnSelected = table.getColumnName(table.getSelectedColumn());
-                        table.removeColumn(table.getColumnModel().getColumn(table.getSelectedColumn()));
-                        fd.usedFiles.addAll(aux.stream().filter((File v) -> !v.getName().contains(columnSelected)).collect(Collectors.toList()));
-                        Molecule molecule = fd.controller.getMolecule(fd.usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature));
-                        for (int i = 0; i < fd.tableGeneric.getRowCount(); i++) {
-                            double value = molecule.getResult().get(i).getValue();
-                            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
-                            otherSymbols.setDecimalSeparator('.');
-                            otherSymbols.setGroupingSeparator(',');
-                            DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
-                            df.setRoundingMode(RoundingMode.CEILING);
-                            fd.tableGeneric.setValueAt(Double.parseDouble(df.format(value)), i, index);
-                        }
-                        table.revalidate();
-                        table.repaint();
-                    } else {
-                        fd.errorText.setText("Please selected one column");
+        JPanel myPanel = (JPanel) (fd.tabbedPane.getSelectedComponent());
+        JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+        JViewport viewport = scrollPane.getViewport();
+        JTable table = (JTable) viewport.getView();
+        if (table.getColumnCount() > 3) {
+            if (table.getSelectedColumn() != 0 && table.getSelectedColumn() != 1) {
+                fd.errorText.setText("");
+                if (table.getSelectedColumnCount() > 0) {
+                    fd.usedFiles.clear();
+                    List<File> aux = new ArrayList<>();
+                    for (int i = 2; i < table.getColumnCount(); i++) {
+                        String tableName = table.getColumnName(i);
+                        aux.addAll(fd.filesData.stream()
+                                .filter((File v) -> v.getName().contains(tableName))
+                                .collect(Collectors.toList()));
                     }
+
+                    int index = 0;
+                    for (int i = 2; i < fd.tableGeneric.getColumnCount(); i++) {
+                        if (aux.get(0).getName().contains(fd.tableGeneric.getColumnName(i))) {
+                            index = i;
+                        }
+                    }
+
+                    String columnSelected = table.getColumnName(table.getSelectedColumn());
+                    table.removeColumn(table.getColumnModel().getColumn(table.getSelectedColumn()));
+                    fd.usedFiles.addAll(aux.stream().filter((File v) -> !v.getName().contains(columnSelected)).collect(Collectors.toList()));
+                    Molecule molecule = fd.controller.getMolecule(fd.usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature));
+                    for (int i = 0; i < fd.tableGeneric.getRowCount(); i++) {
+                        double value = molecule.getResult().get(i).getValue();
+                        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
+                        otherSymbols.setDecimalSeparator('.');
+                        otherSymbols.setGroupingSeparator(',');
+                        DecimalFormat df = new DecimalFormat("#.####", otherSymbols);
+                        df.setRoundingMode(RoundingMode.CEILING);
+                        fd.tableGeneric.setValueAt(Double.parseDouble(df.format(value)), i, index);
+                    }
+                    table.revalidate();
+                    table.repaint();
                 } else {
-                    fd.errorText.setText("This column cannot be deleted");
+                    fd.errorText.setText("Please selected one column");
                 }
             } else {
-                fd.errorText.setText("Last column cannot be deleted");
+                fd.errorText.setText("This column cannot be deleted");
             }
+        } else {
+            fd.errorText.setText("Last column cannot be deleted");
         }
     }
 }
