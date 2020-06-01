@@ -24,6 +24,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
@@ -1076,7 +1078,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             case "Range starts with":
                 fieldKeyword.setToolTipText("Two values separate by \"-\". I.e: 01-09");
                 break;
-
             default:
                 break;
         }
@@ -1109,7 +1110,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             if (comboSelectRowsOrColumns.getSelectedIndex() == 0) {
                 table.setColumnSelectionAllowed(false);
                 table.setRowSelectionAllowed(true);
-                buttonRemoveColumn.setEnabled(false);
+                buttonRemoveColumn.setEnabled(true);
             } else {
                 table.setColumnSelectionAllowed(true);
                 table.setRowSelectionAllowed(false);
@@ -1122,7 +1123,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_comboSelectRowsOrColumnsActionPerformed
 
     private void buttonRemoveColumnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveColumnActionPerformed
-        ate.removeColumn();
+        if (comboSelectRowsOrColumns.getSelectedIndex() == 0) {
+            JPanel myPanel = (JPanel) tabbedPane.getSelectedComponent();
+            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+            JViewport viewport = scrollPane.getViewport();
+            JTable table = (JTable) viewport.getView();
+            List<Integer> indexs = IntStream.of(table.getSelectedRows())
+                    .boxed().collect(Collectors.toCollection(ArrayList::new));
+            ate.removeRow(indexs);
+        } else {
+            ate.removeColumn();
+        }
     }//GEN-LAST:event_buttonRemoveColumnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
