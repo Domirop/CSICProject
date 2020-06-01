@@ -751,7 +751,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValuesActionPerformed
-        ate.actionButtondialogName(evt);
+        if (!fieldNameValues.getText().isEmpty()) {
+            ate.actionButtondialogName(evt);
+        }
     }//GEN-LAST:event_buttonValuesActionPerformed
 
     /**
@@ -1092,7 +1094,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAverageActionPerformed
 
     private void fieldNameValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldNameValuesActionPerformed
-        ate.actionButtondialogName(evt);
+        if (!fieldNameValues.getText().isEmpty()) {
+            ate.actionButtondialogName(evt);
+        }
 
     }//GEN-LAST:event_fieldNameValuesActionPerformed
 
