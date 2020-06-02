@@ -942,7 +942,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
         if (tabbedPane.getSelectedIndex() == 0) {
-            buttonRemoveTable.setEnabled(true);
+            JPanel panel = (JPanel) tabbedPane.getSelectedComponent();
+            if (panel.getComponentCount() > 1) {
+                buttonRemoveTable.setEnabled(true);
+            } else {
+                buttonRemoveTable.setEnabled(false);
+            }
             buttonAverage.setEnabled(true);
             buttonAverage.setVisible(true);
             comboSelectRowsOrColumns.setEnabled(false);
@@ -1090,6 +1095,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_itemSCFActionPerformed
 
     private void buttonAverageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAverageActionPerformed
+        if(!buttonRemoveTable.isEnabled())buttonRemoveTable.setEnabled(true);
         errorText.setForeground(Color.RED);
         avg.buttonAverageActionPerformed(evt);
     }//GEN-LAST:event_buttonAverageActionPerformed
