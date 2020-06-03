@@ -161,12 +161,11 @@ public class Calculus {
         return fileData;
     }
 
-    public List<FileData> getContribution(List<FileData> files, double temp) {
+    public List<FileData> getContribution(List<FileData> files, double temp, double cutOff) {
         List<FileData> fileData = files;
         double contribution = 0.0;
         double minValue = getEnergyMinValue(files);
         double expS = getExps(files, minValue, temp);
-        double result = 0.0;
         for (int i = 0; i < fileData.size(); i++) {
             double mediumValue = 0.0;
             double initialValue = 0.0;
@@ -175,9 +174,15 @@ public class Calculus {
             } else {
                 initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * temp);
             }
-            mediumValue = Math.exp(initialValue * -1);
-            contribution = mediumValue / expS;
-            fileData.get(i).setContribution(contribution);
+            if ((files.get(i).getEnergyValue()) - minValue <= cutOff) {
+                mediumValue = Math.exp(initialValue * -1);
+                contribution = mediumValue / expS;
+                fileData.get(i).setContribution(contribution);
+                fileData.get(i).setRelativeEnergy(files.get(i).getEnergyValue() - minValue);
+            } else {
+                fileData.remove(i);
+                i--;
+            }
         }
         return fileData;
     }

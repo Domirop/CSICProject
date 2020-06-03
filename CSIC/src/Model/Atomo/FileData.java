@@ -19,6 +19,7 @@ public class FileData {
     private List<AtomTable> atomsTable;
     private double energyValue;
     private double contribution;
+    private double relativeEnergy;
 
     public double getContribution() {
         return contribution;
@@ -62,6 +63,14 @@ public class FileData {
 
     public void setEnergyValue(double energyValue) {
         this.energyValue = energyValue;
+    }
+
+    public double getRelativeEnergy() {
+        return relativeEnergy;
+    }
+
+    public void setRelativeEnergy(double relativeEnergy) {
+        this.relativeEnergy = relativeEnergy;
     }
 
     @Override
