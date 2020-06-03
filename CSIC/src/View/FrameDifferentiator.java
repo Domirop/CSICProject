@@ -122,6 +122,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         fieldTemperature = new javax.swing.JTextField();
         buttonOKTemp = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        fieldMaxValue = new javax.swing.JTextField();
         dialogAddMoreFiles = new javax.swing.JDialog();
         jLabel6 = new javax.swing.JLabel();
         buttonChooseFiles = new javax.swing.JButton();
@@ -319,7 +321,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         dialogTemperature.setTitle("DataPicker4J");
 
-        jLabel5.setText("Change temperature:");
+        jLabel5.setText("Temperature:");
 
         fieldTemperature.setText("298.15");
 
@@ -330,19 +332,26 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setText("Max value:");
+
         javax.swing.GroupLayout dialogTemperatureLayout = new javax.swing.GroupLayout(dialogTemperature.getContentPane());
         dialogTemperature.getContentPane().setLayout(dialogTemperatureLayout);
         dialogTemperatureLayout.setHorizontalGroup(
             dialogTemperatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dialogTemperatureLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel5)
-                .addGap(18, 18, 18)
-                .addComponent(fieldTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogTemperatureLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonOKTemp)
+                .addGroup(dialogTemperatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogTemperatureLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(buttonOKTemp))
+                    .addGroup(dialogTemperatureLayout.createSequentialGroup()
+                        .addGroup(dialogTemperatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18)
+                        .addGroup(dialogTemperatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(fieldTemperature, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                            .addComponent(fieldMaxValue))))
                 .addContainerGap())
         );
         dialogTemperatureLayout.setVerticalGroup(
@@ -352,7 +361,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 .addGroup(dialogTemperatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(fieldTemperature, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(dialogTemperatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(fieldMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(buttonOKTemp)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -587,7 +600,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
         jMenu1.add(itemChooseFiles);
 
-        itemChangeTemperature.setText("Change temperature");
+        itemChangeTemperature.setText("Change temp. and max value");
         itemChangeTemperature.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemChangeTemperatureActionPerformed(evt);
@@ -960,42 +973,45 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt Event when the user change the tab.
      */
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
-        if (tabbedPane.getSelectedIndex() == 0) {
-            JPanel panel = (JPanel) tabbedPane.getSelectedComponent();
-            if (panel.getComponentCount() > 1) {
+        try {
+            if (tabbedPane.getSelectedIndex() == 0) {
+                JPanel panel = (JPanel) tabbedPane.getSelectedComponent();
+                if (panel.getComponentCount() > 1) {
+                    buttonRemoveTable.setEnabled(true);
+                } else {
+                    buttonRemoveTable.setEnabled(false);
+                }
+                buttonAverage.setEnabled(true);
+                buttonAverage.setVisible(true);
+                comboSelectRowsOrColumns.setEnabled(false);
+            } else {
                 buttonRemoveTable.setEnabled(true);
-            } else {
-                buttonRemoveTable.setEnabled(false);
+                buttonAverage.setEnabled(false);
+                comboSelectRowsOrColumns.setEnabled(true);
+                
             }
-            buttonAverage.setEnabled(true);
-            buttonAverage.setVisible(true);
-            comboSelectRowsOrColumns.setEnabled(false);
-        } else {
-            buttonRemoveTable.setEnabled(true);
-            buttonAverage.setEnabled(false);
-            comboSelectRowsOrColumns.setEnabled(true);
-
-        }
-        if (!buttonRemoveTable.isEnabled()) {
-            buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
-        } else {
-            buttonRemoveTable.setToolTipText(null);
-
-        }
-        if (tabbedPane.getTabCount() > 1) {
-            JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
-            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-            JViewport viewport = scrollPane.getViewport();
-            JTable myTable = (JTable) viewport.getView();
-            if (specialTables.contains(myTable) || tabbedPane.getSelectedIndex() == 0) {
-                orderAsc.setEnabled(true);
-                orderDesc.setEnabled(true);
+            if (!buttonRemoveTable.isEnabled()) {
+                buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
             } else {
-                orderAsc.setEnabled(false);
-                orderDesc.setEnabled(false);
+                buttonRemoveTable.setToolTipText(null);
+                
             }
+            if (tabbedPane.getTabCount() > 1) {
+                JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
+                JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+                JViewport viewport = scrollPane.getViewport();
+                JTable myTable = (JTable) viewport.getView();
+                if (specialTables.contains(myTable) || tabbedPane.getSelectedIndex() == 0) {
+                    orderAsc.setEnabled(true);
+                    orderDesc.setEnabled(true);
+                } else {
+                    orderAsc.setEnabled(false);
+                    orderDesc.setEnabled(false);
+                }
+            }
+            comboSelectRowsOrColumns.setSelectedIndex(0);
+        } catch (Exception e) {
         }
-        comboSelectRowsOrColumns.setSelectedIndex(0);
 
 
     }//GEN-LAST:event_tabbedPaneStateChanged
@@ -1006,6 +1022,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt Event when the user press in the item.
      */
     private void itemChangeTemperatureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemChangeTemperatureActionPerformed
+        fieldTemperature.setText(temperature);
+        fieldMaxValue.setText(maxValue);
         dialogTemperature.pack();
         dialogTemperature.setVisible(true);
     }//GEN-LAST:event_itemChangeTemperatureActionPerformed
@@ -1017,8 +1035,16 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      */
     private void buttonOKTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKTempActionPerformed
         if (fieldTemperature.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$")) {
-            temperature = fieldTemperature.getText();
-            dialogTemperature.dispose();
+            if (fieldMaxValue.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$")) {
+                temperature = fieldTemperature.getText();
+                maxValue = fieldMaxValue.getText();
+                dialogTemperature.dispose();
+                avg.index = 0;
+                avg.values.clear();
+                pfv.changeValues();
+            } else {
+                fieldMaxValue.setBorder(new LineBorder(Color.red, 1));
+            }
         } else {
             fieldTemperature.setBorder(new LineBorder(Color.red, 1));
         }
@@ -1114,7 +1140,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_itemSCFActionPerformed
 
     private void buttonAverageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAverageActionPerformed
-        if(!buttonRemoveTable.isEnabled())buttonRemoveTable.setEnabled(true);
+        if (!buttonRemoveTable.isEnabled()) {
+            buttonRemoveTable.setEnabled(true);
+        }
         errorText.setForeground(Color.RED);
         avg.buttonAverageActionPerformed(evt);
     }//GEN-LAST:event_buttonAverageActionPerformed
@@ -1188,6 +1216,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     public javax.swing.JLabel errorText;
     public javax.swing.JTextField fieldColumn;
     public javax.swing.JTextField fieldKeyword;
+    private javax.swing.JTextField fieldMaxValue;
     public javax.swing.JTextField fieldNameValues;
     public javax.swing.JTextField fieldRow;
     private javax.swing.JTextField fieldTemperature;
@@ -1206,6 +1235,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     public javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;

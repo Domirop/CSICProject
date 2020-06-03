@@ -107,8 +107,8 @@ public class AddTablesEvent {
                         fd.usedTables.add(table);
                         fd.revalidate();
                         //pack();
-                        fd.itemChangeTemperature.setEnabled(false);
-                        fd.itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
+                        //fd.itemChangeTemperature.setEnabled(false);
+                        //fd.itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
 
                         scf.addSCFTable(fieldText);
                         fd.orderDesc.setVisible(true);
@@ -124,6 +124,7 @@ public class AddTablesEvent {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             fd.errorText.setText("Some files were not imported.");
         }
         if (fd.getSize() != new Dimension(1080, 720)) {
