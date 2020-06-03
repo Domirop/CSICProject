@@ -70,18 +70,21 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     protected String temperature = "298.15";
     public List<String> colAndRows = new ArrayList<>();
     JTable tableGeneric;
+    String maxValue;
 
     public FrameDifferentiator(ControllerInt controller) {
         initComponents();
         this.controller = controller;
     }
 
-    public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller) {
+    public FrameDifferentiator(List<String> files, List<File> filesData, ControllerInt controller, String temperature, String maxValue) {
         initComponents();
         edd.setMappings(listValues);
         this.controller = controller;
         this.files = files;
         this.filesData = filesData;
+        this.temperature = temperature;
+        this.maxValue = maxValue;
         decorate.addIcons();
         decorate.initElements();
         Set set = new HashSet();
@@ -792,7 +795,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
-        FrameDifferentiator frameDiff = new FrameDifferentiator(files, filesData, controller);
+        FrameDifferentiator frameDiff = new FrameDifferentiator(files, filesData, controller, temperature, maxValue);
         frameDiff.setVisible(true);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);
@@ -805,7 +808,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-        FrameDifferentiator frameDiff = new FrameDifferentiator(files, filesData, controller);
+        FrameDifferentiator frameDiff = new FrameDifferentiator(files, filesData, controller, temperature, maxValue);
         frameDiff.setVisible(true);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);

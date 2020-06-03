@@ -41,18 +41,24 @@ public class SCFTable {
         ArrayList<String> nameFiles = new ArrayList<>();
         ArrayList<Object> contribution = new ArrayList<>();
         ArrayList<Object> SCF = new ArrayList<>();
+        ArrayList<Object> convertedValues = new ArrayList<>();
         nameFiles.add("Values");
         contribution.add("Contribution");
         SCF.add("SCF");
+        convertedValues.add("kCal/mol");
 
         for (FileData fileData : fd.controller.getFileData(fd.usedFiles, Double.valueOf(fd.temperature))) {
             nameFiles.add(fileData.getFileName());
             contribution.add(fileData.getContribution());
             SCF.add(fileData.getEnergyValue());
+            convertedValues.add(fileData.getEnergyValue());
+
         }
         Object[][] data = new Object[][]{
             contribution.toArray(new Object[0]),
-            SCF.toArray(new Object[0])
+            SCF.toArray(new Object[0]),
+            convertedValues.toArray(new Object[0])
+
         };
 
         String[] headers = nameFiles.toArray(new String[0]);
@@ -102,6 +108,20 @@ public class SCFTable {
             }
         }
         tableSCF.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+        for (int i = 1; i < tableSCF.getColumnCount() - 1; i++) {
+            double var1 = Double.parseDouble(String.valueOf(tableSCF.getValueAt(0, i)));
+            double var2 = Double.parseDouble(String.valueOf(tableSCF.getValueAt(0, i + 1)));
+
+            if (var1 < var2) {
+                tableSCF.moveColumn(i, i + 1);
+                tableSCF.repaint();
+                tableSCF.revalidate();
+                i = 1;
+            }
+
+        }
+
         JScrollPane scrollpaneGeneric = new JScrollPane(tableSCF, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(0, 1));

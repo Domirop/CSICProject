@@ -90,6 +90,7 @@ public class Calculus {
             }
 
         }
+        
         totalDifferentiator.setValue(result);
         return totalDifferentiator;
     }
@@ -152,6 +153,7 @@ public class Calculus {
             Atom atom = new Atom(elementsData[1], elementsData[0], Double.parseDouble(data[1]));
             atoms.add(atom);
         }
+        
         FileData fileData = new FileData();
         fileData.setFileName(fileName);
         fileData.setAtoms(atoms);
