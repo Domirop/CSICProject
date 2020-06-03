@@ -46,6 +46,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * Creates new form FrameDifferentiator to show the tables.
      */
     protected List<String> files = new ArrayList<>();
+    protected List<List<String>> allFiles = new ArrayList<>();
     protected List<File> filesData = new ArrayList<>();
     protected JPanel panelGeneric = new JPanel();
     protected List<String> names = new ArrayList<>();
@@ -59,10 +60,10 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     protected ControllerInt controller;
     protected boolean multiTable = false;
     protected boolean searchAdded = false;
-    DecorateFrame decorate = new DecorateFrame(this);
     SCFTable scf = new SCFTable(this);
     AverageTable avg = new AverageTable(this);
     ElementsDragAndDrop edd = new ElementsDragAndDrop(this);
+    DecorateFrame decorate = new DecorateFrame(this, avg);
     AddTablesEvent ate = new AddTablesEvent(this, decorate, scf, avg);
     CSV csv = new CSV(this);
     PredefineValues pfv = new PredefineValues(this, ate);
@@ -324,6 +325,11 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jLabel5.setText("Temperature:");
 
         fieldTemperature.setText("298.15");
+        fieldTemperature.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldTemperatureActionPerformed(evt);
+            }
+        });
 
         buttonOKTemp.setText("Ok");
         buttonOKTemp.addActionListener(new java.awt.event.ActionListener() {
@@ -333,6 +339,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
 
         jLabel7.setText("Max value:");
+
+        fieldMaxValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldMaxValueActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout dialogTemperatureLayout = new javax.swing.GroupLayout(dialogTemperature.getContentPane());
         dialogTemperature.getContentPane().setLayout(dialogTemperatureLayout);
@@ -559,7 +571,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        buttonRemoveColumn.setText("Remove selected column");
+        buttonRemoveColumn.setText("Remove selected");
         buttonRemoveColumn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonRemoveColumnActionPerformed(evt);
@@ -723,9 +735,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         names.clear();
         if (fieldKeyword.getText().length() > 0) {
             ate.getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
-        }
-        for (String string : keywordsUsed) {
-            System.out.println(string);
         }
     }//GEN-LAST:event_buttonAddActionPerformed
 
@@ -988,13 +997,13 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 buttonRemoveTable.setEnabled(true);
                 buttonAverage.setEnabled(false);
                 comboSelectRowsOrColumns.setEnabled(true);
-                
+
             }
             if (!buttonRemoveTable.isEnabled()) {
                 buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
             } else {
                 buttonRemoveTable.setToolTipText(null);
-                
+
             }
             if (tabbedPane.getTabCount() > 1) {
                 JPanel myPanel = (JPanel) (tabbedPane.getSelectedComponent());
@@ -1028,12 +1037,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         dialogTemperature.setVisible(true);
     }//GEN-LAST:event_itemChangeTemperatureActionPerformed
 
-    /**
-     * This method put the new value of the temperature.
-     *
-     * @param evt Event when press the button.
-     */
-    private void buttonOKTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKTempActionPerformed
+    private void changeValues() {
         if (fieldTemperature.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$")) {
             if (fieldMaxValue.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$")) {
                 temperature = fieldTemperature.getText();
@@ -1048,6 +1052,15 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         } else {
             fieldTemperature.setBorder(new LineBorder(Color.red, 1));
         }
+    }
+
+    /**
+     * This method put the new value of the temperature.
+     *
+     * @param evt Event when press the button.
+     */
+    private void buttonOKTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKTempActionPerformed
+        changeValues();
     }//GEN-LAST:event_buttonOKTempActionPerformed
 
     /**
@@ -1188,6 +1201,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             ate.removeColumn();
         }
     }//GEN-LAST:event_buttonRemoveColumnActionPerformed
+
+    private void fieldMaxValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldMaxValueActionPerformed
+        changeValues();
+    }//GEN-LAST:event_fieldMaxValueActionPerformed
+
+    private void fieldTemperatureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldTemperatureActionPerformed
+        changeValues();
+    }//GEN-LAST:event_fieldTemperatureActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTable averageTableReorder;

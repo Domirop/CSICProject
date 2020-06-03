@@ -21,13 +21,14 @@ import javax.swing.JViewport;
  * @author daviddiaz
  */
 public class CSV {
+
     FrameDifferentiator fd;
 
     public CSV(FrameDifferentiator fd) {
         this.fd = fd;
     }
-    
-    public void exportCSV(){
+
+    public void exportCSV() {
         String folder = "";
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -62,6 +63,8 @@ public class CSV {
                             JViewport viewport = scrollPane.getViewport();
                             JTable myTable = (JTable) viewport.getView();
                             datas.addAll(exportTable(myTable, j, 0, panes));
+                            datas.add(new String[0]);
+                            datas.add(new String[0]);
                         }
                         exportCSVFunction(datas, folder, "SCF_and_CONTRIBUTION");
                     } else {
@@ -72,7 +75,7 @@ public class CSV {
             }
         }
     }
-    
+
     private void exportCSVFunction(List<String[]> datas, String folder, String nameFile) {
         if (fd.controller.writeCSV(datas, folder, nameFile)) {
             fd.errorText.setForeground(Color.green);

@@ -50,8 +50,8 @@ public class AverageTable {
             values.add("Atom");
         }
         for (int i = 0; i < 1; i++) {
-            if (!values.contains(fd.names.get(i))) {
-                values.add(fd.names.get(i));
+            if (!values.contains(molecule.getFilesData().get(0).getFileName())) {
+                values.add(molecule.getFilesData().get(0).getFileName());
             }
         }
         String[] valuesArray = values.toArray(new String[0]);

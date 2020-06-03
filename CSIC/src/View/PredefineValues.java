@@ -5,12 +5,6 @@
  */
 package View;
 
-import java.awt.Component;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -38,35 +32,30 @@ public class PredefineValues {
         fd.rows.clear();
         fd.coorValues.clear();
         fd.colAndRows.clear();
-
         JTabbedPane pane = fd.tabbedPane;
         fd.tabPaneSCF.removeAll();
         fd.tableGeneric = null;
-        int index = pane.getTabCount();
-        for (int i = 1; i < index; i++) {
-            JPanel myPanel = (JPanel) pane.getComponentAt(i);
+        
+        for (int j = 0; j < fd.allFiles.size(); j++) {
+            JPanel myPanel = (JPanel) pane.getComponentAt(j + 1);
             JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
             JViewport viewport = scrollPane.getViewport();
             JTable table = (JTable) viewport.getView();
-            
             fd.usedFiles.clear();
-            fd.names.clear();
+            fd.names.clear();  
             if (fd.normalTables.contains(table)) {
-                for (int j = 2; j < table.getColumnCount(); j++) {
-                    String name = table.getColumnName(j);
+                for (int k = 0; k < fd.allFiles.get(j).size(); k++) {
+                    String name = fd.allFiles.get(j).get(k);
                     fd.filesData.stream().filter((item) -> (item.getName().contains(name))).forEach((item) -> {
                         fd.usedFiles.add(item);
                         fd.names.add(name);
 
                     });
-
                 }
-
                 fd.normalTables.remove(table);
-                ate.actionButtonAdd(pane.getTitleAt(i));
+                ate.actionButtonAdd(pane.getTitleAt(j + 1));
                 fd.tableGeneric.revalidate();
                 fd.tableGeneric.repaint();
-
             }
         }
 

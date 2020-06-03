@@ -16,7 +16,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.accessibility.AccessibleContext;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -39,9 +38,11 @@ import javax.swing.table.TableColumn;
 public class DecorateFrame {
 
     FrameDifferentiator fd;
+    AverageTable avg;
 
-    public DecorateFrame(FrameDifferentiator fd) {
+    public DecorateFrame(FrameDifferentiator fd, AverageTable avg) {
         this.fd = fd;
+        this.avg = avg;
     }
 
     /**
@@ -215,54 +216,57 @@ public class DecorateFrame {
     }
 
     public void removeTable() {
-        JPanel paneSelected = (JPanel) fd.tabbedPane.getSelectedComponent();
-        JScrollPane jsSelected = (JScrollPane) paneSelected.getComponent(0);
-        JViewport viewportSelected = jsSelected.getViewport();
-        JTable tableSelected = (JTable) viewportSelected.getView();
-        
-        String name = tableSelected.getColumnName(2);
-        JPanel genericPane = (JPanel) (fd.tabbedPane.getComponentAt(0));
-        JScrollPane scrollPaneGeneric = (JScrollPane) genericPane.getComponent(0);
-        JViewport viewportGeneric = scrollPaneGeneric.getViewport();
-        JTable genericTable = (JTable) viewportGeneric.getView();
-        
-        for (int i = 0; i < genericTable.getColumnCount(); i++) {
-            if (name.equals(genericTable.getColumnName(i))) {
-                removeColumn(i, genericTable);
-            }
-        }
-
-        for (JTable specialTable : fd.specialTables) {
-            for (int i = 0; i < specialTable.getColumnCount(); i++) {
-                if (name.equals(specialTable.getColumnName(i))) {
-                    removeColumn(i, specialTable);
-                }
-            }
-        }
-
         if (fd.tabbedPane.isVisible()) {
             JPanel myPanel = (JPanel) (fd.tabbedPane.getSelectedComponent());
             JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
             JViewport viewport = scrollPane.getViewport();
             JTable myTable = (JTable) viewport.getView();
-
+            String name = myTable.getColumnName(2);
+            
+            avg.values.remove(name);
+            avg.index = avg.index - 1;
+            
             if (fd.usedTables.contains(myTable)) {
                 fd.usedTables.remove(myTable);
             }
-            if (fd.normalTables.contains(myTable)) {
-                fd.normalTables.remove(myTable);
-            }
+
             if (fd.specialTables.contains(myTable)) {
                 fd.specialTables.remove(myTable);
             }
-            if (fd.keywordsUsed.contains(name)) {
-                fd.keywordsUsed.remove(name);
+            
+            if (fd.keywordsUsed.contains(fd.tabbedPane.getTitleAt(fd.tabbedPane.getSelectedIndex()))) {
+                fd.keywordsUsed.remove(fd.tabbedPane.getTitleAt(fd.tabbedPane.getSelectedIndex()));
             }
+            
             if (fd.tabbedPane.getSelectedIndex() == 0) {
                 myPanel.remove(1);
+                fd.multiTable = false;
                 myPanel.repaint();
                 fd.tabbedPane.repaint();
             } else {
+                JPanel genericPane = (JPanel) (fd.tabbedPane.getComponentAt(0));
+                JScrollPane scrollPaneGeneric = (JScrollPane) genericPane.getComponent(0);
+                JViewport viewportGeneric = scrollPaneGeneric.getViewport();
+                JTable genericTable = (JTable) viewportGeneric.getView();
+                int index = 0;
+                for (int i = 0; i < fd.normalTables.size(); i++) {
+                    if (fd.normalTables.get(i) == myTable) {
+                        index = i;
+                    }
+                }
+                removeColumn(index + 2, genericTable);
+                
+                if (fd.normalTables.contains(myTable)) {
+                    fd.normalTables.remove(myTable);
+                }
+
+                for (JTable specialTable : fd.specialTables) {
+                    for (int i = 0; i < specialTable.getColumnCount(); i++) {
+                        if (name.equals(specialTable.getColumnName(i))) {
+                            removeColumn(i, specialTable);
+                        }
+                    }
+                }
                 fd.tabbedPane.remove(fd.tabbedPane.getSelectedComponent());
             }
         }

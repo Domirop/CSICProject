@@ -27,7 +27,9 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -106,10 +108,6 @@ public class AddTablesEvent {
                         fd.normalTables.add(table);
                         fd.usedTables.add(table);
                         fd.revalidate();
-                        //pack();
-                        //fd.itemChangeTemperature.setEnabled(false);
-                        //fd.itemChangeTemperature.setToolTipText("To change the temperature, import the files again.");
-
                         scf.addSCFTable(fieldText);
                         fd.orderDesc.setVisible(true);
                         fd.orderAsc.setVisible(true);
@@ -277,6 +275,9 @@ public class AddTablesEvent {
                 for (int i = 0; i < fd.files.size(); i++) {
                     String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                     if (filename.startsWith(value)) {
+                        List<String> names = new ArrayList<>();
+                        names.add(filename);
+                        fd.allFiles.add(names);
                         fd.usedFiles.add(fd.filesData.get(i));
                         if (!fd.names.contains(filename)) {
                             fd.names.add(filename);
@@ -294,6 +295,9 @@ public class AddTablesEvent {
                 for (int i = 0; i < fd.files.size(); i++) {
                     String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                     if (filename.endsWith(value)) {
+                        List<String> names = new ArrayList<>();
+                        names.add(filename);
+                        fd.allFiles.add(names);
                         fd.usedFiles.add(fd.filesData.get(i));
                         if (!fd.names.contains(filename)) {
                             fd.names.add(filename);
@@ -308,6 +312,9 @@ public class AddTablesEvent {
                 for (int i = 0; i < fd.files.size(); i++) {
                     String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                     if (filename.contains(value)) {
+                        List<String> names = new ArrayList<>();
+                        names.add(filename);
+                        fd.allFiles.add(names);
                         fd.usedFiles.add(fd.filesData.get(i));
                         if (!fd.names.contains(filename)) {
                             fd.names.add(filename);
@@ -353,6 +360,7 @@ public class AddTablesEvent {
                         }
 
                         String separador = "";
+                        List<String> names = new ArrayList<>();
                         for (int i = 0; i < fd.files.size(); i++) {
                             String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                             searchSeparator:
@@ -363,12 +371,14 @@ public class AddTablesEvent {
                                 }
                             }
                             if (filename.split(separador)[0].equals(charact1) || filename.split(separador)[0].equals(charact2)) {
+                                names.add(filename);
                                 fd.usedFiles.add(fd.filesData.get(i));
                                 if (!fd.names.contains(filename)) {
                                     fd.names.add(filename);
                                 }
                             }
                         }
+                        fd.allFiles.add(names);
                         actionButtonAdd(String.valueOf(j));
                     }
                 } else {
@@ -406,6 +416,7 @@ public class AddTablesEvent {
                             charact2 = String.valueOf(j);
                         }
                         String separador = "";
+                        List<String> names = new ArrayList<>();
                         for (int i = 0; i < fd.files.size(); i++) {
                             String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                             StringBuilder sb1 = new StringBuilder();
@@ -422,12 +433,14 @@ public class AddTablesEvent {
                             }
                             String[] separated = filename.split(separador);
                             if (separated[separated.length - 1].equals(charact1) || separated[separated.length - 1].equals(charact2)) {
+                                names.add(filename);
                                 fd.usedFiles.add(fd.filesData.get(i));
                                 if (!fd.names.contains(filename)) {
                                     fd.names.add(filename);
                                 }
                             }
                         }
+                        fd.allFiles.add(names);
                         actionButtonAdd(String.valueOf(j));
                     }
                 }
@@ -489,6 +502,13 @@ public class AddTablesEvent {
                         df.setRoundingMode(RoundingMode.CEILING);
                         fd.tableGeneric.setValueAt(Double.parseDouble(df.format(value)), i, index);
                     }
+                    DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
+                    JTableHeader th = fd.tableGeneric.getTableHeader();
+                    TableColumnModel tcm = th.getColumnModel();
+                    TableColumn tc = tcm.getColumn(index);
+                    tc.setHeaderValue(table.getColumnName(2));
+                    fd.tableGeneric.setTableHeader(th);
+                    th.repaint();
                     table.revalidate();
                     table.repaint();
                 } else {
