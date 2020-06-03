@@ -245,8 +245,8 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
 
     private void confirm() {
         if (dropTextArea.getText().length() > 0) {
-            if (fieldValue.getText().matches("^[0-9]*(.)?[0-9]?[0-9]?")) {
-                if (fieldTemp.getText().matches("^[0-9]*(.)?[0-9]?[0-9]?")) {
+            if (fieldValue.getText().matches("^[0-9]+(.)?[0-9]{0,2}")) {
+                if (fieldTemp.getText().matches("^[0-9]+(.)?[0-9]{0,2}")) {
                     List<String> fileNames = new ArrayList<>();
                     for (File listFile : listFiles) {
                         fileNames.add(listFile.getName());

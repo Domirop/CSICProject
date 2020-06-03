@@ -65,6 +65,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     ElementsDragAndDrop edd = new ElementsDragAndDrop(this);
     AddTablesEvent ate = new AddTablesEvent(this, decorate, scf, avg);
     CSV csv = new CSV(this);
+    PredefineValues pfv = new PredefineValues(this, ate);
     Order od = new Order(this);
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     protected String temperature = "298.15";
