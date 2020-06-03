@@ -5,6 +5,7 @@
  */
 package View;
 
+import Model.Atomo.FileData;
 import Model.Atomo.Molecule;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -62,7 +63,8 @@ public class AddTablesEvent {
                         fd.searchAdded = true;
                     }
                     fd.errorText.setText("");
-                    JTable table = td.addRowsToTable(td.initTablesDifferentiators());
+                    List<FileData> fileData = fd.controller.getFileData(fd.usedFiles, Double.parseDouble(fd.temperature), Double.parseDouble(fd.maxValue));
+                    JTable table = td.addRowsToTable(td.initTablesDifferentiators(fileData), fileData);
                     if (table.getRowCount() != 0) {
                         JPanel panel = new JPanel();
                         if (fd.usedTables.isEmpty()) {
@@ -112,10 +114,7 @@ public class AddTablesEvent {
                         fd.orderDesc.setVisible(true);
                         fd.orderAsc.setVisible(true);
 
-                    } else {
-                        fd.errorText.setText("Couldn't find any file with the provided keyword.");
                     }
-
                 } else {
                     fd.keywordsUsed.remove(fieldText);
                     fd.errorText.setText("Couldn't find any file with the provided keyword.");
@@ -125,7 +124,6 @@ public class AddTablesEvent {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             fd.errorText.setText("Some files were not imported.");
         }
         if (fd.getSize() != new Dimension(1080, 720)) {
@@ -476,25 +474,25 @@ public class AddTablesEvent {
                             index = i;
                         }
                     }
-                  
-                        String columnSelected = table.getColumnName(table.getSelectedColumn());
-                        table.removeColumn(table.getColumnModel().getColumn(table.getSelectedColumn()));
-                        fd.usedFiles.addAll(aux.stream().filter((File v) -> !v.getName().contains(columnSelected)).collect(Collectors.toList()));
-                        Molecule molecule = fd.controller.getMolecule(fd.usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature));
-                        for (int i = 0; i < fd.tableGeneric.getRowCount(); i++) {
-                            double value = molecule.getResult().get(i).getValue();
-                            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
-                            otherSymbols.setDecimalSeparator('.');
-                            otherSymbols.setGroupingSeparator(',');
-                            DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
-                            df.setRoundingMode(RoundingMode.CEILING);
-                            fd.tableGeneric.setValueAt(Double.parseDouble(df.format(value)), i, index);
-                        }
-                        table.revalidate();
-                        table.repaint();
-                    } else {
-                        fd.errorText.setText("Please select one column");
+
+                    String columnSelected = table.getColumnName(table.getSelectedColumn());
+                    table.removeColumn(table.getColumnModel().getColumn(table.getSelectedColumn()));
+                    fd.usedFiles.addAll(aux.stream().filter((File v) -> !v.getName().contains(columnSelected)).collect(Collectors.toList()));
+                    Molecule molecule = fd.controller.getMolecule(fd.usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature), Double.parseDouble(fd.maxValue));
+                    for (int i = 0; i < fd.tableGeneric.getRowCount(); i++) {
+                        double value = molecule.getResult().get(i).getValue();
+                        DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
+                        otherSymbols.setDecimalSeparator('.');
+                        otherSymbols.setGroupingSeparator(',');
+                        DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
+                        df.setRoundingMode(RoundingMode.CEILING);
+                        fd.tableGeneric.setValueAt(Double.parseDouble(df.format(value)), i, index);
                     }
+                    table.revalidate();
+                    table.repaint();
+                } else {
+                    fd.errorText.setText("Please select one column");
+                }
             } else {
                 fd.errorText.setText("This column cannot be deleted");
             }

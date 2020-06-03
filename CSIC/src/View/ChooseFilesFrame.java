@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -141,6 +142,17 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
         jLabel3.setText("Max Value:");
 
         fieldTemp.setText("298.15");
+        fieldTemp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldTempActionPerformed(evt);
+            }
+        });
+
+        fieldValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldValueActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -220,18 +232,41 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNextActionPerformed
-        if (dropTextArea.getText().length() > 0) {
-            List<String> fileNames = new ArrayList<>();
-            for (File listFile : listFiles) {
-                fileNames.add(listFile.getName());
-            }
-            FrameDifferentiator frameDiff = new FrameDifferentiator(fileNames, listFiles, controller, fieldTemp.getText(), fieldValue.getText());
-            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);
-            this.dispose();
-            frameDiff.setVisible(true);
-        }
+        confirm();
     }//GEN-LAST:event_buttonNextActionPerformed
+
+    private void fieldValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldValueActionPerformed
+        confirm();
+    }//GEN-LAST:event_fieldValueActionPerformed
+
+    private void fieldTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldTempActionPerformed
+       confirm();
+    }//GEN-LAST:event_fieldTempActionPerformed
+
+    private void confirm() {
+        if (dropTextArea.getText().length() > 0) {
+            if (fieldValue.getText().matches("^[0-9]*(.)?[0-9]?[0-9]?")) {
+                if (fieldTemp.getText().matches("^[0-9]*(.)?[0-9]?[0-9]?")) {
+                    List<String> fileNames = new ArrayList<>();
+                    for (File listFile : listFiles) {
+                        fileNames.add(listFile.getName());
+                    }
+                    FrameDifferentiator frameDiff = new FrameDifferentiator(fileNames, listFiles, controller, fieldTemp.getText(), fieldValue.getText());
+                    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                    frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);
+                    this.dispose();
+                    frameDiff.setVisible(true);
+                } else {
+                    fieldTemp.setBorder(BorderFactory.createLineBorder(Color.red));
+                    fieldTemp.setToolTipText("The format is (number).(2 number)");
+                }
+            } else {
+                fieldValue.setBorder(BorderFactory.createLineBorder(Color.red));
+                fieldValue.setToolTipText("The format is (number).(2 number)");
+            }
+        }
+    }
+
     /**
      * Method used to put the icon as a background.
      *

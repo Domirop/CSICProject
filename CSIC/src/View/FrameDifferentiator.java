@@ -710,6 +710,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         if (fieldKeyword.getText().length() > 0) {
             ate.getUsedFiles(fieldKeyword.getText(), comboOptions.getSelectedItem().toString(), true);
         }
+        for (String string : keywordsUsed) {
+            System.out.println(string);
+        }
     }//GEN-LAST:event_buttonAddActionPerformed
 
     /**
@@ -795,6 +798,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void itemResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemResetActionPerformed
+        dialogAddMoreFiles.dispose();
+        dialogAverageOrder.dispose();
+        dialogCoordinates.dispose();
+        dialogNombre.dispose();
+        dialogSCF.dispose();
+        dialogTemperature.dispose();
         FrameDifferentiator frameDiff = new FrameDifferentiator(files, filesData, controller, temperature, maxValue);
         frameDiff.setVisible(true);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -808,6 +817,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
+        dialogAddMoreFiles.dispose();
+        dialogAverageOrder.dispose();
+        dialogCoordinates.dispose();
+        dialogNombre.dispose();
+        dialogSCF.dispose();
+        dialogTemperature.dispose();
         FrameDifferentiator frameDiff = new FrameDifferentiator(files, filesData, controller, temperature, maxValue);
         frameDiff.setVisible(true);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

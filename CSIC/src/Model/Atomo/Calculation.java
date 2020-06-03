@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author domit
  */
-public class Calculus {
+public class Calculation {
 
     /**
      * This method is responsible for obtaining a list with all the total.
@@ -174,11 +174,11 @@ public class Calculus {
             } else {
                 initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * temp);
             }
-            if ((files.get(i).getEnergyValue()) - minValue <= cutOff) {
+            if ((files.get(i).getEnergyValue() - minValue) * 2625.5 <= cutOff) {
                 mediumValue = Math.exp(initialValue * -1);
                 contribution = mediumValue / expS;
                 fileData.get(i).setContribution(contribution);
-                fileData.get(i).setRelativeEnergy(files.get(i).getEnergyValue() - minValue);
+                fileData.get(i).setRelativeEnergy((files.get(i).getEnergyValue() - minValue) * 2625.5);
             } else {
                 fileData.remove(i);
                 i--;

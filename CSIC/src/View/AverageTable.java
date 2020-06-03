@@ -43,8 +43,8 @@ public class AverageTable {
      * @param usedFiles
      */
     public void averageTable(List<File> usedFiles) {
-        Molecule molecule = fd.controller.getMolecule(usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature)
-        );
+        Molecule molecule = fd.controller.getMolecule(usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature),
+                 Double.parseDouble(fd.maxValue));
         if (values.isEmpty()) {
             values.add("Gaussian");
             values.add("Atom");

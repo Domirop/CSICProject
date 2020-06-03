@@ -34,15 +34,14 @@ public class TableDifferentiator {
      *
      * @return the myTable.
      */
-    public JTable initTablesDifferentiators() {
+    public JTable initTablesDifferentiators(List<FileData> fileData) {
         JTable table = new JTable();
         table.setAutoCreateRowSorter(true);
         List<String> singleNames = new ArrayList<>();
         singleNames.add("Gaussian");
         singleNames.add("Atom");
-
-        fd.names.stream().filter((file) -> (!singleNames.contains(file))).forEachOrdered((file) -> {
-            singleNames.add(file);
+        fileData.stream().filter((file) -> (!singleNames.contains(file.getFileName()))).forEachOrdered((file) -> {
+            singleNames.add(file.getFileName());
         });
 
         DefaultTableModel model = new DefaultTableModel(
@@ -84,34 +83,20 @@ public class TableDifferentiator {
      * Method used to add rows to the myTable.
      *
      * @param table the myTable that we want to add rows to.
+     * @param fileData List with the elements of row.
      * @return myTable with rows added.
      */
-    public JTable addRowsToTable(JTable table) {
+    public JTable addRowsToTable(JTable table, List<FileData> fileData) {
         JTable tableWithElements = table;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        List<FileData> fileData = fd.controller.getFileData(fd.usedFiles, Double.parseDouble(fd.temperature));
         String fileNameError = "";
-        boolean correcto = false;
-        for (String name : fd.names) {
-            salir:
-            if (!correcto) {
-                for (FileData fileData1 : fileData) {
-                    if (fileData1.getFileName().equals(name)) {
-                        fileNameError = "";
-                        break salir;
-                    } else {
-                        correcto = true;
-                        fileNameError = name;
-                    }
-                }
-            }
-        }
-        if (fileData.size() == fd.usedFiles.size()) {
+        try{
             fd.errorText.setText("");
             List<Object> data = new ArrayList<>();
             for (int i = 0; i < fileData.get(0).getAtoms().size(); i++) {
                 data.clear();
                 for (int j = 1; j < fileData.size() + 1; j++) {
+                    fileNameError = fileData.get(j - 1).getFileName();
                     if (j == 1) {
                         data.add(Integer.parseInt(fileData.get(j - 1).getAtoms().get(i).getGaussianData()));
                         data.add(fileData.get(j - 1).getAtoms().get(i).getAtom());
@@ -126,7 +111,9 @@ public class TableDifferentiator {
                 model.addRow(data.toArray(new Object[0]));
             }
             return tableWithElements;
-        } else {
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.out.println("ayyyyyyyyyyyyy");
             fd.keywordsUsed.remove(fd.fieldKeyword.getText());
             fd.errorText.setText("Syntax error. Please, check the file " + fileNameError + ".");
             return table;

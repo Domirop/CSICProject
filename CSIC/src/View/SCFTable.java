@@ -47,11 +47,11 @@ public class SCFTable {
         SCF.add("SCF");
         convertedValues.add("kCal/mol");
 
-        for (FileData fileData : fd.controller.getFileData(fd.usedFiles, Double.valueOf(fd.temperature))) {
+        for (FileData fileData : fd.controller.getFileData(fd.usedFiles, Double.valueOf(fd.temperature), Double.parseDouble(fd.maxValue))) {
             nameFiles.add(fileData.getFileName());
             contribution.add(fileData.getContribution());
             SCF.add(fileData.getEnergyValue());
-            convertedValues.add(fileData.getEnergyValue());
+            convertedValues.add(fileData.getRelativeEnergy());
 
         }
         Object[][] data = new Object[][]{

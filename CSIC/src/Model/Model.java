@@ -7,7 +7,7 @@ package Model;
 
 import Model.Atomo.Atom;
 import Model.Atomo.AtomTable;
-import Model.Atomo.Calculus;
+import Model.Atomo.Calculation;
 import Model.Atomo.Molecule;
 import Model.Atomo.FileData;
 import Model.Atomo.AverageValue;
@@ -29,7 +29,7 @@ public class Model implements ModelInt {
     private ReadLines readIso = new ReadLines();
     private ReadTable readTable = new ReadTable();
     private ReadEnergyValue readEnergy = new ReadEnergyValue();
-    private Calculus calculations = new Calculus();
+    private Calculation calculations = new Calculation();
     private ExportCSV csv = new ExportCSV();
 
     /**
