@@ -105,8 +105,8 @@ public class Model implements ModelInt {
      * @return Molecule object with the obtained data.
      */
     @Override
-    public Molecule getMolecule(List<File> files, String key, double temp) {
-        Molecule molecule = new Molecule(getFileData(files, temp), key);
+    public Molecule getMolecule(List<File> files, String key, double temp, double cutOff) {
+        Molecule molecule = new Molecule(getFileData(files, temp, cutOff), key);
         List<String> gaussianAtom = getAtomsGaussian(molecule.getFilesData());
         List<AverageValue> total = new ArrayList<>();
         for (String string : gaussianAtom) {
@@ -146,7 +146,7 @@ public class Model implements ModelInt {
      * @return List of FileData object.
      */
     @Override
-    public List<FileData> getFileData(List<File> files, double temp) {
+    public List<FileData> getFileData(List<File> files, double temp, double cutOff) {
         List<FileData> fileData = new ArrayList<>();
         for (File file : files) {
             List<String> atomsData = formatLine(getLines(file.getAbsolutePath(), "Isotropic"));
@@ -156,7 +156,8 @@ public class Model implements ModelInt {
                 fileData.add(calculations.getFileData(atomsData, energyValue, fileName));
             }
         }
-        fileData = calculations.getContribution(fileData, temp);
+        
+        fileData = calculations.getContribution(fileData, temp, cutOff);
         return fileData;
     }
     

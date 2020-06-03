@@ -27,11 +27,11 @@ public interface ModelInt {
 
     public String SCFDone(String path);
 
-    public Molecule getMolecule(List<File> files, String key, double temp);
+    public Molecule getMolecule(List<File> files, String key, double temp, double cutOff);
 
     public List<String> getAtomsGaussian(List<FileData> files);
 
-    public List<FileData> getFileData(List<File> files, double temp);
+    public List<FileData> getFileData(List<File> files, double temp, double cutOff);
 
     public boolean writeCSV(List<String[]> datas, String path, String fileName);
 

@@ -16,11 +16,11 @@ import java.util.List;
  */
 public interface ControllerInt {
 
-    public List<FileData> getFileData(List<File> files, double temp);
+    public List<FileData> getFileData(List<File> files, double temp, double cutOff);
 
     public boolean writeCSV(List<String[]> datas, String path, String fileName);
 
-    public Molecule getMolecule(List<File> files, String key, double temp);
+    public Molecule getMolecule(List<File> files, String key, double temp, double cutOff);
 
     public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key, double temp) throws Exception;
 
