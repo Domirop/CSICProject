@@ -16,6 +16,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import javax.accessibility.AccessibleContext;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -207,7 +208,6 @@ public class DecorateFrame {
         fd.labelSelect.setVisible(false);
         fd.comboSelectRowsOrColumns.setVisible(false);
 
-
         if (!fd.buttonRemoveTable.isEnabled()) {
             fd.buttonRemoveTable.setToolTipText("\"Average\" table cannot be deleted.");
         }
@@ -215,11 +215,17 @@ public class DecorateFrame {
     }
 
     public void removeTable() {
-        String name = fd.tabbedPane.getTitleAt(fd.tabbedPane.getSelectedIndex());
+        JPanel paneSelected = (JPanel) fd.tabbedPane.getSelectedComponent();
+        JScrollPane jsSelected = (JScrollPane) paneSelected.getComponent(0);
+        JViewport viewportSelected = jsSelected.getViewport();
+        JTable tableSelected = (JTable) viewportSelected.getView();
+        
+        String name = tableSelected.getColumnName(2);
         JPanel genericPane = (JPanel) (fd.tabbedPane.getComponentAt(0));
         JScrollPane scrollPaneGeneric = (JScrollPane) genericPane.getComponent(0);
         JViewport viewportGeneric = scrollPaneGeneric.getViewport();
         JTable genericTable = (JTable) viewportGeneric.getView();
+        
         for (int i = 0; i < genericTable.getColumnCount(); i++) {
             if (name.equals(genericTable.getColumnName(i))) {
                 removeColumn(i, genericTable);
@@ -252,7 +258,13 @@ public class DecorateFrame {
             if (fd.keywordsUsed.contains(name)) {
                 fd.keywordsUsed.remove(name);
             }
-            fd.tabbedPane.remove(fd.tabbedPane.getSelectedComponent());
+            if (fd.tabbedPane.getSelectedIndex() == 0) {
+                myPanel.remove(1);
+                myPanel.repaint();
+                fd.tabbedPane.repaint();
+            } else {
+                fd.tabbedPane.remove(fd.tabbedPane.getSelectedComponent());
+            }
         }
     }
 
