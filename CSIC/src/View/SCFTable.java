@@ -43,9 +43,9 @@ public class SCFTable {
         ArrayList<Object> SCF = new ArrayList<>();
         ArrayList<Object> convertedValues = new ArrayList<>();
         nameFiles.add("Values");
-        contribution.add("Contribution");
-        SCF.add("SCF");
-        convertedValues.add("kCal/mol");
+        contribution.add("Boltzmann population");
+        SCF.add("Energy (Hartree)");
+        convertedValues.add("Relative energy (kJ/mol)");
 
         for (FileData fileData : fd.controller.getFileData(fd.usedFiles, Double.valueOf(fd.temperature), Double.parseDouble(fd.maxValue))) {
             nameFiles.add(fileData.getFileName());

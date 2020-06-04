@@ -338,7 +338,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("Max value:");
+        jLabel7.setText("Energy cutoff:");
 
         fieldMaxValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -362,7 +362,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addGap(18, 18, 18)
                         .addGroup(dialogTemperatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fieldTemperature, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+                            .addComponent(fieldTemperature, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
                             .addComponent(fieldMaxValue))))
                 .addContainerGap())
         );
@@ -525,7 +525,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         errorText.setForeground(new java.awt.Color(255, 0, 0));
         errorText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        buttonValue.setText("Search value");
+        buttonValue.setText("Search J ");
         buttonValue.setFocusPainted(false);
         buttonValue.setSelected(true);
         buttonValue.addActionListener(new java.awt.event.ActionListener() {
@@ -555,7 +555,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        buttonAverage.setText("Average values");
+        buttonAverage.setText("Average methyl");
         buttonAverage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAverageActionPerformed(evt);
@@ -580,7 +580,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jMenu1.setText("Options");
 
-        itemSearchValue.setText("Search values");
+        itemSearchValue.setText("Search J ");
         itemSearchValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemSearchValueActionPerformed(evt);
@@ -612,7 +612,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
         jMenu1.add(itemChooseFiles);
 
-        itemChangeTemperature.setText("Change temp. and max value");
+        itemChangeTemperature.setText("Change Tº and E cutoff");
         itemChangeTemperature.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemChangeTemperatureActionPerformed(evt);
@@ -628,7 +628,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
         jMenu1.add(itemAddMoreFiles);
 
-        itemSCF.setText("SCF and energy value");
+        itemSCF.setText("Energy, Boltzmann population and relative E");
         itemSCF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemSCFActionPerformed(evt);
@@ -660,9 +660,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(buttonValue))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(buttonValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -690,7 +690,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                                 .addComponent(comboSelectRowsOrColumns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(buttonRemoveColumn)))
-                        .addGap(0, 326, Short.MAX_VALUE)))
+                        .addGap(326, 326, 326)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -954,6 +954,9 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             dialogCoordinates.setVisible(false);
             errorText.setText("Error has ocurred. please, try again.");
         }
+        listValues.repaint();
+        listValues.revalidate();
+        dialogCoordinates.pack();
     }//GEN-LAST:event_buttonRemoveItemActionPerformed
 
     /**
