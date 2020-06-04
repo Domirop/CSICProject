@@ -168,6 +168,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel2.setText("Row:");
 
+        fieldRow.setText("57");
         fieldRow.setFocusCycleRoot(true);
         fieldRow.setNextFocusableComponent(fieldColumn);
         fieldRow.addActionListener(new java.awt.event.ActionListener() {
@@ -178,6 +179,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel3.setText("Column:");
 
+        fieldColumn.setText("5");
         fieldColumn.setNextFocusableComponent(fieldRow);
         fieldColumn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -280,6 +282,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel4.setText("Choose a name for the values");
 
+        fieldNameValues.setText("Values");
         fieldNameValues.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldNameValuesActionPerformed(evt);
@@ -488,6 +491,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
+        fieldKeyword.setText("01");
         fieldKeyword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldKeywordActionPerformed(evt);
@@ -782,8 +786,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValuesActionPerformed
-        if (!fieldNameValues.getText().isEmpty()) {
-            ate.actionButtondialogName(evt);
+        try {
+            if (!fieldNameValues.getText().isEmpty()) {
+                ate.actionButtondialogName(evt);
+            }
+        } catch (Exception e) {
+            errorText.setText("Error has ocurred. Try again.");
         }
     }//GEN-LAST:event_buttonValuesActionPerformed
 
@@ -937,15 +945,19 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void buttonRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveItemActionPerformed
         listValues.repaint();
         listValues.revalidate();
-        if (!listValues.isSelectionEmpty()) {
-            coorValues.remove(listValues.getSelectedIndex());
-            colAndRows.remove(listValues.getSelectedIndex());
-            listValues.setListData(coorValues.toArray(new String[0]));
+        try {
+            if (!listValues.isSelectionEmpty()) {
+                coorValues.remove(listValues.getSelectedIndex());
+                colAndRows.remove(listValues.getSelectedIndex());
+                listValues.setListData(coorValues.toArray(new String[0]));
+            }
+            listValues.repaint();
+            listValues.revalidate();
+            this.pack();
+        } catch (Exception e) {
+            dialogCoordinates.setVisible(false);
+            errorText.setText("Error has ocurred. please, try again.");
         }
-        listValues.repaint();
-        listValues.revalidate();
-        this.pack();
-
     }//GEN-LAST:event_buttonRemoveItemActionPerformed
 
     /**

@@ -98,6 +98,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="fieldRow">
           <Properties>
+            <Property name="text" type="java.lang.String" value="57"/>
             <Property name="focusCycleRoot" type="boolean" value="true"/>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="fieldColumn"/>
@@ -117,6 +118,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="fieldColumn">
           <Properties>
+            <Property name="text" type="java.lang.String" value="5"/>
             <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="fieldRow"/>
             </Property>
@@ -247,6 +249,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldNameValues">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Values"/>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldNameValuesActionPerformed"/>
           </Events>
@@ -748,6 +753,9 @@
       </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="fieldKeyword">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="01"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldKeywordActionPerformed"/>
       </Events>
