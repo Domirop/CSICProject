@@ -49,14 +49,12 @@ public class ReadTable {
             try (Stream<String> lines = Files.lines(Paths.get(path))) {
                 table = lines.skip(lineStart).limit(lineEnd - 1).collect(Collectors.toList());
             } catch (Exception e) {
-                //e.printStackTrace();
             }
 
             for (String string : table) {
                 data.add(string);
             }
         } catch (IOException ex) {
-            //ex.printStackTrace();
         }
         return data;
     }
@@ -89,9 +87,10 @@ public class ReadTable {
             numeroLineas = Integer.parseInt(lineValues.get(0));
             if (val == 0) {
                 index = row;
-                for (int i = 0; i < numeroLineas; i++) {
+                for (int i = 1; i <= numeroLineas; i++) {
                     singleValues.add(valueList.get(i));
                 }
+                index--;
             } else {
                 for (int i = 0; i < val; i++) {
                     subs = numeroLineas - (i * 5);
