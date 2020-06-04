@@ -168,7 +168,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel2.setText("Row:");
 
-        fieldRow.setText("57");
         fieldRow.setFocusCycleRoot(true);
         fieldRow.setNextFocusableComponent(fieldColumn);
         fieldRow.addActionListener(new java.awt.event.ActionListener() {
@@ -179,7 +178,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel3.setText("Column:");
 
-        fieldColumn.setText("5");
         fieldColumn.setNextFocusableComponent(fieldRow);
         fieldColumn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -282,7 +280,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel4.setText("Choose a name for the values");
 
-        fieldNameValues.setText("Values");
         fieldNameValues.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldNameValuesActionPerformed(evt);
@@ -491,7 +488,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        fieldKeyword.setText("01");
         fieldKeyword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldKeywordActionPerformed(evt);
