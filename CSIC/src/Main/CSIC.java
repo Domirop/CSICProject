@@ -9,8 +9,7 @@ import Controller.ControllerInt;
 import Model.Model;
 import Model.ModelInt;
 import View.ChooseFilesFrame;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import View.SplashScreenInit;
 
 public class CSIC {
 
@@ -19,6 +18,9 @@ public class CSIC {
      * @author domit
      */
     public static void main(String[] args) {
+        SplashScreenInit test = new SplashScreenInit(3000);
+        test.showSplash();
+        
         ModelInt model = new Model();
         ControllerInt controller = new Controller(model);
         ChooseFilesFrame frame = new ChooseFilesFrame(controller);

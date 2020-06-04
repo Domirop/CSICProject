@@ -286,7 +286,7 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="fieldTemperature" pref="107" max="32767" attributes="0"/>
+                              <Component id="fieldTemperature" pref="102" max="32767" attributes="0"/>
                               <Component id="fieldMaxValue" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -339,7 +339,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Max value:"/>
+            <Property name="text" type="java.lang.String" value="Energy cutoff:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldMaxValue">
@@ -528,7 +528,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="itemSearchValue">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Search values"/>
+                <Property name="text" type="java.lang.String" value="Search J "/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemSearchValueActionPerformed"/>
@@ -569,7 +569,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemChangeTemperature">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Change temp. and max value"/>
+                <Property name="text" type="java.lang.String" value="Change T&#xba; and E cutoff"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemChangeTemperatureActionPerformed"/>
@@ -588,7 +588,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemSCF">
               <Properties>
-                <Property name="text" type="java.lang.String" value="SCF and energy value"/>
+                <Property name="text" type="java.lang.String" value="Energy, Boltzmann population and relative E"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemSCFActionPerformed"/>
@@ -642,9 +642,9 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="jLabel1" max="32767" attributes="0"/>
-                                  <Component id="buttonValue" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="buttonValue" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
@@ -679,7 +679,7 @@
                               <Component id="buttonRemoveColumn" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="326" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="326" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -814,7 +814,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="buttonValue">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Search value"/>
+        <Property name="text" type="java.lang.String" value="Search J "/>
         <Property name="focusPainted" type="boolean" value="false"/>
         <Property name="selected" type="boolean" value="true"/>
       </Properties>
@@ -860,7 +860,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="buttonAverage">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Average values"/>
+        <Property name="text" type="java.lang.String" value="Average methyl"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAverageActionPerformed"/>

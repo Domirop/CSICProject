@@ -48,6 +48,8 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
         initComponents();
         enableDragAndDrop();
         BufferedImage bi = null;
+        pack();
+        setLocationRelativeTo(null);
         this.controller = controller;
         try {
             bi = ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/add-file.png"));
@@ -139,7 +141,7 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Temperature:");
 
-        jLabel3.setText("Max Value:");
+        jLabel3.setText("Energy cutoff:");
 
         fieldTemp.setText("298.15");
         fieldTemp.addActionListener(new java.awt.event.ActionListener() {
