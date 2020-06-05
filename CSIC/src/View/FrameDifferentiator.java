@@ -1205,9 +1205,21 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
             JViewport viewport = scrollPane.getViewport();
             JTable table = (JTable) viewport.getView();
-            List<Integer> indexs = IntStream.of(table.getSelectedRows())
-                    .boxed().collect(Collectors.toCollection(ArrayList::new));
-            ate.removeRow(indexs);
+            boolean deleteable = true;
+            for (int i = 0; i < table.getSelectedRows().length; i++) {
+                if (table.getValueAt(table.getSelectedRows()[i], 1).equals("J")) {
+                    deleteable = false;
+                }
+            }
+            if (deleteable) {
+                errorText.setText("");
+                List<Integer> indexs = IntStream.of(table.getSelectedRows())
+                        .boxed().collect(Collectors.toCollection(ArrayList::new));
+                ate.removeRow(indexs);
+            }else{
+                errorText.setText("This row(s) cannot be deleted.");
+            }
+
         } else {
             ate.removeColumn();
         }

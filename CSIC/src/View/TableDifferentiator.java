@@ -113,7 +113,6 @@ public class TableDifferentiator {
             return tableWithElements;
         } catch(Exception e) {
             e.printStackTrace();
-            System.out.println("ayyyyyyyyyyyyy");
             fd.keywordsUsed.remove(fd.fieldKeyword.getText());
             fd.errorText.setText("Syntax error. Please, check the file " + fileNameError + ".");
             return table;

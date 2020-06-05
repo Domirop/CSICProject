@@ -96,7 +96,7 @@ class ListTransferHandler extends TransferHandler {
                             return true;
                         }
                     } else {
-                        edd.setErrorDialogCoor("<html><body>The value of the column and row must be greater than the number gaussians.</body></html>");
+                        edd.setErrorDialogCoor("<html><body>The value of the column and row must be greater than the number of gaussians.</body></html>");
                         return true;
                     }
                 } else {
