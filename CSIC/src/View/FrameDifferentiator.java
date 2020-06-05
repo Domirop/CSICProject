@@ -73,6 +73,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     public List<String> colAndRows = new ArrayList<>();
     JTable tableGeneric;
     String maxValue;
+    boolean orderAverage = false;
 
     public FrameDifferentiator(ControllerInt controller) {
         initComponents();
@@ -168,6 +169,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel2.setText("Row:");
 
+        fieldRow.setText("55");
         fieldRow.setFocusCycleRoot(true);
         fieldRow.setNextFocusableComponent(fieldColumn);
         fieldRow.addActionListener(new java.awt.event.ActionListener() {
@@ -178,6 +180,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel3.setText("Column:");
 
+        fieldColumn.setText("50");
         fieldColumn.setNextFocusableComponent(fieldRow);
         fieldColumn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -280,6 +283,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel4.setText("Choose a name for the values");
 
+        fieldNameValues.setText("val");
         fieldNameValues.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldNameValuesActionPerformed(evt);
@@ -482,12 +486,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jLabel1.setText("Search by keyword:");
 
         comboOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Starts with", "Ends with", "Contains", "Range starts with", "Range ends with" }));
+        comboOptions.setSelectedIndex(3);
         comboOptions.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 comboOptionsItemStateChanged(evt);
             }
         });
 
+        fieldKeyword.setText("1-5");
         fieldKeyword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldKeywordActionPerformed(evt);

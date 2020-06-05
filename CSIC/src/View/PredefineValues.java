@@ -5,6 +5,7 @@
  */
 package View;
 
+import java.io.File;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -25,32 +26,48 @@ public class PredefineValues {
         this.ate = ate;
     }
 
+    private void removeSpecialTab() {
+        if (!fd.specialTables.isEmpty()) {
+            for (int i = 1; i < fd.tabbedPane.getTabCount(); i++) {
+                JPanel myPanel = (JPanel) fd.tabbedPane.getComponentAt(i);
+                JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+                JViewport viewport = scrollPane.getViewport();
+                JTable table = (JTable) viewport.getView();
+                if(fd.specialTables.contains(table)){
+                    fd.specialTables.remove(table);
+                    fd.tabbedPane.removeTabAt(i);
+                    i = 1;
+                }
+            }
+        }
+    }
+
     public void changeValues() {
         fd.keywordsUsed.clear();
         fd.names.clear();
-        fd.specialTables.clear();
+        removeSpecialTab();
         fd.rows.clear();
         fd.coorValues.clear();
         fd.colAndRows.clear();
         JTabbedPane pane = fd.tabbedPane;
         fd.tabPaneSCF.removeAll();
         fd.tableGeneric = null;
-        
         for (int j = 0; j < fd.allFiles.size(); j++) {
             JPanel myPanel = (JPanel) pane.getComponentAt(j + 1);
             JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
             JViewport viewport = scrollPane.getViewport();
             JTable table = (JTable) viewport.getView();
             fd.usedFiles.clear();
-            fd.names.clear();  
+            fd.names.clear();
             if (fd.normalTables.contains(table)) {
                 for (int k = 0; k < fd.allFiles.get(j).size(); k++) {
                     String name = fd.allFiles.get(j).get(k);
-                    fd.filesData.stream().filter((item) -> (item.getName().contains(name))).forEach((item) -> {
-                        fd.usedFiles.add(item);
-                        fd.names.add(name);
-
-                    });
+                    for (File file : fd.filesData) {
+                        if (file.getName().equals(name + ".log")) {
+                            fd.usedFiles.add(file);
+                            fd.names.add(name);
+                        }
+                    }
                 }
                 fd.normalTables.remove(table);
                 ate.actionButtonAdd(pane.getTitleAt(j + 1));
@@ -72,6 +89,5 @@ public class PredefineValues {
 
             }
         }
-
     }
 }

@@ -53,6 +53,8 @@ public class AddTablesEvent {
 
     /**
      * Method used to add new files.
+     *
+     * @param fieldText
      */
     public void actionButtonAdd(String fieldText) {
         try {
@@ -111,7 +113,6 @@ public class AddTablesEvent {
                         scf.addSCFTable(fieldText);
                         fd.orderDesc.setVisible(true);
                         fd.orderAsc.setVisible(true);
-
                     }
                 } else {
                     fd.keywordsUsed.remove(fieldText);
@@ -122,7 +123,6 @@ public class AddTablesEvent {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             fd.errorText.setText("Some files were not imported.");
         }
         if (fd.getSize() != new Dimension(1080, 720)) {
@@ -182,7 +182,6 @@ public class AddTablesEvent {
             getUsedFiles(tableCoord.getColumnName(i), "Starts with", false);
             if (fd.usedFiles.size() == 0) {
                 getUsedFiles(tableCoord.getColumnName(i), "Ends with", false);
-
             }
             if (fd.usedFiles.size() == 0) {
                 getUsedFiles(tableCoord.getColumnName(i), "Contains", false);
@@ -201,7 +200,6 @@ public class AddTablesEvent {
             }
             molList.add(mole);
         }
-
         List<List<Object>> rows = new ArrayList<>();
         for (int i = 0; i < fd.colAndRows.size(); i++) {
             List<Object> val = new ArrayList<>();
@@ -270,14 +268,13 @@ public class AddTablesEvent {
      * Add the used files to a List.
      */
     public void getUsedFiles(String value, String caseValue, boolean isAdd) {
+        List<String> names = new ArrayList<>();
         switch (caseValue) {
             case "Starts with":
                 for (int i = 0; i < fd.files.size(); i++) {
                     String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                     if (filename.startsWith(value)) {
-                        List<String> names = new ArrayList<>();
                         names.add(filename);
-                        fd.allFiles.add(names);
                         fd.usedFiles.add(fd.filesData.get(i));
                         if (!fd.names.contains(filename)) {
                             fd.names.add(filename);
@@ -289,15 +286,16 @@ public class AddTablesEvent {
                 }
                 if (isAdd) {
                     actionButtonAdd(fd.fieldKeyword.getText());
+                    if (!fd.allFiles.contains(names)) {
+                        fd.allFiles.add(names);
+                    }
                 }
                 break;
             case "Ends with":
                 for (int i = 0; i < fd.files.size(); i++) {
                     String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                     if (filename.endsWith(value)) {
-                        List<String> names = new ArrayList<>();
                         names.add(filename);
-                        fd.allFiles.add(names);
                         fd.usedFiles.add(fd.filesData.get(i));
                         if (!fd.names.contains(filename)) {
                             fd.names.add(filename);
@@ -306,15 +304,16 @@ public class AddTablesEvent {
                 }
                 if (isAdd) {
                     actionButtonAdd(fd.fieldKeyword.getText());
+                    if (!fd.allFiles.contains(names)) {
+                        fd.allFiles.add(names);
+                    }
                 }
                 break;
             case "Contains":
                 for (int i = 0; i < fd.files.size(); i++) {
                     String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                     if (filename.contains(value)) {
-                        List<String> names = new ArrayList<>();
                         names.add(filename);
-                        fd.allFiles.add(names);
                         fd.usedFiles.add(fd.filesData.get(i));
                         if (!fd.names.contains(filename)) {
                             fd.names.add(filename);
@@ -323,6 +322,9 @@ public class AddTablesEvent {
                 }
                 if (isAdd) {
                     actionButtonAdd(fd.fieldKeyword.getText());
+                    if (!fd.allFiles.contains(names)) {
+                        fd.allFiles.add(names);
+                    }
                 }
                 break;
             case "Range starts with":
@@ -360,7 +362,7 @@ public class AddTablesEvent {
                         }
 
                         String separador = "";
-                        List<String> names = new ArrayList<>();
+                        List<String> allNames = new ArrayList<>();
                         for (int i = 0; i < fd.files.size(); i++) {
                             String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                             searchSeparator:
@@ -371,14 +373,16 @@ public class AddTablesEvent {
                                 }
                             }
                             if (filename.split(separador)[0].equals(charact1) || filename.split(separador)[0].equals(charact2)) {
-                                names.add(filename);
+                                allNames.add(filename);
                                 fd.usedFiles.add(fd.filesData.get(i));
                                 if (!fd.names.contains(filename)) {
                                     fd.names.add(filename);
                                 }
                             }
                         }
-                        fd.allFiles.add(names);
+                        if (!fd.allFiles.contains(allNames)) {
+                            fd.allFiles.add(allNames);
+                        }
                         actionButtonAdd(String.valueOf(j));
                     }
                 } else {
@@ -416,7 +420,7 @@ public class AddTablesEvent {
                             charact2 = String.valueOf(j);
                         }
                         String separador = "";
-                        List<String> names = new ArrayList<>();
+                        List<String> allNames = new ArrayList<>();
                         for (int i = 0; i < fd.files.size(); i++) {
                             String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                             StringBuilder sb1 = new StringBuilder();
@@ -433,14 +437,16 @@ public class AddTablesEvent {
                             }
                             String[] separated = filename.split(separador);
                             if (separated[separated.length - 1].equals(charact1) || separated[separated.length - 1].equals(charact2)) {
-                                names.add(filename);
+                                allNames.add(filename);
                                 fd.usedFiles.add(fd.filesData.get(i));
                                 if (!fd.names.contains(filename)) {
                                     fd.names.add(filename);
                                 }
                             }
                         }
-                        fd.allFiles.add(names);
+                        if (!fd.allFiles.contains(allNames)) {
+                            fd.allFiles.add(allNames);
+                        }
                         actionButtonAdd(String.valueOf(j));
                     }
                 }
@@ -493,6 +499,7 @@ public class AddTablesEvent {
                     table.removeColumn(table.getColumnModel().getColumn(table.getSelectedColumn()));
                     fd.usedFiles.addAll(aux.stream().filter((File v) -> !v.getName().contains(columnSelected)).collect(Collectors.toList()));
                     Molecule molecule = fd.controller.getMolecule(fd.usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature), Double.parseDouble(fd.maxValue));
+                    DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
                     for (int i = 0; i < fd.tableGeneric.getRowCount(); i++) {
                         double value = molecule.getResult().get(i).getValue();
                         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
@@ -500,9 +507,8 @@ public class AddTablesEvent {
                         otherSymbols.setGroupingSeparator(',');
                         DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
                         df.setRoundingMode(RoundingMode.CEILING);
-                        fd.tableGeneric.setValueAt(Double.parseDouble(df.format(value)), i, index);
+                        model.setValueAt(Double.parseDouble(df.format(value)), i, index);
                     }
-                    DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
                     JTableHeader th = fd.tableGeneric.getTableHeader();
                     TableColumnModel tcm = th.getColumnModel();
                     TableColumn tc = tcm.getColumn(index);
