@@ -129,6 +129,7 @@ public class AverageTable {
         DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) fd.tableGeneric.getTableHeader().getDefaultRenderer();
         renderer.setHorizontalAlignment(0);
         fd.tableGeneric.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        fd.tableGeneric.getTableHeader().setReorderingAllowed(false);
     }
 
     /**
@@ -370,7 +371,7 @@ public class AverageTable {
                 averageTableNotExist(myTable);
 
             } else {
-                fd.errorText.setText("Sorry, but you need check 3 rows");
+                fd.errorText.setText("You need to select 3 rows");
             }
         } else {
             JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(1);
@@ -379,7 +380,7 @@ public class AverageTable {
             if (myTable.getSelectedRowCount() == 3) {
                 averageTableExist(myTable);
             } else {
-                fd.errorText.setText("Sorry, but you need check 3 rows in second table.");
+                fd.errorText.setText("You need to select 3 rows in the second table.");
             }
         }
     }

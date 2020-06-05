@@ -5,6 +5,7 @@
  */
 package View;
 
+import Model.Atomo.AtomTable;
 import Model.Atomo.FileData;
 import Model.Atomo.Molecule;
 import java.awt.Color;
@@ -97,6 +98,7 @@ public class AddTablesEvent {
                                 column.setMinWidth(300);
                             }
                         }
+                        table.getTableHeader().setReorderingAllowed(false);
                         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
                         panel.add(scrollpane);
                         fd.tabbedPane.addTab(fieldText, panel);
@@ -172,7 +174,7 @@ public class AddTablesEvent {
         DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) tableCoord.getTableHeader().getDefaultRenderer();
         renderer.setHorizontalAlignment(0);
         tableCoord.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-
+        tableCoord.getTableHeader().setReorderingAllowed(false);
         DefaultTableModel model = (DefaultTableModel) tableCoord.getModel();
 
         List<Molecule> molList = new ArrayList<>();
@@ -223,14 +225,54 @@ public class AddTablesEvent {
         rows.forEach((row) -> {
             model.addRow(row.toArray());
         });
+
+        int count = 0;
+        for (int j = 0; j < fd.normalTables.size(); j++) {
+            List<List<Object>> newRow = new ArrayList<>();
+            DefaultTableModel df = (DefaultTableModel) fd.normalTables.get(j).getModel();
+
+            Molecule molecule = molList.get(j);
+            System.out.println(molecule.getFilesData().size());
+            for (int l = 0; l < fd.colAndRows.size(); l++) {
+                List<Object> val = new ArrayList<>();
+                val.add(fd.colAndRows.get(l));
+                val.add("J");
+                for (int k = 0; k < molecule.getFilesData().size(); k++) {
+                    for (int i = 2; i < df.getColumnCount(); i++) {
+                        if (molecule.getFilesData().get(k).getFileName().equals(df.getColumnName(i) + ".log")) {
+                            val.add(molecule.getFilesData().get(k).getAtomsTable().get(l).getValue());
+                        }
+                    }
+
+                }
+                newRow.add(val);
+
+            }
+
+            newRow.forEach((newRows) -> {
+                df.addRow(newRows.toArray());
+            });
+            count += df.getColumnCount() - 2;
+
+            fd.normalTables.get(j).repaint();
+            fd.normalTables.get(j).revalidate();
+            System.out.println("--------");
+        }
+
         tableCoord.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
         fd.specialTables.add(tableCoord);
+
         fd.usedTables.add(tableCoord);
         JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
         newPane.add(scrollpaneHola);
+
         fd.tabbedPane.insertTab(fd.fieldNameValues.getText(), new ImageIcon(""), newPane, null, 1);
         fd.dialogNombre.dispose();
-        fd.fieldNameValues.setText("");
+
+        fd.fieldNameValues.setText(
+                "");
     }
 
     /**
@@ -254,11 +296,11 @@ public class AddTablesEvent {
                     fd.errorDialogCoor.setText("<html><body>The value of the row must be greater than the column value.</body></html>");
                 }
             } else {
-                fd.errorDialogCoor.setText("<html><body>The value of the column and row must be smaller than the number gaussians(" + rowCount + ").</body></html>");
+                fd.errorDialogCoor.setText("<html><body>The value of the column and row must be smaller than the number of gaussians(" + rowCount + ").</body></html>");
 
             }
         } else {
-            fd.errorDialogCoor.setText("The values need to be integer.");
+            fd.errorDialogCoor.setText("The values must be integer.");
         }
         fd.fieldRow.setText("");
         fd.fieldColumn.setText("");

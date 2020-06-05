@@ -18,7 +18,7 @@ public class CSIC {
      * @author domit
      */
     public static void main(String[] args) {
-        SplashScreenInit test = new SplashScreenInit(3000);
+        SplashScreenInit test = new SplashScreenInit(300);
         test.showSplash();
         
         ModelInt model = new Model();

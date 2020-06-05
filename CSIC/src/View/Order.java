@@ -297,7 +297,7 @@ public class Order {
         }
         if (fd.errorText.getText().length() == 0) {
             fd.errorText.setVisible(false);
-            fd.errorText.setText("The following values will not be ordered: ");
+            fd.errorText.setText("The following values wont be ordered: ");
             if (!elements.isEmpty()) {
                 fd.errorText.setVisible(true);
                 for (TableElement element : elements) {
