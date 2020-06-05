@@ -233,9 +233,22 @@ public class DecorateFrame {
             if (fd.specialTables.contains(myTable)) {
                 fd.specialTables.remove(myTable);
             }
-            
             if (fd.keywordsUsed.contains(fd.tabbedPane.getTitleAt(fd.tabbedPane.getSelectedIndex()))) {
                 fd.keywordsUsed.remove(fd.tabbedPane.getTitleAt(fd.tabbedPane.getSelectedIndex()));
+            }
+            
+            boolean founded = false;
+            int x = 0;
+            while(!founded){
+                for (String get : fd.allFiles.get(x)) {
+                    if(get.equals(name)){
+                        fd.allFiles.remove(x);
+                        founded = true;
+                        break;
+                    }else{
+                        x++;
+                    }
+                }
             }
             
             if (fd.tabbedPane.getSelectedIndex() == 0) {

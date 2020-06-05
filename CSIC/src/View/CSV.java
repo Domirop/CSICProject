@@ -57,20 +57,29 @@ public class CSV {
                         }
                     } else if (i == fd.tabbedPane.getTabCount()) {
                         JTabbedPane panes = (JTabbedPane) fd.dialogSCF.getContentPane().getComponent(0);
+                        String[] data = new String[4];
+                        data[0] = "Name";
+                        data[1] = "Energy (Hartree)";
+                        data[2] = "Relative energy (kJ/mol)";
+                        data[3] = "Boltzmann population";
+                        datas.add(data);
                         for (int j = 0; j < panes.getTabCount(); j++) {
                             JPanel myPanel = (JPanel) panes.getComponentAt(j);
                             JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
                             JViewport viewport = scrollPane.getViewport();
                             JTable myTable = (JTable) viewport.getView();
-                            datas.addAll(exportTable(myTable, j, 0, panes));
-                            datas.add(new String[0]);
-                            datas.add(new String[0]);
+                            datas.addAll(exportTableSCF(myTable));
                         }
                         exportCSVFunction(datas, folder, "SCF_and_CONTRIBUTION");
                     } else {
                         datas = exportTable(null, i, 0, fd.tabbedPane);
                         exportCSVFunction(datas, folder, fd.tabbedPane.getTitleAt(i));
                     }
+                }
+                if (fd.orderAverage) {
+                    List<String[]> datas = new ArrayList<>();
+                    datas = exportTable(fd.averageTableReorder, 0, 0, null);
+                    exportCSVFunction(datas, folder, "AveragePermuted");
                 }
             }
         }
@@ -106,6 +115,19 @@ public class CSV {
                     data[j] = String.valueOf(myTable.getValueAt(k, j));
                 }
             }
+            datas.add(data);
+        }
+        return datas;
+    }
+
+    private List<String[]> exportTableSCF(JTable myTable) {
+        List<String[]> datas = new ArrayList<>();
+        for (int i = 1; i < myTable.getColumnCount(); i++) {
+            String[] data = new String[4];
+            data[0] = myTable.getColumnName(i);
+            data[1] = String.valueOf(myTable.getValueAt(1, i));
+            data[2] = String.valueOf(myTable.getValueAt(2, i));
+            data[3] = String.valueOf(myTable.getValueAt(0, i));
             datas.add(data);
         }
         return datas;

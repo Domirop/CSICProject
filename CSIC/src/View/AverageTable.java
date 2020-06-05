@@ -207,6 +207,7 @@ public class AverageTable {
         int firstIndex = myTable.getSelectedRows()[0];
         int secondIndex = myTable.getSelectedRows()[1];
         int thirdIndex = myTable.getSelectedRows()[2];
+        DefaultTableModel model = (DefaultTableModel) myTable.getModel();
         try {
             Integer.parseInt(String.valueOf(myTable.getValueAt(firstIndex, 0)));
             Integer.parseInt(String.valueOf(myTable.getValueAt(secondIndex, 0)));
@@ -214,11 +215,11 @@ public class AverageTable {
             String gaussians = myTable.getValueAt(firstIndex, 0).toString() + "-"
                     + myTable.getValueAt(secondIndex, 0).toString() + "-"
                     + myTable.getValueAt(thirdIndex, 0).toString();
-            myTable.setValueAt(gaussians, firstIndex, 0);
+            model.setValueAt(gaussians, firstIndex, 0);
             String atoms = myTable.getValueAt(firstIndex, 1).toString() + "-"
                     + myTable.getValueAt(secondIndex, 1).toString() + "-"
                     + myTable.getValueAt(thirdIndex, 1).toString();
-            myTable.setValueAt(atoms, firstIndex, 1);
+            model.setValueAt(atoms, firstIndex, 1);
             for (int i = 2; i < myTable.getColumnCount(); i++) {
                 Double averageValue = (Double.parseDouble(myTable.getValueAt(firstIndex, i).toString())
                         + Double.parseDouble(myTable.getValueAt(secondIndex, i).toString())
@@ -228,7 +229,7 @@ public class AverageTable {
                 otherSymbols.setGroupingSeparator(',');
                 DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
                 df.setRoundingMode(RoundingMode.CEILING);
-                myTable.setValueAt(Double.parseDouble(String.valueOf(df.format(averageValue))), firstIndex, i);
+                model.setValueAt(Double.parseDouble(String.valueOf(df.format(averageValue))), firstIndex, i);
             }
             DefaultTableModel df = (DefaultTableModel) myTable.getModel();
             df.removeRow(thirdIndex);

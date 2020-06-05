@@ -40,6 +40,7 @@ public class Order {
 
     public void orderDescValuesTable() {
         JTable myTabla = getSelectedTable();
+        DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
         fd.errorText.setText("");
         if (myTabla.getSelectedRows().length == 2) {
             String[] datas = getGaussianToOrder();
@@ -47,13 +48,22 @@ public class Order {
                 double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
                 double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
                 if (bg1 < bg2) {
+                    int index1 = 0;
+                    int index2 = 0;
+                    for (int j = 0; j < model.getRowCount(); j++) {
+                        if(String.valueOf(model.getValueAt(j, 0)).equals(datas[0])){
+                            index1 = j;
+                        }else if(String.valueOf(model.getValueAt(j, 0)).equals(datas[1])){
+                            index2 = j;
+                        }
+                    }        
                     changeOrder(fd.tableGeneric);
-                    double a = Double.parseDouble(fd.tableGeneric.getValueAt(Integer.parseInt(datas[0]) - 1, i).toString());
-                    double b = Double.parseDouble(fd.tableGeneric.getValueAt(Integer.parseInt(datas[1]) - 1, i).toString());
+                    double a = Double.parseDouble(fd.tableGeneric.getValueAt(index1, i).toString());
+                    double b = Double.parseDouble(fd.tableGeneric.getValueAt(index2, i).toString());
                     double ax = a;
-                    fd.tableGeneric.setValueAt(String.valueOf(b), Integer.parseInt(datas[0]) - 1, i);
-                    fd.tableGeneric.setValueAt(String.valueOf(ax), Integer.parseInt(datas[1]) - 1, i);
-                    reorderNormalTables(datas[0], datas[1], (i - 2));
+                    model.setValueAt(String.valueOf(b), index1, i);
+                    model.setValueAt(String.valueOf(ax), index2, i);
+                    reorderNormalTables(index1, index2, (i - 2));
                     reorderSpecialTables(datas[0], datas[1], i);
                 }
             }
@@ -130,6 +140,7 @@ public class Order {
             final float luminance = 0.9f;
             final Color color = Color.getHSBColor(hue, saturation, luminance);
             int[] indexs = fd.tableGeneric.getSelectedRows();
+            DefaultTableModel model = (DefaultTableModel) fd.averageTableReorder.getModel();
             for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
                 double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
                 double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
@@ -137,15 +148,14 @@ public class Order {
                 fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
                 if (bg1 < bg2) {
                     double ax = bg1;
-                    fd.averageTableReorder.setValueAt(bg2, indexs[0], i);
-                    fd.averageTableReorder.setValueAt(ax, indexs[1], i);
-
+                    model.setValueAt(bg2, indexs[0], i);
+                    model.setValueAt(ax, indexs[1], i);
                 }
             }
-
             if (!fd.dialogAverageOrder.isVisible()) {
                 fd.dialogAverageOrder.setVisible(true);
             }
+            fd.orderAverage = true;
             fd.dialogAverageOrder.pack();
             fd.dialogAverageOrder.setSize(1080, 720);
 
@@ -167,6 +177,7 @@ public class Order {
             final float luminance = 0.9f;
             final Color color = Color.getHSBColor(hue, saturation, luminance);
             int[] indexs = fd.tableGeneric.getSelectedRows();
+            DefaultTableModel model = (DefaultTableModel) fd.averageTableReorder.getModel();
             for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
                 double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
                 double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
@@ -174,14 +185,15 @@ public class Order {
                 fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
                 if (bg1 > bg2) {
                     double ax = bg1;
-                    fd.averageTableReorder.setValueAt(bg2, indexs[0], i);
-                    fd.averageTableReorder.setValueAt(ax, indexs[1], i);
+                    model.setValueAt(bg2, indexs[0], i);
+                    model.setValueAt(ax, indexs[1], i);
                 }
             }
 
             if (!fd.dialogAverageOrder.isVisible()) {
                 fd.dialogAverageOrder.setVisible(true);
             }
+            fd.orderAverage = true;
             fd.dialogAverageOrder.pack();
             fd.dialogAverageOrder.setSize(1080, 720);
 
@@ -192,6 +204,7 @@ public class Order {
 
     public void orderAscValuesTable() {
         JTable myTabla = getSelectedTable();
+        DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
         fd.errorText.setText("");
         if (myTabla.getSelectedRows().length == 2) {
             String[] datas = getGaussianToOrder();
@@ -199,13 +212,22 @@ public class Order {
                 double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
                 double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
                 if (bg1 > bg2) {
+                    int index1 = 0;
+                    int index2 = 0;
+                    for (int j = 0; j < model.getRowCount(); j++) {
+                        if(String.valueOf(model.getValueAt(j, 0)).equals(datas[0])){
+                            index1 = j;
+                        }else if(String.valueOf(model.getValueAt(j, 0)).equals(datas[1])){
+                            index2 = j;
+                        }
+                    }
                     changeOrder(fd.tableGeneric);
-                    double a = Double.parseDouble(fd.tableGeneric.getValueAt(Integer.parseInt(datas[0]) - 1, i).toString());
-                    double b = Double.parseDouble(fd.tableGeneric.getValueAt(Integer.parseInt(datas[1]) - 1, i).toString());
+                    double a = Double.parseDouble(fd.tableGeneric.getValueAt(index1, i).toString());
+                    double b = Double.parseDouble(fd.tableGeneric.getValueAt(index2, i).toString());
                     double ax = a;
-                    fd.tableGeneric.setValueAt(String.valueOf(b), Integer.parseInt(datas[0]) - 1, i);
-                    fd.tableGeneric.setValueAt(String.valueOf(ax), Integer.parseInt(datas[1]) - 1, i);
-                    reorderNormalTables(datas[0], datas[1], (i - 2));
+                    model.setValueAt(String.valueOf(b), index1, i);
+                    model.setValueAt(String.valueOf(ax), index2, i);
+                    reorderNormalTables(index1, index2, (i - 2));
                     reorderSpecialTables(datas[0], datas[1], i);
                 }
             }
@@ -222,15 +244,15 @@ public class Order {
      * @param gausian2
      * @param order desc or asc
      */
-    private void reorderNormalTables(String gausian1, String gausian2, int index) {
+    private void reorderNormalTables(int gausian1, int gausian2, int index) {
         changeOrder(fd.normalTables.get(index));
         DefaultTableModel model = (DefaultTableModel) fd.normalTables.get(index).getModel();
         for (int i = 2; i < model.getColumnCount(); i++) {
-            double bg1 = Double.parseDouble(model.getValueAt(Integer.parseInt(gausian1) - 1, i).toString());
-            double bg2 = Double.parseDouble(model.getValueAt(Integer.parseInt(gausian2) - 1, i).toString());
+            double bg1 = Double.parseDouble(model.getValueAt(gausian1, i).toString());
+            double bg2 = Double.parseDouble(model.getValueAt(gausian2, i).toString());
             double aux = bg1;
-            model.setValueAt(String.valueOf(bg2), Integer.parseInt(gausian1) - 1, i);
-            model.setValueAt(String.valueOf(aux), Integer.parseInt(gausian2) - 1, i);
+            model.setValueAt(String.valueOf(bg2), gausian1, i);
+            model.setValueAt(String.valueOf(aux), gausian2, i);
         }
         fd.normalTables.get(index).repaint();
     }
@@ -276,6 +298,7 @@ public class Order {
      */
     public void reorderElements(JTable specialTable, List<TableElement> element1, List<TableElement> element2, int index) {
         List<TableElement> elements = new ArrayList<>();
+        DefaultTableModel model = (DefaultTableModel) specialTable.getModel();
         for (TableElement elementType1 : element1) {
             next:
             for (int j = 0; j < element2.size(); j++) {
@@ -284,8 +307,8 @@ public class Order {
                     double bg1 = Double.parseDouble(specialTable.getValueAt(elementType1.indexRow, index).toString());
                     double bg2 = Double.parseDouble(specialTable.getValueAt(element2.get(j).indexRow, index).toString());
                     double aux = bg1;
-                    specialTable.setValueAt(String.valueOf(bg2), elementType1.indexRow, index);
-                    specialTable.setValueAt(String.valueOf(aux), element2.get(j).indexRow, index);
+                    model.setValueAt(String.valueOf(bg2), elementType1.indexRow, index);
+                    model.setValueAt(String.valueOf(aux), element2.get(j).indexRow, index);
                     element2.remove(element2.get(j));
                     break next;
                 } else {
