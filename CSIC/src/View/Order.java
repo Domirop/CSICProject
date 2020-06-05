@@ -44,27 +44,58 @@ public class Order {
         fd.errorText.setText("");
         if (myTabla.getSelectedRows().length == 2) {
             String[] datas = getGaussianToOrder();
-            for (int i = 2; i < myTabla.getColumnCount(); i++) {
-                double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
-                double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
-                if (bg1 < bg2) {
-                    int index1 = 0;
-                    int index2 = 0;
-                    for (int j = 0; j < model.getRowCount(); j++) {
-                        if(String.valueOf(model.getValueAt(j, 0)).equals(datas[0])){
-                            index1 = j;
-                        }else if(String.valueOf(model.getValueAt(j, 0)).equals(datas[1])){
-                            index2 = j;
+            if (fd.multiTable == true) {
+                if (orderSecondTable(datas)) {
+                    fd.errorText.setText("");
+                    for (int i = 2; i < myTabla.getColumnCount(); i++) {
+                        double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
+                        double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
+                        if (bg1 < bg2) {
+                            int index1 = 0;
+                            int index2 = 0;
+                            for (int j = 0; j < model.getRowCount(); j++) {
+                                if (String.valueOf(model.getValueAt(j, 0)).equals(datas[0])) {
+                                    index1 = j;
+                                } else if (String.valueOf(model.getValueAt(j, 0)).equals(datas[1])) {
+                                    index2 = j;
+                                }
+                            }
+                            changeOrder(fd.tableGeneric);
+                            double a = Double.parseDouble(fd.tableGeneric.getValueAt(index1, i).toString());
+                            double b = Double.parseDouble(fd.tableGeneric.getValueAt(index2, i).toString());
+                            double ax = a;
+                            model.setValueAt(b, index1, i);
+                            model.setValueAt(ax, index2, i);
+                            reorderNormalTables(index1, index2, (i - 2));
+                            reorderSpecialTables(datas[0], datas[1], i);
                         }
-                    }        
-                    changeOrder(fd.tableGeneric);
-                    double a = Double.parseDouble(fd.tableGeneric.getValueAt(index1, i).toString());
-                    double b = Double.parseDouble(fd.tableGeneric.getValueAt(index2, i).toString());
-                    double ax = a;
-                    model.setValueAt(String.valueOf(b), index1, i);
-                    model.setValueAt(String.valueOf(ax), index2, i);
-                    reorderNormalTables(index1, index2, (i - 2));
-                    reorderSpecialTables(datas[0], datas[1], i);
+                    }
+                } else {
+                    fd.errorText.setText("This value cannot be ordered");
+                }
+            } else {
+                for (int i = 2; i < myTabla.getColumnCount(); i++) {
+                    double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
+                    double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
+                    if (bg1 < bg2) {
+                        int index1 = 0;
+                        int index2 = 0;
+                        for (int j = 0; j < model.getRowCount(); j++) {
+                            if (String.valueOf(model.getValueAt(j, 0)).equals(datas[0])) {
+                                index1 = j;
+                            } else if (String.valueOf(model.getValueAt(j, 0)).equals(datas[1])) {
+                                index2 = j;
+                            }
+                        }
+                        changeOrder(fd.tableGeneric);
+                        double a = Double.parseDouble(fd.tableGeneric.getValueAt(index1, i).toString());
+                        double b = Double.parseDouble(fd.tableGeneric.getValueAt(index2, i).toString());
+                        double ax = a;
+                        model.setValueAt(b, index1, i);
+                        model.setValueAt(ax, index2, i);
+                        reorderNormalTables(index1, index2, (i - 2));
+                        reorderSpecialTables(datas[0], datas[1], i);
+                    }
                 }
             }
         } else {
@@ -207,34 +238,105 @@ public class Order {
         DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
         fd.errorText.setText("");
         if (myTabla.getSelectedRows().length == 2) {
+
             String[] datas = getGaussianToOrder();
-            for (int i = 2; i < myTabla.getColumnCount(); i++) {
-                double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
-                double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
-                if (bg1 > bg2) {
-                    int index1 = 0;
-                    int index2 = 0;
-                    for (int j = 0; j < model.getRowCount(); j++) {
-                        if(String.valueOf(model.getValueAt(j, 0)).equals(datas[0])){
-                            index1 = j;
-                        }else if(String.valueOf(model.getValueAt(j, 0)).equals(datas[1])){
-                            index2 = j;
+            if (fd.multiTable == true) {
+                if (orderSecondTable(datas)) {
+                    fd.errorText.setText("");
+                    for (int i = 2; i < myTabla.getColumnCount(); i++) {
+                        double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
+                        double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
+                        if (bg1 > bg2) {
+
+                            int index1 = 0;
+                            int index2 = 0;
+                            for (int j = 0; j < model.getRowCount(); j++) {
+                                if (String.valueOf(model.getValueAt(j, 0)).equals(datas[0])) {
+                                    index1 = j;
+                                } else if (String.valueOf(model.getValueAt(j, 0)).equals(datas[1])) {
+                                    index2 = j;
+                                }
+                            }
+                            changeOrder(fd.tableGeneric);
+                            double a = Double.parseDouble(fd.tableGeneric.getValueAt(index1, i).toString());
+                            double b = Double.parseDouble(fd.tableGeneric.getValueAt(index2, i).toString());
+                            double ax = a;
+                            model.setValueAt(b, index1, i);
+                            model.setValueAt(ax, index2, i);
+                            reorderNormalTables(index1, index2, (i - 2));
+                            reorderSpecialTables(datas[0], datas[1], i);
                         }
+
                     }
-                    changeOrder(fd.tableGeneric);
-                    double a = Double.parseDouble(fd.tableGeneric.getValueAt(index1, i).toString());
-                    double b = Double.parseDouble(fd.tableGeneric.getValueAt(index2, i).toString());
-                    double ax = a;
-                    model.setValueAt(String.valueOf(b), index1, i);
-                    model.setValueAt(String.valueOf(ax), index2, i);
-                    reorderNormalTables(index1, index2, (i - 2));
-                    reorderSpecialTables(datas[0], datas[1], i);
+                } else {
+                    fd.errorText.setText("This values cannot be ordered.");
+                }
+            } else {
+
+                for (int i = 2; i < myTabla.getColumnCount(); i++) {
+                    double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
+                    double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
+                    if (bg1 > bg2) {
+
+                        int index1 = 0;
+                        int index2 = 0;
+                        for (int j = 0; j < model.getRowCount(); j++) {
+                            if (String.valueOf(model.getValueAt(j, 0)).equals(datas[0])) {
+                                index1 = j;
+                            } else if (String.valueOf(model.getValueAt(j, 0)).equals(datas[1])) {
+                                index2 = j;
+                            }
+                        }
+                        changeOrder(fd.tableGeneric);
+                        double a = Double.parseDouble(fd.tableGeneric.getValueAt(index1, i).toString());
+                        double b = Double.parseDouble(fd.tableGeneric.getValueAt(index2, i).toString());
+                        double ax = a;
+                        model.setValueAt(b, index1, i);
+                        model.setValueAt(ax, index2, i);
+                        reorderNormalTables(index1, index2, (i - 2));
+                        reorderSpecialTables(datas[0], datas[1], i);
+                    }
+
                 }
             }
         } else {
             fd.errorText.setText("Please select 2 rows");
             fd.errorText.setVisible(true);
         }
+    }
+
+    private boolean orderSecondTable(String[] datas) {
+        JPanel myPanel = (JPanel) (fd.tabbedPane.getComponentAt(0));
+        JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(1);
+        JViewport viewport = scrollPane.getViewport();
+        JTable secondTable = (JTable) viewport.getView();
+        DefaultTableModel secondModel = (DefaultTableModel) secondTable.getModel();
+
+        Object index1 = null;
+        Object index2 = null;
+
+        for (int i = 2; i < secondTable.getColumnCount(); i++) {
+            for (int j = 0; j < secondModel.getRowCount(); j++) {
+                if (String.valueOf(secondModel.getValueAt(j, 0)).equals(datas[0])) {
+                    index1 = j;
+                } else if (String.valueOf(secondModel.getValueAt(j, 0)).equals(datas[1])) {
+                    index2 = j;
+                }
+            }
+
+            if (index1 != null && index2 != null) {
+                double a = Double.parseDouble(secondTable.getValueAt(Integer.parseInt(String.valueOf(index1)), i).toString());
+                double b = Double.parseDouble(secondTable.getValueAt(Integer.parseInt(String.valueOf(index2)), i).toString());
+                double ax = a;
+                secondModel.setValueAt(String.valueOf(b), Integer.parseInt(String.valueOf(index1)), i);
+                secondModel.setValueAt(String.valueOf(ax), Integer.parseInt(String.valueOf(index2)), i);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+
     }
 
     /**
@@ -245,7 +347,7 @@ public class Order {
      * @param order desc or asc
      */
     private void reorderNormalTables(int gausian1, int gausian2, int index) {
-        changeOrder(fd.normalTables.get(index));
+        //changeOrder(fd.normalTables.get(index));
         DefaultTableModel model = (DefaultTableModel) fd.normalTables.get(index).getModel();
         for (int i = 2; i < model.getColumnCount(); i++) {
             double bg1 = Double.parseDouble(model.getValueAt(gausian1, i).toString());

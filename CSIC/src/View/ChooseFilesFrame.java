@@ -150,7 +150,6 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
             }
         });
 
-        fieldValue.setText("20");
         fieldValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldValueActionPerformed(evt);

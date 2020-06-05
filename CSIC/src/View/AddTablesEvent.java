@@ -70,6 +70,8 @@ public class AddTablesEvent {
                     fd.errorText.setText("");
                     List<FileData> fileData = fd.controller.getFileData(fd.usedFiles, Double.parseDouble(fd.temperature), Double.parseDouble(fd.maxValue));
                     JTable table = td.addRowsToTable(td.initTablesDifferentiators(fileData), fileData);
+                    table.setAutoCreateRowSorter(false);
+                    
                     if (table.getRowCount() != 0) {
                         JPanel panel = new JPanel();
                         if (fd.usedTables.isEmpty()) {

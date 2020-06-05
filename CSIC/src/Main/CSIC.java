@@ -10,6 +10,7 @@ import Model.Model;
 import Model.ModelInt;
 import View.ChooseFilesFrame;
 import View.SplashScreenInit;
+import javax.swing.ImageIcon;
 
 public class CSIC {
 
@@ -18,7 +19,8 @@ public class CSIC {
      * @author domit
      */
     public static void main(String[] args) {
-        SplashScreenInit test = new SplashScreenInit(300);
+
+        SplashScreenInit test = new SplashScreenInit(3000);
         test.showSplash();
         
         ModelInt model = new Model();
