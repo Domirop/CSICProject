@@ -5,9 +5,13 @@
  */
 package View.csv;
 
-import java.awt.Color;
+import Controller.csv.ControllerIntCsv;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.util.List;
-import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JTable;
 
 /**
  *
@@ -16,13 +20,33 @@ import javax.swing.BorderFactory;
 public class MainFrame extends javax.swing.JFrame {
 
     List<String[]> datas;
-    FilterOptions fo = new FilterOptions(this);
+    protected ControllerIntCsv controller;
+    protected InsertValuesTable insert = new InsertValuesTable(this);
+    protected DecorateFrame decorate = new DecorateFrame(this);
+    protected JPanel panelGeneric = new JPanel();
+    JTable mainTable;
 
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
+    }
+
+    public MainFrame(ControllerIntCsv controller) {
+        initComponents();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        System.out.println(screenSize.width);
+        this.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
+        this.setMinimumSize(new Dimension(720, 480));
+        this.pack();
+        this.setLocationRelativeTo(null);
+
+        this.panelGeneric.setLayout(new GridLayout(0, 1));
+
+        this.controller = controller;
+        decorate.addIcons();
+        insert.insertValues();
     }
 
     /**
@@ -40,13 +64,10 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         textMinValue = new javax.swing.JTextField();
         textMaxValue = new javax.swing.JTextField();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        table = new javax.swing.JTable();
         buttonFilter = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        errorText = new javax.swing.JLabel();
+        buttonDesc = new javax.swing.JButton();
+        buttonAsc = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,39 +77,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Max Value:");
 
-        textMinValue.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textMinValueActionPerformed(evt);
-            }
-        });
-
-        textMaxValue.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textMaxValueActionPerformed(evt);
-            }
-        });
-
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane1.setViewportView(table);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
-        );
-
         buttonFilter.setText("Filter");
         buttonFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,9 +84,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Order desc");
+        buttonDesc.setText("Order desc.");
 
-        jButton2.setText("Order asc");
+        buttonAsc.setText("Order asc.");
 
         errorText.setForeground(new java.awt.Color(255, 0, 0));
 
@@ -109,30 +97,26 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(ComboColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(textMinValue, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(textMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 93, Short.MAX_VALUE))
-                    .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(ComboColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textMinValue, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(buttonDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(227, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,109 +132,24 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(18, 18, 18)
-                .addComponent(errorText)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                    .addComponent(buttonDesc)
+                    .addComponent(buttonAsc))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFilterActionPerformed
-        removeElements();
-    }//GEN-LAST:event_buttonFilterActionPerformed
-
-    private void textMaxValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textMaxValueActionPerformed
-        removeElements();
-    }//GEN-LAST:event_textMaxValueActionPerformed
-
-    private void textMinValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textMinValueActionPerformed
-        removeElements();
-    }//GEN-LAST:event_textMinValueActionPerformed
-
-    private boolean controlText() {
-        if (!textMaxValue.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$") || textMaxValue.getText().length() == 0) {
-            textMaxValue.setBorder(BorderFactory.createLineBorder(Color.red));
-            textMaxValue.setToolTipText("The format is (number).(2 number)");
-            return false;
-        } else {
-            textMaxValue.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            textMaxValue.setToolTipText("The format is (number).(2 number)");
-        }
-        if (!textMinValue.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$") || textMinValue.getText().length() == 0) {
-            textMinValue.setBorder(BorderFactory.createLineBorder(Color.red));
-            textMinValue.setToolTipText("The format is (number).(2 number)");
-            return false;
-        } else {
-            textMinValue.setBorder(BorderFactory.createLineBorder(Color.black));
-        }
-        return true;
-    }
-
-    private void removeElements() {
-        if (controlText()) {
-            double maxValue = Double.parseDouble(textMaxValue.getText());
-            double minValue = Double.parseDouble(textMinValue.getText());
-            int column = ComboColumn.getSelectedIndex();
-            if (minValue <= maxValue) {
-                fo.removeElements(minValue, maxValue, column);
-            } else {
-                errorText.setText("Min value can't be less than max value");
-            }
-        }
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MainFrame().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox<String> ComboColumn;
-    private javax.swing.JButton buttonFilter;
-    public javax.swing.JLabel errorText;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    public javax.swing.JButton buttonAsc;
+    public javax.swing.JButton buttonDesc;
+    public javax.swing.JButton buttonFilter;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    public javax.swing.JPanel jPanel1;
-    public javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTable table;
+    public javax.swing.JTabbedPane jTabbedPane1;
     public javax.swing.JTextField textMaxValue;
     public javax.swing.JTextField textMinValue;
     // End of variables declaration//GEN-END:variables
