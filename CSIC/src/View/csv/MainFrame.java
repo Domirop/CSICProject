@@ -78,10 +78,17 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel3.setText("Max Value:");
 
         buttonFilter.setText("Filter");
+        buttonFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonFilterActionPerformed(evt);
+            }
+        });
 
         buttonDesc.setText("Order desc.");
 
         buttonAsc.setText("Order asc.");
+
+        errorText.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,7 +140,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox<String> ComboColumn;

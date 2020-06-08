@@ -46,6 +46,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="buttonAsc" min="-2" pref="103" max="-2" attributes="0"/>
                   </Group>
+                  <Component id="errorText" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="227" max="32767" attributes="0"/>
           </Group>
@@ -104,11 +105,17 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="textMinValue">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textMinValueActionPerformed"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="textMaxValue">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textMaxValueActionPerformed"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
@@ -141,7 +148,6 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
-
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
     </Container>
   </SubComponents>
