@@ -5,22 +5,26 @@
  */
 package View.csv;
 
+import java.awt.Color;
 import java.util.List;
+import javax.swing.BorderFactory;
 
 /**
  *
  * @author domit
  */
 public class MainFrame extends javax.swing.JFrame {
-    
+
     List<String[]> datas;
+    FilterOptions fo = new FilterOptions(this);
+
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,6 +46,7 @@ public class MainFrame extends javax.swing.JFrame {
         buttonFilter = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        errorText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -50,6 +55,18 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2.setText("Min value:");
 
         jLabel3.setText("Max Value:");
+
+        textMinValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textMinValueActionPerformed(evt);
+            }
+        });
+
+        textMaxValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textMaxValueActionPerformed(evt);
+            }
+        });
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -69,14 +86,21 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
         );
 
         buttonFilter.setText("Filter");
+        buttonFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonFilterActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Order desc");
 
         jButton2.setText("Order asc");
+
+        errorText.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,7 +130,8 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 93, Short.MAX_VALUE)))
+                        .addGap(0, 93, Short.MAX_VALUE))
+                    .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -125,13 +150,59 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
+                .addComponent(errorText)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void buttonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFilterActionPerformed
+        removeElements();
+    }//GEN-LAST:event_buttonFilterActionPerformed
+
+    private void textMaxValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textMaxValueActionPerformed
+        removeElements();
+    }//GEN-LAST:event_textMaxValueActionPerformed
+
+    private void textMinValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textMinValueActionPerformed
+        removeElements();
+    }//GEN-LAST:event_textMinValueActionPerformed
+
+    private boolean controlText() {
+        if (!textMaxValue.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$") || textMaxValue.getText().length() == 0) {
+            textMaxValue.setBorder(BorderFactory.createLineBorder(Color.red));
+            textMaxValue.setToolTipText("The format is (number).(2 number)");
+            return false;
+        } else {
+            textMaxValue.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            textMaxValue.setToolTipText("The format is (number).(2 number)");
+        }
+        if (!textMinValue.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$") || textMinValue.getText().length() == 0) {
+            textMinValue.setBorder(BorderFactory.createLineBorder(Color.red));
+            textMinValue.setToolTipText("The format is (number).(2 number)");
+            return false;
+        } else {
+            textMinValue.setBorder(BorderFactory.createLineBorder(Color.black));
+        }
+        return true;
+    }
+
+    private void removeElements() {
+        if (controlText()) {
+            double maxValue = Double.parseDouble(textMaxValue.getText());
+            double minValue = Double.parseDouble(textMinValue.getText());
+            int column = ComboColumn.getSelectedIndex();
+            if (minValue <= maxValue) {
+                fo.removeElements(minValue, maxValue, column);
+            } else {
+                errorText.setText("Min value can't be less than max value");
+            }
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -167,12 +238,11 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
     }
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox<String> ComboColumn;
     private javax.swing.JButton buttonFilter;
+    public javax.swing.JLabel errorText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
