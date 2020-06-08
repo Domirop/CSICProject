@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Model.csv;
-
-import java.util.List;
+package View.csv.FilterOptions;
 
 /**
  *
  * @author domit
  */
-public interface ModelIntCsv {
-    public List<Object[]> readFile(String path);
+public class FilterOptions {
+    
 }
