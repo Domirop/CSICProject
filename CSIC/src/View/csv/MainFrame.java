@@ -41,6 +41,7 @@ public class MainFrame extends javax.swing.JFrame {
         this.setMinimumSize(new Dimension(720, 480));
         this.pack();
         this.setLocationRelativeTo(null);
+        System.out.println("");
 
         this.panelGeneric.setLayout(new GridLayout(0, 1));
 
