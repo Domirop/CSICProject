@@ -5,10 +5,12 @@
  */
 package Model.csv;
 
+import java.util.List;
+
 /**
  *
  * @author domit
  */
 public interface ModelIntCsv {
-    
+    public List<Object[]> readFile(String path);
 }
