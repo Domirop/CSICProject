@@ -5,14 +5,10 @@
  */
 package Controller.csv;
 
-import java.util.List;
-
 /**
  *
  * @author domit
  */
 public interface ControllerIntCsv {
-
-    public List<Object[]> readFile(String path);
-
+    
 }

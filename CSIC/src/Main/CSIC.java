@@ -4,12 +4,8 @@
  * and open the template in the editor.
  */
 package Main;
-import Controller.csv.ControllerCsv;
-import Controller.csv.ControllerIntCsv;
-import Model.csv.ModelCsv;
-import Model.csv.ModelIntCsv;
+import View.OptionsMenu;
 import View.SplashScreenInit;
-import View.csv.MainFrame;
 
 public class CSIC {
 
@@ -19,16 +15,10 @@ public class CSIC {
      */
     public static void main(String[] args) {
 
-        SplashScreenInit test = new SplashScreenInit(30);
+        SplashScreenInit test = new SplashScreenInit(3000);
         test.showSplash();
-        ModelIntCsv modelCSV = new ModelCsv();
-        ControllerIntCsv controllerCSV = new ControllerCsv(modelCSV);
-        
-        MainFrame menu = new MainFrame(controllerCSV);
+        OptionsMenu menu = new OptionsMenu();
         menu.setVisible(true);
-        
-        
-        
         /*ModelInt model = new Model();
         ControllerInt controller = new Controller(model);
         ChooseFilesFrame frame = new ChooseFilesFrame(controller);

@@ -5,24 +5,10 @@
  */
 package Controller.csv;
 
-import Model.csv.ModelIntCsv;
-import java.util.List;
-
 /**
  *
  * @author domit
  */
-public class ControllerCsv implements ControllerIntCsv {
-
-    ModelIntCsv model;
-
-    public ControllerCsv(ModelIntCsv model) {
-        this.model = model;
-    }
-
-    @Override
-    public List<Object[]> readFile(String path) {
-        return model.readFile(path);
-    }
-
+public class ControllerCsv {
+    
 }

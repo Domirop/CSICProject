@@ -5,26 +5,10 @@
  */
 package Model.csv;
 
-import Model.csv.Files.ReadCSV;
-import java.util.List;
-
 /**
  *
  * @author domit
  */
-public class ModelCsv implements ModelIntCsv {
-
-    ReadCSV read = new ReadCSV();
-
-    @Override
-    public List<Object[]> readFile(String path) {
-        try {
-            return read.readFileLineByLine(path);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-
-    }
-
+public class ModelCsv {
+    
 }
