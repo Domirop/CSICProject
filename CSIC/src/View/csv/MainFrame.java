@@ -5,26 +5,37 @@
  */
 package View.csv;
 
+<<<<<<< HEAD
 import java.awt.Color;
 import java.util.List;
 import javax.swing.BorderFactory;
+=======
+import java.util.List;
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 
 /**
  *
  * @author domit
  */
 public class MainFrame extends javax.swing.JFrame {
-
+    
     List<String[]> datas;
+<<<<<<< HEAD
     FilterOptions fo = new FilterOptions(this);
 
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
     }
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,7 +57,10 @@ public class MainFrame extends javax.swing.JFrame {
         buttonFilter = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+<<<<<<< HEAD
         errorText = new javax.swing.JLabel();
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,6 +70,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Max Value:");
 
+<<<<<<< HEAD
         textMinValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textMinValueActionPerformed(evt);
@@ -68,6 +83,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -86,7 +103,11 @@ public class MainFrame extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+<<<<<<< HEAD
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+=======
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
         );
 
         buttonFilter.setText("Filter");
@@ -98,9 +119,15 @@ public class MainFrame extends javax.swing.JFrame {
 
         jButton1.setText("Order desc");
 
+<<<<<<< HEAD
         jButton2.setText("Order asc");
 
         errorText.setForeground(new java.awt.Color(255, 0, 0));
+=======
+        jButton1.setText("Order desc");
+
+        jButton2.setText("Order asc");
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,8 +157,12 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+<<<<<<< HEAD
                         .addGap(0, 93, Short.MAX_VALUE))
                     .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+=======
+                        .addGap(0, 93, Short.MAX_VALUE)))
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -150,9 +181,13 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
+<<<<<<< HEAD
                 .addGap(18, 18, 18)
                 .addComponent(errorText)
                 .addGap(18, 18, 18)
+=======
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -160,6 +195,7 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+<<<<<<< HEAD
     private void buttonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFilterActionPerformed
         removeElements();
     }//GEN-LAST:event_buttonFilterActionPerformed
@@ -204,6 +240,8 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
     /**
      * @param args the command line arguments
      */
@@ -238,11 +276,19 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
     }
+<<<<<<< HEAD
+=======
+    
+    
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox<String> ComboColumn;
     private javax.swing.JButton buttonFilter;
+<<<<<<< HEAD
     public javax.swing.JLabel errorText;
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
