@@ -85,6 +85,11 @@
 =======
               <Component id="jPanel1" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
+<<<<<<< HEAD
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
+=======
+              <Component id="jPanel1" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
           </Group>
       </Group>
@@ -147,7 +152,11 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
 <<<<<<< HEAD
+<<<<<<< HEAD
               <Component id="jScrollPane1" alignment="0" pref="271" max="32767" attributes="0"/>
+=======
+              <Component id="jScrollPane1" alignment="0" pref="274" max="32767" attributes="0"/>
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
               <Component id="jScrollPane1" alignment="0" pref="274" max="32767" attributes="0"/>
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
@@ -181,9 +190,12 @@
         <Property name="text" type="java.lang.String" value="Filter"/>
       </Properties>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonFilterActionPerformed"/>
       </Events>
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
     </Component>
@@ -198,6 +210,7 @@
       </Properties>
     </Component>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Component class="javax.swing.JLabel" name="errorText">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -208,6 +221,8 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
     </Component>
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
   </SubComponents>

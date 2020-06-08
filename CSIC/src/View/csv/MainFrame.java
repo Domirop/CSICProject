@@ -6,9 +6,13 @@
 package View.csv;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import java.awt.Color;
 import java.util.List;
 import javax.swing.BorderFactory;
+=======
+import java.util.List;
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
 import java.util.List;
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
@@ -21,8 +25,11 @@ public class MainFrame extends javax.swing.JFrame {
     
     List<String[]> datas;
 <<<<<<< HEAD
+<<<<<<< HEAD
     FilterOptions fo = new FilterOptions(this);
 
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
     /**
@@ -32,7 +39,11 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
     
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
@@ -58,7 +69,10 @@ public class MainFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 <<<<<<< HEAD
+<<<<<<< HEAD
         errorText = new javax.swing.JLabel();
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 
@@ -70,6 +84,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Max Value:");
 
+<<<<<<< HEAD
 <<<<<<< HEAD
         textMinValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,6 +98,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
         table.setModel(new javax.swing.table.DefaultTableModel(
@@ -104,7 +121,11 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 <<<<<<< HEAD
+<<<<<<< HEAD
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+=======
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
@@ -120,9 +141,15 @@ public class MainFrame extends javax.swing.JFrame {
         jButton1.setText("Order desc");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         jButton2.setText("Order asc");
 
         errorText.setForeground(new java.awt.Color(255, 0, 0));
+=======
+        jButton1.setText("Order desc");
+
+        jButton2.setText("Order asc");
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
         jButton1.setText("Order desc");
 
@@ -158,8 +185,12 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
 <<<<<<< HEAD
+<<<<<<< HEAD
                         .addGap(0, 93, Short.MAX_VALUE))
                     .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+=======
+                        .addGap(0, 93, Short.MAX_VALUE)))
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
                         .addGap(0, 93, Short.MAX_VALUE)))
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
@@ -182,9 +213,13 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton2))
 <<<<<<< HEAD
+<<<<<<< HEAD
                 .addGap(18, 18, 18)
                 .addComponent(errorText)
                 .addGap(18, 18, 18)
+=======
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
@@ -195,6 +230,7 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     private void buttonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFilterActionPerformed
         removeElements();
@@ -242,6 +278,8 @@ public class MainFrame extends javax.swing.JFrame {
 
 =======
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
     /**
      * @param args the command line arguments
      */
@@ -277,6 +315,11 @@ public class MainFrame extends javax.swing.JFrame {
         });
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    
+    
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
     
     
@@ -286,7 +329,10 @@ public class MainFrame extends javax.swing.JFrame {
     public javax.swing.JComboBox<String> ComboColumn;
     private javax.swing.JButton buttonFilter;
 <<<<<<< HEAD
+<<<<<<< HEAD
     public javax.swing.JLabel errorText;
+=======
+>>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
 =======
 >>>>>>> parent of f4329d2... Merge pull request #45 from Domirop/new-values-table
     private javax.swing.JButton jButton1;
