@@ -5,6 +5,9 @@
  */
 package View.csv;
 
+import java.awt.Color;
+import java.util.List;
+import javax.swing.BorderFactory;
 import Controller.csv.ControllerIntCsv;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -18,13 +21,14 @@ import javax.swing.JTable;
  * @author domit
  */
 public class MainFrame extends javax.swing.JFrame {
-
+    
+    FilterOptions fo = new FilterOptions(this);
     List<String[]> datas;
     protected ControllerIntCsv controller;
     protected InsertValuesTable insert = new InsertValuesTable(this);
     protected DecorateFrame decorate = new DecorateFrame(this);
     protected JPanel panelGeneric = new JPanel();
-    JTable mainTable;
+    JTable table;
 
     /**
      * Creates new form MainFrame
@@ -42,12 +46,11 @@ public class MainFrame extends javax.swing.JFrame {
         this.pack();
         this.setLocationRelativeTo(null);
         System.out.println("");
-
         this.panelGeneric.setLayout(new GridLayout(0, 1));
-
         this.controller = controller;
         decorate.addIcons();
         insert.insertValues();
+        fo.initCombo();
     }
 
     /**
@@ -69,6 +72,7 @@ public class MainFrame extends javax.swing.JFrame {
         buttonDesc = new javax.swing.JButton();
         buttonAsc = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        errorText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,39 +82,70 @@ public class MainFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Max Value:");
 
+        textMinValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textMinValueActionPerformed(evt);
+            }
+        });
+
+        textMaxValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textMaxValueActionPerformed(evt);
+            }
+        });
+
         buttonFilter.setText("Filter");
+        buttonFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonFilterActionPerformed(evt);
+            }
+        });
 
         buttonDesc.setText("Order desc.");
+        buttonDesc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDescActionPerformed(evt);
+            }
+        });
 
         buttonAsc.setText("Order asc.");
+        buttonAsc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAscActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(ComboColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(textMinValue, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(textMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(buttonDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(227, Short.MAX_VALUE))
-            .addComponent(jTabbedPane1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(ComboColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(textMinValue, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(textMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(buttonDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buttonAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 221, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,12 +163,35 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonDesc)
                     .addComponent(buttonAsc))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(errorText)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    
+    private void buttonAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAscActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonAscActionPerformed
+
+    private void buttonDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDescActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonDescActionPerformed
+
+    private void buttonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFilterActionPerformed
+        fo.removeElements();
+    }//GEN-LAST:event_buttonFilterActionPerformed
+
+    private void textMaxValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textMaxValueActionPerformed
+        fo.removeElements();
+    }//GEN-LAST:event_textMaxValueActionPerformed
+
+    private void textMinValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textMinValueActionPerformed
+        fo.removeElements();
+    }//GEN-LAST:event_textMinValueActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -141,6 +199,7 @@ public class MainFrame extends javax.swing.JFrame {
     public javax.swing.JButton buttonAsc;
     public javax.swing.JButton buttonDesc;
     public javax.swing.JButton buttonFilter;
+    public javax.swing.JLabel errorText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -33,26 +33,26 @@ public class InsertValuesTable {
         initTable(Arrays.copyOf(lines.get(0), lines.get(0).length, String[].class));
         lines.remove(0);
 
-        DefaultTableModel model = (DefaultTableModel) mf.mainTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) mf.table.getModel();
         lines.forEach(line -> {
             model.addRow(line);
         });
         mf.pack();
         model.fireTableStructureChanged();
-        mf.mainTable.setModel(model);
+        mf.table.setModel(model);
 
-        System.out.println(mf.mainTable.getValueAt(4, 5));
+        System.out.println(mf.table.getValueAt(4, 5));
         mf.repaint();
         mf.revalidate();
 
-        mf.mainTable.revalidate();
-        mf.mainTable.repaint();
+        mf.table.revalidate();
+        mf.table.repaint();
 
     }
 
     public void initTable(String[] values) {
 
-        mf.mainTable = new JTable();
+        mf.table = new JTable();
         System.out.println(Arrays.asList(values));
         DefaultTableModel modelGeneric = new DefaultTableModel(values, 0) {
 
@@ -75,26 +75,26 @@ public class InsertValuesTable {
             }
         ;
         };
-        mf.mainTable.setAutoCreateRowSorter(true);
-        mf.mainTable.setModel(modelGeneric);
-        System.out.println(mf.mainTable.getColumnCount());
+        mf.table.setAutoCreateRowSorter(true);
+        mf.table.setModel(modelGeneric);
+        System.out.println(mf.table.getColumnCount());
         //Center columns
-        for (int i = 0; i < mf.mainTable.getColumnCount(); i++) {
+        for (int i = 0; i < mf.table.getColumnCount(); i++) {
             DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
             centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            mf.mainTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            mf.table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
-        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) mf.mainTable.getTableHeader().getDefaultRenderer();
+        DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) mf.table.getTableHeader().getDefaultRenderer();
         renderer.setHorizontalAlignment(0);
-        mf.mainTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-        mf.mainTable.getTableHeader().setReorderingAllowed(false);
+        mf.table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        mf.table.getTableHeader().setReorderingAllowed(false);
 
-        TableColumnModel tcm = mf.mainTable.getColumnModel();
+        TableColumnModel tcm = mf.table.getColumnModel();
 
         tcm.getColumn(1).setPreferredWidth(400);
-        mf.mainTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        mf.table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        JScrollPane scrollpaneGeneric = new JScrollPane(mf.mainTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane scrollpaneGeneric = new JScrollPane(mf.table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         mf.panelGeneric.add(scrollpaneGeneric);
         mf.jTabbedPane1.add(mf.panelGeneric, "Values");
     }
