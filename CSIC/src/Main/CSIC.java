@@ -4,13 +4,8 @@
  * and open the template in the editor.
  */
 package Main;
-import Controller.Controller;
-import Controller.ControllerInt;
-import Model.Model;
-import Model.ModelInt;
-import View.ChooseFilesFrame;
+import View.OptionsMenu;
 import View.SplashScreenInit;
-import javax.swing.ImageIcon;
 
 public class CSIC {
 
@@ -22,10 +17,11 @@ public class CSIC {
 
         SplashScreenInit test = new SplashScreenInit(3000);
         test.showSplash();
-        
-        ModelInt model = new Model();
+        OptionsMenu menu = new OptionsMenu();
+        menu.setVisible(true);
+        /*ModelInt model = new Model();
         ControllerInt controller = new Controller(model);
         ChooseFilesFrame frame = new ChooseFilesFrame(controller);
-        frame.setVisible(true);
+        frame.setVisible(true);*/
     }
 }
