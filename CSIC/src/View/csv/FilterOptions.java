@@ -5,6 +5,8 @@
  */
 package View.csv;
 
+import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -43,12 +45,46 @@ public class FilterOptions {
         fr.errorText.setText("");
         for (int i = 0; i < model.getColumnCount(); i++) {
             try {
-                if(index == 0) index = i;
+                if (index == 0) {
+                    index = i;
+                }
                 double value = Double.parseDouble(String.valueOf(model.getValueAt(0, i)));
                 fr.ComboColumn.addItem(model.getColumnName(i));
             } catch (NumberFormatException numberFormatException) {
             }
         }
         fr.ComboColumn.repaint();
+    }
+
+    private boolean controlText() {
+        if (!fr.textMaxValue.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$") || fr.textMaxValue.getText().length() == 0) {
+            fr.textMaxValue.setBorder(BorderFactory.createLineBorder(Color.red));
+            fr.textMaxValue.setToolTipText("The format is (number).(2 number)");
+            return false;
+        } else {
+            fr.textMaxValue.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+            fr.textMaxValue.setToolTipText("The format is (number).(2 number)");
+        }
+        if (!fr.textMinValue.getText().matches("^(-?0[.]\\d+)$|^(-?[1-9]+\\d*([.]\\d+)?)$|^0$") || fr.textMinValue.getText().length() == 0) {
+            fr.textMinValue.setBorder(BorderFactory.createLineBorder(Color.red));
+            fr.textMinValue.setToolTipText("The format is (number).(2 number)");
+            return false;
+        } else {
+            fr.textMinValue.setBorder(BorderFactory.createLineBorder(Color.black));
+        }
+        return true;
+    }
+    
+    public void removeElements() {
+        if (controlText()) {
+            double maxValue = Double.parseDouble(fr.textMaxValue.getText());
+            double minValue = Double.parseDouble(fr.textMinValue.getText());
+            int column = fr.ComboColumn.getSelectedIndex();
+            if (minValue <= maxValue) {
+                removeElements(minValue, maxValue, column);
+            } else {
+                fr.errorText.setText("Min value can't be less than max value");
+            }
+        }
     }
 }

@@ -29,6 +29,7 @@ public class MainFrame extends javax.swing.JFrame {
     protected DecorateFrame decorate = new DecorateFrame(this);
     protected JPanel panelGeneric = new JPanel();
     JTable table;
+    OrderElements oe = new OrderElements(this);
 
     /**
      * Creates new form MainFrame
@@ -174,11 +175,11 @@ public class MainFrame extends javax.swing.JFrame {
 
     
     private void buttonAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAscActionPerformed
-        // TODO add your handling code here:
+        oe.orderElements("<");
     }//GEN-LAST:event_buttonAscActionPerformed
 
     private void buttonDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDescActionPerformed
-        // TODO add your handling code here:
+        oe.orderElements(">");
     }//GEN-LAST:event_buttonDescActionPerformed
 
     private void buttonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFilterActionPerformed
