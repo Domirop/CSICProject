@@ -116,17 +116,16 @@ public class Order {
                 if (i == 0) {
                     columnNames[j] = fd.averageTable.getColumnName(j);
                 }
-                rows[i][j] = fd.averageTable.getValueAt(i, j);
+                rows[i][j] = fd.averageTable.getValueAt(i, j).toString();
 
             }
         }
 
         model2.setDataVector(rows, columnNames);
         fd.averageTableReorder.setModel(model2);
-
     }
 
-    private void initAverageTable() {
+    public void initAverageTable() {
         DefaultTableModel model2 = new DefaultTableModel(0, 0) {
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return false;
@@ -183,7 +182,12 @@ public class Order {
 
     public void orderDescAverageTable() {
         if (fd.tableGeneric.getSelectedRowCount() == 2) {
-            fd.indexOrderedValDesc.add(fd.tableGeneric.getSelectedRows());
+            List<String> values = new ArrayList<>();
+            String firstValue = String.valueOf(fd.tableGeneric.getValueAt(fd.tableGeneric.getSelectedRows()[0], 0));
+            String secondValue = String.valueOf(fd.tableGeneric.getValueAt(fd.tableGeneric.getSelectedRows()[1], 0));
+            values.add(firstValue);
+            values.add(secondValue);
+            fd.indexOrderedValDesc.add(values.toArray(new String[0]));
             if (fd.averageTableReorder.getRowCount() == 0) {
                 initAverageTable();
             }
@@ -193,24 +197,33 @@ public class Order {
             final float saturation = (random.nextInt(2000) + 1000) / 10000f;
             final float luminance = 0.9f;
             final Color color = Color.getHSBColor(hue, saturation, luminance);
-            for (int[] indexs : fd.indexOrderedValDesc) {
+            for (String[] indexs : fd.indexOrderedValDesc) {
                 DefaultTableModel model = (DefaultTableModel) fd.averageTableReorder.getModel();
-                for (int[] averagedValue : fd.averagedValues) {
-                    if (averagedValue[2] < indexs[0]) {
-                        indexs[0] -= 2;
-                        indexs[1] -= 2;
+                Integer index1 = null;
+                Integer index2 = null;
+                for (int i = 0; i < fd.averageTableReorder.getRowCount(); i++) {
+                    if (String.valueOf(fd.averageTableReorder.getValueAt(i, 0)).equals(indexs[0])) {
+                        index1 = i;
+                    }
+                    if (String.valueOf(fd.averageTableReorder.getValueAt(i, 0)).equals(indexs[1])) {
+                        index2 = i;
                     }
                 }
-                for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
-                    double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
-                    double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
-                    final TableColour tce = new TableColour(indexs, color);
-                    fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
-                    if (bg1 < bg2) {
-                        double ax = bg1;
-                        model.setValueAt(bg2, indexs[0], i);
-                        model.setValueAt(ax, indexs[1], i);
+                if (index1 != null && index2 != null) {
+                    for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
+                        double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(index1, i).toString());
+                        double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(index2, i).toString());
+                        int[] colorIndexs = new int[]{index1, index2};
+                        final TableColour tce = new TableColour(colorIndexs, color);
+                        fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
+                        if (bg1 < bg2) {
+                            double ax = bg1;
+                            model.setValueAt(bg2, index1, i);
+                            model.setValueAt(ax, index2, i);
+                        }
                     }
+                } else {
+                    fd.errorText.setText("This values cannot be ordered.");
                 }
             }
 
@@ -228,7 +241,12 @@ public class Order {
 
     public void orderAscAverageTable() {
         if (fd.tableGeneric.getSelectedRowCount() == 2) {
-            fd.indexOrderedValAsc.add(fd.tableGeneric.getSelectedRows());
+            List<String> values = new ArrayList<>();
+            String firstValue = String.valueOf(fd.tableGeneric.getValueAt(fd.tableGeneric.getSelectedRows()[0], 0));
+            String secondValue = String.valueOf(fd.tableGeneric.getValueAt(fd.tableGeneric.getSelectedRows()[1], 0));
+            values.add(firstValue);
+            values.add(secondValue);
+            fd.indexOrderedValAsc.add(values.toArray(new String[0]));
             if (fd.averageTableReorder.getRowCount() == 0) {
                 initAverageTable();
             }
@@ -238,24 +256,33 @@ public class Order {
             final float saturation = (random.nextInt(2000) + 1000) / 10000f;
             final float luminance = 0.9f;
             final Color color = Color.getHSBColor(hue, saturation, luminance);
-            for (int[] indexs : fd.indexOrderedValAsc) {
+            for (String[] indexs : fd.indexOrderedValAsc) {
                 DefaultTableModel model = (DefaultTableModel) fd.averageTableReorder.getModel();
-                for (int[] averagedValue : fd.averagedValues) {
-                    if (averagedValue[2] < indexs[0]) {
-                        indexs[0] -= 2;
-                        indexs[1] -= 2;
+                Integer index1 = null;
+                Integer index2 = null;
+                for (int i = 0; i < fd.averageTableReorder.getRowCount(); i++) {
+                    if (String.valueOf(fd.averageTableReorder.getValueAt(i, 0)).equals(indexs[0])) {
+                        index1 = i;
+                    }
+                    if (String.valueOf(fd.averageTableReorder.getValueAt(i, 0)).equals(indexs[1])) {
+                        index2 = i;
                     }
                 }
-                for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
-                    double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
-                    double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
-                    final TableColour tce = new TableColour(indexs, color);
-                    fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
-                    if (bg1 > bg2) {
-                        double ax = bg1;
-                        model.setValueAt(bg2, indexs[0], i);
-                        model.setValueAt(ax, indexs[1], i);
+                if (index1 != null && index2 != null) {
+                    for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
+                        double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(index1, i).toString());
+                        double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(index2, i).toString());
+                        int[] colorIndexs = new int[]{index1, index2};
+                        final TableColour tce = new TableColour(colorIndexs, color);
+                        fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
+                        if (bg1 > bg2) {
+                            double ax = bg1;
+                            model.setValueAt(bg2, index1, i);
+                            model.setValueAt(ax, index2, i);
+                        }
                     }
+                } else {
+                    fd.errorText.setText("This values cannot be ordered.");
                 }
             }
 
@@ -543,18 +570,34 @@ public class Order {
         final float saturation = (random.nextInt(2000) + 1000) / 10000f;
         final float luminance = 0.9f;
         final Color color = Color.getHSBColor(hue, saturation, luminance);
-        for (int[] indexs : fd.indexOrderedValAsc) {
-            DefaultTableModel model = (DefaultTableModel) fd.averageTableReorder.getModel();
-            
-            for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
-                double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
-                double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
-                final TableColour tce = new TableColour(indexs, color);
-                fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
-                if (bg1 > bg2) {
-                    double ax = bg1;
-                    model.setValueAt(bg2, indexs[0], i);
-                    model.setValueAt(ax, indexs[1], i);
+        if (!fd.indexOrderedValAsc.isEmpty()) {
+            for (String[] indexs : fd.indexOrderedValAsc) {
+                DefaultTableModel model = (DefaultTableModel) fd.averageTableReorder.getModel();
+                Integer index1 = null;
+                Integer index2 = null;
+                for (int i = 0; i < fd.averageTableReorder.getRowCount(); i++) {
+                    if (String.valueOf(fd.averageTableReorder.getValueAt(i, 0)).equals(indexs[0])) {
+                        index1 = i;
+                    }
+                    if (String.valueOf(fd.averageTableReorder.getValueAt(i, 0)).equals(indexs[1])) {
+                        index2 = i;
+                    }
+                }
+                if (index1 != null && index2 != null) {
+                    for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
+                        double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(index1, i).toString());
+                        double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(index2, i).toString());
+                        int[] colorIndexs = new int[]{index1, index2};
+                        final TableColour tce = new TableColour(colorIndexs, color);
+                        fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
+                        if (bg1 > bg2) {
+                            double ax = bg1;
+                            model.setValueAt(bg2, index1, i);
+                            model.setValueAt(ax, index2, i);
+                        }
+                    }
+                } else {
+                    fd.errorText.setText("This values cannot be ordered.");
                 }
             }
         }
@@ -578,18 +621,34 @@ public class Order {
         final float saturation = (random.nextInt(2000) + 1000) / 10000f;
         final float luminance = 0.9f;
         final Color color = Color.getHSBColor(hue, saturation, luminance);
-        for (int[] indexs : fd.indexOrderedValDesc) {
-            DefaultTableModel model = (DefaultTableModel) fd.averageTableReorder.getModel();
-            
-            for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
-                double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[0], i).toString());
-                double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(indexs[1], i).toString());
-                final TableColour tce = new TableColour(indexs, color);
-                fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
-                if (bg1 < bg2) {
-                    double ax = bg1;
-                    model.setValueAt(bg2, indexs[0], i);
-                    model.setValueAt(ax, indexs[1], i);
+        if (!fd.indexOrderedValDesc.isEmpty()) {
+            for (String[] indexs : fd.indexOrderedValDesc) {
+                DefaultTableModel model = (DefaultTableModel) fd.averageTableReorder.getModel();
+                Integer index1 = null;
+                Integer index2 = null;
+                for (int i = 0; i < fd.averageTableReorder.getRowCount(); i++) {
+                    if (String.valueOf(fd.averageTableReorder.getValueAt(i, 0)).equals(indexs[0])) {
+                        index1 = i;
+                    }
+                    if (String.valueOf(fd.averageTableReorder.getValueAt(i, 0)).equals(indexs[1])) {
+                        index2 = i;
+                    }
+                }
+                if (index1 != null && index2 != null) {
+                    for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
+                        double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(index1, i).toString());
+                        double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(index2, i).toString());
+                        int[] colorIndexs = new int[]{index1, index2};
+                        final TableColour tce = new TableColour(colorIndexs, color);
+                        fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
+                        if (bg1 < bg2) {
+                            double ax = bg1;
+                            model.setValueAt(bg2, index1, i);
+                            model.setValueAt(ax, index2, i);
+                        }
+                    }
+                } else {
+                    fd.errorText.setText("This values cannot be ordered.");
                 }
             }
         }
@@ -600,7 +659,6 @@ public class Order {
         fd.orderAverage = true;
         fd.dialogAverageOrder.pack();
         fd.dialogAverageOrder.setSize(1080, 720);
-
     }
 }
 

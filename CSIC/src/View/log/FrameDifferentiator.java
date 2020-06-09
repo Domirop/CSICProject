@@ -6,6 +6,7 @@
 package View.log;
 
 import Controller.log.ControllerIntLog;
+import View.OptionsMenu;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
 import javax.swing.JPanel;
@@ -59,21 +60,21 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     protected List<String> coorValues = new ArrayList<>();
 
     //Hay que hacerles el clear donde haga falta
-    protected List<int[]> indexOrderedValAsc = new ArrayList<>();
-    protected List<int[]> indexOrderedValDesc = new ArrayList<>();
+    protected List<String[]> indexOrderedValAsc = new ArrayList<>();
+    protected List<String[]> indexOrderedValDesc = new ArrayList<>();
     protected List<int[]> averagedValues = new ArrayList<>();
 
     protected ControllerIntLog controller;
     protected boolean multiTable = false;
     protected boolean searchAdded = false;
     SCFTable scf = new SCFTable(this);
-    AverageTable avg = new AverageTable(this);
+    Order od = new Order(this);
+    AverageTable avg = new AverageTable(this, od);
     ElementsDragAndDrop edd = new ElementsDragAndDrop(this);
     DecorateFrame decorate = new DecorateFrame(this, avg);
-    AddTablesEvent ate = new AddTablesEvent(this, decorate, scf, avg);
+    AddTablesEvent ate = new AddTablesEvent(this, decorate, scf, avg, od);
     CSV csv = new CSV(this);
     PredefineValues pfv = new PredefineValues(this, ate);
-    Order od = new Order(this);
     List<String> filesTypes = new ArrayList<>(Arrays.asList("log"));
     protected String temperature = "298.15";
     public List<String> colAndRows = new ArrayList<>();
@@ -169,6 +170,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         itemChangeTemperature = new javax.swing.JMenuItem();
         itemAddMoreFiles = new javax.swing.JMenuItem();
         itemSCF = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         itemExit = new javax.swing.JMenuItem();
 
         dialogCoordinates.setTitle("DataPicker4J");
@@ -644,6 +646,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
         jMenu1.add(itemSCF);
 
+        jMenuItem1.setText("Main menu");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
         itemExit.setText("Exit");
         itemExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -923,7 +933,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void orderDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderDescActionPerformed
         if (tabbedPane.getSelectedIndex() == 0) {
             od.orderDescAverageTable();
-
         } else {
             od.orderDescValuesTable();
         }
@@ -1241,6 +1250,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         changeValues();
     }//GEN-LAST:event_fieldTemperatureActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        this.dispose();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        OptionsMenu menu = new OptionsMenu();
+        menu.setLocation(dim.width / 2 - menu.getSize().width / 2, dim.height / 2 - menu.getSize().height / 2);
+        menu.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTable averageTableReorder;
     public javax.swing.JButton buttonAdd;
@@ -1290,6 +1307,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JMenu jMenu1;
     public javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

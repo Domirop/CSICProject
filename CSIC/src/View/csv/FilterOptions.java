@@ -77,6 +77,8 @@ public class FilterOptions {
     }
     
     public void removeElements() {
+        fr.errorText.setText("");
+        fr.errorText.setForeground(Color.RED);
         if (controlText()) {
             double maxValue = Double.parseDouble(fr.textMaxValue.getText());
             double minValue = Double.parseDouble(fr.textMinValue.getText());
