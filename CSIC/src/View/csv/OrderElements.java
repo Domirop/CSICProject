@@ -38,13 +38,9 @@ public class OrderElements {
                 }
             }
             List<List<String>> indexCombination = new ArrayList<>();
-            for (int i = 0; i < gaussians.length; i++) {
-                System.out.println(gaussians[i]);
-            }
             for (int i = 0; i < firstColumns.size(); i++) {
                 List<String> combination = new ArrayList<>();
                 String value1 = model.getColumnName(firstColumns.get(i)).replace("-", "").replace(gaussians[0], "");
-                System.out.println(value1);
                 combination.add(model.getColumnName(firstColumns.get(i)));
                 for (int j = 0; j < secondColumns.size(); j++) {
                     String value2 = model.getColumnName(secondColumns.get(j)).replace("-", "").replace(gaussians[1], "");
@@ -56,7 +52,6 @@ public class OrderElements {
                     indexCombination.add(combination);
                 }
             }
-            System.out.println(indexCombination.size());
             indexCombination.forEach(v -> {
                 int index1 = 0;
                 int index2 = 0;

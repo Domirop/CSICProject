@@ -30,11 +30,13 @@ import javax.swing.table.TableColumn;
 public class AverageTable {
 
     FrameDifferentiator fd;
+    Order od;
     int index = 0;
     List<String> values = new ArrayList<>();
 
-    public AverageTable(FrameDifferentiator fd) {
+    public AverageTable(FrameDifferentiator fd, Order od) {
         this.fd = fd;
+        this.od = od;
     }
 
     /**
@@ -347,10 +349,9 @@ public class AverageTable {
             }
         }
         fd.multiTable = true;
-        Order order = new Order(fd);
-        order.reloadAverageTable();
-        order.reloadAscFromAverage();
-        order.reloadDescFromAverage();
+        od.reloadAverageTable();
+        od.reloadAscFromAverage();
+        od.reloadDescFromAverage();
     }
 
     /**
@@ -380,5 +381,6 @@ public class AverageTable {
                 fd.errorText.setText("You need to select 3 rows in the second table.");
             }
         }
+
     }
 }

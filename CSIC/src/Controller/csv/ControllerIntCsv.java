@@ -14,5 +14,7 @@ import java.util.List;
 public interface ControllerIntCsv {
 
     public List<Object[]> readFile(String path);
+    
+    public boolean writeCSV(List<String[]> datas, String path, String fileName);
 
 }

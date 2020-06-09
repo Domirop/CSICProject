@@ -6,6 +6,7 @@
 package Controller.csv;
 
 import Model.csv.ModelIntCsv;
+import Model.log.Files.ExportCSV;
 import java.util.List;
 
 /**
@@ -15,6 +16,7 @@ import java.util.List;
 public class ControllerCsv implements ControllerIntCsv {
 
     ModelIntCsv model;
+    private ExportCSV csv = new ExportCSV();
 
     public ControllerCsv(ModelIntCsv model) {
         this.model = model;
@@ -23,6 +25,17 @@ public class ControllerCsv implements ControllerIntCsv {
     @Override
     public List<Object[]> readFile(String path) {
         return model.readFile(path);
+    }
+    
+    /**
+     * This method communicates with the class that writes the file of type csv.
+     *
+     * @param datas list containing the data to be written.
+     */
+    @Override
+    public boolean writeCSV(List<String[]> datas, String path, String fileName) {
+        csv.setDataLines(datas);
+        return csv.createCSV(path, fileName);
     }
 
 }

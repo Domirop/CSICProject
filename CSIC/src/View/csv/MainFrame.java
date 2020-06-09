@@ -6,6 +6,8 @@
 package View.csv;
 
 import Controller.csv.ControllerIntCsv;
+import View.OptionsMenu;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -27,6 +29,7 @@ public class MainFrame extends javax.swing.JFrame {
     protected DecorateFrame decorate = new DecorateFrame(this);
     protected JPanel panelGeneric = new JPanel();
     JTable table;
+    ExportCSV csv = new ExportCSV(this);
     File file;
     OrderElements oe = new OrderElements(this);
 
@@ -61,6 +64,10 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        DialogExport = new javax.swing.JDialog();
+        jLabel4 = new javax.swing.JLabel();
+        textFieldName = new javax.swing.JTextField();
+        buttonAceptarDialog = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         ComboColumn = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
@@ -72,6 +79,57 @@ public class MainFrame extends javax.swing.JFrame {
         buttonAsc = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         errorText = new javax.swing.JLabel();
+        exportButton = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+
+        DialogExport.setTitle("DataPicker4J");
+
+        jLabel4.setText("Write output filename:");
+
+        textFieldName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldNameActionPerformed(evt);
+            }
+        });
+
+        buttonAceptarDialog.setText("Accept");
+        buttonAceptarDialog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAceptarDialogActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout DialogExportLayout = new javax.swing.GroupLayout(DialogExport.getContentPane());
+        DialogExport.getContentPane().setLayout(DialogExportLayout);
+        DialogExportLayout.setHorizontalGroup(
+            DialogExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DialogExportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(DialogExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(DialogExportLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(buttonAceptarDialog, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(DialogExportLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(textFieldName, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        DialogExportLayout.setVerticalGroup(
+            DialogExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(DialogExportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(DialogExportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(textFieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonAceptarDialog)
+                .addContainerGap(59, Short.MAX_VALUE))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DataPicker4J");
@@ -105,9 +163,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         buttonDesc.setText("Order desc.");
-        buttonDesc.setMaximumSize(new java.awt.Dimension(105, 32));
-        buttonDesc.setMinimumSize(new java.awt.Dimension(105, 32));
-        buttonDesc.setPreferredSize(new java.awt.Dimension(105, 32));
+        buttonDesc.setMaximumSize(new java.awt.Dimension(130, 32));
+        buttonDesc.setMinimumSize(new java.awt.Dimension(130, 32));
+        buttonDesc.setPreferredSize(new java.awt.Dimension(130, 32));
         buttonDesc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonDescActionPerformed(evt);
@@ -115,14 +173,54 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         buttonAsc.setText("Order asc.");
-        buttonAsc.setMaximumSize(new java.awt.Dimension(105, 32));
-        buttonAsc.setMinimumSize(new java.awt.Dimension(105, 32));
-        buttonAsc.setPreferredSize(new java.awt.Dimension(105, 32));
+        buttonAsc.setMaximumSize(new java.awt.Dimension(130, 32));
+        buttonAsc.setMinimumSize(new java.awt.Dimension(130, 32));
+        buttonAsc.setPreferredSize(new java.awt.Dimension(130, 32));
         buttonAsc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAscActionPerformed(evt);
             }
         });
+
+        errorText.setForeground(new java.awt.Color(255, 0, 0));
+        errorText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        exportButton.setText("Export to CSV");
+        exportButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportButtonActionPerformed(evt);
+            }
+        });
+
+        jMenu1.setText("Options");
+
+        jMenuItem3.setText("Choose file");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
+        jMenuItem1.setText("Main menu");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Exit");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -136,6 +234,10 @@ public class MainFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(buttonDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buttonAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
                                 .addComponent(ComboColumn, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -148,12 +250,10 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(textMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(buttonDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(buttonAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 221, Short.MAX_VALUE)))
+                                .addComponent(exportButton)))
+                        .addGap(0, 95, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -167,7 +267,8 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(textMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ComboColumn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(exportButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -175,7 +276,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(errorText)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE))
         );
 
         pack();
@@ -183,9 +284,11 @@ public class MainFrame extends javax.swing.JFrame {
 
 
     private void buttonAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAscActionPerformed
+        errorText.setText("");
+        errorText.setForeground(Color.RED);
         try {
             if (table.getSelectedColumns().length == 2) {
-                oe.orderElements("<");
+                oe.orderElements(">");
             } else {
                 errorText.setText("Please select 2 rows");
             }
@@ -195,9 +298,11 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAscActionPerformed
 
     private void buttonDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDescActionPerformed
+        errorText.setText("");
+        errorText.setForeground(Color.RED);
         try {
             if (table.getSelectedColumns().length == 2) {
-                oe.orderElements(">");
+                oe.orderElements("<");
             } else {
                 errorText.setText("Please select 2 rows");
             }
@@ -218,17 +323,70 @@ public class MainFrame extends javax.swing.JFrame {
         fo.removeElements();
     }//GEN-LAST:event_textMinValueActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        this.dispose();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        OptionsMenu menu = new OptionsMenu();
+        menu.setLocation(dim.width / 2 - menu.getSize().width / 2, dim.height / 2 - menu.getSize().height / 2);
+        menu.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        this.dispose();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        ChooseCsvFile csf = new ChooseCsvFile(controller);
+        csf.setLocation(dim.width / 2 - csf.getSize().width / 2, dim.height / 2 - csf.getSize().height / 2);
+        csf.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        DialogExport.setLocation(dim.width / 2 - DialogExport.getSize().width / 2, dim.height / 2 - DialogExport.getSize().height / 2);
+        DialogExport.setVisible(true);
+        DialogExport.pack();
+    }//GEN-LAST:event_exportButtonActionPerformed
+
+    private void buttonAceptarDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAceptarDialogActionPerformed
+        if (textFieldName.getText().length() > 0) {
+            csv.exportToCSV(textFieldName.getText());
+            textFieldName.setText("");
+            DialogExport.dispose();
+        }
+    }//GEN-LAST:event_buttonAceptarDialogActionPerformed
+
+    private void textFieldNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldNameActionPerformed
+        if (textFieldName.getText().length() > 0) {
+            csv.exportToCSV(textFieldName.getText());
+            textFieldName.setText("");
+            DialogExport.dispose();
+        }
+    }//GEN-LAST:event_textFieldNameActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JComboBox<String> ComboColumn;
+    private javax.swing.JDialog DialogExport;
+    private javax.swing.JButton buttonAceptarDialog;
     public javax.swing.JButton buttonAsc;
     public javax.swing.JButton buttonDesc;
     public javax.swing.JButton buttonFilter;
     public javax.swing.JLabel errorText;
+    private javax.swing.JButton exportButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     public javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField textFieldName;
     public javax.swing.JTextField textMaxValue;
     public javax.swing.JTextField textMinValue;
     // End of variables declaration//GEN-END:variables

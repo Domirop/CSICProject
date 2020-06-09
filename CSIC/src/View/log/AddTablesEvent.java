@@ -42,13 +42,15 @@ public class AddTablesEvent {
     AverageTable avg;
     SCFTable scf;
     TableDifferentiator td;
+    Order od;
 
-    public AddTablesEvent(FrameDifferentiator fd, DecorateFrame df, SCFTable scf, AverageTable avg) {
+    public AddTablesEvent(FrameDifferentiator fd, DecorateFrame df, SCFTable scf, AverageTable avg, Order od) {
         this.fd = fd;
         this.df = df;
         this.scf = scf;
         this.avg = avg;
         this.td = new TableDifferentiator(fd);
+        this.od = od;
     }
 
     /**
@@ -117,7 +119,7 @@ public class AddTablesEvent {
                             fd.orderDesc.setVisible(true);
                             fd.orderAsc.setVisible(true);
                         }
-                    }else{
+                    } else {
                         fd.keywordsUsed.remove(fieldText);
                     }
                 } else {
@@ -504,14 +506,34 @@ public class AddTablesEvent {
     public void removeRow(List<Integer> indexs) {
         for (int i = indexs.size() - 1; i >= 0; i--) {
             int index = indexs.get(i);
-            fd.normalTables.forEach((normalTable) -> {
-                DefaultTableModel def = (DefaultTableModel) normalTable.getModel();
+            String value = String.valueOf(fd.normalTables.get(0).getValueAt(index, 0));
+            DefaultTableModel modelAverage = (DefaultTableModel) fd.averageTable.getModel();
+            int indexAverage = 0;
+            boolean delete = false;
+            for (int j = 0; j < modelAverage.getRowCount(); j++) {
+                if (String.valueOf(modelAverage.getValueAt(j, 0)).equals(value)) {
+                    indexAverage = j;
+                    delete = true;
+                    break;
+                }
+            }
+            if (delete) {
+                modelAverage.removeRow(indexAverage);
+                fd.normalTables.forEach((normalTable) -> {
+                    DefaultTableModel def = (DefaultTableModel) normalTable.getModel();
+                    def.removeRow(index);
+                    normalTable.repaint();
+                });
+                DefaultTableModel def = (DefaultTableModel) fd.tableGeneric.getModel();
                 def.removeRow(index);
-                normalTable.repaint();
-            });
-            DefaultTableModel def = (DefaultTableModel) fd.tableGeneric.getModel();
-            def.removeRow(index);
-            fd.tableGeneric.repaint();
+                fd.averageTable.repaint();
+                fd.tableGeneric.repaint();
+                od.reloadAverageTable();
+                od.reloadDescFromAverage();
+                od.reloadAscFromAverage();
+            } else {
+                fd.errorText.setText("This values are averaged, they cannot be removed.");
+            }
         }
     }
 
@@ -523,7 +545,7 @@ public class AddTablesEvent {
         if (table.getColumnCount() > 3) {
             if (table.getSelectedColumn() != 0 && table.getSelectedColumn() != 1) {
                 fd.errorText.setText("");
-                if (table.getSelectedColumnCount() > 0) {
+                if (table.getSelectedColumnCount() > 0 && table.getSelectedColumnCount() < 2) {
                     fd.usedFiles.clear();
                     List<File> aux = new ArrayList<>();
                     for (int i = 2; i < table.getColumnCount(); i++) {
@@ -562,6 +584,13 @@ public class AddTablesEvent {
                     th.repaint();
                     table.revalidate();
                     table.repaint();
+                    fd.indexOrderedValAsc.clear();
+                    fd.indexOrderedValDesc.clear();
+                    fd.averagedValues.clear();
+                    fd.averageTable = new JTable();
+                    fd.panelGeneric.remove(1);
+                    od.initAverageTable();
+                    fd.dialogAverageOrder.dispose();
                 } else {
                     fd.errorText.setText("Please select one column");
                 }
