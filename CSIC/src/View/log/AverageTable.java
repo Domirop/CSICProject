@@ -222,6 +222,10 @@ public class AverageTable {
             df.removeRow(thirdIndex);
             df.removeRow(secondIndex);
             fd.multiTable = true;
+            Order order = new Order(fd);
+            order.reloadAverageTable();
+            order.reloadAscFromAverage();
+            order.reloadDescFromAverage();
         } catch (Exception e) {
             fd.errorText.setText("Some of this values have already been averaged");
         }
@@ -284,7 +288,7 @@ public class AverageTable {
         }
 
         JPanel panel = (JPanel) fd.tabbedPane.getComponentAt(0);
-        JTable averageTable = new JTable();
+        fd.averageTable = new JTable();
         boolean[] canEditTry = new boolean[headerValues.length];
         for (int i = 0; i < canEditTry.length; i++) {
             canEditTry[i] = false;
@@ -316,33 +320,37 @@ public class AverageTable {
             Object[] datas = value.toArray();
             modelAverage.addRow(datas);
         }
-        averageTable.setModel(modelAverage);
-        averageTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        fd.averageTable.setModel(modelAverage);
+        fd.averageTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         //Center columns
-        for (int i = 0; i < averageTable.getColumnCount(); i++) {
+        for (int i = 0; i < fd.averageTable.getColumnCount(); i++) {
             DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
             centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-            averageTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+            fd.averageTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
         }
         DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) fd.tableGeneric.getTableHeader().getDefaultRenderer();
         renderer.setHorizontalAlignment(0);
-        averageTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
+        fd.averageTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
 
-        JScrollPane scrollpane = new JScrollPane(averageTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane scrollpane = new JScrollPane(fd.averageTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         panel.add(scrollpane);
         panel.revalidate();
         panel.repaint();
         TableColumn column = null;
-        for (int i = 0; i < averageTable.getColumnCount(); i++) {
+        for (int i = 0; i < fd.averageTable.getColumnCount(); i++) {
             if (i == 0 || i == 1) {
-                column = averageTable.getColumnModel().getColumn(i);
+                column = fd.averageTable.getColumnModel().getColumn(i);
                 column.setMinWidth(100);
             } else {
-                column = averageTable.getColumnModel().getColumn(i);
+                column = fd.averageTable.getColumnModel().getColumn(i);
                 column.setMinWidth(300);
             }
         }
         fd.multiTable = true;
+        Order order = new Order(fd);
+        order.reloadAverageTable();
+        order.reloadAscFromAverage();
+        order.reloadDescFromAverage();
     }
 
     /**
@@ -356,8 +364,8 @@ public class AverageTable {
             JViewport viewport = scrollPane.getViewport();
             JTable myTable = (JTable) viewport.getView();
             if (myTable.getSelectedRowCount() == 3) {
+                fd.averagedValues.add(myTable.getSelectedRows());
                 averageTableNotExist(myTable);
-
             } else {
                 fd.errorText.setText("You need to select 3 rows");
             }
@@ -366,6 +374,7 @@ public class AverageTable {
             JViewport viewport = scrollPane.getViewport();
             JTable myTable = (JTable) viewport.getView();
             if (myTable.getSelectedRowCount() == 3) {
+                fd.averagedValues.add(myTable.getSelectedRows());
                 averageTableExist(myTable);
             } else {
                 fd.errorText.setText("You need to select 3 rows in the second table.");

@@ -17,16 +17,13 @@ public class CSIC {
      * @author domit
      */
     public static void main(String[] args) {
-
+    
         SplashScreenInit test = new SplashScreenInit(3000);
         test.showSplash();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         OptionsMenu menu = new OptionsMenu();
         menu.setLocation(dim.width / 2 - menu.getSize().width / 2, dim.height / 2 - menu.getSize().height / 2);
         menu.setVisible(true);
-        /*ModelInt model = new Model();
-        ControllerInt controller = new Controller(model);
-        ChooseFilesFrame frame = new ChooseFilesFrame(controller);
-        frame.setVisible(true);*/
+
     }
 }

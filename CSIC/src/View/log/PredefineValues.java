@@ -6,6 +6,8 @@
 package View.log;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -33,7 +35,7 @@ public class PredefineValues {
                 JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
                 JViewport viewport = scrollPane.getViewport();
                 JTable table = (JTable) viewport.getView();
-                if(fd.specialTables.contains(table)){
+                if (fd.specialTables.contains(table)) {
                     fd.specialTables.remove(table);
                     fd.tabbedPane.removeTabAt(i);
                     i = 1;
@@ -49,6 +51,9 @@ public class PredefineValues {
         fd.rows.clear();
         fd.coorValues.clear();
         fd.colAndRows.clear();
+        fd.indexOrderedValAsc.clear();
+        fd.indexOrderedValDesc.clear();
+        fd.averagedValues.clear();
         JTabbedPane pane = fd.tabbedPane;
         fd.tabPaneSCF.removeAll();
         fd.tableGeneric = null;

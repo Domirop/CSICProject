@@ -57,6 +57,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     protected List<String> keywordsUsed = new ArrayList<>();
     protected List<List<Object>> rows = new ArrayList<>();
     protected List<String> coorValues = new ArrayList<>();
+
+    //Hay que hacerles el clear donde haga falta
+    protected List<int[]> indexOrderedValAsc = new ArrayList<>();
+    protected List<int[]> indexOrderedValDesc = new ArrayList<>();
+    protected List<int[]> averagedValues = new ArrayList<>();
+
     protected ControllerIntLog controller;
     protected boolean multiTable = false;
     protected boolean searchAdded = false;
@@ -72,6 +78,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     protected String temperature = "298.15";
     public List<String> colAndRows = new ArrayList<>();
     JTable tableGeneric;
+    JTable averageTable;
     String maxValue;
     boolean orderAverage = false;
 
@@ -916,6 +923,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void orderDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderDescActionPerformed
         if (tabbedPane.getSelectedIndex() == 0) {
             od.orderDescAverageTable();
+
         } else {
             od.orderDescValuesTable();
         }
@@ -1216,7 +1224,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 List<Integer> indexs = IntStream.of(table.getSelectedRows())
                         .boxed().collect(Collectors.toCollection(ArrayList::new));
                 ate.removeRow(indexs);
-            }else{
+            } else {
                 errorText.setText("This row(s) cannot be deleted.");
             }
 
