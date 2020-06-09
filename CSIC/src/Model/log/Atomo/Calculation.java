@@ -90,7 +90,7 @@ public class Calculation {
             }
 
         }
-        
+
         totalDifferentiator.setValue(result);
         return totalDifferentiator;
     }
@@ -153,7 +153,7 @@ public class Calculation {
             Atom atom = new Atom(elementsData[1], elementsData[0], Double.parseDouble(data[1]));
             atoms.add(atom);
         }
-        
+
         FileData fileData = new FileData();
         fileData.setFileName(fileName);
         fileData.setAtoms(atoms);
@@ -174,15 +174,10 @@ public class Calculation {
             } else {
                 initialValue = (files.get(i).getEnergyValue() - minValue) * 2625500 / (8.315 * temp);
             }
-            if ((files.get(i).getEnergyValue() - minValue) * 2625.5 <= cutOff) {
-                mediumValue = Math.exp(initialValue * -1);
-                contribution = mediumValue / expS;
-                fileData.get(i).setContribution(contribution);
-                fileData.get(i).setRelativeEnergy((files.get(i).getEnergyValue() - minValue) * 2625.5);
-            } else {
-                fileData.remove(i);
-                i--;
-            }
+            mediumValue = Math.exp(initialValue * -1);
+            contribution = mediumValue / expS;
+            fileData.get(i).setContribution(contribution);
+            fileData.get(i).setRelativeEnergy((files.get(i).getEnergyValue() - minValue) * 2625.5);
         }
         return fileData;
     }

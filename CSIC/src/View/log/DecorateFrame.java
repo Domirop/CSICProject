@@ -222,10 +222,10 @@ public class DecorateFrame {
             JViewport viewport = scrollPane.getViewport();
             JTable myTable = (JTable) viewport.getView();
             String name = myTable.getColumnName(2);
-            
+
             avg.values.remove(name);
             avg.index = avg.index - 1;
-            
+
             if (fd.usedTables.contains(myTable)) {
                 fd.usedTables.remove(myTable);
             }
@@ -236,21 +236,14 @@ public class DecorateFrame {
             if (fd.keywordsUsed.contains(fd.tabbedPane.getTitleAt(fd.tabbedPane.getSelectedIndex()))) {
                 fd.keywordsUsed.remove(fd.tabbedPane.getTitleAt(fd.tabbedPane.getSelectedIndex()));
             }
-            
-            boolean founded = false;
-            int x = 0;
-            while(!founded){
-                for (String get : fd.allFiles.get(x)) {
-                    if(get.equals(name)){
-                        fd.allFiles.remove(x);
-                        founded = true;
-                        break;
-                    }else{
-                        x++;
-                    }
+
+            for (int i = 0; i < fd.allFiles.size(); i++) {
+                if (fd.allFiles.get(i).equals(name)) {
+                    fd.allFiles.remove(i);
+                    break;
                 }
             }
-            
+
             if (fd.tabbedPane.getSelectedIndex() == 0) {
                 myPanel.remove(1);
                 fd.multiTable = false;
@@ -268,7 +261,7 @@ public class DecorateFrame {
                     }
                 }
                 removeColumn(index + 2, genericTable);
-                
+
                 if (fd.normalTables.contains(myTable)) {
                     fd.normalTables.remove(myTable);
                     

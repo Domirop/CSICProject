@@ -54,7 +54,6 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
         try {
             bi = ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/add-file.png"));
         } catch (IOException ex) {
-            ex.printStackTrace();
         }
         decorate(dropTextArea, bi);
     }
@@ -163,7 +162,7 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)

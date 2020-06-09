@@ -25,8 +25,7 @@ public class ReadCSV {
      * @throws Exception
      */
     public List<Object[]> readFileLineByLine(String path) throws Exception {
-        Reader reader = Files.newBufferedReader(Paths.get(
-                ClassLoader.getSystemResource(path).toURI()));
+        Reader reader = Files.newBufferedReader(Paths.get(path));
         List<Object[]> list = new ArrayList<>();
         CSVReader csvReader = new CSVReader(reader);
         String[] line;

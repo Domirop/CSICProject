@@ -5,7 +5,6 @@
  */
 package Model.log;
 
-import Model.*;
 import Model.log.Atomo.Atom;
 import Model.log.Atomo.AtomTable;
 import Model.log.Atomo.Calculation;
@@ -22,7 +21,7 @@ import java.util.List;
 
 /**
  * Groups all the methods from other classes.
- * 
+ *
  * @author domit
  */
 public class ModelLog implements ModelIntLog {
@@ -92,7 +91,7 @@ public class ModelLog implements ModelIntLog {
      * @return The chosen value.
      */
     @Override
-    public String getValue(String path, int column, int row, String start) throws Exception{
+    public String getValue(String path, int column, int row, String start) throws Exception {
         return readTable.getValue(path, column, row, start);
     }
 
@@ -157,11 +156,16 @@ public class ModelLog implements ModelIntLog {
                 fileData.add(calculations.getFileData(atomsData, energyValue, fileName));
             }
         }
-        
-        fileData = calculations.getContribution(fileData, temp, cutOff);
+        double minValue = calculations.getEnergyMinValue(fileData);
+        fileData.removeIf((FileData v) -> {
+            return (v.getEnergyValue() - minValue) * 2625.5 > cutOff;
+        });
+        if (!fileData.isEmpty()) {
+            fileData = calculations.getContribution(fileData, temp, cutOff);
+        }
         return fileData;
     }
-    
+
     /**
      * This method communicates with the class that writes the file of type csv.
      *
@@ -182,7 +186,7 @@ public class ModelLog implements ModelIntLog {
      * @return List of elements FileData.
      */
     @Override
-    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates) throws Exception{
+    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates) throws Exception {
         List<FileData> filesDatas = new ArrayList<>();
         for (File file : files) {
             FileData fileData = new FileData();
@@ -202,7 +206,7 @@ public class ModelLog implements ModelIntLog {
      * @return List o element AtomTable.
      */
     @Override
-    public List<AtomTable> getAtomTables(List<String> coordinates, String path) throws Exception{
+    public List<AtomTable> getAtomTables(List<String> coordinates, String path) throws Exception {
         List<AtomTable> atomsTable = new ArrayList<>();
         for (String coordinate : coordinates) {
             AtomTable atomTable = new AtomTable();
@@ -226,7 +230,7 @@ public class ModelLog implements ModelIntLog {
      * @return A Molecule object.
      */
     @Override
-    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp) throws Exception{
+    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp) throws Exception {
 
         Molecule molecule = new Molecule();
         molecule.setFilesData(getFileDataTable(files, coordinates));

@@ -315,7 +315,6 @@ public class Order {
                     double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
                     double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
                     if (bg1 > bg2) {
-
                         int index1 = 0;
                         int index2 = 0;
                         for (int j = 0; j < model.getRowCount(); j++) {
