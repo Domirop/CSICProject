@@ -68,54 +68,57 @@ public class AddTablesEvent {
                     }
                     fd.errorText.setText("");
                     List<FileData> fileData = fd.controller.getFileData(fd.usedFiles, Double.parseDouble(fd.temperature), Double.parseDouble(fd.maxValue));
-                    JTable table = td.addRowsToTable(td.initTablesDifferentiators(fileData), fileData);
-                    table.setAutoCreateRowSorter(false);
-                    
-                    if (table.getRowCount() != 0) {
-                        JPanel panel = new JPanel();
-                        if (fd.usedTables.isEmpty()) {
-                            fd.itemSearchValue.setEnabled(true);
-                            fd.itemExport.setEnabled(false);
-                            fd.itemReset.setEnabled(true);
-                            fd.buttonValue.setVisible(true);
-                            fd.buttonExportCSV.setVisible(true);
-                            fd.buttonRemoveTable.setVisible(true);
-                            fd.buttonDelete.setVisible(true);
-                            fd.tabbedPane.setVisible(true);
-                            fd.itemExport.setEnabled(true);
-                            fd.itemSCF.setEnabled(true);
-                            fd.buttonAverage.setVisible(true);
-                            fd.labelSelect.setVisible(true);
-                            fd.comboSelectRowsOrColumns.setVisible(true);
-                            fd.buttonRemoveColumn.setVisible(true);
-                        }
-                        panel.setLayout(new GridLayout(0, 1));
-                        JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                        TableColumn column = null;
-                        for (int i = 0; i < table.getColumnCount(); i++) {
-                            if (i == 0 || i == 1) {
-                                column = table.getColumnModel().getColumn(i);
-                                column.setMinWidth(100);
-                            } else {
-                                column = table.getColumnModel().getColumn(i);
-                                column.setMinWidth(300);
+                    if (!fileData.isEmpty()) {
+                        JTable table = td.addRowsToTable(td.initTablesDifferentiators(fileData), fileData);
+                        table.setAutoCreateRowSorter(false);
+                        if (table.getRowCount() != 0) {
+                            JPanel panel = new JPanel();
+                            if (fd.usedTables.isEmpty()) {
+                                fd.itemSearchValue.setEnabled(true);
+                                fd.itemExport.setEnabled(false);
+                                fd.itemReset.setEnabled(true);
+                                fd.buttonValue.setVisible(true);
+                                fd.buttonExportCSV.setVisible(true);
+                                fd.buttonRemoveTable.setVisible(true);
+                                fd.buttonDelete.setVisible(true);
+                                fd.tabbedPane.setVisible(true);
+                                fd.itemExport.setEnabled(true);
+                                fd.itemSCF.setEnabled(true);
+                                fd.buttonAverage.setVisible(true);
+                                fd.labelSelect.setVisible(true);
+                                fd.comboSelectRowsOrColumns.setVisible(true);
+                                fd.buttonRemoveColumn.setVisible(true);
                             }
+                            panel.setLayout(new GridLayout(0, 1));
+                            JScrollPane scrollpane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                            TableColumn column = null;
+                            for (int i = 0; i < table.getColumnCount(); i++) {
+                                if (i == 0 || i == 1) {
+                                    column = table.getColumnModel().getColumn(i);
+                                    column.setMinWidth(100);
+                                } else {
+                                    column = table.getColumnModel().getColumn(i);
+                                    column.setMinWidth(300);
+                                }
+                            }
+                            table.getTableHeader().setReorderingAllowed(false);
+                            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+                            panel.add(scrollpane);
+                            fd.tabbedPane.addTab(fieldText, panel);
+                            fd.tabbedPane.setSelectedIndex(fd.tabbedPane.getTabCount() - 1);
+                            avg.averageTable(fd.usedFiles);
+                            if (fd.usedTables.isEmpty()) {
+                                fd.usedTables.add(fd.tableGeneric);
+                            }
+                            fd.normalTables.add(table);
+                            fd.usedTables.add(table);
+                            fd.revalidate();
+                            scf.addSCFTable(fieldText);
+                            fd.orderDesc.setVisible(true);
+                            fd.orderAsc.setVisible(true);
                         }
-                        table.getTableHeader().setReorderingAllowed(false);
-                        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-                        panel.add(scrollpane);
-                        fd.tabbedPane.addTab(fieldText, panel);
-                        fd.tabbedPane.setSelectedIndex(fd.tabbedPane.getTabCount() - 1);
-                        avg.averageTable(fd.usedFiles);
-                        if (fd.usedTables.isEmpty()) {
-                            fd.usedTables.add(fd.tableGeneric);
-                        }
-                        fd.normalTables.add(table);
-                        fd.usedTables.add(table);
-                        fd.revalidate();
-                        scf.addSCFTable(fieldText);
-                        fd.orderDesc.setVisible(true);
-                        fd.orderAsc.setVisible(true);
+                    }else{
+                        fd.keywordsUsed.remove(fieldText);
                     }
                 } else {
                     fd.keywordsUsed.remove(fieldText);
@@ -124,7 +127,6 @@ public class AddTablesEvent {
             } else {
                 fd.errorText.setText("Some files have already been imported.");
             }
-
         } catch (Exception e) {
             fd.errorText.setText("Some files were not imported.");
         }

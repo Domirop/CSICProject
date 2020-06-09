@@ -37,59 +37,76 @@ public class OrderElements {
                     secondColumns.add(i);
                 }
             }
-            List<List<Integer>> indexCombination = new ArrayList<>();
+            List<List<String>> indexCombination = new ArrayList<>();
+            for (int i = 0; i < gaussians.length; i++) {
+                System.out.println(gaussians[i]);
+            }
             for (int i = 0; i < firstColumns.size(); i++) {
-                List<Integer> combination = new ArrayList<>();
-                String value1 = model.getColumnName(i).replace("-", "").replace(gaussians[0], "");
-                combination.add(i);
+                List<String> combination = new ArrayList<>();
+                String value1 = model.getColumnName(firstColumns.get(i)).replace("-", "").replace(gaussians[0], "");
+                System.out.println(value1);
+                combination.add(model.getColumnName(firstColumns.get(i)));
                 for (int j = 0; j < secondColumns.size(); j++) {
-                    String value2 = model.getColumnName(j).replace("-", "").replace(gaussians[1], "");
+                    String value2 = model.getColumnName(secondColumns.get(j)).replace("-", "").replace(gaussians[1], "");
                     if (value2.equals(value1)) {
-                        combination.add(j);
+                        combination.add(model.getColumnName(secondColumns.get(j)));
                     }
                 }
                 if (combination.size() == 2) {
                     indexCombination.add(combination);
                 }
             }
-
+            System.out.println(indexCombination.size());
             indexCombination.forEach(v -> {
-                int index1 = v.get(0);
-                int index2 = v.get(1);
+                int index1 = 0;
+                int index2 = 0;
+                for (int i = 0; i < model.getColumnCount(); i++) {
+                    if (model.getColumnName(i).equals(v.get(0))) {
+                        index1 = i;
+                    } else if (model.getColumnName(i).equals(v.get(1))) {
+                        index2 = i;
+                    }
+                }
                 for (int i = 0; i < model.getRowCount(); i++) {
-                    double columnValue1 = Double.parseDouble(String.valueOf(model.getValueAt(i, index1)));
-                    double columnValue2 = Double.parseDouble(String.valueOf(model.getValueAt(i, index2)));
-                    if(order.equals(">")){
-                        if(index1 > index2){
-                            if(columnValue2 > columnValue1){
+                    double columnValue1 = Double.parseDouble(fr.table.getValueAt(i, index1).toString());
+                    double columnValue2 = Double.parseDouble(fr.table.getValueAt(i, index2).toString());
+                    if (order.equals(">")) {
+                        if (index1 > index2) {
+                            if (columnValue2 > columnValue1) {
                                 double aux = columnValue1;
-                                model.setValueAt(columnValue2, i, index1);
-                                model.setValueAt(aux, i, index2);
+                                model.setValueAt(String.valueOf(columnValue2), i, index1);
+                                model.setValueAt(String.valueOf(aux), i, index2);
                             }
-                        }else{
-                            if(columnValue1 > columnValue2){
+                        } else {
+                            if (columnValue1 > columnValue2) {
                                 double aux = columnValue1;
-                                model.setValueAt(columnValue2, i, index1);
-                                model.setValueAt(aux, i, index2);
+                                model.setValueAt(String.valueOf(columnValue2), i, index1);
+                                model.setValueAt(String.valueOf(aux), i, index2);
                             }
                         }
-                    }else if(order.equals("<")){
-                        if(index1 > index2){
-                            if(columnValue2 < columnValue1){
+                        fr.table.repaint();
+                        fr.table.revalidate();
+                    } else if (order.equals("<")) {
+                        if (index1 > index2) {
+                            if (columnValue2 < columnValue1) {
                                 double aux = columnValue1;
-                                model.setValueAt(columnValue2, i, index1);
-                                model.setValueAt(aux, i, index2);
+                                model.setValueAt(String.valueOf(columnValue2), i, index1);
+                                model.setValueAt(String.valueOf(aux), i, index2);
                             }
-                        }else{
-                            if(columnValue1 < columnValue2){
+                        } else {
+                            if (columnValue1 < columnValue2) {
                                 double aux = columnValue1;
-                                model.setValueAt(columnValue2, i, index1);
-                                model.setValueAt(aux, i, index2);
+                                model.setValueAt(String.valueOf(columnValue2), i, index1);
+                                model.setValueAt(String.valueOf(aux), i, index2);
                             }
                         }
                     }
                 }
             });
+            fr.table.revalidate();
+            fr.table.repaint();
+            fr.repaint();
+            fr.revalidate();
         } else {
             fr.errorText.setText("Error this column cannot be orderer.");
         }
@@ -111,9 +128,9 @@ public class OrderElements {
                 gausians[0] = firstValue1;
             }
             if (secondValue1.equals(firstValue1) || secondValue1.equals(firstValue2)) {
-                gausians[0] = secondValue1;
+                gausians[1] = secondValue2;
             } else {
-                gausians[0] = secondValue1;
+                gausians[1] = secondValue1;
             }
         }
         return gausians;
