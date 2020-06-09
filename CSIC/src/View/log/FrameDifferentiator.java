@@ -1176,7 +1176,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         if (!fieldNameValues.getText().isEmpty()) {
             ate.actionButtondialogName(evt);
         }
-
     }//GEN-LAST:event_fieldNameValuesActionPerformed
 
     private void comboSelectRowsOrColumnsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSelectRowsOrColumnsActionPerformed

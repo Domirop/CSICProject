@@ -69,9 +69,7 @@ public class SplashScreenInit extends JWindow {
     }
 
     public void showSplashAndExit() {
-
         showSplash();
         System.exit(0);
-
     }
 }

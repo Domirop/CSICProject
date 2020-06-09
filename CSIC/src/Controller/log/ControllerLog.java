@@ -5,7 +5,6 @@
  */
 package Controller.log;
 
-import Controller.*;
 import Model.log.Atomo.FileData;
 import Model.log.Atomo.Molecule;
 import Model.log.ModelIntLog;

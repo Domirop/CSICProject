@@ -139,32 +139,19 @@ public class AverageTable {
      */
     private void addElementsToAverageTable(Molecule molecule) {
         DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
-        List<List<Object>> auxList = new ArrayList<>(fd.rows);
         fd.rows.clear();
         for (int i = 0; i < molecule.getResult().size(); i++) {
-            if (fd.keywordsUsed.size() == 1) {
-                List<Object> values = new ArrayList<>();
-                values.add(Integer.parseInt(molecule.getResult().get(i).getGaussian()));
-                values.add(molecule.getResult().get(i).getAtom());
-                double value = molecule.getResult().get(i).getValue();
-                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
-                otherSymbols.setDecimalSeparator('.');
-                otherSymbols.setGroupingSeparator(',');
-                DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
-                df.setRoundingMode(RoundingMode.CEILING);
-                values.add(Double.parseDouble(String.valueOf(df.format(value))));
-                fd.rows.add(values);
-            } else {
-                List<Object> values = new ArrayList<>(auxList.get(i));
-                double value = molecule.getResult().get(i).getValue();
-                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
-                otherSymbols.setDecimalSeparator('.');
-                otherSymbols.setGroupingSeparator(',');
-                DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
-                df.setRoundingMode(RoundingMode.CEILING);
-                values.add(Double.parseDouble(String.valueOf(df.format(value))));
-                fd.rows.add(values);
-            }
+            List<Object> values = new ArrayList<>();
+            values.add(Integer.parseInt(molecule.getResult().get(i).getGaussian()));
+            values.add(molecule.getResult().get(i).getAtom());
+            double value = molecule.getResult().get(i).getValue();
+            DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
+            otherSymbols.setDecimalSeparator('.');
+            otherSymbols.setGroupingSeparator(',');
+            DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
+            df.setRoundingMode(RoundingMode.CEILING);
+            values.add(Double.parseDouble(String.valueOf(df.format(value))));
+            fd.rows.add(values);
         }
 
         fd.rows.forEach((row) -> {

@@ -28,8 +28,8 @@ public class InsertValuesTable {
 
     }
 
-    public void insertValues() {
-        List<Object[]> lines = mf.controller.readFile("Belizentrin_OMe_csearch_iJ_filter_H10H11_H3H2ab.csv");
+    public void insertValues(String path) {
+        List<Object[]> lines = mf.controller.readFile(path);
         initTable(Arrays.copyOf(lines.get(0), lines.get(0).length, String[].class));
         lines.remove(0);
 
@@ -39,9 +39,11 @@ public class InsertValuesTable {
         });
         mf.pack();
         model.fireTableStructureChanged();
-        mf.table.setModel(model);
 
-        System.out.println(mf.table.getValueAt(4, 5));
+        mf.table.setModel(model);
+        mf.table.setRowSelectionAllowed(false);
+        mf.table.setColumnSelectionAllowed(true);
+
         mf.repaint();
         mf.revalidate();
 
@@ -53,7 +55,6 @@ public class InsertValuesTable {
     public void initTable(String[] values) {
 
         mf.table = new JTable();
-        System.out.println(Arrays.asList(values));
         DefaultTableModel modelGeneric = new DefaultTableModel(values, 0) {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -75,9 +76,7 @@ public class InsertValuesTable {
             }
         ;
         };
-        mf.table.setAutoCreateRowSorter(true);
         mf.table.setModel(modelGeneric);
-        System.out.println(mf.table.getColumnCount());
         //Center columns
         for (int i = 0; i < mf.table.getColumnCount(); i++) {
             DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();

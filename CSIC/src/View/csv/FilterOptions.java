@@ -22,12 +22,16 @@ public class FilterOptions {
         this.fr = fr;
     }
 
-    public void removeElements(double minValue, double maxValue, int column) {
+    public void removeElements(double minValue, double maxValue, String column) {
         try {
             DefaultTableModel model = (DefaultTableModel) fr.table.getModel();
-            column += index;
+            for (int i = 0; i < model.getColumnCount(); i++) {
+                if(model.getColumnName(i).equals(column)){
+                    index = i;
+                }
+            }
             for (int i = 0; i < model.getRowCount(); i++) {
-                double value = Double.parseDouble(String.valueOf(model.getValueAt(i, column)));
+                double value = Double.parseDouble(String.valueOf(model.getValueAt(i, index)));
                 if (value < minValue || value > maxValue) {
                     model.removeRow(i);
                     i = 0;
@@ -45,9 +49,6 @@ public class FilterOptions {
         fr.errorText.setText("");
         for (int i = 0; i < model.getColumnCount(); i++) {
             try {
-                if (index == 0) {
-                    index = i;
-                }
                 double value = Double.parseDouble(String.valueOf(model.getValueAt(0, i)));
                 fr.ComboColumn.addItem(model.getColumnName(i));
             } catch (NumberFormatException numberFormatException) {
@@ -79,7 +80,7 @@ public class FilterOptions {
         if (controlText()) {
             double maxValue = Double.parseDouble(fr.textMaxValue.getText());
             double minValue = Double.parseDouble(fr.textMinValue.getText());
-            int column = fr.ComboColumn.getSelectedIndex();
+            String column = fr.ComboColumn.getSelectedItem().toString();
             if (minValue <= maxValue) {
                 removeElements(minValue, maxValue, column);
             } else {

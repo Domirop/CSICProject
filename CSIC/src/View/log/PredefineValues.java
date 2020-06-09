@@ -52,41 +52,41 @@ public class PredefineValues {
         JTabbedPane pane = fd.tabbedPane;
         fd.tabPaneSCF.removeAll();
         fd.tableGeneric = null;
-        for (int j = 0; j < fd.allFiles.size(); j++) {
-            JPanel myPanel = (JPanel) pane.getComponentAt(j + 1);
-            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-            JViewport viewport = scrollPane.getViewport();
-            JTable table = (JTable) viewport.getView();
-            fd.usedFiles.clear();
-            fd.names.clear();
-            if (fd.normalTables.contains(table)) {
-                for (int k = 0; k < fd.allFiles.get(j).size(); k++) {
-                    String name = fd.allFiles.get(j).get(k);
-                    for (File file : fd.filesData) {
-                        if (file.getName().equals(name + ".log")) {
-                            fd.usedFiles.add(file);
-                            fd.names.add(name);
+        if (fd.tabbedPane.getTabCount() > 1) {
+            for (int j = 0; j < fd.allFiles.size(); j++) {
+                JPanel myPanel = (JPanel) pane.getComponentAt(j + 1);
+                JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
+                JViewport viewport = scrollPane.getViewport();
+                JTable table = (JTable) viewport.getView();
+                fd.usedFiles.clear();
+                fd.names.clear();
+                if (fd.normalTables.contains(table)) {
+                    for (int k = 0; k < fd.allFiles.get(j).size(); k++) {
+                        String name = fd.allFiles.get(j).get(k);
+                        for (File file : fd.filesData) {
+                            if (file.getName().equals(name + ".log")) {
+                                fd.usedFiles.add(file);
+                                fd.names.add(name);
+                            }
                         }
                     }
+                    fd.normalTables.remove(table);
+                    ate.actionButtonAdd(pane.getTitleAt(j + 1));
                 }
-                fd.normalTables.remove(table);
-                ate.actionButtonAdd(pane.getTitleAt(j + 1));
-                fd.tableGeneric.revalidate();
-                fd.tableGeneric.repaint();
             }
-        }
-
-        String name = pane.getTitleAt(pane.getTabCount() - 1);
-        for (int i = 0; i < pane.getTabCount(); i++) {
-            if (i != 0) {
-                if (pane.getTitleAt(i).equals(name)) {
-                    pane.removeTabAt(i);
-                    break;
-                } else {
-                    pane.removeTabAt(i);
-                    i = 0;
+            
+            String name = pane.getTitleAt(pane.getTabCount() - 1);
+            for (int i = 0; i < pane.getTabCount(); i++) {
+                if (i != 0) {
+                    if (pane.getTitleAt(i).equals(name)) {
+                        pane.removeTabAt(i);
+                        break;
+                    } else {
+                        pane.removeTabAt(i);
+                        i = 0;
+                    }
+                    
                 }
-
             }
         }
     }

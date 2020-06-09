@@ -5,13 +5,11 @@
  */
 package View.csv;
 
-import java.awt.Color;
-import java.util.List;
-import javax.swing.BorderFactory;
 import Controller.csv.ControllerIntCsv;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.io.File;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -21,7 +19,7 @@ import javax.swing.JTable;
  * @author domit
  */
 public class MainFrame extends javax.swing.JFrame {
-    
+
     FilterOptions fo = new FilterOptions(this);
     List<String[]> datas;
     protected ControllerIntCsv controller;
@@ -29,6 +27,7 @@ public class MainFrame extends javax.swing.JFrame {
     protected DecorateFrame decorate = new DecorateFrame(this);
     protected JPanel panelGeneric = new JPanel();
     JTable table;
+    File file;
     OrderElements oe = new OrderElements(this);
 
     /**
@@ -38,19 +37,18 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public MainFrame(ControllerIntCsv controller) {
+    public MainFrame(ControllerIntCsv controller, File file) {
         initComponents();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        System.out.println(screenSize.width);
         this.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
         this.setMinimumSize(new Dimension(720, 480));
         this.pack();
         this.setLocationRelativeTo(null);
-        System.out.println("");
         this.panelGeneric.setLayout(new GridLayout(0, 1));
+        this.file = file;
         this.controller = controller;
         decorate.addIcons();
-        insert.insertValues();
+        insert.insertValues(file.getAbsolutePath());
         fo.initCombo();
     }
 
@@ -76,6 +74,7 @@ public class MainFrame extends javax.swing.JFrame {
         errorText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("DataPicker4J");
 
         jLabel1.setText("Column:");
 
@@ -96,6 +95,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         buttonFilter.setText("Filter");
+        buttonFilter.setMaximumSize(new java.awt.Dimension(102, 32));
+        buttonFilter.setMinimumSize(new java.awt.Dimension(102, 32));
+        buttonFilter.setPreferredSize(new java.awt.Dimension(102, 32));
         buttonFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonFilterActionPerformed(evt);
@@ -103,6 +105,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         buttonDesc.setText("Order desc.");
+        buttonDesc.setMaximumSize(new java.awt.Dimension(105, 32));
+        buttonDesc.setMinimumSize(new java.awt.Dimension(105, 32));
+        buttonDesc.setPreferredSize(new java.awt.Dimension(105, 32));
         buttonDesc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonDescActionPerformed(evt);
@@ -110,6 +115,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         buttonAsc.setText("Order asc.");
+        buttonAsc.setMaximumSize(new java.awt.Dimension(105, 32));
+        buttonAsc.setMinimumSize(new java.awt.Dimension(105, 32));
+        buttonAsc.setPreferredSize(new java.awt.Dimension(105, 32));
         buttonAsc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonAscActionPerformed(evt);
@@ -140,11 +148,11 @@ public class MainFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(textMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(buttonDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(buttonDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(buttonAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(buttonAsc, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 221, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -157,13 +165,13 @@ public class MainFrame extends javax.swing.JFrame {
                     .addComponent(textMinValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(textMaxValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonFilter)
+                    .addComponent(buttonFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ComboColumn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonDesc)
-                    .addComponent(buttonAsc))
+                    .addComponent(buttonDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buttonAsc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(errorText)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -173,13 +181,29 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+
     private void buttonAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAscActionPerformed
-        oe.orderElements("<");
+        try {
+            if (table.getSelectedColumns().length == 2) {
+                oe.orderElements("<");
+            } else {
+                errorText.setText("Please select 2 rows");
+            }
+        } catch (Exception e) {
+            errorText.setText("this columns cannot be ordered");
+        }
     }//GEN-LAST:event_buttonAscActionPerformed
 
     private void buttonDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDescActionPerformed
-        oe.orderElements(">");
+        try {
+            if (table.getSelectedColumns().length == 2) {
+                oe.orderElements(">");
+            } else {
+                errorText.setText("Please select 2 rows");
+            }
+        } catch (Exception e) {
+            errorText.setText("this columns cannot be ordered");
+        }
     }//GEN-LAST:event_buttonDescActionPerformed
 
     private void buttonFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonFilterActionPerformed
