@@ -271,6 +271,7 @@ public class DecorateFrame {
                 
                 if (fd.normalTables.contains(myTable)) {
                     fd.normalTables.remove(myTable);
+                    
                 }
 
                 for (JTable specialTable : fd.specialTables) {
