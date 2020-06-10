@@ -514,7 +514,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel1.setText("Search by keyword:");
 
-        comboOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Starts with", "Ends with", "Contains", "Range starts with", "Range ends with" }));
+        comboOptions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Starts with", "Ends with", "Range starts with", "Range ends with" }));
         comboOptions.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 comboOptionsItemStateChanged(evt);
@@ -1181,9 +1181,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             case "Starts with":
                 break;
             case "Ends with":
-                fieldKeyword.setToolTipText(null);
-                break;
-            case "Contains":
                 fieldKeyword.setToolTipText(null);
                 break;
             case "Range starts with":

@@ -40,7 +40,7 @@ public class ControllerLog implements ControllerIntLog {
     }
 
     @Override
-    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key, double temp, String start) throws Exception{
-        return model.getMoleculeTable(files, coordinates, key, temp, start);
+    public Molecule getTableMolecule(List<File> files, List<String> coordinates, String key, double temp, String start, double cutOff) throws Exception{
+        return model.getMoleculeTable(files, coordinates, key, temp, start, cutOff);
     }
 }

@@ -5,7 +5,6 @@
  */
 package View.log;
 
-import View.log.FrameDifferentiator;
 import Model.log.Atomo.FileData;
 import java.awt.Font;
 import java.math.RoundingMode;

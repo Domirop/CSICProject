@@ -186,7 +186,7 @@ public class ModelLog implements ModelIntLog {
      * @return List of elements FileData.
      */
     @Override
-    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates, String start) throws Exception {
+    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates, String start, double temp, double cutOff) throws Exception {
         List<FileData> filesDatas = new ArrayList<>();
         for (File file : files) {
             FileData fileData = new FileData();
@@ -195,6 +195,10 @@ public class ModelLog implements ModelIntLog {
             fileData.setAtomsTable(getAtomTables(coordinates, file.getAbsolutePath(), start));
             filesDatas.add(fileData);
         }
+        double minValue = calculations.getEnergyMinValue(filesDatas);
+        filesDatas.removeIf((FileData v) -> {
+            return (v.getEnergyValue() - minValue) * 2625.5 > cutOff;
+        });
         return filesDatas;
     }
 
@@ -230,9 +234,9 @@ public class ModelLog implements ModelIntLog {
      * @return A Molecule object.
      */
     @Override
-    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp, String start) throws Exception {
+    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp, String start, double cutOff) throws Exception {
         Molecule molecule = new Molecule();
-        molecule.setFilesData(getFileDataTable(files, coordinates, start));
+        molecule.setFilesData(getFileDataTable(files, coordinates, start, temp, cutOff));
         molecule.setDifferentiator(key);
         List<AverageValue> total = new ArrayList<>();
         for (String coordinate : coordinates) {
