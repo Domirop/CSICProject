@@ -76,6 +76,7 @@ public class ChooseCsvFile extends javax.swing.JFrame {
         errorText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("DataPicker4J");
 
         jLabel1.setText("Choose csv file: ");
 

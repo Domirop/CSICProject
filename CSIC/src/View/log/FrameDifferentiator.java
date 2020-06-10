@@ -82,7 +82,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     JTable averageTable;
     String maxValue;
     boolean orderAverage = false;
-    
 
     public FrameDifferentiator(ControllerIntLog controller) {
         initComponents();
@@ -91,8 +90,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
     public FrameDifferentiator() {
     }
-    
-    
+
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerIntLog controller, String temperature, String maxValue) {
         initComponents();
         edd.setMappings(listValues);
@@ -952,6 +950,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void orderDescActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderDescActionPerformed
         if (tabbedPane.getSelectedIndex() == 0) {
             od.orderDescAverageTable();
+            try {
+                if (averageTable.getRowCount() > 0) {
+                    od.reloadAverageTable();
+                    od.reloadAscFromAverage();
+                    od.reloadDescFromAverage();
+                }
+            } catch (Exception e) {
+            }
         } else {
             od.orderDescValuesTable();
         }
@@ -965,6 +971,14 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private void orderAscActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderAscActionPerformed
         if (tabbedPane.getSelectedIndex() == 0) {
             od.orderAscAverageTable();
+            try {
+                if (averageTable.getRowCount() > 0) {
+                    od.reloadAverageTable();
+                    od.reloadAscFromAverage();
+                    od.reloadDescFromAverage();
+                }
+            } catch (Exception e) {
+            }
         } else {
             od.orderAscValuesTable();
         }
@@ -1093,7 +1107,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                 dialogTemperature.dispose();
                 avg.index = 0;
                 avg.values.clear();
-                pfv.changeValues();
+                if (tabbedPane.isVisible()) {
+                    pfv.changeValues();
+                    averageTable = new JTable();
+                    od.initAverageTable();
+                }
+
             } else {
                 fieldMaxValue.setBorder(new LineBorder(Color.red, 1));
             }
@@ -1256,6 +1275,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         } else {
             ate.removeColumn();
         }
+        dialogAverageOrder.dispose();
     }//GEN-LAST:event_buttonRemoveColumnActionPerformed
 
     private void fieldMaxValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldMaxValueActionPerformed

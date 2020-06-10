@@ -442,6 +442,7 @@ public class AddTablesEvent {
                         }
                         String separador = "";
                         List<String> allNames = new ArrayList<>();
+                        String name = "";
                         for (int i = 0; i < fd.files.size(); i++) {
                             String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                             StringBuilder sb1 = new StringBuilder();
@@ -458,6 +459,7 @@ public class AddTablesEvent {
                             }
                             String[] separated = filename.split(separador);
                             if (separated[separated.length - 1].equals(charact1) || separated[separated.length - 1].equals(charact2)) {
+                                name = separated[separated.length - 1];
                                 allNames.add(filename);
                                 fd.usedFiles.add(fd.filesData.get(i));
                                 if (!fd.names.contains(filename)) {
@@ -468,7 +470,7 @@ public class AddTablesEvent {
                         if (!fd.allFiles.contains(allNames)) {
                             fd.allFiles.add(allNames);
                         }
-                        actionButtonAdd(String.valueOf(j));
+                        actionButtonAdd(name);
                     }
                 }
                 break;
@@ -489,15 +491,13 @@ public class AddTablesEvent {
             }
             if (correct) {
                 DefaultTableModel modelAverage = (DefaultTableModel) fd.averageTable.getModel();
-                int indexAverage = 0;
                 for (int j = 0; j < modelAverage.getRowCount(); j++) {
                     if (String.valueOf(modelAverage.getValueAt(j, 0)).equals(value)) {
-                        indexAverage = j;
+                        modelAverage.removeRow(j);
                         delete = true;
                         break;
                     }
                 }
-                modelAverage.removeRow(indexAverage);
             }
             if (delete) {
                 fd.normalTables.forEach((normalTable) -> {
@@ -517,6 +517,7 @@ public class AddTablesEvent {
                         j = 0;
                     }
                 }
+                od.initAverageTable();
                 fd.tableGeneric.repaint();
                 if (correct) {
                     od.reloadAverageTable();
@@ -549,18 +550,26 @@ public class AddTablesEvent {
 
                     int index = 0;
                     for (int i = 2; i < fd.tableGeneric.getColumnCount(); i++) {
-                        if (aux.get(0).getName().contains(fd.tableGeneric.getColumnName(i))) {
+                        JTableHeader th = fd.tableGeneric.getTableHeader();
+                        TableColumnModel tcm = th.getColumnModel();
+                        TableColumn tc = tcm.getColumn(i);
+                        if (aux.get(0).getName().contains(tc.getHeaderValue().toString())) {
                             index = i;
                         }
                     }
-
                     String columnSelected = table.getColumnName(table.getSelectedColumn());
                     table.removeColumn(table.getColumnModel().getColumn(table.getSelectedColumn()));
                     fd.usedFiles.addAll(aux.stream().filter((File v) -> !v.getName().contains(columnSelected)).collect(Collectors.toList()));
                     Molecule molecule = fd.controller.getMolecule(fd.usedFiles, fd.fieldKeyword.getText(), Double.parseDouble(fd.temperature), Double.parseDouble(fd.maxValue));
                     DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
-                    for (int i = 0; i < fd.tableGeneric.getRowCount(); i++) {
-                        double value = molecule.getResult().get(i).getValue();
+                    int correctIndex = 0;
+                    for (int i = 0; i < model.getRowCount(); i++) {
+                        for (int j = 0; j < molecule.getResult().size(); j++) {
+                            if (String.valueOf(model.getValueAt(i, 0)).equals(molecule.getResult().get(j).getGaussian())) {
+                                correctIndex = j;
+                            }
+                        }
+                        double value = molecule.getResult().get(correctIndex).getValue();
                         DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(fd.getLocale());
                         otherSymbols.setDecimalSeparator('.');
                         otherSymbols.setGroupingSeparator(',');
@@ -580,7 +589,10 @@ public class AddTablesEvent {
                     fd.indexOrderedValDesc.clear();
                     fd.averagedValues.clear();
                     fd.averageTable = new JTable();
-                    fd.panelGeneric.remove(1);
+                    try {
+                        fd.panelGeneric.remove(1);
+                    } catch (Exception e) {
+                    }
                     od.initAverageTable();
                     fd.dialogAverageOrder.dispose();
                 } else {

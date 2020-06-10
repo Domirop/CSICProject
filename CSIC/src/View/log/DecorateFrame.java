@@ -264,7 +264,7 @@ public class DecorateFrame {
 
                 if (fd.normalTables.contains(myTable)) {
                     fd.normalTables.remove(myTable);
-                    
+
                 }
 
                 for (JTable specialTable : fd.specialTables) {
@@ -275,6 +275,14 @@ public class DecorateFrame {
                     }
                 }
                 fd.tabbedPane.remove(fd.tabbedPane.getSelectedComponent());
+                try {
+                    removeColumn(index + 2, fd.averageTableReorder);
+                } catch (Exception e) {
+                }
+                try {
+                    removeColumn(index + 2, fd.averageTable);
+                } catch (Exception e) {
+                }
             }
         }
     }

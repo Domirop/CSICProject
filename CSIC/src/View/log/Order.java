@@ -38,6 +38,25 @@ public class Order {
         this.fd = fd;
     }
 
+    public void changeOrderAverageTable(String[] gaussians, int index) {
+        DefaultTableModel model = (DefaultTableModel) fd.averageTableReorder.getModel();
+        int index1 = 0;
+        int index2 = 0;
+        for (int j = 0; j < model.getRowCount(); j++) {
+            if (String.valueOf(model.getValueAt(j, 0)).equals(gaussians[0])) {
+                index1 = j;
+            } else if (String.valueOf(model.getValueAt(j, 0)).equals(gaussians[1])) {
+                index2 = j;
+            }
+        }
+        double a = Double.parseDouble(model.getValueAt(index1, index).toString());
+        double b = Double.parseDouble(model.getValueAt(index2, index).toString());
+        double ax = a;
+        model.setValueAt(b, index1, index);
+        model.setValueAt(ax, index2, index);
+        fd.averageTableReorder.repaint();
+    }
+
     public void orderDescValuesTable() {
         JTable myTabla = getSelectedTable();
         DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
@@ -66,6 +85,7 @@ public class Order {
                             double ax = a;
                             model.setValueAt(b, index1, i);
                             model.setValueAt(ax, index2, i);
+                            changeOrderAverageTable(datas, i);
                             reorderNormalTables(index1, index2, (i - 2));
                             reorderSpecialTables(datas[0], datas[1], i);
                         }
@@ -93,6 +113,7 @@ public class Order {
                         double ax = a;
                         model.setValueAt(b, index1, i);
                         model.setValueAt(ax, index2, i);
+                        changeOrderAverageTable(datas, i);
                         reorderNormalTables(index1, index2, (i - 2));
                         reorderSpecialTables(datas[0], datas[1], i);
                     }
@@ -302,7 +323,6 @@ public class Order {
         DefaultTableModel model = (DefaultTableModel) fd.tableGeneric.getModel();
         fd.errorText.setText("");
         if (myTabla.getSelectedRows().length == 2) {
-
             String[] datas = getGaussianToOrder();
             if (fd.multiTable == true) {
                 if (orderSecondTable(datas)) {
@@ -311,7 +331,6 @@ public class Order {
                         double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
                         double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
                         if (bg1 > bg2) {
-
                             int index1 = 0;
                             int index2 = 0;
                             for (int j = 0; j < model.getRowCount(); j++) {
@@ -327,6 +346,7 @@ public class Order {
                             double ax = a;
                             model.setValueAt(b, index1, i);
                             model.setValueAt(ax, index2, i);
+                            changeOrderAverageTable(datas, i);
                             reorderNormalTables(index1, index2, (i - 2));
                             reorderSpecialTables(datas[0], datas[1], i);
                         }
@@ -336,7 +356,6 @@ public class Order {
                     fd.errorText.setText("This values cannot be ordered.");
                 }
             } else {
-
                 for (int i = 2; i < myTabla.getColumnCount(); i++) {
                     double bg1 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[0], i).toString());
                     double bg2 = Double.parseDouble(myTabla.getValueAt(myTabla.getSelectedRows()[1], i).toString());
@@ -356,6 +375,7 @@ public class Order {
                         double ax = a;
                         model.setValueAt(b, index1, i);
                         model.setValueAt(ax, index2, i);
+                        changeOrderAverageTable(datas, i);
                         reorderNormalTables(index1, index2, (i - 2));
                         reorderSpecialTables(datas[0], datas[1], i);
                     }
