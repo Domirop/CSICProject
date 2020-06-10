@@ -17,9 +17,9 @@ public class ModelCsv implements ModelIntCsv {
     ReadCSV read = new ReadCSV();
 
     @Override
-    public List<Object[]> readFile(String path) {
+    public List<Object[]> readFile(String path, String separator) {
         try {
-            return read.readFileLineByLine(path);
+            return read.readFileLineByLine(path, separator);
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

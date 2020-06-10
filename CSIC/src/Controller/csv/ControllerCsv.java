@@ -23,8 +23,8 @@ public class ControllerCsv implements ControllerIntCsv {
     }
 
     @Override
-    public List<Object[]> readFile(String path) {
-        return model.readFile(path);
+    public List<Object[]> readFile(String path, String separator) {
+        return model.readFile(path, separator);
     }
     
     /**

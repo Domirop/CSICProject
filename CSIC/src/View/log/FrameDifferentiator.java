@@ -215,7 +215,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        errorDialogCoor.setForeground(new java.awt.Color(255, 0, 0));
+        errorDialogCoor.setForeground(new java.awt.Color(255, 51, 51));
 
         jScrollPane2.setViewportView(listValues);
 
@@ -550,7 +550,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         });
 
         errorText.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        errorText.setForeground(new java.awt.Color(255, 0, 0));
+        errorText.setForeground(new java.awt.Color(255, 51, 51));
         errorText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         buttonValue.setText("Search J ");

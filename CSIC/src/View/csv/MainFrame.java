@@ -28,6 +28,7 @@ public class MainFrame extends javax.swing.JFrame {
     protected InsertValuesTable insert = new InsertValuesTable(this);
     protected DecorateFrame decorate = new DecorateFrame(this);
     protected JPanel panelGeneric = new JPanel();
+    protected String separator;
     JTable table;
     ExportCSV csv = new ExportCSV(this);
     File file;
@@ -40,7 +41,7 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public MainFrame(ControllerIntCsv controller, File file) {
+    public MainFrame(ControllerIntCsv controller, File file, String separator) {
         initComponents();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
@@ -50,8 +51,9 @@ public class MainFrame extends javax.swing.JFrame {
         this.panelGeneric.setLayout(new GridLayout(0, 1));
         this.file = file;
         this.controller = controller;
+        this.separator = separator;
         decorate.addIcons();
-        insert.insertValues(file.getAbsolutePath());
+        insert.insertValues(file.getAbsolutePath(), separator);
         fo.initCombo();
     }
 
@@ -183,7 +185,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         errorText.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        errorText.setForeground(new java.awt.Color(255, 0, 0));
+        errorText.setForeground(new java.awt.Color(255, 51, 51));
         errorText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         exportButton.setText("Export to CSV");

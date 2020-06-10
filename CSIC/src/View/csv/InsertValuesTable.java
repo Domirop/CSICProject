@@ -28,8 +28,8 @@ public class InsertValuesTable {
 
     }
 
-    public void insertValues(String path) {
-        List<Object[]> lines = mf.controller.readFile(path);
+    public void insertValues(String path, String separator) {
+        List<Object[]> lines = mf.controller.readFile(path, separator);
         initTable(Arrays.copyOf(lines.get(0), lines.get(0).length, String[].class));
         lines.remove(0);
 

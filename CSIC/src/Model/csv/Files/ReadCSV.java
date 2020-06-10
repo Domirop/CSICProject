@@ -5,7 +5,10 @@
  */
 package Model.csv.Files;
 
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,11 +27,17 @@ public class ReadCSV {
      * @return
      * @throws Exception
      */
-    public List<Object[]> readFileLineByLine(String path) throws Exception {
+    public List<Object[]> readFileLineByLine(String path, String separator) throws Exception {
         Reader reader = Files.newBufferedReader(Paths.get(path));
         List<Object[]> list = new ArrayList<>();
-        CSVReader csvReader = new CSVReader(reader);
+        CSVParser parser = new CSVParserBuilder()
+                .withSeparator(separator.charAt(0))
+                .withIgnoreQuotations(true)
+                .build();
+        CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(0).withCSVParser(parser).build();
+        
         String[] line;
+
         while ((line = csvReader.readNext()) != null) {
             list.add(line);
         }

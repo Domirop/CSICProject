@@ -6,6 +6,8 @@
 package View.csv;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,19 +28,23 @@ public class FilterOptions {
         try {
             DefaultTableModel model = (DefaultTableModel) fr.table.getModel();
             for (int i = 0; i < model.getColumnCount(); i++) {
-                if(model.getColumnName(i).equals(column)){
+                if (model.getColumnName(i).equals(column)) {
                     index = i;
                 }
-            }
+            }            
             for (int i = 0; i < model.getRowCount(); i++) {
                 double value = Double.parseDouble(String.valueOf(model.getValueAt(i, index)));
+                
                 if (value < minValue || value > maxValue) {
                     model.removeRow(i);
-                    i = 0;
+                    i = -1;
                 }
             }
+            
+            
             fr.errorText.setText("");
             fr.table.repaint();
+            fr.table.revalidate();
         } catch (NumberFormatException numberFormatException) {
             fr.errorText.setText("Error has ocurred, please check the file format.");
         }
@@ -75,7 +81,7 @@ public class FilterOptions {
         }
         return true;
     }
-    
+
     public void removeElements() {
         fr.errorText.setText("");
         fr.errorText.setForeground(Color.RED);
