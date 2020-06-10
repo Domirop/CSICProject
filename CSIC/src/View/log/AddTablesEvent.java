@@ -191,14 +191,9 @@ public class AddTablesEvent {
             if (fd.usedFiles.size() == 0) {
                 getUsedFiles(tableCoord.getColumnName(i), "Ends with", false);
             }
-            if (fd.usedFiles.size() == 0) {
-                getUsedFiles(tableCoord.getColumnName(i), "Contains", false);
-
-            }
-
             Molecule mole = new Molecule();
             try {
-                mole = fd.controller.getTableMolecule(fd.usedFiles, fd.colAndRows, tableCoord.getColumnName(i), Double.parseDouble(fd.temperature), fd.textFieldMatrizLine.getText());
+                mole = fd.controller.getTableMolecule(fd.usedFiles, fd.colAndRows, tableCoord.getColumnName(i), Double.parseDouble(fd.temperature), fd.textFieldMatrizLine.getText(), Double.parseDouble(fd.maxValue));
             } catch (Exception e) {
                 fd.textFieldMatrizLine.setText("");
                 fd.fieldNameValues.setText("");
@@ -209,6 +204,7 @@ public class AddTablesEvent {
             }
             molList.add(mole);
         }
+
         List<List<Object>> rows = new ArrayList<>();
         for (int i = 0; i < fd.colAndRows.size(); i++) {
             List<Object> val = new ArrayList<>();
@@ -250,7 +246,6 @@ public class AddTablesEvent {
 
                 }
                 newRow.add(val);
-
             }
 
             newRow.forEach((newRows) -> {
@@ -351,24 +346,6 @@ public class AddTablesEvent {
                     }
                 }
                 break;
-            case "Contains":
-                for (int i = 0; i < fd.files.size(); i++) {
-                    String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
-                    if (filename.contains(value)) {
-                        names.add(filename);
-                        fd.usedFiles.add(fd.filesData.get(i));
-                        if (!fd.names.contains(filename)) {
-                            fd.names.add(filename);
-                        }
-                    }
-                }
-                if (isAdd) {
-                    actionButtonAdd(fd.fieldKeyword.getText());
-                    if (!fd.allFiles.contains(names)) {
-                        fd.allFiles.add(names);
-                    }
-                }
-                break;
             case "Range starts with":
                 if (value.matches("^[0-9]?[0-9]*(-)[0-9]?[0-9]*$")) {
                     String[] values = new String[2];
@@ -405,6 +382,7 @@ public class AddTablesEvent {
 
                         String separador = "";
                         List<String> allNames = new ArrayList<>();
+                        String name = "";
                         for (int i = 0; i < fd.files.size(); i++) {
                             String filename = fd.files.get(i).contains(".log") ? fd.files.get(i).replace(".log", "") : fd.files.get(i).replace(".txt", "");
                             searchSeparator:
@@ -415,6 +393,7 @@ public class AddTablesEvent {
                                 }
                             }
                             if (filename.split(separador)[0].equals(charact1) || filename.split(separador)[0].equals(charact2)) {
+                                name = filename.split(separador)[0];
                                 allNames.add(filename);
                                 fd.usedFiles.add(fd.filesData.get(i));
                                 if (!fd.names.contains(filename)) {
@@ -425,7 +404,7 @@ public class AddTablesEvent {
                         if (!fd.allFiles.contains(allNames)) {
                             fd.allFiles.add(allNames);
                         }
-                        actionButtonAdd(String.valueOf(j));
+                        actionButtonAdd(name);
                     }
                 } else {
                     fd.errorText.setText("The format is (number-number)");
