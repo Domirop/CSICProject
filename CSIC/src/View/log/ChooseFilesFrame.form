@@ -44,6 +44,8 @@
                           <Component id="fieldTemp" pref="90" max="32767" attributes="0"/>
                           <Component id="fieldValue" max="32767" attributes="0"/>
                       </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="checkMaxValue" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="buttonNext" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -72,6 +74,7 @@
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="fieldValue" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="buttonNext" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="checkMaxValue" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -141,6 +144,14 @@
     <Component class="javax.swing.JTextField" name="fieldValue">
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldValueActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="checkMaxValue">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Select all files"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkMaxValueActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

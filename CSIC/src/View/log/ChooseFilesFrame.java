@@ -112,6 +112,7 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         fieldTemp = new javax.swing.JTextField();
         fieldValue = new javax.swing.JTextField();
+        checkMaxValue = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DataPicker4J");
@@ -155,6 +156,13 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
             }
         });
 
+        checkMaxValue.setText("Select all files");
+        checkMaxValue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkMaxValueActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -176,6 +184,8 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(fieldTemp, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
                             .addComponent(fieldValue))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(checkMaxValue)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buttonNext)))
                 .addContainerGap())
@@ -197,7 +207,8 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(fieldValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonNext))
+                    .addComponent(buttonNext)
+                    .addComponent(checkMaxValue))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -241,33 +252,56 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_fieldValueActionPerformed
 
     private void fieldTempActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldTempActionPerformed
-       confirm();
+        confirm();
     }//GEN-LAST:event_fieldTempActionPerformed
+
+    private void checkMaxValueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkMaxValueActionPerformed
+        if (checkMaxValue.isSelected()) {
+            fieldValue.setEnabled(false);
+        } else {
+            fieldValue.setEnabled(true);
+        }
+    }//GEN-LAST:event_checkMaxValueActionPerformed
 
     private void confirm() {
         if (dropTextArea.getText().length() > 0) {
-            if (fieldValue.getText().matches("^[0-9]+(.)?[0-9]{0,2}")) {
-                if (fieldTemp.getText().matches("^[0-9]+(.)?[0-9]{0,2}")) {
-                    List<String> fileNames = new ArrayList<>();
-                    for (File listFile : listFiles) {
-                        fileNames.add(listFile.getName());
-                    }
-                    FrameDifferentiator frameDiff = new FrameDifferentiator(fileNames, listFiles, controller, fieldTemp.getText(), fieldValue.getText());
+            if (fieldTemp.getText().matches("^[0-9]+(.)?[0-9]{0,2}")) {
+                List<String> fileNames = new ArrayList<>();
+                for (File listFile : listFiles) {
+                    fileNames.add(listFile.getName());
+                }
+                FrameDifferentiator frameDiff = new FrameDifferentiator();
+                if (checkMaxValue.isSelected()) {
+                    frameDiff = new FrameDifferentiator(fileNames, listFiles, controller, fieldTemp.getText(), "999999999");
                     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
                     frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);
                     this.dispose();
                     frameDiff.setVisible(true);
                 } else {
-                    fieldTemp.setBorder(BorderFactory.createLineBorder(Color.red));
-                    fieldTemp.setToolTipText("The format is (number).(2 number)");
+                    if (fieldValue.getText().matches("^[0-9]+(.)?[0-9]{0,2}")) {
+                        frameDiff = new FrameDifferentiator(fileNames, listFiles, controller, fieldTemp.getText(), fieldValue.getText());
+                        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                        frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);
+                        this.dispose();
+                        frameDiff.setVisible(true);
+                    } else {
+                        fieldValue.setBorder(BorderFactory.createLineBorder(Color.red));
+                        fieldValue.setToolTipText("The format is (number).(2 number)");
+                    }
                 }
+
             } else {
-                fieldValue.setBorder(BorderFactory.createLineBorder(Color.red));
-                fieldValue.setToolTipText("The format is (number).(2 number)");
+                fieldTemp.setBorder(BorderFactory.createLineBorder(Color.red));
+                fieldTemp.setToolTipText("The format is (number).(2 number)");
             }
+
         }
     }
 
+    /*
+            
+
+     */
     /**
      * Method used to put the icon as a background.
      *
@@ -305,6 +339,7 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonChooseFiles;
     private javax.swing.JButton buttonNext;
+    private javax.swing.JCheckBox checkMaxValue;
     private javax.swing.JTextArea dropTextArea;
     private javax.swing.JTextField fieldTemp;
     private javax.swing.JTextField fieldValue;
