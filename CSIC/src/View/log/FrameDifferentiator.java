@@ -101,7 +101,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         this.filesData = filesData;
         this.temperature = temperature;
         this.maxValue = maxValue;
-        System.out.println(maxValue);
         decorate.addIcons();
         decorate.initElements();
         Set set = new HashSet();

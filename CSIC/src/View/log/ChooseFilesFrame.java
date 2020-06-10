@@ -273,18 +273,23 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
                 FrameDifferentiator frameDiff = new FrameDifferentiator();
                 if (checkMaxValue.isSelected()) {
                     frameDiff = new FrameDifferentiator(fileNames, listFiles, controller, fieldTemp.getText(), "999999999");
+                    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                    frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);
+                    this.dispose();
+                    frameDiff.setVisible(true);
                 } else {
                     if (fieldValue.getText().matches("^[0-9]+(.)?[0-9]{0,2}")) {
                         frameDiff = new FrameDifferentiator(fileNames, listFiles, controller, fieldTemp.getText(), fieldValue.getText());
+                        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                        frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);
+                        this.dispose();
+                        frameDiff.setVisible(true);
                     } else {
                         fieldValue.setBorder(BorderFactory.createLineBorder(Color.red));
                         fieldValue.setToolTipText("The format is (number).(2 number)");
                     }
                 }
-                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-                frameDiff.setLocation(dim.width / 2 - frameDiff.getSize().width / 2, dim.height / 2 - frameDiff.getSize().height / 2);
-                this.dispose();
-                frameDiff.setVisible(true);
+
             } else {
                 fieldTemp.setBorder(BorderFactory.createLineBorder(Color.red));
                 fieldTemp.setToolTipText("The format is (number).(2 number)");
