@@ -294,7 +294,7 @@ public class MainFrame extends javax.swing.JFrame {
                 errorText.setText("Please select 2 rows");
             }
         } catch (Exception e) {
-            errorText.setText("this columns cannot be ordered");
+            errorText.setText("This columns cannot be ordered");
         }
     }//GEN-LAST:event_buttonAscActionPerformed
 
@@ -308,7 +308,7 @@ public class MainFrame extends javax.swing.JFrame {
                 errorText.setText("Please select 2 rows");
             }
         } catch (Exception e) {
-            errorText.setText("this columns cannot be ordered");
+            errorText.setText("This columns cannot be ordered");
         }
     }//GEN-LAST:event_buttonDescActionPerformed
 
@@ -376,7 +376,7 @@ public class MainFrame extends javax.swing.JFrame {
     public javax.swing.JButton buttonDesc;
     public javax.swing.JButton buttonFilter;
     public javax.swing.JLabel errorText;
-    private javax.swing.JButton exportButton;
+    public javax.swing.JButton exportButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

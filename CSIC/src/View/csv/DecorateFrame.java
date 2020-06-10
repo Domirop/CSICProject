@@ -22,7 +22,6 @@ public class DecorateFrame {
         this.mf = mf;
     }
 
-    
     /**
      * Method used to add icons to the buttons.
      */
@@ -42,6 +41,12 @@ public class DecorateFrame {
             Image newimgincrease = imageincrease.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
             imageIcon = new ImageIcon(newimgincrease);  // transform it back
             mf.buttonAsc.setIcon(imageIcon);
+
+            imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/csv.png"))); // load the image to a imageIcon
+            Image imagecsv = imageIcon.getImage(); // transform it 
+            Image newimgcsv = imagecsv.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH);
+            imageIcon = new ImageIcon(newimgcsv);  // transform it back
+            mf.exportButton.setIcon(imageIcon);
 
             imageIcon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/ResourceFiles/filter.png"))); // load the image to a imageIcon
             Image imagefilter = imageIcon.getImage(); // transform it 
