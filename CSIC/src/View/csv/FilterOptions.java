@@ -30,11 +30,15 @@ public class FilterOptions {
             for (int i = 0; i < model.getColumnCount(); i++) {
                 if (model.getColumnName(i).equals(column)) {
                     index = i;
+                    break;
                 }
             }            
             for (int i = 0; i < model.getRowCount(); i++) {
                 double value = Double.parseDouble(String.valueOf(model.getValueAt(i, index)));
-                
+                System.out.println(value);
+                System.out.println(minValue);
+                System.out.println(maxValue);
+                System.out.println("----------------------");
                 if (value < minValue || value > maxValue) {
                     model.removeRow(i);
                     i = -1;
