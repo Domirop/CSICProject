@@ -86,7 +86,7 @@ public class FilterOptions {
             if (minValue <= maxValue) {
                 removeElements(minValue, maxValue, column);
             } else {
-                fr.errorText.setText("Min value can't be less than max value");
+                fr.errorText.setText("Min value can't be greater than max value");
             }
         }
     }

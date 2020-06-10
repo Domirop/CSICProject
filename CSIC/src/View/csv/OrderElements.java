@@ -103,7 +103,7 @@ public class OrderElements {
             fr.repaint();
             fr.revalidate();
         } else {
-            fr.errorText.setText("Error this column cannot be orderer.");
+            fr.errorText.setText("Error this column cannot be ordered.");
         }
     }
 

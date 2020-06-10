@@ -89,7 +89,7 @@ public class ChooseCsvFile extends javax.swing.JFrame {
         dropTextArea.setRows(5);
         jScrollPane1.setViewportView(dropTextArea);
 
-        buttonNextCsv.setText("next");
+        buttonNextCsv.setText("Next");
         buttonNextCsv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonNextCsvActionPerformed(evt);

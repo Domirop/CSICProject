@@ -307,6 +307,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         jLabel8.setText("Choose an identifier for matrix line");
 
+        textFieldMatrizLine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldMatrizLineActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout dialogNombreLayout = new javax.swing.GroupLayout(dialogNombre.getContentPane());
         dialogNombre.getContentPane().setLayout(dialogNombreLayout);
         dialogNombreLayout.setHorizontalGroup(
@@ -1198,7 +1204,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonAverageActionPerformed
 
     private void fieldNameValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldNameValuesActionPerformed
-        if (!fieldNameValues.getText().isEmpty()) {
+        if (!fieldNameValues.getText().isEmpty() && !textFieldMatrizLine.getText().isEmpty()) {
             ate.actionButtondialogName(evt);
         }
     }//GEN-LAST:event_fieldNameValuesActionPerformed
@@ -1265,6 +1271,12 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         menu.setLocation(dim.width / 2 - menu.getSize().width / 2, dim.height / 2 - menu.getSize().height / 2);
         menu.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void textFieldMatrizLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldMatrizLineActionPerformed
+        if (!fieldNameValues.getText().isEmpty() && !textFieldMatrizLine.getText().isEmpty()) {
+            ate.actionButtondialogName(evt);
+        }
+    }//GEN-LAST:event_textFieldMatrizLineActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTable averageTableReorder;
