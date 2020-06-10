@@ -82,12 +82,17 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     JTable averageTable;
     String maxValue;
     boolean orderAverage = false;
+    
 
     public FrameDifferentiator(ControllerIntLog controller) {
         initComponents();
         this.controller = controller;
     }
 
+    public FrameDifferentiator() {
+    }
+    
+    
     public FrameDifferentiator(List<String> files, List<File> filesData, ControllerIntLog controller, String temperature, String maxValue) {
         initComponents();
         edd.setMappings(listValues);
@@ -96,6 +101,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         this.filesData = filesData;
         this.temperature = temperature;
         this.maxValue = maxValue;
+        System.out.println(maxValue);
         decorate.addIcons();
         decorate.initElements();
         Set set = new HashSet();
