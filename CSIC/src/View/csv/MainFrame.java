@@ -182,6 +182,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        errorText.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         errorText.setForeground(new java.awt.Color(255, 0, 0));
         errorText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
