@@ -138,6 +138,7 @@ public class AddTablesEvent {
     }
 
     public void actionButtondialogName(ActionEvent evt) {
+        fd.errorText.setText("");
         JPanel newPane = new JPanel();
         newPane.setLayout(new GridLayout(0, 1));
         String[] values = new String[fd.keywordsUsed.size() + 2];
@@ -197,11 +198,12 @@ public class AddTablesEvent {
 
             Molecule mole = new Molecule();
             try {
-                mole = fd.controller.getTableMolecule(fd.usedFiles, fd.colAndRows, tableCoord.getColumnName(i), Double.parseDouble(fd.temperature));
+                mole = fd.controller.getTableMolecule(fd.usedFiles, fd.colAndRows, tableCoord.getColumnName(i), Double.parseDouble(fd.temperature), fd.textFieldMatrizLine.getText());
             } catch (Exception e) {
+                fd.textFieldMatrizLine.setText("");
+                fd.fieldNameValues.setText("");
                 fd.dialogNombre.dispose();
                 fd.errorText.setVisible(true);
-                e.printStackTrace();
                 fd.errorText.setText("Some files were not imported or format file isn't correct.");
                 return;
             }
@@ -235,7 +237,6 @@ public class AddTablesEvent {
             DefaultTableModel df = (DefaultTableModel) fd.normalTables.get(j).getModel();
 
             Molecule molecule = molList.get(j);
-            System.out.println(molecule.getFilesData().size());
             for (int l = 0; l < fd.colAndRows.size(); l++) {
                 List<Object> val = new ArrayList<>();
                 val.add(fd.colAndRows.get(l));
@@ -259,23 +260,17 @@ public class AddTablesEvent {
 
             fd.normalTables.get(j).repaint();
             fd.normalTables.get(j).revalidate();
-            System.out.println("--------");
         }
 
         tableCoord.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
         fd.specialTables.add(tableCoord);
-
         fd.usedTables.add(tableCoord);
         JScrollPane scrollpaneHola = new JScrollPane(tableCoord, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
         newPane.add(scrollpaneHola);
-
         fd.tabbedPane.insertTab(fd.fieldNameValues.getText(), new ImageIcon(""), newPane, null, 1);
         fd.dialogNombre.dispose();
-
-        fd.fieldNameValues.setText(
-                "");
+        fd.fieldNameValues.setText("");
+        fd.textFieldMatrizLine.setText("");
     }
 
     /**
@@ -507,30 +502,48 @@ public class AddTablesEvent {
         for (int i = indexs.size() - 1; i >= 0; i--) {
             int index = indexs.get(i);
             String value = String.valueOf(fd.normalTables.get(0).getValueAt(index, 0));
-            DefaultTableModel modelAverage = (DefaultTableModel) fd.averageTable.getModel();
-            int indexAverage = 0;
+            boolean correct = true;
             boolean delete = false;
-            for (int j = 0; j < modelAverage.getRowCount(); j++) {
-                if (String.valueOf(modelAverage.getValueAt(j, 0)).equals(value)) {
-                    indexAverage = j;
-                    delete = true;
-                    break;
+            if (fd.averageTable == null) {
+                correct = false;
+                delete = true;
+            }
+            if (correct) {
+                DefaultTableModel modelAverage = (DefaultTableModel) fd.averageTable.getModel();
+                int indexAverage = 0;
+                for (int j = 0; j < modelAverage.getRowCount(); j++) {
+                    if (String.valueOf(modelAverage.getValueAt(j, 0)).equals(value)) {
+                        indexAverage = j;
+                        delete = true;
+                        break;
+                    }
                 }
+                modelAverage.removeRow(indexAverage);
             }
             if (delete) {
-                modelAverage.removeRow(indexAverage);
                 fd.normalTables.forEach((normalTable) -> {
                     DefaultTableModel def = (DefaultTableModel) normalTable.getModel();
-                    def.removeRow(index);
+                    for (int j = 0; j < def.getRowCount(); j++) {
+                        if (String.valueOf(def.getValueAt(j, 0)).equals(value)) {
+                            def.removeRow(j);
+                            j = 0;
+                        }
+                    }
                     normalTable.repaint();
                 });
                 DefaultTableModel def = (DefaultTableModel) fd.tableGeneric.getModel();
-                def.removeRow(index);
-                fd.averageTable.repaint();
+                for (int j = 0; j < def.getRowCount(); j++) {
+                    if (String.valueOf(def.getValueAt(j, 0)).equals(value)) {
+                        def.removeRow(j);
+                        j = 0;
+                    }
+                }
                 fd.tableGeneric.repaint();
-                od.reloadAverageTable();
-                od.reloadDescFromAverage();
-                od.reloadAscFromAverage();
+                if (correct) {
+                    od.reloadAverageTable();
+                    od.reloadDescFromAverage();
+                    od.reloadAscFromAverage();
+                }
             } else {
                 fd.errorText.setText("This values are averaged, they cannot be removed.");
             }

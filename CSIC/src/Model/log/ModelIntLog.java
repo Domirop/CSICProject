@@ -35,10 +35,10 @@ public interface ModelIntLog {
 
     public boolean writeCSV(List<String[]> datas, String path, String fileName);
 
-    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates) throws Exception;
+    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates, String start) throws Exception;
 
-    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp) throws Exception;
+    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp, String start) throws Exception;
 
-    public List<AtomTable> getAtomTables(List<String> coordinates, String path) throws Exception;
+    public List<AtomTable> getAtomTables(List<String> coordinates, String path, String start) throws Exception;
 
 }

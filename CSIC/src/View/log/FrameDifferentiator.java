@@ -128,6 +128,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         fieldNameValues = new javax.swing.JTextField();
         buttonValues = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        textFieldMatrizLine = new javax.swing.JTextField();
         dialogTemperature = new javax.swing.JDialog();
         jLabel5 = new javax.swing.JLabel();
         fieldTemperature = new javax.swing.JTextField();
@@ -288,7 +290,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         dialogNombre.setTitle("DataPicker4J");
 
-        jLabel4.setText("Choose a name for the values");
+        jLabel4.setText("Choose a name for the table");
 
         fieldNameValues.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -303,29 +305,39 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setText("Choose an identifier for matrix line");
+
         javax.swing.GroupLayout dialogNombreLayout = new javax.swing.GroupLayout(dialogNombre.getContentPane());
         dialogNombre.getContentPane().setLayout(dialogNombreLayout);
         dialogNombreLayout.setHorizontalGroup(
             dialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogNombreLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(dialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(buttonValues)
-                    .addComponent(fieldNameValues, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(dialogNombreLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(dialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textFieldMatrizLine)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialogNombreLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(buttonValues))
+                    .addGroup(dialogNombreLayout.createSequentialGroup()
+                        .addGroup(dialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel8))
+                        .addGap(0, 11, Short.MAX_VALUE))
+                    .addComponent(fieldNameValues))
+                .addContainerGap())
         );
         dialogNombreLayout.setVerticalGroup(
             dialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dialogNombreLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(fieldNameValues, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(textFieldMatrizLine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonValues)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -800,12 +812,8 @@ public class FrameDifferentiator extends javax.swing.JFrame {
      * @param evt
      */
     private void buttonValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValuesActionPerformed
-        try {
-            if (!fieldNameValues.getText().isEmpty()) {
-                ate.actionButtondialogName(evt);
-            }
-        } catch (Exception e) {
-            errorText.setText("Error has ocurred. Try again.");
+        if (!fieldNameValues.getText().isEmpty() && !textFieldMatrizLine.getText().isEmpty()) {
+            ate.actionButtondialogName(evt);
         }
     }//GEN-LAST:event_buttonValuesActionPerformed
 
@@ -1305,6 +1313,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     public javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
@@ -1318,5 +1327,6 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     public javax.swing.JTabbedPane tabPaneSCF;
     public javax.swing.JTabbedPane tabbedPane;
     public javax.swing.JTextArea textAreaMoreFiles;
+    public javax.swing.JTextField textFieldMatrizLine;
     // End of variables declaration//GEN-END:variables
 }

@@ -186,13 +186,13 @@ public class ModelLog implements ModelIntLog {
      * @return List of elements FileData.
      */
     @Override
-    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates) throws Exception {
+    public List<FileData> getFileDataTable(List<File> files, List<String> coordinates, String start) throws Exception {
         List<FileData> filesDatas = new ArrayList<>();
         for (File file : files) {
             FileData fileData = new FileData();
             fileData.setFileName(file.getName().split(",")[0]);
             fileData.setEnergyValue(Double.parseDouble(SCFDone(file.getAbsolutePath())));
-            fileData.setAtomsTable(getAtomTables(coordinates, file.getAbsolutePath()));
+            fileData.setAtomsTable(getAtomTables(coordinates, file.getAbsolutePath(), start));
             filesDatas.add(fileData);
         }
         return filesDatas;
@@ -206,7 +206,7 @@ public class ModelLog implements ModelIntLog {
      * @return List o element AtomTable.
      */
     @Override
-    public List<AtomTable> getAtomTables(List<String> coordinates, String path) throws Exception {
+    public List<AtomTable> getAtomTables(List<String> coordinates, String path, String start) throws Exception {
         List<AtomTable> atomsTable = new ArrayList<>();
         for (String coordinate : coordinates) {
             AtomTable atomTable = new AtomTable();
@@ -214,7 +214,7 @@ public class ModelLog implements ModelIntLog {
             atomTable.setColumn(Integer.parseInt(position[1]));
             atomTable.setRow(Integer.parseInt(position[0]));
             atomTable.setValue(Double.parseDouble(this.getValue(path, atomTable.getColumn(),
-                    atomTable.getRow(), "contribution to J").replace("D", "e")));
+                    atomTable.getRow(), start).replace("D", "e")));
             atomsTable.add(atomTable);
         }
         return atomsTable;
@@ -230,10 +230,9 @@ public class ModelLog implements ModelIntLog {
      * @return A Molecule object.
      */
     @Override
-    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp) throws Exception {
-
+    public Molecule getMoleculeTable(List<File> files, List<String> coordinates, String key, double temp, String start) throws Exception {
         Molecule molecule = new Molecule();
-        molecule.setFilesData(getFileDataTable(files, coordinates));
+        molecule.setFilesData(getFileDataTable(files, coordinates, start));
         molecule.setDifferentiator(key);
         List<AverageValue> total = new ArrayList<>();
         for (String coordinate : coordinates) {
