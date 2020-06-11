@@ -308,7 +308,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        jLabel8.setText("Choose an identifier for matrix line");
+        jLabel8.setText("Choose contribution to J");
 
         textFieldMatrizLine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -331,7 +331,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                         .addGroup(dialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
                             .addComponent(jLabel8))
-                        .addGap(0, 11, Short.MAX_VALUE))
+                        .addGap(0, 55, Short.MAX_VALUE))
                     .addComponent(fieldNameValues))
                 .addContainerGap())
         );
@@ -353,7 +353,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
 
         dialogTemperature.setTitle("DataPicker4J");
 
-        jLabel5.setText("Temperature:");
+        jLabel5.setText("Temperature (K):");
 
         fieldTemperature.setText("298.15");
         fieldTemperature.addActionListener(new java.awt.event.ActionListener() {
@@ -369,7 +369,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("Energy cutoff:");
+        jLabel7.setText("Energy cutoff (kJ):");
 
         fieldMaxValue.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -393,7 +393,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addGap(18, 18, 18)
                         .addGroup(dialogTemperatureLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fieldTemperature, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                            .addComponent(fieldTemperature, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                             .addComponent(fieldMaxValue))))
                 .addContainerGap())
         );

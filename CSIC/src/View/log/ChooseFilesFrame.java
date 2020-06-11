@@ -139,9 +139,9 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Temperature:");
+        jLabel2.setText("Temperature (K):");
 
-        jLabel3.setText("Energy cutoff:");
+        jLabel3.setText("Energy cutoff (kJ):");
 
         fieldTemp.setText("298.15");
         fieldTemp.addActionListener(new java.awt.event.ActionListener() {
@@ -170,7 +170,7 @@ public class ChooseFilesFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)

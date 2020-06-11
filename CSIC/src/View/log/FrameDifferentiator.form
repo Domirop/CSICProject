@@ -224,7 +224,7 @@
                               <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="55" max="32767" attributes="0"/>
                       </Group>
                       <Component id="fieldNameValues" alignment="0" max="32767" attributes="0"/>
                   </Group>
@@ -274,7 +274,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Choose an identifier for matrix line"/>
+            <Property name="text" type="java.lang.String" value="Choose contribution to J"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="textFieldMatrizLine">
@@ -309,7 +309,7 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="fieldTemperature" pref="102" max="32767" attributes="0"/>
+                              <Component id="fieldTemperature" pref="78" max="32767" attributes="0"/>
                               <Component id="fieldMaxValue" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -341,7 +341,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Temperature:"/>
+            <Property name="text" type="java.lang.String" value="Temperature (K):"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldTemperature">
@@ -362,7 +362,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Energy cutoff:"/>
+            <Property name="text" type="java.lang.String" value="Energy cutoff (kJ):"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="fieldMaxValue">
