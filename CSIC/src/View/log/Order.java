@@ -230,16 +230,18 @@ public class Order {
                     }
                 }
                 if (index1 != null && index2 != null) {
-                    for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
-                        double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(index1, i).toString());
-                        double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(index2, i).toString());
+                    for (int i = 0; i < fd.averageTableReorder.getColumnCount(); i++) {
                         int[] colorIndexs = new int[]{index1, index2};
                         final TableColour tce = new TableColour(colorIndexs, color);
                         fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
-                        if (bg1 < bg2) {
-                            double ax = bg1;
-                            model.setValueAt(bg2, index1, i);
-                            model.setValueAt(ax, index2, i);
+                        if (i > 1) {
+                            double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(index1, i).toString());
+                            double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(index2, i).toString());
+                            if (bg1 < bg2) {
+                                double ax = bg1;
+                                model.setValueAt(bg2, index1, i);
+                                model.setValueAt(ax, index2, i);
+                            }
                         }
                     }
                 } else {
@@ -289,16 +291,18 @@ public class Order {
                     }
                 }
                 if (index1 != null && index2 != null) {
-                    for (int i = 2; i < fd.averageTableReorder.getColumnCount(); i++) {
-                        double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(index1, i).toString());
-                        double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(index2, i).toString());
+                    for (int i = 0; i < fd.averageTableReorder.getColumnCount(); i++) {
                         int[] colorIndexs = new int[]{index1, index2};
                         final TableColour tce = new TableColour(colorIndexs, color);
                         fd.averageTableReorder.getColumnModel().getColumn(i).setCellRenderer(tce);
-                        if (bg1 > bg2) {
-                            double ax = bg1;
-                            model.setValueAt(bg2, index1, i);
-                            model.setValueAt(ax, index2, i);
+                        if (i > 1) {
+                            double bg1 = Double.parseDouble(fd.averageTableReorder.getValueAt(index1, i).toString());
+                            double bg2 = Double.parseDouble(fd.averageTableReorder.getValueAt(index2, i).toString());
+                            if (bg1 > bg2) {
+                                double ax = bg1;
+                                model.setValueAt(bg2, index1, i);
+                                model.setValueAt(ax, index2, i);
+                            }
                         }
                     }
                 } else {

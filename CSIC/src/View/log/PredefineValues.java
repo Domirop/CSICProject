@@ -53,6 +53,13 @@ public class PredefineValues {
         fd.indexOrderedValDesc.clear();
         fd.averagedValues.clear();
         JTabbedPane pane = fd.tabbedPane;
+        JPanel panelAverage = (JPanel) pane.getComponentAt(0);
+        JScrollPane sc = (JScrollPane) panelAverage.getComponent(0);
+        panelAverage.remove(sc);
+        if (fd.averageTable.getRowCount() > 0) {
+            JScrollPane sc2 = (JScrollPane) panelAverage.getComponent(0);
+            panelAverage.remove(sc2);
+        }
         fd.tabPaneSCF.removeAll();
         fd.tableGeneric = null;
         if (fd.tabbedPane.getTabCount() > 1) {
@@ -77,7 +84,7 @@ public class PredefineValues {
                     ate.actionButtonAdd(pane.getTitleAt(j + 1));
                 }
             }
-            
+
             String name = pane.getTitleAt(pane.getTabCount() - 1);
             for (int i = 0; i < pane.getTabCount(); i++) {
                 if (i != 0) {
@@ -88,7 +95,7 @@ public class PredefineValues {
                         pane.removeTabAt(i);
                         i = 0;
                     }
-                    
+
                 }
             }
         }
