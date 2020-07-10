@@ -16,12 +16,41 @@ import javax.swing.table.DefaultTableModel;
 public class OrderElements {
 
     MainFrame fr;
+    List<Integer> indexsToChange = new ArrayList<>();
 
     public OrderElements(MainFrame fr) {
         this.fr = fr;
     }
 
+    public void orderSelectedTables(String order) {
+        indexsToChange.clear();
+        DefaultTableModel model = (DefaultTableModel) fr.table.getModel();
+        int[] index = fr.table.getSelectedColumns();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            double columnValue1 = Double.parseDouble(fr.table.getValueAt(i, index[0]).toString());
+            double columnValue2 = Double.parseDouble(fr.table.getValueAt(i, index[1]).toString());
+            if (order.equals(">")) {
+                if (columnValue1 > columnValue2) {
+                    indexsToChange.add(i);
+                    double aux = columnValue1;
+                    model.setValueAt(String.valueOf(columnValue2), i, index[0]);
+                    model.setValueAt(String.valueOf(aux), i, index[1]);
+                }
+            } else {
+                if (columnValue1 < columnValue2) {
+                    indexsToChange.add(i);
+                    double aux = columnValue1;
+                    model.setValueAt(String.valueOf(columnValue2), i, index[0]);
+                    model.setValueAt(String.valueOf(aux), i, index[1]);
+                }
+            }
+            fr.table.repaint();
+            fr.table.revalidate();
+        }
+    }
+
     public void orderElements(String order) {
+        orderSelectedTables(order);
         DefaultTableModel model = (DefaultTableModel) fr.table.getModel();
         int[] index = fr.table.getSelectedColumns();
         String[] gaussians = getGausianToOrder(index);
@@ -31,9 +60,9 @@ public class OrderElements {
             fr.errorText.setText("");
             for (int i = 0; i < model.getColumnCount(); i++) {
                 String columnName = model.getColumnName(i);
-                if (columnName.contains(gaussians[0])) {
+                if (columnName.contains(gaussians[0]) && i != index[0] && i != index[1]) {
                     firstColumns.add(i);
-                } else if (columnName.contains(gaussians[1])) {
+                } else if (columnName.contains(gaussians[1]) && i != index[0] && i != index[1]) {
                     secondColumns.add(i);
                 }
             }
@@ -62,40 +91,13 @@ public class OrderElements {
                         index2 = i;
                     }
                 }
-                for (int i = 0; i < model.getRowCount(); i++) {
+                for (int i = 0; i < indexsToChange.size(); i++) {
                     double columnValue1 = Double.parseDouble(fr.table.getValueAt(i, index1).toString());
                     double columnValue2 = Double.parseDouble(fr.table.getValueAt(i, index2).toString());
-                    if (order.equals(">")) {
-                        if (index1 > index2) {
-                            if (columnValue2 > columnValue1) {
-                                double aux = columnValue1;
-                                model.setValueAt(String.valueOf(columnValue2), i, index1);
-                                model.setValueAt(String.valueOf(aux), i, index2);
-                            }
-                        } else {
-                            if (columnValue1 > columnValue2) {
-                                double aux = columnValue1;
-                                model.setValueAt(String.valueOf(columnValue2), i, index1);
-                                model.setValueAt(String.valueOf(aux), i, index2);
-                            }
-                        }
-                        fr.table.repaint();
-                        fr.table.revalidate();
-                    } else if (order.equals("<")) {
-                        if (index1 > index2) {
-                            if (columnValue2 < columnValue1) {
-                                double aux = columnValue1;
-                                model.setValueAt(String.valueOf(columnValue2), i, index1);
-                                model.setValueAt(String.valueOf(aux), i, index2);
-                            }
-                        } else {
-                            if (columnValue1 < columnValue2) {
-                                double aux = columnValue1;
-                                model.setValueAt(String.valueOf(columnValue2), i, index1);
-                                model.setValueAt(String.valueOf(aux), i, index2);
-                            }
-                        }
-                    }
+                    double aux = columnValue1;
+                    model.setValueAt(String.valueOf(columnValue2), i, index1);
+                    model.setValueAt(String.valueOf(aux), i, index2);
+
                 }
             });
             fr.table.revalidate();
