@@ -49,6 +49,7 @@ public class Order {
                 index2 = j;
             }
         }
+
         double a = Double.parseDouble(model.getValueAt(index1, index).toString());
         double b = Double.parseDouble(model.getValueAt(index2, index).toString());
         double ax = a;
@@ -85,7 +86,9 @@ public class Order {
                             double ax = a;
                             model.setValueAt(b, index1, i);
                             model.setValueAt(ax, index2, i);
-                            changeOrderAverageTable(datas, i);
+                            if (fd.averageTableReorder.getRowCount() > 0) {
+                                changeOrderAverageTable(datas, i);
+                            }
                             reorderNormalTables(index1, index2, (i - 2));
                             reorderSpecialTables(datas[0], datas[1], i);
                         }
@@ -113,7 +116,9 @@ public class Order {
                         double ax = a;
                         model.setValueAt(b, index1, i);
                         model.setValueAt(ax, index2, i);
-                        changeOrderAverageTable(datas, i);
+                        if (fd.averageTableReorder.getRowCount() > 0) {
+                            changeOrderAverageTable(datas, i);
+                        }
                         reorderNormalTables(index1, index2, (i - 2));
                         reorderSpecialTables(datas[0], datas[1], i);
                     }
@@ -350,7 +355,10 @@ public class Order {
                             double ax = a;
                             model.setValueAt(b, index1, i);
                             model.setValueAt(ax, index2, i);
-                            changeOrderAverageTable(datas, i);
+
+                            if (fd.averageTableReorder.getRowCount() > 0) {
+                                changeOrderAverageTable(datas, i);
+                            }
                             reorderNormalTables(index1, index2, (i - 2));
                             reorderSpecialTables(datas[0], datas[1], i);
                         }
@@ -379,7 +387,9 @@ public class Order {
                         double ax = a;
                         model.setValueAt(b, index1, i);
                         model.setValueAt(ax, index2, i);
-                        changeOrderAverageTable(datas, i);
+                        if (fd.averageTableReorder.getRowCount() > 0) {
+                            changeOrderAverageTable(datas, i);
+                        }
                         reorderNormalTables(index1, index2, (i - 2));
                         reorderSpecialTables(datas[0], datas[1], i);
                     }
@@ -440,8 +450,8 @@ public class Order {
             double bg1 = Double.parseDouble(model.getValueAt(gausian1, i).toString());
             double bg2 = Double.parseDouble(model.getValueAt(gausian2, i).toString());
             double aux = bg1;
-            model.setValueAt(String.valueOf(bg2), gausian1, i);
-            model.setValueAt(String.valueOf(aux), gausian2, i);
+            model.setValueAt(bg2, gausian1, i);
+            model.setValueAt(aux, gausian2, i);
         }
         fd.normalTables.get(index).repaint();
     }
@@ -487,12 +497,15 @@ public class Order {
      */
     public void reorderElements(JTable specialTable, List<TableElement> element1, List<TableElement> element2, int index) {
         List<TableElement> elements = new ArrayList<>();
+        List<String> list = new ArrayList<>();
+
         DefaultTableModel model = (DefaultTableModel) specialTable.getModel();
         for (TableElement elementType1 : element1) {
             next:
             for (int j = 0; j < element2.size(); j++) {
                 if (elementType1.column.equals(element2.get(j).column) || elementType1.column.equals(element2.get(j).row)
                         || elementType1.row.equals(element2.get(j).column) || elementType1.row.equals(element2.get(j).row)) {
+                    list.add(elementType1.row + ',' + elementType1.column + '-' + element2.get(j).row + ',' + element2.get(j).column);
                     double bg1 = Double.parseDouble(specialTable.getValueAt(elementType1.indexRow, index).toString());
                     double bg2 = Double.parseDouble(specialTable.getValueAt(element2.get(j).indexRow, index).toString());
                     double aux = bg1;
@@ -507,6 +520,7 @@ public class Order {
                 }
             }
         }
+        reorderElementsNormal(list);
         if (fd.errorText.getText().length() == 0) {
             fd.errorText.setVisible(false);
             fd.errorText.setText("The following values wont be ordered: ");
@@ -521,6 +535,35 @@ public class Order {
                     fd.errorText.setVisible(true);
                     fd.errorText.setText(fd.errorText.getText() + " " + element.row + "," + element.column + "  ");
                 }
+            }
+        }
+    }
+
+    public void reorderElementsNormal(List<String> list) {
+        for (JTable normalTable : fd.normalTables) {
+            DefaultTableModel table = (DefaultTableModel) normalTable.getModel();
+            for (String string : list) {
+                int index1 = 0;
+                int index2 = 0;
+                for (int i = 0; i < table.getRowCount(); i++) {
+                    if (table.getValueAt(i, 0).toString().equals(string.split("-")[0])) {
+                        index1 = i;
+                    } else if (table.getValueAt(i, 0).toString().equals(string.split("-")[1])) {
+                        index2 = i;
+                    }
+                }
+                for (int i = 2; i < table.getColumnCount(); i++) {
+                    double bg1 = Double.parseDouble(table.getValueAt(index1, i).toString());
+                    double bg2 = Double.parseDouble(table.getValueAt(index2, i).toString());
+                    double aux = bg1;
+                    table.setValueAt(bg2, index1, i);
+                    table.setValueAt(aux, index2, i);
+
+                    normalTable.repaint();
+                    normalTable.revalidate();
+                    table.fireTableDataChanged();
+                }
+
             }
         }
     }

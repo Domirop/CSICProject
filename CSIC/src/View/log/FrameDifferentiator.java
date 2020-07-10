@@ -1239,7 +1239,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
             if (comboSelectRowsOrColumns.getSelectedIndex() == 0) {
                 table.setColumnSelectionAllowed(false);
                 table.setRowSelectionAllowed(true);
-                buttonRemoveColumn.setEnabled(true);
+                buttonRemoveColumn.setEnabled(false);
             } else {
                 table.setColumnSelectionAllowed(true);
                 table.setRowSelectionAllowed(false);
@@ -1252,27 +1252,7 @@ public class FrameDifferentiator extends javax.swing.JFrame {
     }//GEN-LAST:event_comboSelectRowsOrColumnsActionPerformed
 
     private void buttonRemoveColumnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRemoveColumnActionPerformed
-        if (comboSelectRowsOrColumns.getSelectedIndex() == 0) {
-            JPanel myPanel = (JPanel) tabbedPane.getSelectedComponent();
-            JScrollPane scrollPane = (JScrollPane) myPanel.getComponent(0);
-            JViewport viewport = scrollPane.getViewport();
-            JTable table = (JTable) viewport.getView();
-            boolean deleteable = true;
-            for (int i = 0; i < table.getSelectedRows().length; i++) {
-                if (table.getValueAt(table.getSelectedRows()[i], 1).equals("J")) {
-                    deleteable = false;
-                }
-            }
-            if (deleteable) {
-                errorText.setText("");
-                List<Integer> indexs = IntStream.of(table.getSelectedRows())
-                        .boxed().collect(Collectors.toCollection(ArrayList::new));
-                ate.removeRow(indexs);
-            } else {
-                errorText.setText("This row(s) cannot be deleted.");
-            }
-
-        } else {
+        if (comboSelectRowsOrColumns.getSelectedIndex() == 1) {
             ate.removeColumn();
         }
         dialogAverageOrder.dispose();
