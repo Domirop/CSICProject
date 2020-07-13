@@ -444,7 +444,6 @@ public class Order {
      * @param order desc or asc
      */
     private void reorderNormalTables(int gausian1, int gausian2, int index) {
-        //changeOrder(fd.normalTables.get(index));
         DefaultTableModel model = (DefaultTableModel) fd.normalTables.get(index).getModel();
         for (int i = 2; i < model.getColumnCount(); i++) {
             double bg1 = Double.parseDouble(model.getValueAt(gausian1, i).toString());
@@ -452,6 +451,35 @@ public class Order {
             double aux = bg1;
             model.setValueAt(bg2, gausian1, i);
             model.setValueAt(aux, gausian2, i);
+        }
+        JTable myTabla = getSelectedTable();
+        DefaultTableModel modelSelected = (DefaultTableModel) myTabla.getModel();
+        int[] rows = myTabla.getSelectedRows();
+        String firstValue = modelSelected.getValueAt(rows[0], 0).toString() + ',' + modelSelected.getValueAt(rows[0], 1).toString();
+        String secondValue = modelSelected.getValueAt(rows[1], 0).toString() + ',' + modelSelected.getValueAt(rows[1], 1).toString();
+        int firstIndex = 0;
+        int secondIndex = 0;
+        System.out.println(firstValue);
+        System.out.println(secondValue);
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if (model.getValueAt(i, 0).toString().equals(firstValue)) {
+                firstIndex = i;
+            }
+            if (model.getValueAt(i, 0).toString().equals(secondValue)) {
+                secondIndex = i;
+            }
+        }
+        System.out.println("------------------");
+        System.out.println(firstIndex);
+        System.out.println(secondIndex);
+        if (firstIndex != 0 && secondIndex != 0) {
+            for (int i = 2; i < model.getColumnCount(); i++) {
+                double bg1 = Double.parseDouble(model.getValueAt(firstIndex, i).toString());
+                double bg2 = Double.parseDouble(model.getValueAt(secondIndex, i).toString());
+                double aux = bg1;
+                model.setValueAt(bg2, firstIndex, i);
+                model.setValueAt(aux, secondIndex, i);
+            }
         }
         fd.normalTables.get(index).repaint();
     }
@@ -520,7 +548,6 @@ public class Order {
                 }
             }
         }
-        reorderElementsNormal(list);
         if (fd.errorText.getText().length() == 0) {
             fd.errorText.setVisible(false);
             fd.errorText.setText("The following values wont be ordered: ");
@@ -535,35 +562,6 @@ public class Order {
                     fd.errorText.setVisible(true);
                     fd.errorText.setText(fd.errorText.getText() + " " + element.row + "," + element.column + "  ");
                 }
-            }
-        }
-    }
-
-    public void reorderElementsNormal(List<String> list) {
-        for (JTable normalTable : fd.normalTables) {
-            DefaultTableModel table = (DefaultTableModel) normalTable.getModel();
-            for (String string : list) {
-                int index1 = 0;
-                int index2 = 0;
-                for (int i = 0; i < table.getRowCount(); i++) {
-                    if (table.getValueAt(i, 0).toString().equals(string.split("-")[0])) {
-                        index1 = i;
-                    } else if (table.getValueAt(i, 0).toString().equals(string.split("-")[1])) {
-                        index2 = i;
-                    }
-                }
-                for (int i = 2; i < table.getColumnCount(); i++) {
-                    double bg1 = Double.parseDouble(table.getValueAt(index1, i).toString());
-                    double bg2 = Double.parseDouble(table.getValueAt(index2, i).toString());
-                    double aux = bg1;
-                    table.setValueAt(bg2, index1, i);
-                    table.setValueAt(aux, index2, i);
-
-                    normalTable.repaint();
-                    normalTable.revalidate();
-                    table.fireTableDataChanged();
-                }
-
             }
         }
     }
