@@ -36,7 +36,7 @@ public class OrderElements {
                     model.setValueAt(String.valueOf(columnValue2), i, index[0]);
                     model.setValueAt(String.valueOf(aux), i, index[1]);
                 }
-            } else {
+            } else if(order.equals("<")){
                 if (columnValue1 < columnValue2) {
                     indexsToChange.add(i);
                     double aux = columnValue1;
@@ -54,16 +54,23 @@ public class OrderElements {
         DefaultTableModel model = (DefaultTableModel) fr.table.getModel();
         int[] index = fr.table.getSelectedColumns();
         String[] gaussians = getGausianToOrder(index);
-        if (gaussians.length > 0) {
+        if (gaussians[0] != null && gaussians[1] != null) {
             List<Integer> firstColumns = new ArrayList<>();
             List<Integer> secondColumns = new ArrayList<>();
             fr.errorText.setText("");
             for (int i = 0; i < model.getColumnCount(); i++) {
                 String columnName = model.getColumnName(i);
-                if (columnName.contains(gaussians[0]) && i != index[0] && i != index[1]) {
-                    firstColumns.add(i);
-                } else if (columnName.contains(gaussians[1]) && i != index[0] && i != index[1]) {
-                    secondColumns.add(i);
+                if (columnName.contains("-")) {
+                    String[] columnElements = columnName.split("-");
+                    if (i != index[0] && i != index[1]
+                            && (columnElements[0].replace(" ", "").equals(gaussians[0])
+                            || columnElements[1].replace(" ", "").equals(gaussians[0]))) {
+                        firstColumns.add(i);
+                    } else if (i != index[0] && i != index[1]
+                            && (columnElements[0].replace(" ", "").equals(gaussians[1])
+                            || columnElements[1].replace(" ", "").equals(gaussians[1]))) {
+                        secondColumns.add(i);
+                    }
                 }
             }
             List<List<String>> indexCombination = new ArrayList<>();
@@ -91,12 +98,12 @@ public class OrderElements {
                         index2 = i;
                     }
                 }
-                for (int i = 0; i < indexsToChange.size(); i++) {
-                    double columnValue1 = Double.parseDouble(fr.table.getValueAt(i, index1).toString());
-                    double columnValue2 = Double.parseDouble(fr.table.getValueAt(i, index2).toString());
+                for (Integer integer : indexsToChange) {
+                    double columnValue1 = Double.parseDouble(fr.table.getValueAt(integer, index1).toString());
+                    double columnValue2 = Double.parseDouble(fr.table.getValueAt(integer, index2).toString());
                     double aux = columnValue1;
-                    model.setValueAt(String.valueOf(columnValue2), i, index1);
-                    model.setValueAt(String.valueOf(aux), i, index2);
+                    model.setValueAt(String.valueOf(columnValue2), integer, index1);
+                    model.setValueAt(String.valueOf(aux), integer, index2);
 
                 }
             });
