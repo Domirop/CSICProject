@@ -36,7 +36,7 @@ public class OrderElements {
                     model.setValueAt(String.valueOf(columnValue2), i, index[0]);
                     model.setValueAt(String.valueOf(aux), i, index[1]);
                 }
-            } else if(order.equals("<")){
+            } else if (order.equals("<")) {
                 if (columnValue1 < columnValue2) {
                     indexsToChange.add(i);
                     double aux = columnValue1;
@@ -61,14 +61,16 @@ public class OrderElements {
             for (int i = 0; i < model.getColumnCount(); i++) {
                 String columnName = model.getColumnName(i);
                 if (columnName.contains("-")) {
-                    String[] columnElements = columnName.split("-");
+                    String[] columnElements = columnName.replace(" ", "").replace("\\s", "").split("-");
+                    String columnValue1 = columnElements[0];
+                    String columnValue2 = columnElements[1];
                     if (i != index[0] && i != index[1]
-                            && (columnElements[0].replace(" ", "").equals(gaussians[0])
-                            || columnElements[1].replace(" ", "").equals(gaussians[0]))) {
+                            && (columnValue1.equals(gaussians[0])
+                            || columnValue2.equals(gaussians[0]))) {
                         firstColumns.add(i);
                     } else if (i != index[0] && i != index[1]
-                            && (columnElements[0].replace(" ", "").equals(gaussians[1])
-                            || columnElements[1].replace(" ", "").equals(gaussians[1]))) {
+                            && (columnValue1.equals(gaussians[1])
+                            || columnValue2.equals(gaussians[1]))) {
                         secondColumns.add(i);
                     }
                 }
@@ -76,10 +78,16 @@ public class OrderElements {
             List<List<String>> indexCombination = new ArrayList<>();
             for (int i = 0; i < firstColumns.size(); i++) {
                 List<String> combination = new ArrayList<>();
-                String value1 = model.getColumnName(firstColumns.get(i)).replace("-", "").replace(gaussians[0], "");
+                String value1 = model.getColumnName(firstColumns.get(i))
+                        .replace("-", "")
+                        .replace(gaussians[0], "")
+                        .replace(" ", "").replace("\\s", "");
                 combination.add(model.getColumnName(firstColumns.get(i)));
                 for (int j = 0; j < secondColumns.size(); j++) {
-                    String value2 = model.getColumnName(secondColumns.get(j)).replace("-", "").replace(gaussians[1], "");
+                    String value2 = model.getColumnName(secondColumns.get(j))
+                            .replace("-", "")
+                            .replace(gaussians[1], "")
+                            .replace(" ", "").replace("\\s", "");
                     if (value2.equals(value1)) {
                         combination.add(model.getColumnName(secondColumns.get(j)));
                     }
@@ -104,7 +112,6 @@ public class OrderElements {
                     double aux = columnValue1;
                     model.setValueAt(String.valueOf(columnValue2), integer, index1);
                     model.setValueAt(String.valueOf(aux), integer, index2);
-
                 }
             });
             fr.table.revalidate();
@@ -120,10 +127,10 @@ public class OrderElements {
         String[] gausians = new String[2];
         String[] firstCombination = fr.table.getColumnName(values[0]).split("-");
         String[] secondCombination = fr.table.getColumnName(values[1]).split("-");
-        String firstValue1 = firstCombination[0].replace(" ", "");
-        String firstValue2 = firstCombination[1].replace(" ", "");
-        String secondValue1 = secondCombination[0].replace(" ", "");
-        String secondValue2 = secondCombination[1].replace(" ", "");
+        String firstValue1 = firstCombination[0].replace(" ", "").replace("\\s", "");
+        String firstValue2 = firstCombination[1].replace(" ", "").replace("\\s", "");
+        String secondValue1 = secondCombination[0].replace(" ", "").replace("\\s", "");
+        String secondValue2 = secondCombination[1].replace(" ", "").replace("\\s", "");
         if (firstValue1.equals(secondValue1) || firstValue1.equals(secondValue2)
                 || firstValue2.equals(secondValue1) || firstValue2.equals(secondValue2)) {
             if (firstValue1.equals(secondValue1) || firstValue1.equals(secondValue2)) {
